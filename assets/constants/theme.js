@@ -48,7 +48,9 @@ const COLORS = {
   white_s: '#FFFFFF',
   black: "#000000",
   blue: "#246BFD",
-  darkGray: '#4E4B4B'
+  darkGray: '#4E4B4B',
+  lightDarkGray: "#A7A5B1",
+  profileDarkGray: '#7E7D84'
 };
 
 const FONT = {

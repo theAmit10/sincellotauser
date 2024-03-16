@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import LoginBackground from '../components/login/LoginBackground';
 import {
   heightPercentageToDP,
@@ -20,10 +20,8 @@ import Toast from 'react-native-toast-message';
 import {useNavigation} from '@react-navigation/native';
 import Background from '../components/background/Background';
 import Loading from '../components/helpercComponent/Loading';
-import { useDispatch, useSelector } from 'react-redux';
-import { getAllLocations } from '../redux/actions/locationAction';
 
-const Search = () => {
+const SearchDate = () => {
   const navigation = useNavigation();
 
   const [searchData, setSearchData] = useState('');
@@ -31,26 +29,15 @@ const Search = () => {
   const [showLoading, setLoading]= useState(false);
 
   const [data, setData] = useState([
-    {id: '1', title: 'Delhi'},
-    {id: '2', title: 'Pune'},
-    {id: '3', title: 'Mumbai'},
-    {id: '4', title: 'Sikkim'},
-    {id: '5', title: 'Gangtok'},
-    {id: '6', title: 'Bhopal'},
-    {id: '7', title: 'Noida'},
-    {id: '8', title: 'Kolkatta'},
+    {id: '1', title: '22 jan 2024'},
+    {id: '2', title: '23 jan 2024'},
+    {id: '3', title: '24 jan 2024'},
+    {id: '4', title: '25 jan 2024'},
+    {id: '5', title: '26 jan 2024'},
+    {id: '6', title: '27 jan 2024'},
+    {id: '7', title: '28 jan 2024'},
+    {id: '8', title: '29 jan 2024'},
   ]);
-
-  const dispatch = useDispatch();
-
-  const {accesstoken} = useSelector(state => state.user);
-  const {loading,location} = useSelector(state => state.location);
-
-  useEffect(() => {
-    dispatch(getAllLocations(accesstoken))
-  },[dispatch])
-
-  console.log(location)
 
   
   const submitHandler = () => {
@@ -65,6 +52,7 @@ const Search = () => {
       <Background />
 
       {/** Main Cointainer */}
+
 
       <View
         style={{
@@ -93,12 +81,16 @@ const Search = () => {
 
         {/** Content Container */}
 
+        
+
         <View
           style={{
             height: heightPercentageToDP(15),
             margin: heightPercentageToDP(2),
           }}>
-          <GradientText style={styles.textStyle}>Search</GradientText>
+          <GradientText style={styles.textStyle}>Search Date</GradientText>
+
+          {/** Search container */}
 
           <View
             style={{
@@ -122,7 +114,7 @@ const Search = () => {
                 fontFamily: FONT.SF_PRO_REGULAR,
                 fontSize: heightPercentageToDP(2)
               }}
-              placeholder="Search for location"
+              placeholder="Search for date"
               label="Search"
               value={searchData}
               onChangeText={text => setSearchData(text)}
@@ -130,17 +122,21 @@ const Search = () => {
           </View>
         </View>
 
+        <View style={{margin: heightPercentageToDP(2)}}>
+        <GradientText style={styles.textStyle}>Delhi</GradientText>
+        <GradientText style={styles.textStyle}>1 PM</GradientText>
+        </View>
+
         <View
           style={{
             flex: 2,
           }}>
             {
-                loading ? (<Loading/>) : (
-                <FlatList
-                    data={location}
+                showLoading ? (<Loading/>) : (<FlatList
+                    data={data}
                     renderItem={({item, index}) => (
                       <TouchableOpacity
-                      onPress={() => navigation.navigate("SearchTime")}
+                      onPress={() => navigation.navigate("SearchDate")}
                         style={{
                           ...styles.item,
                           backgroundColor:
@@ -152,7 +148,7 @@ const Search = () => {
                             fontFamily: FONT.HELVETICA_BOLD,
                             fontSize: heightPercentageToDP(2),
                           }}>
-                          {item.lotlocation}
+                          {item.title}
                         </Text>
                       </TouchableOpacity>
                     )}
@@ -199,7 +195,7 @@ const Search = () => {
   );
 };
 
-export default Search;
+export default SearchDate;
 
 const styles = StyleSheet.create({
   textStyle: {

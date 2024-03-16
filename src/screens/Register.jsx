@@ -1,5 +1,3 @@
-
-
 import {
   StyleSheet,
   Text,
@@ -7,7 +5,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useMemo, useState} from 'react';
 import LoginBackground from '../components/login/LoginBackground';
 import {
   heightPercentageToDP,
@@ -18,7 +16,11 @@ import GradientText from '../components/helpercComponent/GradientText';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import Entypo from 'react-native-vector-icons/Entypo';
 import Toast from 'react-native-toast-message';
-import { useNavigation } from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
+import {useDispatch} from 'react-redux';
+import {register} from '../redux/actions/userAction';
+import {useMessageAndErrorUser} from '../utils/hooks';
+import Loading from '../components/helpercComponent/Loading';
 
 const Register = () => {
   const [name, setName] = useState('');
@@ -38,12 +40,51 @@ const Register = () => {
     setConfirmPasswordVisible(!confirmPasswordVisible);
   };
 
+  const dispatch = useDispatch();
+  const loading = useMessageAndErrorUser(navigation, dispatch, 'Login');
+
   const submitHandler = () => {
-    console.log('Working on login ');
-    Toast.show({
-      type: 'success',
-      text1: 'Processing',
-    });
+    if (!name) {
+      Toast.show({
+        type: 'error',
+        text1: 'Enter name',
+      });
+    } else if (!email) {
+      Toast.show({
+        type: 'error',
+        text1: 'Enter email address',
+      });
+    } else if (!password) {
+      Toast.show({
+        type: 'error',
+        text1: 'Enter password',
+      });
+    } else if (!confirmPassword) {
+      Toast.show({
+        type: 'error',
+        text1: 'Enter confirm password',
+      });
+    } else if (password != confirmPassword) {
+      Toast.show({
+        type: 'error',
+        text1: 'Password and Confirm Password Not Matched',
+      });
+    } else {
+      // const myform = new FormData();
+
+      // myform.append('name', name);
+      // myform.append('email', email);
+      // myform.append('password', password);
+
+      // console.log(name, email, password, confirmPassword);
+
+      dispatch(register(name,email,password));
+
+      Toast.show({
+        type: 'success',
+        text1: 'Processing',
+      });
+    }
   };
 
   return (
@@ -91,8 +132,6 @@ const Register = () => {
               paddingVertical: heightPercentageToDP(2),
               gap: heightPercentageToDP(2),
             }}>
-
-
             {/** Name container */}
             <View
               style={{
@@ -120,7 +159,6 @@ const Register = () => {
                 onChangeText={text => setName(text)}
               />
             </View>
-
 
             {/** Email container */}
             <View
@@ -184,7 +222,6 @@ const Register = () => {
               />
             </View>
 
-
             {/** Confirm Password container */}
             <View
               style={{
@@ -212,7 +249,7 @@ const Register = () => {
                 secureTextEntry={!confirmPasswordVisible}
               />
               <Entypo
-                onPress={togglePasswordVisibility}
+                onPress={togglePasswordVisibilityConfirmPassword}
                 name={passwordVisible ? 'eye' : 'eye-with-line'}
                 size={heightPercentageToDP(3)}
                 color={COLORS.white}
@@ -228,8 +265,7 @@ const Register = () => {
                 backgroundColor: COLORS.grayHalfBg,
                 flexDirection: 'row',
                 justifyContent: 'center',
-                gap: heightPercentageToDP(2)
-                
+                gap: heightPercentageToDP(2),
               }}>
               <Text
                 style={{
@@ -245,22 +281,28 @@ const Register = () => {
               />
             </TouchableOpacity>
 
-            <TouchableOpacity
-              onPress={() => navigation.navigate("OtpVerification")}
-              style={{
-                backgroundColor: COLORS.blue,
-                padding: heightPercentageToDP(2),
-                borderRadius: heightPercentageToDP(1),
-                alignItems: 'center',
-              }}>
-              <Text
+            {loading ? (
+              <View style={{padding: heightPercentageToDP(2)}}>
+                <Loading />
+              </View>
+            ) : (
+              <TouchableOpacity
+                onPress={submitHandler}
                 style={{
-                  color: COLORS.white,
-                  fontFamily: FONT.Montserrat_Regular,
+                  backgroundColor: COLORS.blue,
+                  padding: heightPercentageToDP(2),
+                  borderRadius: heightPercentageToDP(1),
+                  alignItems: 'center',
                 }}>
-                Submit
-              </Text>
-            </TouchableOpacity>
+                <Text
+                  style={{
+                    color: COLORS.white,
+                    fontFamily: FONT.Montserrat_Regular,
+                  }}>
+                  Submit
+                </Text>
+              </TouchableOpacity>
+            )}
 
             <View
               style={{
@@ -278,11 +320,15 @@ const Register = () => {
                 Already have account?
               </Text>
               <TouchableOpacity
-                onPress={() => navigation.navigate("Login")}
+                onPress={() => navigation.navigate('Login')}
                 style={{justifyContent: 'center', alignItems: 'center'}}>
-                <Text style={{
-                  color: COLORS.blue
-                }}> Sign In</Text>
+                <Text
+                  style={{
+                    color: COLORS.blue,
+                  }}>
+                  {' '}
+                  Sign In
+                </Text>
               </TouchableOpacity>
             </View>
           </View>
@@ -300,4 +346,3 @@ const styles = StyleSheet.create({
     fontFamily: FONT.Montserrat_Bold,
   },
 });
-

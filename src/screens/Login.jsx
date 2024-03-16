@@ -5,7 +5,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import LoginBackground from '../components/login/LoginBackground';
 import {
   heightPercentageToDP,
@@ -17,24 +17,38 @@ import Fontisto from 'react-native-vector-icons/Fontisto';
 import Entypo from 'react-native-vector-icons/Entypo';
 import Toast from 'react-native-toast-message';
 import { useNavigation } from '@react-navigation/native';
+import Loading from '../components/helpercComponent/Loading';
+import { useDispatch, useSelector } from 'react-redux';
+import { login } from '../redux/actions/userAction';
+import { useMessageAndErrorUser } from '../utils/hooks';
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [passwordVisible, setPasswordVisible] = useState(false);
+
   const navigation  = useNavigation();
 
+  const dispatch = useDispatch();
+  
+  // For Password Visibility
   const togglePasswordVisibility = () => {
     setPasswordVisible(!passwordVisible);
   };
 
+
+  // for Submitting Response
   const submitHandler = () => {
     console.log('Working on login ');
-    Toast.show({
-      type: 'success',
-      text1: 'Processing',
-    });
+    dispatch(login(email,password))
   };
+
+
+  const loading =  useMessageAndErrorUser(navigation,dispatch,"Home")
+
+  
+
+ 
 
   return (
     <View style={{flex: 1}}>
@@ -144,7 +158,7 @@ const Login = () => {
             </View>
 
             <TouchableOpacity
-              onPress={submitHandler}
+              onPress={() => navigation.navigate("Home")}
               style={{
                 padding: heightPercentageToDP(2),
                 borderRadius: heightPercentageToDP(1),
@@ -159,22 +173,26 @@ const Login = () => {
               </Text>
             </TouchableOpacity>
 
-            <TouchableOpacity
-              onPress={submitHandler}
-              style={{
-                backgroundColor: COLORS.blue,
-                padding: heightPercentageToDP(2),
-                borderRadius: heightPercentageToDP(1),
-                alignItems: 'center',
-              }}>
-              <Text
+            {
+              loading ? (<View style={{padding:heightPercentageToDP(2)}}><Loading/></View>) : (<TouchableOpacity
+                onPress={submitHandler}
                 style={{
-                  color: COLORS.white,
-                  fontFamily: FONT.Montserrat_Regular,
+                  backgroundColor: COLORS.blue,
+                  padding: heightPercentageToDP(2),
+                  borderRadius: heightPercentageToDP(1),
+                  alignItems: 'center',
                 }}>
-                Submit
-              </Text>
-            </TouchableOpacity>
+                <Text
+                  style={{
+                    color: COLORS.white,
+                    fontFamily: FONT.Montserrat_Regular,
+                  }}>
+                  Submit
+                </Text>
+              </TouchableOpacity>)
+            }
+
+            
 
             <View
               style={{
