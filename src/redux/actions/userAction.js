@@ -1,8 +1,9 @@
 import axios from 'axios';
 import {store} from '../store';
-import UrlHelper from '../../helper/URLHelper';
+
 import { combineSlices } from '@reduxjs/toolkit';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import UrlHelper from '../../helper/UrlHelper';
 
 export const login = (email, password) => async dispatch => {
   try {

@@ -1,12 +1,10 @@
 import axios from "axios";
 import UrlHelper from "../../helper/UrlHelper";
 
-
-// Gettting All Locations
-export const getAllLocations = (accesstoken) => async dispatch => {
+export const getAllTime = (accesstoken) => async dispatch => {
   try {
     dispatch({
-      type: 'getAllLocationRequest',
+      type: 'getAllTimeRequest',
     });
 
     const {data} = await axios.get(UrlHelper.ALL_LOCATION_API, {
@@ -16,16 +14,8 @@ export const getAllLocations = (accesstoken) => async dispatch => {
     });
 
 
-    console.log("Location data :: "+data.lotlocations )
-    console.log("Location data length :: "+data.lotlocations.length )
-
-
-
-    // console.log('Data :: ' + data.lotlocations[0].lotlocation);
-    
-
     dispatch({
-      type: 'getAllLocationSuccess',
+      type: 'getAllTimeSuccess',
       payload: data.lotlocations,
     });
   } catch (error) {
@@ -33,21 +23,21 @@ export const getAllLocations = (accesstoken) => async dispatch => {
     console.log(error.response.data.message);
 
     dispatch({
-      type: 'getAllLocationFail',
+      type: 'getAllTimeFail',
       payload: error.response.data.message,
     });
   }
 };
 
 
-// Gettting Single Locations
-export const getLocationDetails = (accesstoken,id) => async dispatch => {
+// Getting Single Time
+export const getTimeDetails = (accesstoken,id) => async dispatch => {
     try {
       dispatch({
-        type: 'getLocationRequest',
+        type: 'getTimeRequest',
       });
   
-      const {data} = await axios.get(URLHelper.ALL_LOCATION_API+`${id}`, {
+      const {data} = await axios.get(UrlHelper.ALL_LOCATION_API+`${id}`, {
         headers: {
           Authorization: `Bearer ${accesstoken}`,
         },
@@ -56,7 +46,7 @@ export const getLocationDetails = (accesstoken,id) => async dispatch => {
       console.log('Data :: ' + data.lotlocations);
   
       dispatch({ 
-        type: 'getLocationSuccess',
+        type: 'getTimeSuccess',
         payload: data.lotlocations,
       });
     } catch (error) {
@@ -64,7 +54,7 @@ export const getLocationDetails = (accesstoken,id) => async dispatch => {
       console.log(error.response.data.message);
   
       dispatch({
-        type: 'getLocationFail',
+        type: 'getTimeFail',
         payload: error.response.data.message,
       });
     }

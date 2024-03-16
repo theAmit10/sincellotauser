@@ -7,7 +7,7 @@ import {
   View,
 } from 'react-native';
 import React, { useState } from 'react';
-import LoginBackground from '../components/login/LoginBackground';
+
 import {
   heightPercentageToDP,
   widthPercentageToDP,
@@ -31,10 +31,13 @@ import Loading from '../components/helpercComponent/Loading';
 import { HOVER } from 'nativewind/dist/utils/selector';
 
 
-const Profile = () => {
+const UpdateProfile = () => {
 
   const navigation = useNavigation();
   const dispatch = useDispatch()
+
+  const [name, setName] = useState("")
+  const [email, setEmail] = useState('');
 
   const { user, accesstoken, loading } = useSelector(state => state.user);
 
@@ -86,40 +89,24 @@ const Profile = () => {
       <ProfileBackground />
 
 
-
-
-
-
       {/** Profile Cointainer */}
 
       <View style={{
-        height: heightPercentageToDP(19),
         backgroundColor: COLORS.white_s,
-        marginBottom: heightPercentageToDP(1)
+        margin: heightPercentageToDP(2),
+        borderRadius: heightPercentageToDP(1),
+        paddingStart: heightPercentageToDP(1)
       }}>
 
-        {
-          loading ? (<Loading />) : (user &&
+        <GradientText style={{
+          fontSize: heightPercentageToDP(3.5),
+          fontFamily: FONT.Montserrat_Bold,
+        }}>Update</GradientText>
 
-            <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-              <ScrollView
-                horizontal={true}
-                showsHorizontalScrollIndicator={false}
-              >
-                <View style={{ margin: heightPercentageToDP(1), flexDirection: 'row' }}>
-                  {
-                    user.walletOne.visibility && (<Wallet wallet={user.walletOne} />)
-                  }
-                  {
-                    user.walletTwo.visibility && (<Wallet wallet={user.walletTwo} />)
-                  }
-
-                </View>
-
-              </ScrollView>
-
-            </View>)
-        }
+        <GradientText style={{
+          fontSize: heightPercentageToDP(3.5),
+          fontFamily: FONT.Montserrat_Bold,
+        }}>Profile</GradientText>
 
       </View>
 
@@ -127,7 +114,7 @@ const Profile = () => {
 
       <View
         style={{
-          height: heightPercentageToDP(38),
+          height: heightPercentageToDP(46),
           width: widthPercentageToDP(100),
           backgroundColor: COLORS.white_s,
           borderTopLeftRadius: heightPercentageToDP(5),
@@ -167,6 +154,66 @@ const Profile = () => {
               paddingVertical: heightPercentageToDP(2),
               gap: heightPercentageToDP(2),
             }}>
+
+
+            {/** Change name container */}
+
+
+            <View
+              style={{
+                height: heightPercentageToDP(7),
+                flexDirection: 'row',
+                backgroundColor: COLORS.grayBg,
+                alignItems: 'center',
+                paddingHorizontal: heightPercentageToDP(2),
+                borderRadius: heightPercentageToDP(1),
+              }}>
+              <MaterialCommunityIcons
+                name={'account'}
+                size={heightPercentageToDP(3)}
+                color={COLORS.white}
+              />
+              <TextInput
+                style={{
+                  marginStart: heightPercentageToDP(1),
+                  flex: 1,
+                  fontFamily: FONT.SF_PRO_REGULAR,
+                }}
+                placeholder="Name"
+                label="Name"
+                value={name}
+                onChangeText={text => setName(text)}
+              />
+            </View>
+
+            {/** Email container */}
+            <View
+              style={{
+                height: heightPercentageToDP(7),
+                flexDirection: 'row',
+                backgroundColor: COLORS.grayBg,
+                alignItems: 'center',
+                paddingHorizontal: heightPercentageToDP(2),
+                borderRadius: heightPercentageToDP(1),
+              }}>
+              <Fontisto
+                name={'email'}
+                size={heightPercentageToDP(3)}
+                color={COLORS.white}
+              />
+              <TextInput
+                style={{
+                  marginStart: heightPercentageToDP(1),
+                  flex: 1,
+                  fontFamily: FONT.SF_PRO_REGULAR,
+                }}
+                placeholder="Email"
+                label="Email"
+                value={email}
+                onChangeText={text => setEmail(text)}
+              />
+            </View>
+
             {/** Update Profile container */}
             <TouchableOpacity
               onPress={updateProfileHandler}
@@ -190,7 +237,7 @@ const Profile = () => {
                   flex: 1,
                   fontFamily: FONT.SF_PRO_REGULAR,
                 }}>
-                Update Profile
+                Profile Picture
               </Text>
 
               <Ionicons
@@ -200,69 +247,33 @@ const Profile = () => {
               />
             </TouchableOpacity>
 
-            {/** Change Password container */}
-            <TouchableOpacity
-              onPress={ChangePasswordHandler}
+
+            {/** Bottom Submit Container */}
+
+            <View
               style={{
-                height: heightPercentageToDP(7),
-                flexDirection: 'row',
-                backgroundColor: COLORS.grayBg,
-                alignItems: 'center',
-                paddingHorizontal: heightPercentageToDP(2),
-                borderRadius: heightPercentageToDP(1),
+                marginBottom: heightPercentageToDP(5),
+                marginTop: heightPercentageToDP(2),
               }}>
-              <Entypo
-                name={'lock'}
-                size={heightPercentageToDP(3)}
-                color={COLORS.white}
-              />
-              <Text
+
+
+              <TouchableOpacity
+                onPress={() => console.log("Cool")}
                 style={{
-                  marginStart: heightPercentageToDP(1),
-                  flex: 1,
-                  fontFamily: FONT.SF_PRO_REGULAR,
+                  backgroundColor: COLORS.blue,
+                  padding: heightPercentageToDP(2),
+                  borderRadius: heightPercentageToDP(1),
+                  alignItems: 'center',
                 }}>
-                Change Password
-              </Text>
-
-              <Ionicons
-                name={'chevron-forward-outline'}
-                size={heightPercentageToDP(3)}
-                color={COLORS.white}
-              />
-            </TouchableOpacity>
-
-            {/** Logout container */}
-            <TouchableOpacity
-              onPress={logoutHandler}
-              style={{
-                height: heightPercentageToDP(7),
-                flexDirection: 'row',
-                backgroundColor: COLORS.grayBg,
-                alignItems: 'center',
-                paddingHorizontal: heightPercentageToDP(2),
-                borderRadius: heightPercentageToDP(1),
-              }}>
-              <AntDesign
-                name={'logout'}
-                size={heightPercentageToDP(3)}
-                color={COLORS.white}
-              />
-              <Text
-                style={{
-                  marginStart: heightPercentageToDP(1),
-                  flex: 1,
-                  fontFamily: FONT.SF_PRO_REGULAR,
-                }}>
-                Logout
-              </Text>
-
-              <Ionicons
-                name={'chevron-forward-outline'}
-                size={heightPercentageToDP(3)}
-                color={COLORS.white}
-              />
-            </TouchableOpacity>
+                <Text
+                  style={{
+                    color: COLORS.white,
+                    fontFamily: FONT.Montserrat_Regular,
+                  }}>
+                  Submit
+                </Text>
+              </TouchableOpacity>
+            </View>
 
           </View>
         </View>
@@ -271,7 +282,7 @@ const Profile = () => {
   );
 };
 
-export default Profile;
+export default UpdateProfile;
 
 const styles = StyleSheet.create({
   textStyle: {
@@ -284,32 +295,3 @@ const styles = StyleSheet.create({
   },
 });
 
-
-// {
-//   loading ? (<Loading />) : (user && <>
-//     <View
-//       style={{
-//         justifyContent: 'center',
-//         alignItems: 'center',
-//         backgroundColor: 'cyan'
-
-//       }}>
-//       <GradientText style={styles.textStyle}>Wasu</GradientText>
-//       <GradientText style={styles.textStyleEmail}>
-//         {user.email}
-//       </GradientText>
-//     </View>
-
-
-//     <ScrollView
-//       horizontal={true}
-//       showsHorizontalScrollIndicator={false}>
-//       <View style={{ margin: heightPercentageToDP(1), flexDirection:'row' }}>
-//         <Wallet wallet={user.walletOne} />
-//         <Wallet wallet={user.walletTwo} />
-//       </View>
-
-//     </ScrollView>
-
-//   </>)
-// }

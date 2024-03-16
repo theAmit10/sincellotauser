@@ -4,14 +4,15 @@ import {
   ScrollView,
   StyleSheet,
   Text,
-  TextInput,
   TouchableOpacity,
   View,
   Platform,
-  FlatList,
+  Alert,
+  BackHandler,
+
 } from 'react-native';
-import React, {useEffect, useState} from 'react';
-import {COLORS, FONT} from '../../assets/constants';
+import React, { useEffect, useState } from 'react';
+import { COLORS, FONT } from '../../assets/constants';
 import {
   heightPercentageToDP,
   widthPercentageToDP,
@@ -19,26 +20,27 @@ import {
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Entypo from 'react-native-vector-icons/Entypo';
 import Fontisto from 'react-native-vector-icons/Fontisto';
-import {useNavigation} from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import GradientText from '../components/helpercComponent/GradientText';
 import Wallet from '../components/home/Wallet';
-import {useDispatch, useSelector} from 'react-redux';
-import {loadProfile} from '../redux/actions/userAction';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import Loading from '../components/helpercComponent/Loading';
-import { isNewBackTitleImplementation } from 'react-native-screens';
+import { useDispatch, useSelector } from 'react-redux';
+import { loadProfile } from '../redux/actions/userAction';
+import HomeLoading from '../components/background/HomeLoading';
+
 
 const Home = () => {
-  const [searchData, setSearchData] = useState('');
-  const {user, accesstoken, loading} = useSelector(state => state.user);
+
+  const { user, accesstoken, loading } = useSelector(state => state.user);
+
+  // Currently working on the Withdraw through Upi Section of the Crypto Project
 
   const navigation = useNavigation();
-  const [showLoading, setLoading] = useState(false);
+
 
   const [data, setData] = useState([
-    {id: '1', result: '7894', location: 'Pune', time: '01:00 PM'},
-    {id: '2', result: '1839', location: 'Sikkim', time: '01:00 PM'},
-    {id: '3', result: '7456', location: 'Bhopal', time: '01:00 PM'},
+    { id: '1', result: '7894', location: 'Pune', time: '01:00 PM' },
+    { id: '2', result: '1839', location: 'Sikkim', time: '01:00 PM' },
+    { id: '3', result: '7456', location: 'Bhopal', time: '01:00 PM' },
   ]);
 
   // Getting User Profile
@@ -46,9 +48,31 @@ const Home = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    // getUserAccessToken()
     dispatch(loadProfile(accesstoken));
   }, [dispatch]);
+
+  // for backPress handling
+  useEffect(() => {
+    const backAction = () => {
+      Alert.alert("Hold on!", "Are you sure you want to exit?", [
+        {
+          text: "Cancel",
+          onPress: () => null,
+          style: "cancel"
+        },
+        { text: "YES", onPress: () => BackHandler.exitApp() }
+      ]);
+
+      return true;
+    };
+
+    const backHandler = BackHandler.addEventListener(
+      'hardwareBackPress',
+      backAction
+    );
+
+    return () => backHandler.remove();
+  }, []);
 
   console.log('Welcome :: ' + JSON.stringify(user));
   console.log('Welcome Access token :: ' + accesstoken);
@@ -60,362 +84,365 @@ const Home = () => {
         backgroundColor: COLORS.white,
         padding: heightPercentageToDP(2),
       }}>
-      {loading ? (
-        <Loading />
-      ) : (
-        user && (
-          <ScrollView showsVerticalScrollIndicator={false}>
-            {/** TOP HEADER CONTAINER */}
-            <View
-              style={{
-                height: heightPercentageToDP(10),
-                flexDirection: 'row',
-              }}>
+      {loading ?
+        (
+          <HomeLoading />
+        ) : (
+          user && (
+            <ScrollView showsVerticalScrollIndicator={false}>
+              {/** TOP HEADER CONTAINER */}
               <View
                 style={{
-                  flex: 3,
-
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  gap: heightPercentageToDP(1),
-                }}>
-                {/** Profile Image Container */}
-                <TouchableOpacity
-                  onPress={() => navigation.navigate('Profile')}
-                  style={{
-                    borderRadius: 100,
-                    overflow: 'hidden',
-                    width: 70,
-                    height: 70,
-                  }}>
-                  <Image
-                    // source={{ uri: 'https://imgs.search.brave.com/bNjuaYsTPw2b4yerAkKyk82fwZ9sNFwkwb3JMnX7qBg/rs:fit:500:0:0/g:ce/aHR0cHM6Ly9pbWFn/ZXMudW5zcGxhc2gu/Y29tL3Bob3RvLTE1/NDU5OTYxMjQtMDUw/MWViYWU4NGQwP3E9/ODAmdz0xMDAwJmF1/dG89Zm9ybWF0JmZp/dD1jcm9wJml4bGli/PXJiLTQuMC4zJml4/aWQ9TTN3eE1qQTNm/REI4TUh4elpXRnlZ/Mmg4TWpCOGZHWmhZ/MlY4Wlc1OE1IeDhN/SHg4ZkRBPQ.jpeg' }}
-                    source={require('../../assets/image/dummy_user.jpeg')}
-                    resizeMode="cover"
-                    style={{
-                      height: 70,
-                      width: 70,
-                    }}
-                  />
-                </TouchableOpacity>
-
-                {/** Profile name Container */}
-                <View>
-                  <Text
-                    style={{
-                      fontFamily: FONT.Montserrat_Regular,
-                      color: COLORS.black,
-                    }}>
-                    Hello
-                  </Text>
-                  <Text
-                    style={{
-                      fontFamily: FONT.HELVETICA_BOLD,
-                      color: COLORS.black,
-                      fontSize: heightPercentageToDP(2),
-                    }}>
-                    {user.name}
-                  </Text>
-                </View>
-              </View>
-
-              <View
-                style={{
-                  flex: 1,
-                  justifyContent: 'center',
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  gap: heightPercentageToDP(2),
-                }}>
-                <TouchableOpacity onPress={() => navigation.navigate('Search')}>
-                  <Ionicons
-                    name={'notifications'}
-                    size={heightPercentageToDP(3)}
-                    color={COLORS.black}
-                  />
-                </TouchableOpacity>
-
-                <TouchableOpacity
-                  onPress={() => navigation.navigate('Setting')}>
-                  <Entypo
-                    name={'menu'}
-                    size={heightPercentageToDP(3)}
-                    color={COLORS.black}
-                  />
-                </TouchableOpacity>
-              </View>
-            </View>
-
-            {/** SEARCH CONTAINER */}
-            <TouchableOpacity
-            onPress={() => navigation.navigate("Search")}
-              style={{
-                height: heightPercentageToDP(7),
-                flexDirection: 'row',
-                backgroundColor: COLORS.grayHalfBg,
-                alignItems: 'center',
-                paddingHorizontal: heightPercentageToDP(2),
-                borderRadius: heightPercentageToDP(1),
-                marginTop: heightPercentageToDP(2),
-              }}>
-              <Fontisto
-                name={'search'}
-                size={heightPercentageToDP(3)}
-                color={COLORS.white}
-              />
-              <Text
-                style={{
-                  marginStart: heightPercentageToDP(1),
-                  flex: 1,
-                  fontFamily: FONT.SF_PRO_REGULAR,
-                }}>
-                Search for location
-              </Text>
-            </TouchableOpacity>
-
-            {/** WALLET CONTAINER */}
-            <ScrollView
-              horizontal={true}
-              showsHorizontalScrollIndicator={false}>
-              <Wallet wallet={user.walletOne} />
-              <Wallet wallet={user.walletTwo} />
-            </ScrollView>
-
-            {/** PROMOTION CONTAINER */}
-            <View
-              style={{
-                height: heightPercentageToDP(25),
-                backgroundColor: COLORS.grayHalfBg,
-                marginTop: heightPercentageToDP(2),
-                borderRadius: heightPercentageToDP(1),
-                flexDirection: 'row',
-                justifyContent: 'center',
-                alignItems: 'center',
-                gap: heightPercentageToDP(2),
-              }}>
-              <GradientText
-                style={{
-                  fontSize: heightPercentageToDP(4),
-                  fontFamily: FONT.Montserrat_Bold,
-                }}>
-                Promotions
-              </GradientText>
-            </View>
-
-            {/** BIG RESULT  */}
-
-            <View
-              style={{
-                height: heightPercentageToDP(25),
-                backgroundColor: COLORS.grayHalfBg,
-                marginTop: heightPercentageToDP(2),
-                borderRadius: heightPercentageToDP(1),
-              }}>
-              <View
-                style={{
-                  height: heightPercentageToDP(15),
-                  borderRadius: heightPercentageToDP(1),
+                  height: heightPercentageToDP(10),
                   flexDirection: 'row',
                 }}>
-                {/** Top view left container */}
                 <View
                   style={{
-                    flex: 5,
+                    flex: 3,
 
-                    justifyContent: 'center',
+                    flexDirection: 'row',
                     alignItems: 'center',
+                    gap: heightPercentageToDP(1),
                   }}>
-                  <Text
+                  {/** Profile Image Container */}
+                  <TouchableOpacity
+                    onPress={() => navigation.navigate('Profile')}
                     style={{
-                      fontFamily: FONT.Montserrat_Regular,
-                      fontSize: heightPercentageToDP(3),
-                      marginTop: heightPercentageToDP(2),
+                      borderRadius: 100,
+                      overflow: 'hidden',
+                      width: 70,
+                      height: 70,
                     }}>
-                    Sikkim
-                  </Text>
-                  <Text
-                    style={{
-                      fontFamily: FONT.SF_PRO_REGULAR,
-                      fontSize: heightPercentageToDP(11),
-                      color: COLORS.black,
-                      marginTop: heightPercentageToDP(-2),
-                    }}>
-                    89
-                  </Text>
+                    <Image
+                      // source={{ uri: 'https://imgs.search.brave.com/bNjuaYsTPw2b4yerAkKyk82fwZ9sNFwkwb3JMnX7qBg/rs:fit:500:0:0/g:ce/aHR0cHM6Ly9pbWFn/ZXMudW5zcGxhc2gu/Y29tL3Bob3RvLTE1/NDU5OTYxMjQtMDUw/MWViYWU4NGQwP3E9/ODAmdz0xMDAwJmF1/dG89Zm9ybWF0JmZp/dD1jcm9wJml4bGli/PXJiLTQuMC4zJml4/aWQ9TTN3eE1qQTNm/REI4TUh4elpXRnlZ/Mmg4TWpCOGZHWmhZ/MlY4Wlc1OE1IeDhN/SHg4ZkRBPQ.jpeg' }}
+                      source={require('../../assets/image/dummy_user.jpeg')}
+                      resizeMode="cover"
+                      style={{
+                        height: 70,
+                        width: 70,
+                      }}
+                    />
+                  </TouchableOpacity>
+
+                  {/** Profile name Container */}
+                  <View>
+                    <Text
+                      style={{
+                        fontFamily: FONT.Montserrat_Regular,
+                        color: COLORS.black,
+                      }}>
+                      Hello
+                    </Text>
+                    <Text
+                      style={{
+                        fontFamily: FONT.HELVETICA_BOLD,
+                        color: COLORS.black,
+                        fontSize: heightPercentageToDP(2),
+                      }}>
+                      {user.name}
+                    </Text>
+                  </View>
                 </View>
 
-                {/** Top view right container */}
                 <View
                   style={{
                     flex: 1,
-                    backgroundColor: COLORS.gray2,
                     justifyContent: 'center',
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    gap: heightPercentageToDP(2),
                   }}>
+                  <TouchableOpacity onPress={() => navigation.navigate('HomeLoading')}>
+                    <Ionicons
+                      name={'notifications'}
+                      size={heightPercentageToDP(3)}
+                      color={COLORS.black}
+                    />
+                  </TouchableOpacity>
+
+                  <TouchableOpacity
+                    onPress={() => navigation.navigate('Setting')}>
+                    <Entypo
+                      name={'menu'}
+                      size={heightPercentageToDP(3)}
+                      color={COLORS.black}
+                    />
+                  </TouchableOpacity>
+                </View>
+              </View>
+
+              {/** SEARCH CONTAINER */}
+              <TouchableOpacity
+                onPress={() => navigation.navigate("Search")}
+                style={{
+                  height: heightPercentageToDP(7),
+                  flexDirection: 'row',
+                  backgroundColor: COLORS.grayHalfBg,
+                  alignItems: 'center',
+                  paddingHorizontal: heightPercentageToDP(2),
+                  borderRadius: heightPercentageToDP(1),
+                  marginTop: heightPercentageToDP(2),
+                }}>
+                <Fontisto
+                  name={'search'}
+                  size={heightPercentageToDP(3)}
+                  color={COLORS.white}
+                />
+                <Text
+                  style={{
+                    marginStart: heightPercentageToDP(1),
+                    flex: 1,
+                    fontFamily: FONT.SF_PRO_REGULAR,
+                  }}>
+                  Search for location
+                </Text>
+              </TouchableOpacity>
+
+              {/** WALLET CONTAINER */}
+              <ScrollView
+                horizontal={true}
+                showsHorizontalScrollIndicator={false}>
+                <Wallet wallet={user.walletOne} />
+                <Wallet wallet={user.walletTwo} />
+              </ScrollView>
+
+              
+
+              {/** PROMOTION CONTAINER */}
+              <View
+                style={{
+                  height: heightPercentageToDP(25),
+                  backgroundColor: COLORS.grayHalfBg,
+                  marginTop: heightPercentageToDP(2),
+                  borderRadius: heightPercentageToDP(1),
+                  flexDirection: 'row',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  gap: heightPercentageToDP(2),
+                }}>
+                <GradientText
+                  style={{
+                    fontSize: heightPercentageToDP(4),
+                    fontFamily: FONT.Montserrat_Bold,
+                  }}>
+                  Promotions
+                </GradientText>
+              </View>
+
+              {/** BIG RESULT  */}
+
+              <View
+                style={{
+                  height: heightPercentageToDP(25),
+                  backgroundColor: COLORS.grayHalfBg,
+                  marginTop: heightPercentageToDP(2),
+                  borderRadius: heightPercentageToDP(1),
+                }}>
+                <View
+                  style={{
+                    height: heightPercentageToDP(15),
+                    borderRadius: heightPercentageToDP(1),
+                    flexDirection: 'row',
+                  }}>
+                  {/** Top view left container */}
+                  <View
+                    style={{
+                      flex: 5,
+
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                    }}>
+                    <Text
+                      style={{
+                        fontFamily: FONT.Montserrat_Regular,
+                        fontSize: heightPercentageToDP(3),
+                        marginTop: heightPercentageToDP(2),
+                      }}>
+                      Sikkim
+                    </Text>
+                    <Text
+                      style={{
+                        fontFamily: FONT.SF_PRO_REGULAR,
+                        fontSize: heightPercentageToDP(11),
+                        color: COLORS.black,
+                        marginTop: heightPercentageToDP(-2),
+                      }}>
+                      89
+                    </Text>
+                  </View>
+
+                  {/** Top view right container */}
+                  <View
+                    style={{
+                      flex: 1,
+                      backgroundColor: COLORS.gray2,
+                      justifyContent: 'center',
+                    }}>
+                    <Text
+                      style={{
+                        transform: [{ rotate: '90deg' }],
+                        color: COLORS.black,
+                        fontFamily: FONT.Montserrat_SemiBold,
+                        fontSize: heightPercentageToDP(1.5),
+                      }}>
+                      07:00 PM
+                    </Text>
+                  </View>
+                </View>
+
+                {/** Big Result bottom container */}
+
+                <View
+                  style={{
+                    flex: 1,
+                    backgroundColor: COLORS.white_s,
+                    margin: heightPercentageToDP(1),
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    flexDirection: 'row',
+                    gap: heightPercentageToDP(1),
+                  }}>
+                  <View
+                    style={{
+                      backgroundColor: COLORS.grayHalfBg,
+                      padding: heightPercentageToDP(1),
+                      borderRadius: heightPercentageToDP(1),
+                      marginStart: heightPercentageToDP(-3),
+                    }}>
+                    <Ionicons
+                      name={'calendar'}
+                      size={heightPercentageToDP(3)}
+                      color={COLORS.darkGray}
+                    />
+                  </View>
+
                   <Text
                     style={{
-                      transform: [{rotate: '90deg'}],
-                      color: COLORS.black,
-                      fontFamily: FONT.Montserrat_SemiBold,
-                      fontSize: heightPercentageToDP(1.5),
+                      fontFamily: FONT.Montserrat_Regular,
+                      fontSize: heightPercentageToDP(2),
                     }}>
-                    07:00 PM
+                    12-02-2024
                   </Text>
                 </View>
               </View>
 
-              {/** Big Result bottom container */}
+              {/** BOTTOM RESULT CONTAINER */}
 
               <View
                 style={{
-                  flex: 1,
-                  backgroundColor: COLORS.white_s,
-                  margin: heightPercentageToDP(1),
-                  justifyContent: 'center',
-                  alignItems: 'center',
+                  height: heightPercentageToDP(5),
+
+                  marginVertical: heightPercentageToDP(2),
                   flexDirection: 'row',
-                  gap: heightPercentageToDP(1),
+                  justifyContent: 'space-between',
                 }}>
-                <View
+                <GradientText
                   style={{
-                    backgroundColor: COLORS.grayHalfBg,
-                    padding: heightPercentageToDP(1),
-                    borderRadius: heightPercentageToDP(1),
-                    marginStart: heightPercentageToDP(-3),
+                    fontSize: heightPercentageToDP(4),
+                    fontFamily: FONT.Montserrat_Bold,
                   }}>
-                  <Ionicons
-                    name={'calendar'}
-                    size={heightPercentageToDP(3)}
-                    color={COLORS.darkGray}
-                  />
-                </View>
+                  Results
+                </GradientText>
 
                 <Text
                   style={{
                     fontFamily: FONT.Montserrat_Regular,
                     fontSize: heightPercentageToDP(2),
+                    textAlign: 'center',
+                    textAlignVertical: 'center',
                   }}>
-                  12-02-2024
+                  See all
                 </Text>
               </View>
-            </View>
 
-            {/** BOTTOM RESULT CONTAINER */}
+              {/** BOTTOM RESULT CONTENT CONTAINER */}
 
-            <View
-              style={{
-                height: heightPercentageToDP(5),
-
-                marginVertical: heightPercentageToDP(2),
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-              }}>
-              <GradientText
+              <View
                 style={{
-                  fontSize: heightPercentageToDP(4),
-                  fontFamily: FONT.Montserrat_Bold,
+                  height: heightPercentageToDP(25),
+
+                  borderRadius: heightPercentageToDP(1),
+                  flexDirection: 'row',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  gap: heightPercentageToDP(2),
                 }}>
-                Results
-              </GradientText>
-
-              <Text
-                style={{
-                  fontFamily: FONT.Montserrat_Regular,
-                  fontSize: heightPercentageToDP(2),
-                  textAlign: 'center',
-                  textAlignVertical: 'center',
-                }}>
-                See all
-              </Text>
-            </View>
-
-            {/** BOTTOM RESULT CONTENT CONTAINER */}
-
-            <View
-              style={{
-                height: heightPercentageToDP(25),
-
-                borderRadius: heightPercentageToDP(1),
-                flexDirection: 'row',
-                justifyContent: 'center',
-                alignItems: 'center',
-                gap: heightPercentageToDP(2),
-              }}>
-              <ScrollView
-                horizontal={true}
-                showsVerticalScrollIndicator={false}>
-                {data.map((item, index) => (
-                  <TouchableOpacity
-                    onPress={() => navigation.navigate('Result')}
-                    key={index}
-                    style={{
-                      height: heightPercentageToDP(20),
-                      width: widthPercentageToDP(30),
-                      borderRadius: heightPercentageToDP(1),
-                      backgroundColor: 'gray',
-                      ...styles.resultContentContainer,
-                      position: 'relative',
-                    }}>
-                    <View
+                <ScrollView
+                  horizontal={true}
+                  showsVerticalScrollIndicator={false}>
+                  {data.map((item, index) => (
+                    <TouchableOpacity
+                      onPress={() => navigation.navigate('Result')}
+                      key={index}
                       style={{
-                        flex: 1,
-                        backgroundColor:
-                          index % 2 === 0
-                            ? COLORS.grayHalfBg
-                            : COLORS.lightDarkGray,
-                        borderTopRightRadius: heightPercentageToDP(1),
-                        borderTopLeftRadius: heightPercentageToDP(1),
-                        paddingTop: heightPercentageToDP(1),
+                        height: heightPercentageToDP(20),
+                        width: widthPercentageToDP(30),
+                        borderRadius: heightPercentageToDP(1),
+                        backgroundColor: 'gray',
+                        ...styles.resultContentContainer,
+                        position: 'relative',
                       }}>
-                      <Text
+                      <View
                         style={{
-                          fontFamily: FONT.Montserrat_SemiBold,
-                          fontSize: heightPercentageToDP(2),
-                          textAlign: 'center',
+                          flex: 1,
+                          backgroundColor:
+                            index % 2 === 0
+                              ? COLORS.grayHalfBg
+                              : COLORS.lightDarkGray,
+                          borderTopRightRadius: heightPercentageToDP(1),
+                          borderTopLeftRadius: heightPercentageToDP(1),
+                          paddingTop: heightPercentageToDP(1),
                         }}>
-                        {item.location}
-                      </Text>
-                    </View>
+                        <Text
+                          style={{
+                            fontFamily: FONT.Montserrat_SemiBold,
+                            fontSize: heightPercentageToDP(2),
+                            textAlign: 'center',
+                          }}>
+                          {item.location}
+                        </Text>
+                      </View>
 
-                    <View
-                      style={{
-                        backgroundColor: 'transparent',
-                      }}>
-                      <Text
+                      <View
                         style={{
-                          fontFamily: FONT.Montserrat_SemiBold,
-                          fontSize: heightPercentageToDP(5),
-                          textAlign: 'center',
+                          backgroundColor: 'transparent',
                         }}>
-                        {item.result}
-                      </Text>
-                    </View>
+                        <Text
+                          style={{
+                            fontFamily: FONT.Montserrat_SemiBold,
+                            fontSize: heightPercentageToDP(5),
+                            textAlign: 'center',
+                          }}>
+                          {item.result}
+                        </Text>
+                      </View>
 
-                    <View
-                      style={{
-                        flex: 1,
-                        backgroundColor: COLORS.white_s,
-                        borderBottomRightRadius: heightPercentageToDP(1),
-                        borderBottomLeftRadius: heightPercentageToDP(1),
-                        justifyContent: 'flex-end',
-                        margin: heightPercentageToDP(0.5),
-                      }}>
-                      <Text
+                      <View
                         style={{
-                          fontFamily: FONT.Montserrat_Regular,
-                          fontSize: heightPercentageToDP(2),
-                          textAlign: 'center',
-                          padding: heightPercentageToDP(0.5),
+                          flex: 1,
+                          backgroundColor: COLORS.white_s,
+                          borderBottomRightRadius: heightPercentageToDP(1),
+                          borderBottomLeftRadius: heightPercentageToDP(1),
+                          justifyContent: 'flex-end',
+                          margin: heightPercentageToDP(0.5),
                         }}>
-                        {item.time}
-                      </Text>
-                    </View>
-                  </TouchableOpacity>
-                ))}
-              </ScrollView>
-            </View>
-          </ScrollView>
-        )
-      )}
+                        <Text
+                          style={{
+                            fontFamily: FONT.Montserrat_Regular,
+                            fontSize: heightPercentageToDP(2),
+                            textAlign: 'center',
+                            padding: heightPercentageToDP(0.5),
+                          }}>
+                          {item.time}
+                        </Text>
+                      </View>
+                    </TouchableOpacity>
+                  ))}
+                </ScrollView>
+              </View>
+            </ScrollView>
+          )
+        )}
     </SafeAreaView>
   );
 };

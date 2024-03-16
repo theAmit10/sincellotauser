@@ -7,7 +7,7 @@ import {
   View,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
-import LoginBackground from '../components/login/LoginBackground';
+
 import {
   heightPercentageToDP,
   widthPercentageToDP,
@@ -15,7 +15,6 @@ import {
 import {COLORS, FONT} from '../../assets/constants';
 import GradientText from '../components/helpercComponent/GradientText';
 import Fontisto from 'react-native-vector-icons/Fontisto';
-import Entypo from 'react-native-vector-icons/Entypo';
 import Toast from 'react-native-toast-message';
 import {useNavigation} from '@react-navigation/native';
 import Background from '../components/background/Background';
@@ -25,33 +24,27 @@ import { getAllLocations } from '../redux/actions/locationAction';
 
 const Search = () => {
   const navigation = useNavigation();
-
-  const [searchData, setSearchData] = useState('');
-
-  const [showLoading, setLoading]= useState(false);
-
-  const [data, setData] = useState([
-    {id: '1', title: 'Delhi'},
-    {id: '2', title: 'Pune'},
-    {id: '3', title: 'Mumbai'},
-    {id: '4', title: 'Sikkim'},
-    {id: '5', title: 'Gangtok'},
-    {id: '6', title: 'Bhopal'},
-    {id: '7', title: 'Noida'},
-    {id: '8', title: 'Kolkatta'},
-  ]);
-
   const dispatch = useDispatch();
 
   const {accesstoken} = useSelector(state => state.user);
-  const {loading,location} = useSelector(state => state.location);
+  const {loading,locations} = useSelector(state => state.location);
+
+  const [filteredData, setFilteredData] = useState(locations);
+
+  const handleSearch = text => {
+    const filtered = locations.filter(item =>
+      item.lotlocation.toLowerCase().includes(text.toLowerCase()),
+    );
+    setFilteredData(filtered);
+  };
+
+
 
   useEffect(() => {
     dispatch(getAllLocations(accesstoken))
   },[dispatch])
 
-  console.log(location)
-
+ 
   
   const submitHandler = () => {
     Toast.show({
@@ -124,8 +117,7 @@ const Search = () => {
               }}
               placeholder="Search for location"
               label="Search"
-              value={searchData}
-              onChangeText={text => setSearchData(text)}
+              onChangeText={handleSearch}
             />
           </View>
         </View>
@@ -137,10 +129,13 @@ const Search = () => {
             {
                 loading ? (<Loading/>) : (
                 <FlatList
-                    data={location}
+                    data={filteredData}
                     renderItem={({item, index}) => (
                       <TouchableOpacity
-                      onPress={() => navigation.navigate("SearchTime")}
+                      key={item._id}
+                      onPress={() => navigation.navigate("SearchTime",{
+                        locationdata: item,
+                      })}
                         style={{
                           ...styles.item,
                           backgroundColor:
