@@ -5,7 +5,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import LoginBackground from '../components/login/LoginBackground';
 import {
   heightPercentageToDP,
@@ -16,20 +16,46 @@ import GradientText from '../components/helpercComponent/GradientText';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import Entypo from 'react-native-vector-icons/Entypo';
 import Toast from 'react-native-toast-message';
-import {useNavigation} from '@react-navigation/native';
+import {useIsFocused, useNavigation} from '@react-navigation/native';
 import {HOVER} from 'nativewind/dist/utils/selector';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Background from '../components/background/Background';
+import {useDispatch, useSelector} from 'react-redux';
+import {getResultAccordingToLocationTimeDate} from '../redux/actions/resultAction';
+import Loading from '../components/helpercComponent/Loading';
+import NoDataFound from '../components/helpercComponent/NoDataFound';
 
-const Result = () => {
+const Result = ({route}) => {
+  const {datedata} = route.params;
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [passwordVisible, setPasswordVisible] = useState(false);
   const navigation = useNavigation();
 
-  const togglePasswordVisibility = () => {
-    setPasswordVisible(!passwordVisible);
-  };
+  const dispatch = useDispatch();
+
+  const {accesstoken} = useSelector(state => state.user);
+  const {loadingResult, results} = useSelector(state => state.result);
+  const [filteredData, setFilteredData] = useState([]);
+
+  const focused = useIsFocused();
+
+  useEffect(() => {
+    dispatch(
+      getResultAccordingToLocationTimeDate(
+        accesstoken,
+        datedata._id,
+        datedata.lottime._id,
+        datedata.lottime.lotlocation,
+      ),
+    );
+  }, [dispatch, focused]);
+
+  useEffect(() => {
+    setFilteredData(results); // Update filteredData whenever locations change
+  }, [results]);
+
+  
 
   const submitHandler = () => {
     console.log('Working on login ');
@@ -80,129 +106,136 @@ const Result = () => {
         </View>
 
         {/** Result Main Container */}
-        <View
-          style={{
-            flex: 1,
-            margin: heightPercentageToDP(2),
-          }}>
-          <View
-            style={{
+
+        {loadingResult ? (
+          <Loading />
+        ) : (
           
-              marginTop: heightPercentageToDP(3),
-              paddingVertical: heightPercentageToDP(2),
-              gap: heightPercentageToDP(2),
-            }}>
-            <View
+            filteredData.length == 0 ? (<NoDataFound data={"No Result Found"}/>) : (<View
               style={{
-                height: heightPercentageToDP(35),
-                backgroundColor: COLORS.grayHalfBg,
-                marginTop: heightPercentageToDP(2),
-                borderRadius: heightPercentageToDP(1),
+                flex: 1,
+                margin: heightPercentageToDP(2),
               }}>
               <View
                 style={{
-                  height: heightPercentageToDP(25),
-                  borderRadius: heightPercentageToDP(1),
-                  flexDirection: 'row',
+                  marginTop: heightPercentageToDP(3),
+                  paddingVertical: heightPercentageToDP(2),
+                  gap: heightPercentageToDP(2),
                 }}>
-                {/** Top view left container */}
                 <View
                   style={{
-                    flex: 5,
-                    justifyContent: 'center',
+                    height: heightPercentageToDP(35),
+                    backgroundColor: COLORS.grayHalfBg,
+                    marginTop: heightPercentageToDP(2),
+                    borderRadius: heightPercentageToDP(1),
+                  }}>
+                  <View
+                    style={{
+                      height: heightPercentageToDP(25),
+                      borderRadius: heightPercentageToDP(1),
+                      flexDirection: 'row',
+                    }}>
+                    {/** Top view left container */}
+                    <View
+                      style={{
+                        flex: 5,
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                      }}>
+                      <Text
+                        style={{
+                          fontFamily: FONT.Montserrat_Regular,
+                          fontSize: heightPercentageToDP(3),
+                          marginTop: heightPercentageToDP(1),
+                        }}>
+                        {filteredData[0].lotlocation.lotlocation}
+                      </Text>
+  
+                      <GradientText
+                        style={{
+                          fontSize: heightPercentageToDP(11),
+                          color: COLORS.black,
+                        }}>
+                        {filteredData[0].resultNumber}
+                      </GradientText>
+                    </View>
+  
+                    {/** Top view right container */}
+                    <View
+                      style={{
+                        flex: 1,
+                        backgroundColor: COLORS.gray2,
+                        justifyContent: 'center',
+                      }}>
+                      <Text
+                        style={{
+                          transform: [{rotate: '90deg'}],
+                          color: COLORS.black,
+                          fontFamily: FONT.Montserrat_SemiBold,
+                          fontSize: heightPercentageToDP(1.5),
+                        }}>
+                        {filteredData[0].lottime.lottime}
+                      </Text>
+                    </View>
+                  </View>
+  
+                  {/** Big Result bottom container */}
+  
+                  <View
+                    style={{
+                      flex: 1,
+                      backgroundColor: COLORS.white_s,
+                      margin: heightPercentageToDP(1),
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      flexDirection: 'row',
+                      gap: heightPercentageToDP(1),
+                    }}>
+                    <View
+                      style={{
+                        backgroundColor: COLORS.grayHalfBg,
+                        padding: heightPercentageToDP(1),
+                        borderRadius: heightPercentageToDP(1),
+                        marginStart: heightPercentageToDP(-3),
+                      }}>
+                      <Ionicons
+                        name={'calendar'}
+                        size={heightPercentageToDP(3)}
+                        color={COLORS.darkGray}
+                      />
+                    </View>
+  
+                    <Text
+                      style={{
+                        fontFamily: FONT.Montserrat_Regular,
+                        fontSize: heightPercentageToDP(2),
+                      }}>
+                      {filteredData[0].lotdate.lotdate}
+                    </Text>
+                  </View>
+                </View>
+  
+                <TouchableOpacity
+                  onPress={submitHandler}
+                  style={{
+                    backgroundColor: COLORS.blue,
+                    padding: heightPercentageToDP(2),
+                    borderRadius: heightPercentageToDP(1),
                     alignItems: 'center',
                   }}>
                   <Text
                     style={{
+                      color: COLORS.white,
                       fontFamily: FONT.Montserrat_Regular,
-                      fontSize: heightPercentageToDP(3),
-                      marginTop: heightPercentageToDP(1),
                     }}>
-                    Sikkim
+                    Download
                   </Text>
-                 
-                  
-                  <GradientText style={{
-                      
-                      fontSize: heightPercentageToDP(11),
-                      color: COLORS.black,
-                     
-                    }}>7889</GradientText>
-                </View>
-
-                {/** Top view right container */}
-                <View
-                  style={{
-                    flex: 1,
-                    backgroundColor: COLORS.gray2,
-                    justifyContent: 'center',
-                  }}>
-                  <Text
-                    style={{
-                      transform: [{rotate: '90deg'}],
-                      color: COLORS.black,
-                      fontFamily: FONT.Montserrat_SemiBold,
-                      fontSize: heightPercentageToDP(1.5),
-                    }}>
-                    07:00 PM
-                  </Text>
-                </View>
+                </TouchableOpacity>
               </View>
-
-              {/** Big Result bottom container */}
-
-              <View
-                style={{
-                  flex: 1,
-                  backgroundColor: COLORS.white_s,
-                  margin: heightPercentageToDP(1),
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  flexDirection: 'row',
-                  gap: heightPercentageToDP(1),
-                }}>
-                <View
-                  style={{
-                    backgroundColor: COLORS.grayHalfBg,
-                    padding: heightPercentageToDP(1),
-                    borderRadius: heightPercentageToDP(1),
-                    marginStart: heightPercentageToDP(-3),
-                  }}>
-                  <Ionicons
-                    name={'calendar'}
-                    size={heightPercentageToDP(3)}
-                    color={COLORS.darkGray}
-                  />
-                </View>
-
-                <Text
-                  style={{
-                    fontFamily: FONT.Montserrat_Regular,
-                    fontSize: heightPercentageToDP(2),
-                  }}>
-                  12-02-2024
-                </Text>
-              </View>
-            </View>
-
-            <TouchableOpacity
-              onPress={submitHandler}
-              style={{
-                backgroundColor: COLORS.blue,
-                padding: heightPercentageToDP(2),
-                borderRadius: heightPercentageToDP(1),
-                alignItems: 'center',
-              }}>
-              <Text
-                style={{
-                  color: COLORS.white,
-                  fontFamily: FONT.Montserrat_Regular,
-                }}>
-                Download
-              </Text>
-            </TouchableOpacity>
-          </View>
-        </View>
+            </View>)
+          
+          
+        )}
       </View>
     </View>
   );

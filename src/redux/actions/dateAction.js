@@ -59,3 +59,35 @@ export const getDateDetails = (accesstoken,id) => async dispatch => {
       });
     }
   };
+
+
+  export const getDateAccordingToLocationAndTime = (accesstoken,lottimeId,lotlocationId) => async dispatch => {
+    try {
+      dispatch({
+        type: 'getAllDateRequest',
+      });
+
+      const url = UrlHelper.DATE_API+"?lottimeId="+`${lottimeId}`+"&lotlocationId="+`${lotlocationId}`;
+
+      console.log("URL :: "+url)
+  
+      const {data} = await axios.get(url, {
+        headers: {
+          Authorization: `Bearer ${accesstoken}`,
+        },
+      });
+  
+      dispatch({
+        type: 'getAllDateSuccess',
+        payload: data.lotdates,
+      });
+    } catch (error) {
+      console.log(error);
+      console.log(error.response.data.message);
+  
+      dispatch({
+        type: 'getAllDateFail',
+        payload: error.response.data.message,
+      });
+    }
+  };

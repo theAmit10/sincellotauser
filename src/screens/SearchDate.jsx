@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import LoginBackground from '../components/login/LoginBackground';
 import {
   heightPercentageToDP,
@@ -17,17 +17,19 @@ import GradientText from '../components/helpercComponent/GradientText';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import Entypo from 'react-native-vector-icons/Entypo';
 import Toast from 'react-native-toast-message';
-import {useNavigation} from '@react-navigation/native';
+import {useIsFocused, useNavigation} from '@react-navigation/native';
 import Background from '../components/background/Background';
 import Loading from '../components/helpercComponent/Loading';
+import { useDispatch, useSelector } from 'react-redux';
+import { getDateAccordingToLocationAndTime } from '../redux/actions/dateAction';
 
-const SearchDate = () => {
+const SearchDate = ({ route }) => {
   const navigation = useNavigation();
 
+  const { timedata,locationdata } = route.params;
+
   const [searchData, setSearchData] = useState('');
-
   const [showLoading, setLoading]= useState(false);
-
   const [data, setData] = useState([
     {id: '1', title: '22 jan 2024'},
     {id: '2', title: '23 jan 2024'},
@@ -39,7 +41,32 @@ const SearchDate = () => {
     {id: '8', title: '29 jan 2024'},
   ]);
 
+
+  const dispatch = useDispatch();
+
+  const { accesstoken } = useSelector(state => state.user);
+  const { loading, dates } = useSelector(state => state.date);
+  const [filteredData, setFilteredData] = useState([]);
   
+  const handleSearch = text => {
+    const filtered = dates.filter(item =>
+      item.lotdate.toLowerCase().includes(text.toLowerCase()),
+    );
+    setFilteredData(filtered);
+  };
+
+  const focused = useIsFocused()
+
+
+  useEffect(() => {
+    dispatch(getDateAccordingToLocationAndTime(accesstoken,timedata._id,timedata.lotlocation._id))
+  },[dispatch,focused])
+
+
+  useEffect(() => {
+    setFilteredData(dates); // Update filteredData whenever locations change
+  }, [dates]);
+
   const submitHandler = () => {
     Toast.show({
       type: 'success',
@@ -116,15 +143,14 @@ const SearchDate = () => {
               }}
               placeholder="Search for date"
               label="Search"
-              value={searchData}
-              onChangeText={text => setSearchData(text)}
+              onChangeText={handleSearch}
             />
           </View>
         </View>
 
         <View style={{margin: heightPercentageToDP(2)}}>
-        <GradientText style={styles.textStyle}>Delhi</GradientText>
-        <GradientText style={styles.textStyle}>1 PM</GradientText>
+        <GradientText style={styles.textStyle}>{locationdata.lotlocation}</GradientText>
+        <GradientText style={styles.textStyle}>{timedata.lottime}</GradientText>
         </View>
 
         <View
@@ -132,11 +158,13 @@ const SearchDate = () => {
             flex: 2,
           }}>
             {
-                showLoading ? (<Loading/>) : (<FlatList
-                    data={data}
+                loading ? (<Loading/>) : (<FlatList
+                    data={filteredData}
                     renderItem={({item, index}) => (
                       <TouchableOpacity
-                      onPress={() => navigation.navigate("SearchDate")}
+                      onPress={() => navigation.navigate("Result",{
+                        datedata: item,
+                      })}
                         style={{
                           ...styles.item,
                           backgroundColor:
@@ -148,11 +176,11 @@ const SearchDate = () => {
                             fontFamily: FONT.HELVETICA_BOLD,
                             fontSize: heightPercentageToDP(2),
                           }}>
-                          {item.title}
+                          {item.lotdate}
                         </Text>
                       </TouchableOpacity>
                     )}
-                    keyExtractor={item => item.id}
+                    keyExtractor={item => item._id}
                     initialNumToRender={10} // Render initial 10 items
                     maxToRenderPerBatch={10} // Batch size to render
                     windowSize={10} // Number of items kept in memory
@@ -163,31 +191,7 @@ const SearchDate = () => {
 
         {/** Bottom Submit Container */}
 
-        <View
-          style={{
-            marginBottom: heightPercentageToDP(5),
-            marginHorizontal: heightPercentageToDP(2),
-            marginTop: heightPercentageToDP(2),
-          }}>
-          {/** Email container */}
-
-          <TouchableOpacity
-            onPress={submitHandler}
-            style={{
-              backgroundColor: COLORS.blue,
-              padding: heightPercentageToDP(2),
-              borderRadius: heightPercentageToDP(1),
-              alignItems: 'center',
-            }}>
-            <Text
-              style={{
-                color: COLORS.white,
-                fontFamily: FONT.Montserrat_Regular,
-              }}>
-              Submit
-            </Text>
-          </TouchableOpacity>
-        </View>
+        
 
         {/** end */}
       </View>
@@ -219,3 +223,30 @@ const styles = StyleSheet.create({
     fontFamily: FONT.SF_PRO_MEDIUM,
   },
 });
+
+
+// {/* <View
+//           style={{
+//             marginBottom: heightPercentageToDP(5),
+//             marginHorizontal: heightPercentageToDP(2),
+//             marginTop: heightPercentageToDP(2),
+//           }}>
+//           {/** Email container */}
+
+//           <TouchableOpacity
+//             onPress={submitHandler}
+//             style={{
+//               backgroundColor: COLORS.blue,
+//               padding: heightPercentageToDP(2),
+//               borderRadius: heightPercentageToDP(1),
+//               alignItems: 'center',
+//             }}>
+//             <Text
+//               style={{
+//                 color: COLORS.white,
+//                 fontFamily: FONT.Montserrat_Regular,
+//               }}>
+//               Submit
+//             </Text>
+//           </TouchableOpacity>
+//         </View> */}

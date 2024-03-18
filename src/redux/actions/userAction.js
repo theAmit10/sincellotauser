@@ -38,15 +38,13 @@ export const login = (email, password) => async dispatch => {
         type: 'getaccesstoken',
         payload: data.token,
       });
-    
-
     dispatch({
       type: 'loginSuccess',
       payload: data.message,
     });
   } catch (error) {
     console.log(error);
-    console.log(error.response.data.message);
+    console.log(error.response);
 
     dispatch({
       type: 'loginError',
@@ -79,7 +77,7 @@ export const loadProfile = (accesstoken) => async dispatch => {
     });
   } catch (error) {
     console.log(error);
-    console.log(error.response.data.message);
+    console.log(error.response);
 
     dispatch({
       type: 'loadUserFail',

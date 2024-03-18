@@ -2,33 +2,33 @@ import { createReducer } from "@reduxjs/toolkit";
 
 
 export const resultReducer = createReducer({
-    loading:false,
+    loadingResult:false,
     results: [],
     result: {}
 },(builder)=>{
     
     builder.addCase("getAllResultRequest",(state) => {
-        state.loading = true;
+        state.loadingResult = true;
     })
     .addCase("getResultRequest",(state) => {
-        state.loading = true;
+        state.loadingResult = true;
     })
     
     builder.addCase("getAllResultSuccess",(state,action) => {
-        state.loading = false;
-        state.dates = action.payload;
+        state.loadingResult = false;
+        state.results = action.payload;
     })
     .addCase("getResultSuccess",(state,action) => {
-        state.loading = false;
-        state.date = action.payload;
+        state.loadingResult = false;
+        state.result = action.payload;
     })
     
     builder.addCase("getAllResultFail",(state,action) => {
-        state.loading = false;
+        state.loadingResult = false;
         state.error = action.payload;
     })
     .addCase("getResultFail",(state,action) => {
-        state.loading = false;
+        state.loadingResult = false;
         state.error = action.payload;
     })
    

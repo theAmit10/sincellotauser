@@ -7,17 +7,19 @@ export const getAllResult = (accesstoken) => async dispatch => {
       type: 'getAllResultRequest',
     });
 
-    const {data} = await axios.get(UrlHelper.ALL_LOCATION_API, {
+    const {data} = await axios.get(UrlHelper.ALL_RESULT_API, {
       headers: {
         Authorization: `Bearer ${accesstoken}`,
       },
     });
 
+    console.log("ACTION result :: "+data.results)
 
     dispatch({
       type: 'getAllResultSuccess',
-      payload: data.lotlocations,
+      payload: data.results,
     });
+
   } catch (error) {
     console.log(error);
     console.log(error.response.data.message);
@@ -26,7 +28,7 @@ export const getAllResult = (accesstoken) => async dispatch => {
       type: 'getAllResultFail',
       payload: error.response.data.message,
     });
-  }
+  } 
 };
 
 
@@ -55,6 +57,41 @@ export const getResultDetails = (accesstoken,id) => async dispatch => {
   
       dispatch({
         type: 'getResultFail',
+        payload: error.response.data.message,
+      });
+    }
+  };
+
+
+  export const getResultAccordingToLocationTimeDate = (accesstoken,lotdateId,lottimeId,lotlocationId) => async dispatch => {
+    try {
+      dispatch({
+        type: 'getAllResultRequest',
+      });
+
+      const url = UrlHelper.RESULT_API+"?lotdateId="+`${lotdateId}`+"&lottimeId="+`${lottimeId}`+"&lotlocationId="+`${lotlocationId}`;
+  
+      console.log("URL :: "+url)
+
+      const {data} = await axios.get(url, {
+        headers: {
+          Authorization: `Bearer ${accesstoken}`,
+        },
+      });
+
+      console.log("ACTION result :: "+data.results)
+
+      dispatch({
+        type: 'getAllResultSuccess',
+        payload: data.results,
+      });
+
+    } catch (error) {
+      console.log(error);
+      console.log(error.response.data.message);
+  
+      dispatch({
+        type: 'getAllResultFail',
         payload: error.response.data.message,
       });
     }

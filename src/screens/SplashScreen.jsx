@@ -1,13 +1,11 @@
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import React, { useEffect } from 'react';
-import {useDispatch, useSelector} from 'react-redux';
+import {useDispatch} from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
   heightPercentageToDP,
   widthPercentageToDP,
 } from 'react-native-responsive-screen';
-
-import Ionicons from 'react-native-vector-icons/Ionicons';
 import {useNavigation} from '@react-navigation/native';
 import {COLORS, FONT} from '../../assets/constants';
 
@@ -65,8 +63,8 @@ const SplashScreen = () => {
           backgroundColor: COLORS.white_s,
           position: 'absolute',
           borderRadius: heightPercentageToDP(5),
-          zIndex: 1,
-          top: heightPercentageToDP(60),
+          zIndex: 0,
+          top: heightPercentageToDP(29),
           left: widthPercentageToDP(20),
           elevation: heightPercentageToDP(2),
         }}>
@@ -87,12 +85,14 @@ const SplashScreen = () => {
           width: widthPercentageToDP(50),
           flex: 1,
           opacity: 80,
+          elevation: heightPercentageToDP(2)
         }}>
         <View
           className="rounded-full h-5 w-5"
           style={{
             margin: heightPercentageToDP(3),
             backgroundColor: COLORS.background,
+            
           }}></View>
       </View>
 
@@ -120,6 +120,16 @@ const SplashScreen = () => {
           className="rounded-full ">
           <Text style={{fontFamily: FONT.ZCOOL_Regular, fontSize: heightPercentageToDP(2)}}>Since 1984</Text>
         </View>
+      </View>
+
+      <View style={{
+        backgroundColor: "transparent",
+        position: 'absolute',
+        transform: [{rotate: '90deg'}],
+        bottom: heightPercentageToDP(2),
+        zIndex: 2
+      }}>
+        <Text style={{fontFamily: FONT.ZCOOL_Regular, fontSize: heightPercentageToDP(10), marginStart: heightPercentageToDP(-30), color: COLORS.white_s}}>SINCE 1984</Text>
       </View>
     </View>
   );

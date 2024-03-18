@@ -16,9 +16,6 @@ export const getAllLocations = (accesstoken) => async dispatch => {
     });
 
 
-    console.log("Location data :: "+data.lotlocations )
-    console.log("Location data length :: "+data.lotlocations.length )
-
 
 
     // console.log('Data :: ' + data.lotlocations[0].lotlocation);
@@ -28,6 +25,12 @@ export const getAllLocations = (accesstoken) => async dispatch => {
       type: 'getAllLocationSuccess',
       payload: data.lotlocations,
     });
+
+
+    console.log("Location data :: "+data.lotlocations )
+    console.log("Location data length :: "+data.lotlocations.length )
+
+
   } catch (error) {
     console.log(error);
     console.log(error.response.data.message);

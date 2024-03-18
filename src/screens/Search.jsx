@@ -16,7 +16,7 @@ import {COLORS, FONT} from '../../assets/constants';
 import GradientText from '../components/helpercComponent/GradientText';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import Toast from 'react-native-toast-message';
-import {useNavigation} from '@react-navigation/native';
+import {useIsFocused, useNavigation} from '@react-navigation/native';
 import Background from '../components/background/Background';
 import Loading from '../components/helpercComponent/Loading';
 import { useDispatch, useSelector } from 'react-redux';
@@ -29,8 +29,10 @@ const Search = () => {
   const {accesstoken} = useSelector(state => state.user);
   const {loading,locations} = useSelector(state => state.location);
 
-  const [filteredData, setFilteredData] = useState(locations);
 
+  // const [filteredData, setFilteredData] = useState(locations);
+  const [filteredData, setFilteredData] = useState([]);
+  
   const handleSearch = text => {
     const filtered = locations.filter(item =>
       item.lotlocation.toLowerCase().includes(text.toLowerCase()),
@@ -38,12 +40,17 @@ const Search = () => {
     setFilteredData(filtered);
   };
 
+  const focused = useIsFocused()
+
 
 
   useEffect(() => {
     dispatch(getAllLocations(accesstoken))
-  },[dispatch])
+  },[dispatch,focused])
 
+  useEffect(() => {
+    setFilteredData(locations); // Update filteredData whenever locations change
+  }, [locations]);
  
   
   const submitHandler = () => {
@@ -132,7 +139,8 @@ const Search = () => {
                     data={filteredData}
                     renderItem={({item, index}) => (
                       <TouchableOpacity
-                      key={item._id}
+                    
+                      
                       onPress={() => navigation.navigate("SearchTime",{
                         locationdata: item,
                       })}
@@ -151,7 +159,7 @@ const Search = () => {
                         </Text>
                       </TouchableOpacity>
                     )}
-                    keyExtractor={item => item.id}
+                    keyExtractor={item => item._id}
                     initialNumToRender={10} // Render initial 10 items
                     maxToRenderPerBatch={10} // Batch size to render
                     windowSize={10} // Number of items kept in memory
@@ -162,31 +170,9 @@ const Search = () => {
 
         {/** Bottom Submit Container */}
 
-        <View
-          style={{
-            marginBottom: heightPercentageToDP(5),
-            marginHorizontal: heightPercentageToDP(2),
-            marginTop: heightPercentageToDP(2),
-          }}>
-          {/** Email container */}
+       
 
-          <TouchableOpacity
-            onPress={submitHandler}
-            style={{
-              backgroundColor: COLORS.blue,
-              padding: heightPercentageToDP(2),
-              borderRadius: heightPercentageToDP(1),
-              alignItems: 'center',
-            }}>
-            <Text
-              style={{
-                color: COLORS.white,
-                fontFamily: FONT.Montserrat_Regular,
-              }}>
-              Submit
-            </Text>
-          </TouchableOpacity>
-        </View>
+        
 
         {/** end */}
       </View>
@@ -218,3 +204,31 @@ const styles = StyleSheet.create({
     fontFamily: FONT.SF_PRO_MEDIUM,
   },
 });
+
+
+
+// {/* <View
+//           style={{
+//             marginBottom: heightPercentageToDP(5),
+//             marginHorizontal: heightPercentageToDP(2),
+//             marginTop: heightPercentageToDP(2),
+//           }}>
+//           {/** Email container */}
+
+//           <TouchableOpacity
+//             onPress={submitHandler}
+//             style={{
+//               backgroundColor: COLORS.blue,
+//               padding: heightPercentageToDP(2),
+//               borderRadius: heightPercentageToDP(1),
+//               alignItems: 'center',
+//             }}>
+//             <Text
+//               style={{
+//                 color: COLORS.white,
+//                 fontFamily: FONT.Montserrat_Regular,
+//               }}>
+//               Submit
+//             </Text>
+//           </TouchableOpacity>
+//         </View> */}
