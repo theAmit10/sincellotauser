@@ -172,7 +172,7 @@ const Home = () => {
                   <Ionicons
                     name={'notifications'}
                     size={heightPercentageToDP(3)}
-                    color={COLORS.white}
+                    color={COLORS.black}
                   />
                 </TouchableOpacity>
 
@@ -214,33 +214,9 @@ const Home = () => {
               </Text>
             </TouchableOpacity>
 
-            {/** WALLET CONTAINER */}
-            <ScrollView
-              horizontal={true}
-              showsHorizontalScrollIndicator={false}>
-              <TouchableOpacity
-                onPress={() =>
-                  navigation.navigate('WalletBalance', {data: user.walletOne})
-                }>
-                <Wallet wallet={user.walletOne} />
-              </TouchableOpacity>
+                        {/** BIG RESULT  */}
 
-                <TouchableOpacity
-                onPress={() =>
-                  navigation.navigate('WalletBalance', {data: user.walletTwo})
-                }>
-                <Wallet wallet={user.walletTwo} />
-                </TouchableOpacity>
-              
-            </ScrollView>
-
-            {/** PROMOTION CONTAINER */}
-
-            <NoDataFound data={'Promotions'} />
-
-            {/** BIG RESULT  */}
-
-            {results.length === 0 ? (
+                        {results.length === 0 ? (
               <NoDataFound data={'No Result Available'} />
             ) : (
               <BigResult data={results[0]} />
@@ -367,6 +343,35 @@ const Home = () => {
                 </ScrollView>
               </View>
             )}
+
+            {/** PROMOTION CONTAINER */}
+
+            <NoDataFound data={'Promotions'} />
+
+            {/** WALLET CONTAINER */}
+            <ScrollView
+              horizontal={true}
+              showsHorizontalScrollIndicator={false}>
+              <TouchableOpacity
+                onPress={() =>
+                  navigation.navigate('WalletBalance', {data: user.walletOne})
+                }>
+                <Wallet wallet={user.walletOne} />
+              </TouchableOpacity>
+
+                <TouchableOpacity
+                onPress={() =>
+                  navigation.navigate('WalletBalance', {data: user.walletTwo})
+                }>
+                <Wallet wallet={user.walletTwo} />
+                </TouchableOpacity>
+              
+            </ScrollView>
+
+            
+
+
+
           </ScrollView>
         )
       )}
