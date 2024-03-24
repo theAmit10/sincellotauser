@@ -17,6 +17,9 @@ import Fontisto from 'react-native-vector-icons/Fontisto';
 import Entypo from 'react-native-vector-icons/Entypo';
 import Toast from 'react-native-toast-message';
 import {useNavigation} from '@react-navigation/native';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import AntDesign from 'react-native-vector-icons/AntDesign';
 
 const Setting = () => {
   const navigation = useNavigation();
@@ -68,61 +71,275 @@ const Setting = () => {
             flex: 1,
             margin: heightPercentageToDP(2),
           }}>
-          <GradientText style={styles.textStyle}>Search</GradientText>
+          <GradientText style={styles.textStyle}>Setting</GradientText>
 
-          <View
+          {/** Update Profile container */}
+          <TouchableOpacity
             style={{
               height: heightPercentageToDP(7),
               flexDirection: 'row',
-              backgroundColor: COLORS.grayHalfBg,
+              backgroundColor: COLORS.grayBg,
+              alignItems: 'center',
+              paddingHorizontal: heightPercentageToDP(2),
+              marginTop: heightPercentageToDP(2),
+              borderRadius: heightPercentageToDP(1),
+            }}>
+            <MaterialCommunityIcons
+              name={'account'}
+              size={heightPercentageToDP(3)}
+              color={COLORS.white}
+            />
+            <Text
+              style={{
+                marginStart: heightPercentageToDP(1),
+                flex: 1,
+                fontFamily: FONT.SF_PRO_REGULAR,
+                color: COLORS.darkGray,
+              }}>
+              Update Profile
+            </Text>
+
+            <Ionicons
+              name={'chevron-forward-outline'}
+              size={heightPercentageToDP(3)}
+              color={COLORS.white}
+            />
+          </TouchableOpacity>
+
+          {/** Add  Game Setting */}
+          <TouchableOpacity
+            style={{
+              height: heightPercentageToDP(7),
+              flexDirection: 'row',
+              backgroundColor: COLORS.grayBg,
+              alignItems: 'center',
+              paddingHorizontal: heightPercentageToDP(2),
+              marginTop: heightPercentageToDP(2),
+              borderRadius: heightPercentageToDP(1),
+            }}>
+            <MaterialCommunityIcons
+              name={'account'}
+              size={heightPercentageToDP(3)}
+              color={COLORS.white}
+            />
+            <Text
+              style={{
+                marginStart: heightPercentageToDP(1),
+                flex: 1,
+                fontFamily: FONT.SF_PRO_REGULAR,
+                color: COLORS.darkGray,
+              }}>
+              Game Setting
+            </Text>
+
+            <Ionicons
+              name={'chevron-forward-outline'}
+              size={heightPercentageToDP(3)}
+              color={COLORS.white}
+            />
+          </TouchableOpacity>
+
+          {/** About us container */}
+          <TouchableOpacity
+            style={{
+              height: heightPercentageToDP(7),
+              flexDirection: 'row',
+              backgroundColor: COLORS.grayBg,
+              alignItems: 'center',
+              paddingHorizontal: heightPercentageToDP(2),
+              marginTop: heightPercentageToDP(2),
+              borderRadius: heightPercentageToDP(1),
+            }}>
+            <MaterialCommunityIcons
+              name={'account'}
+              size={heightPercentageToDP(3)}
+              color={COLORS.white}
+            />
+            <Text
+              style={{
+                marginStart: heightPercentageToDP(1),
+                flex: 1,
+                fontFamily: FONT.SF_PRO_REGULAR,
+                color: COLORS.darkGray,
+              }}>
+              About Us
+            </Text>
+
+            <Ionicons
+              name={'chevron-forward-outline'}
+              size={heightPercentageToDP(3)}
+              color={COLORS.white}
+            />
+          </TouchableOpacity>
+
+          {/** Create location */}
+          <TouchableOpacity
+          onPress={() => navigation.navigate("CreateLocation")}
+            style={{
+              height: heightPercentageToDP(7),
+              flexDirection: 'row',
+              backgroundColor: COLORS.grayBg,
               alignItems: 'center',
               paddingHorizontal: heightPercentageToDP(2),
               borderRadius: heightPercentageToDP(1),
               marginTop: heightPercentageToDP(2),
             }}>
-            <Fontisto
-              name={'search'}
+            <AntDesign
+              name={'logout'}
               size={heightPercentageToDP(3)}
               color={COLORS.white}
             />
-            <TextInput
+            <Text
               style={{
                 marginStart: heightPercentageToDP(1),
                 flex: 1,
                 fontFamily: FONT.SF_PRO_REGULAR,
-              }}
-              placeholder="Search for location"
-              label="Search"
-              value={searchData}
-              onChangeText={text => setSearchData(text)}
-            />
-          </View>
-
-          <View
-            style={{
-              marginTop: heightPercentageToDP(3),
-              paddingVertical: heightPercentageToDP(2),
-              gap: heightPercentageToDP(2),
-            }}>
-            {/** Email container */}
-
-            <TouchableOpacity
-              onPress={submitHandler}
-              style={{
-                backgroundColor: COLORS.blue,
-                padding: heightPercentageToDP(2),
-                borderRadius: heightPercentageToDP(1),
-                alignItems: 'center',
+                color: COLORS.darkGray,
               }}>
-              <Text
-                style={{
-                  color: COLORS.white,
-                  fontFamily: FONT.Montserrat_Regular,
-                }}>
-                Submit
-              </Text>
-            </TouchableOpacity>
-          </View>
+              Create Location
+            </Text>
+
+            <Ionicons
+              name={'chevron-forward-outline'}
+              size={heightPercentageToDP(3)}
+              color={COLORS.white}
+            />
+          </TouchableOpacity>
+
+            {/** Create Time */}
+            <TouchableOpacity
+          onPress={() => navigation.navigate("CreateTime")}
+            style={{
+              height: heightPercentageToDP(7),
+              flexDirection: 'row',
+              backgroundColor: COLORS.grayBg,
+              alignItems: 'center',
+              paddingHorizontal: heightPercentageToDP(2),
+              borderRadius: heightPercentageToDP(1),
+              marginTop: heightPercentageToDP(2),
+            }}>
+            <AntDesign
+              name={'logout'}
+              size={heightPercentageToDP(3)}
+              color={COLORS.white}
+            />
+            <Text
+              style={{
+                marginStart: heightPercentageToDP(1),
+                flex: 1,
+                fontFamily: FONT.SF_PRO_REGULAR,
+                color: COLORS.darkGray,
+              }}>
+              Create Time
+            </Text>
+
+            <Ionicons
+              name={'chevron-forward-outline'}
+              size={heightPercentageToDP(3)}
+              color={COLORS.white}
+            />
+          </TouchableOpacity>
+
+            {/** Create Date */}
+            <TouchableOpacity
+          onPress={() => navigation.navigate("CreateDate")}
+            style={{
+              height: heightPercentageToDP(7),
+              flexDirection: 'row',
+              backgroundColor: COLORS.grayBg,
+              alignItems: 'center',
+              paddingHorizontal: heightPercentageToDP(2),
+              borderRadius: heightPercentageToDP(1),
+              marginTop: heightPercentageToDP(2),
+            }}>
+            <AntDesign
+              name={'logout'}
+              size={heightPercentageToDP(3)}
+              color={COLORS.white}
+            />
+            <Text
+              style={{
+                marginStart: heightPercentageToDP(1),
+                flex: 1,
+                fontFamily: FONT.SF_PRO_REGULAR,
+                color: COLORS.darkGray,
+              }}>
+              Create Date
+            </Text>
+
+            <Ionicons
+              name={'chevron-forward-outline'}
+              size={heightPercentageToDP(3)}
+              color={COLORS.white}
+            />
+          </TouchableOpacity>
+
+            {/** Create Result */}
+            <TouchableOpacity
+          onPress={() => navigation.navigate("CreateResult")}
+            style={{
+              height: heightPercentageToDP(7),
+              flexDirection: 'row',
+              backgroundColor: COLORS.grayBg,
+              alignItems: 'center',
+              paddingHorizontal: heightPercentageToDP(2),
+              borderRadius: heightPercentageToDP(1),
+              marginTop: heightPercentageToDP(2),
+            }}>
+            <AntDesign
+              name={'logout'}
+              size={heightPercentageToDP(3)}
+              color={COLORS.white}
+            />
+            <Text
+              style={{
+                marginStart: heightPercentageToDP(1),
+                flex: 1,
+                fontFamily: FONT.SF_PRO_REGULAR,
+                color: COLORS.darkGray,
+              }}>
+              Create Result
+            </Text>
+
+            <Ionicons
+              name={'chevron-forward-outline'}
+              size={heightPercentageToDP(3)}
+              color={COLORS.white}
+            />
+          </TouchableOpacity>
+
+          {/** Logout container */}
+          <TouchableOpacity
+            style={{
+              height: heightPercentageToDP(7),
+              flexDirection: 'row',
+              backgroundColor: COLORS.grayBg,
+              alignItems: 'center',
+              paddingHorizontal: heightPercentageToDP(2),
+              borderRadius: heightPercentageToDP(1),
+              marginTop: heightPercentageToDP(2),
+            }}>
+            <AntDesign
+              name={'logout'}
+              size={heightPercentageToDP(3)}
+              color={COLORS.white}
+            />
+            <Text
+              style={{
+                marginStart: heightPercentageToDP(1),
+                flex: 1,
+                fontFamily: FONT.SF_PRO_REGULAR,
+                color: COLORS.darkGray,
+              }}>
+              Logout
+            </Text>
+
+            <Ionicons
+              name={'chevron-forward-outline'}
+              size={heightPercentageToDP(3)}
+              color={COLORS.white}
+            />
+          </TouchableOpacity>
         </View>
       </View>
     </View>

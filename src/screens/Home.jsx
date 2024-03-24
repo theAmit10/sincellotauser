@@ -50,28 +50,7 @@ const Home = () => {
     dispatch(loadProfile(accesstoken));
   }, [dispatch]);
 
-  // for backPress handling
-  useEffect(() => {
-    const backAction = () => {
-      Alert.alert('Hold on!', 'Are you sure you want to exit?', [
-        {
-          text: 'Cancel',
-          onPress: () => null,
-          style: 'cancel',
-        },
-        {text: 'YES', onPress: () => BackHandler.exitApp()},
-      ]);
-
-      return true;
-    };
-
-    const backHandler = BackHandler.addEventListener(
-      'hardwareBackPress',
-      backAction,
-    );
-
-    return () => backHandler.remove();
-  }, []);
+  
 
   const {results} = useSelector(state => state.result);
   const [filteredData, setFilteredData] = useState([]);
@@ -177,7 +156,7 @@ const Home = () => {
                 </TouchableOpacity>
 
                 <TouchableOpacity
-                  onPress={() => navigation.navigate('Profile')}>
+                  onPress={() => navigation.navigate('Setting')}>
                   <Entypo
                     name={'menu'}
                     size={heightPercentageToDP(3)}
