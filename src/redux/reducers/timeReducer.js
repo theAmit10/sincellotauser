@@ -13,6 +13,9 @@ export const timeReducer = createReducer({
     .addCase("getTimeRequest",(state) => {
         state.loading = true;
     })
+    .addCase("createTimeRequest",(state) => {
+        state.loading = true;
+    })
     
     builder.addCase("getAllTimeSuccess",(state,action) => {
         state.loading = false;
@@ -22,12 +25,20 @@ export const timeReducer = createReducer({
         state.loading = false;
         state.time = action.payload;
     })
+    .addCase("createTimeSuccess",(state,action) => {
+        state.loading = false;
+        state.message = action.payload;
+    })
     
     builder.addCase("getAllTimeFail",(state,action) => {
         state.loading = false;
         state.error = action.payload;
     })
     .addCase("getTimeFail",(state,action) => {
+        state.loading = false;
+        state.error = action.payload;
+    })
+    .addCase("createTimeFail",(state,action) => {
         state.loading = false;
         state.error = action.payload;
     })

@@ -12,6 +12,20 @@ const DATE_API = server + 'result/searchdate';
 const ALL_RESULT_API = server + 'result/allresult';
 const RESULT_API = server + 'result/searchresult';
 
+// Creating through Admin FOR LOCATION
+const CREATE_LOCATION_API = server + 'result/addlotlocation';
+const UPDATE_LOCATION_API = server + 'result/updatelotlocation';
+const DELETE_LOCATION_API = server + 'result/removelotlocation';
+
+
+// Creating through Admin FOR TIME
+const CREATE_TIME_API = server + 'result/addlottime';
+const UPDATE_TIME_API = server + 'result/updatelottime';
+const DELETE_TIME_API = server + 'result/removelottime';
+
+
+
+
 export default {
   LOGIN_API,
   USER_PROFILE_API,
