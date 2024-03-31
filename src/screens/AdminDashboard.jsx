@@ -17,7 +17,7 @@ import GradientText from '../components/helpercComponent/GradientText';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import Entypo from 'react-native-vector-icons/Entypo';
 import Toast from 'react-native-toast-message';
-import {useNavigation} from '@react-navigation/native';
+import {useIsFocused, useNavigation} from '@react-navigation/native';
 import ProfileBackground from '../components/background/ProfileBackground';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -25,24 +25,33 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import Wallet from '../components/home/Wallet';
 import {Consumer} from 'react-native-paper/lib/typescript/core/settings';
 import {useDispatch, useSelector} from 'react-redux';
-import {loadProfile, logout} from '../redux/actions/userAction';
+import {loadAllUsers, loadProfile, logout} from '../redux/actions/userAction';
 import {useMessageAndErrorUser} from '../utils/hooks';
 import Loading from '../components/helpercComponent/Loading';
 import {HOVER} from 'nativewind/dist/utils/selector';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import AdminBackground from '../components/background/AdminBackground';
+import LinearGradient from 'react-native-linear-gradient';
+import { getAllResult } from '../redux/actions/resultAction';
+import { getAllLocations } from '../redux/actions/locationAction';
 
 const AdminDashboard = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
 
-  const {user, accesstoken, loading} = useSelector(state => state.user);
+  const {user, accesstoken,allusers, loading} = useSelector(state => state.user);
+  const {locations} = useSelector(state => state.location);
+  const {results} = useSelector(state => state.result);
 
+  const isFocused = useIsFocused();
   // Getting User Profile
 
   useEffect(() => {
     dispatch(loadProfile(accesstoken));
-  }, [dispatch]);
+    dispatch(loadAllUsers(accesstoken))
+    dispatch(getAllLocations(accesstoken))
+    dispatch(getAllResult(accesstoken));
+  }, [dispatch,isFocused]);
 
   useMessageAndErrorUser(navigation, dispatch, 'Login');
 
@@ -101,8 +110,6 @@ const AdminDashboard = () => {
 
       {/** Profile Cointainer */}
 
-     
-
       <View
         style={{
           height: heightPercentageToDP(55),
@@ -123,8 +130,9 @@ const AdminDashboard = () => {
                 gap: heightPercentageToDP(2),
               }}>
               {/** All users container */}
+
               <TouchableOpacity
-               onPress={() => navigation.navigate("AllUsers")}
+                onPress={() => navigation.navigate('AllUsers')}
                 style={{
                   height: heightPercentageToDP(15),
                   flexDirection: 'row',
@@ -167,21 +175,27 @@ const AdminDashboard = () => {
                     flex: 2,
                     flexDirection: 'row',
                     justifyContent: 'flex-end',
+                    gap: heightPercentageToDP(1),
                   }}>
                   <GradientText style={{...styles.textStyle}}>
-                    28383
+                    {allusers.length}
                   </GradientText>
-                  <MaterialCommunityIcons
-                    name={'account'}
-                    size={heightPercentageToDP(6)}
-                    color={COLORS.white}
-                  />
+
+                  <LinearGradient
+                    colors={[COLORS.lightWhite, COLORS.white_s]}
+                    className="rounded-xl p-1">
+                    <MaterialCommunityIcons
+                      name={'account'}
+                      size={heightPercentageToDP(4)}
+                      color={COLORS.gray2}
+                    />
+                  </LinearGradient>
                 </View>
               </TouchableOpacity>
 
               {/** All Locations container */}
               <TouchableOpacity
-              onPress={() => navigation.navigate("Search")}
+                onPress={() => navigation.navigate('Search')}
                 style={{
                   height: heightPercentageToDP(15),
                   flexDirection: 'row',
@@ -224,19 +238,25 @@ const AdminDashboard = () => {
                     flex: 2,
                     flexDirection: 'row',
                     justifyContent: 'flex-end',
+                    gap: heightPercentageToDP(1),
                   }}>
-                  <GradientText style={{...styles.textStyle}}>83</GradientText>
-                  <Entypo
-                    name={'location'}
-                    size={heightPercentageToDP(5)}
-                    color={COLORS.white}
-                  />
+                  <GradientText style={{...styles.textStyle}}>{locations.length}</GradientText>
+
+                  <LinearGradient
+                    colors={[COLORS.lightWhite, COLORS.white_s]}
+                    className="rounded-xl p-1">
+                    <Entypo
+                      name={'location'}
+                      size={heightPercentageToDP(4)}
+                      color={COLORS.gray2}
+                    />
+                  </LinearGradient>
                 </View>
               </TouchableOpacity>
 
-               {/** All users container */}
-               <TouchableOpacity
-               onPress={() => navigation.navigate("AllUsers")}
+              {/** All users container */}
+              <TouchableOpacity
+                onPress={() => navigation.navigate('AllResult')}
                 style={{
                   height: heightPercentageToDP(15),
                   flexDirection: 'row',
@@ -279,20 +299,23 @@ const AdminDashboard = () => {
                     flex: 2,
                     flexDirection: 'row',
                     justifyContent: 'flex-end',
+                    gap: heightPercentageToDP(1),
                   }}>
-                  <GradientText style={{...styles.textStyle}}>
-                    28
-                  </GradientText>
-                  <MaterialCommunityIcons
-                    name={'trophy-variant-outline'}
-                    size={heightPercentageToDP(6)}
-                    color={COLORS.white}
-                  />
+                  <GradientText style={{...styles.textStyle}}>{results.length}</GradientText>
+
+                  <LinearGradient
+                    colors={[COLORS.lightWhite, COLORS.white_s]}
+                    className="rounded-xl p-1">
+                    <MaterialCommunityIcons
+                      name={'trophy-variant-outline'}
+                      size={heightPercentageToDP(4)}
+                      color={COLORS.gray2}
+                    />
+                  </LinearGradient>
                 </View>
               </TouchableOpacity>
 
-
-
+             
             </View>
           </ScrollView>
         </View>

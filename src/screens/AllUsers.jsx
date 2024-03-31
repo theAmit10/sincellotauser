@@ -8,7 +8,6 @@ import {
   View,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
-
 import {
   heightPercentageToDP,
   widthPercentageToDP,
@@ -16,23 +15,18 @@ import {
 import {COLORS, FONT} from '../../assets/constants';
 import GradientText from '../components/helpercComponent/GradientText';
 import Fontisto from 'react-native-vector-icons/Fontisto';
-import Toast from 'react-native-toast-message';
 import {useIsFocused, useNavigation} from '@react-navigation/native';
 import Background from '../components/background/Background';
 import Loading from '../components/helpercComponent/Loading';
 import {useDispatch, useSelector} from 'react-redux';
-import {getAllLocations} from '../redux/actions/locationAction';
 import {loadAllUsers} from '../redux/actions/userAction';
+import { serverName } from '../redux/store';
 
 const AllUsers = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
-
   const {accesstoken} = useSelector(state => state.user);
-  const {loading, locations} = useSelector(state => state.location);
   const {loadingAll, allusers} = useSelector(state => state.user);
-
-  // const [filteredData, setFilteredData] = useState(locations);
   const [filteredData, setFilteredData] = useState([]);
 
   const handleSearch = text => {
@@ -52,12 +46,7 @@ const AllUsers = () => {
     setFilteredData(allusers); // Update filteredData whenever locations change
   }, [allusers]);
 
-  const submitHandler = () => {
-    Toast.show({
-      type: 'success',
-      text1: 'Searching',
-    });
-  };
+  
 
   return (
     <View style={{flex: 1}}>
@@ -151,25 +140,38 @@ const AllUsers = () => {
                         ? COLORS.lightDarkGray
                         : COLORS.grayHalfBg,
                   }}>
-                  <View style={{flexDirection: 'row',gap: heightPercentageToDP(2)}}>
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      gap: heightPercentageToDP(2),
+                    }}>
                     {/** Profile Image Container */}
                     <TouchableOpacity
-                      onPress={() => navigation.navigate('Profile')}
                       style={{
                         borderRadius: 100,
                         overflow: 'hidden',
                         width: 60,
                         height: 60,
                       }}>
-                      <Image
-                        // source={{ uri: 'https://imgs.search.brave.com/bNjuaYsTPw2b4yerAkKyk82fwZ9sNFwkwb3JMnX7qBg/rs:fit:500:0:0/g:ce/aHR0cHM6Ly9pbWFn/ZXMudW5zcGxhc2gu/Y29tL3Bob3RvLTE1/NDU5OTYxMjQtMDUw/MWViYWU4NGQwP3E9/ODAmdz0xMDAwJmF1/dG89Zm9ybWF0JmZp/dD1jcm9wJml4bGli/PXJiLTQuMC4zJml4/aWQ9TTN3eE1qQTNm/REI4TUh4elpXRnlZ/Mmg4TWpCOGZHWmhZ/MlY4Wlc1OE1IeDhN/SHg4ZkRBPQ.jpeg' }}
-                        source={require('../../assets/image/dark_user.png')}
-                        resizeMode="cover"
-                        style={{
-                          height: 60,
-                          width: 60,
-                        }}
-                      />
+                      {item.avatar?.url ? (
+                        <Image
+                          source={{ uri: `${serverName}/uploads/${item.avatar.url}` }}
+                          resizeMode="cover"
+                          style={{
+                            height: 60,
+                            width: 60,
+                          }}
+                        />
+                      ) : (
+                        <Image
+                          source={require('../../assets/image/dark_user.png')}
+                          resizeMode="cover"
+                          style={{
+                            height: 60,
+                            width: 60,
+                          }}
+                        />
+                      )}
                     </TouchableOpacity>
 
                     {/** User Name */}
@@ -179,7 +181,7 @@ const AllUsers = () => {
                         color: COLORS.black,
                         fontFamily: FONT.Montserrat_SemiBold,
                         fontSize: heightPercentageToDP(2.5),
-                        textAlignVertical: 'center'
+                        textAlignVertical: 'center',
                       }}>
                       {item.name}
                     </Text>

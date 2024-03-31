@@ -22,6 +22,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Background from '../components/background/Background';
+import LinearGradient from 'react-native-linear-gradient';
 
 const Setting = () => {
   const navigation = useNavigation();
@@ -38,7 +39,7 @@ const Setting = () => {
 
   return (
     <View style={{flex: 1}}>
-      <Background/>
+      <Background />
 
       {/** Setting Cointainer */}
 
@@ -88,17 +89,23 @@ const Setting = () => {
                 marginTop: heightPercentageToDP(2),
                 borderRadius: heightPercentageToDP(1),
               }}>
-              <MaterialCommunityIcons
-                name={'account'}
-                size={heightPercentageToDP(3)}
-                color={COLORS.white}
-              />
+              <LinearGradient
+                colors={[COLORS.lightWhite, COLORS.white_s]}
+                className="rounded-xl p-1">
+                <MaterialCommunityIcons
+                  name={'account'}
+                  size={heightPercentageToDP(3)}
+                  color={COLORS.gray2}
+                />
+              </LinearGradient>
               <Text
                 style={{
                   marginStart: heightPercentageToDP(1),
                   flex: 1,
-                  fontFamily: FONT.SF_PRO_REGULAR,
+                  fontFamily: FONT.Montserrat_Regular,
+                  fontSize: heightPercentageToDP(2),
                   color: COLORS.darkGray,
+                  
                 }}>
                 Update Profile
               </Text>
@@ -121,19 +128,25 @@ const Setting = () => {
                 marginTop: heightPercentageToDP(2),
                 borderRadius: heightPercentageToDP(1),
               }}>
-              <MaterialCommunityIcons
-                name={'account'}
-                size={heightPercentageToDP(3)}
-                color={COLORS.white}
-              />
+              
+              <LinearGradient
+                colors={[COLORS.lightWhite, COLORS.white_s]}
+                className="rounded-xl p-1">
+                <MaterialCommunityIcons
+                  name={'gamepad-variant-outline'}
+                  size={heightPercentageToDP(3)}
+                  color={COLORS.gray2}
+                />
+              </LinearGradient>
               <Text
                 style={{
                   marginStart: heightPercentageToDP(1),
                   flex: 1,
-                  fontFamily: FONT.SF_PRO_REGULAR,
+                  fontFamily: FONT.Montserrat_Regular,
+                  fontSize: heightPercentageToDP(2),
                   color: COLORS.darkGray,
                 }}>
-                Game Setting
+                Game Description
               </Text>
 
               <Ionicons
@@ -154,16 +167,21 @@ const Setting = () => {
                 marginTop: heightPercentageToDP(2),
                 borderRadius: heightPercentageToDP(1),
               }}>
-              <MaterialCommunityIcons
-                name={'account'}
-                size={heightPercentageToDP(3)}
-                color={COLORS.white}
-              />
+              <LinearGradient
+                colors={[COLORS.lightWhite, COLORS.white_s]}
+                className="rounded-xl p-1">
+                <AntDesign
+                  name={'infocirlceo'}
+                  size={heightPercentageToDP(3)}
+                  color={COLORS.gray2}
+                />
+              </LinearGradient>
               <Text
                 style={{
                   marginStart: heightPercentageToDP(1),
                   flex: 1,
-                  fontFamily: FONT.SF_PRO_REGULAR,
+                  fontFamily: FONT.Montserrat_Regular,
+                  fontSize: heightPercentageToDP(2),
                   color: COLORS.darkGray,
                 }}>
                 About Us
@@ -188,16 +206,21 @@ const Setting = () => {
                 borderRadius: heightPercentageToDP(1),
                 marginTop: heightPercentageToDP(2),
               }}>
-              <AntDesign
-                name={'logout'}
-                size={heightPercentageToDP(3)}
-                color={COLORS.white}
-              />
+               <LinearGradient
+                colors={[COLORS.lightWhite, COLORS.white_s]}
+                className="rounded-xl p-1">
+                <Entypo
+                  name={'location'}
+                  size={heightPercentageToDP(3)}
+                  color={COLORS.gray2}
+                />
+              </LinearGradient>
               <Text
                 style={{
                   marginStart: heightPercentageToDP(1),
                   flex: 1,
-                  fontFamily: FONT.SF_PRO_REGULAR,
+                  fontFamily: FONT.Montserrat_Regular,
+                  fontSize: heightPercentageToDP(2),
                   color: COLORS.darkGray,
                 }}>
                 Create Location
@@ -222,16 +245,21 @@ const Setting = () => {
                 borderRadius: heightPercentageToDP(1),
                 marginTop: heightPercentageToDP(2),
               }}>
-              <AntDesign
-                name={'logout'}
-                size={heightPercentageToDP(3)}
-                color={COLORS.white}
-              />
+              <LinearGradient
+                colors={[COLORS.lightWhite, COLORS.white_s]}
+                className="rounded-xl p-1">
+                <Entypo
+                  name={'time-slot'}
+                  size={heightPercentageToDP(3)}
+                  color={COLORS.gray2}
+                />
+              </LinearGradient>
               <Text
                 style={{
                   marginStart: heightPercentageToDP(1),
                   flex: 1,
-                  fontFamily: FONT.SF_PRO_REGULAR,
+                  fontFamily: FONT.Montserrat_Regular,
+                  fontSize: heightPercentageToDP(2),
                   color: COLORS.darkGray,
                 }}>
                 Create Time
@@ -256,16 +284,21 @@ const Setting = () => {
                 borderRadius: heightPercentageToDP(1),
                 marginTop: heightPercentageToDP(2),
               }}>
-              <AntDesign
-                name={'logout'}
-                size={heightPercentageToDP(3)}
-                color={COLORS.white}
-              />
+              <LinearGradient
+                colors={[COLORS.lightWhite, COLORS.white_s]}
+                className="rounded-xl p-1">
+                <Fontisto
+                  name={'date'}
+                  size={heightPercentageToDP(3)}
+                  color={COLORS.gray2}
+                />
+              </LinearGradient>
               <Text
                 style={{
                   marginStart: heightPercentageToDP(1),
                   flex: 1,
-                  fontFamily: FONT.SF_PRO_REGULAR,
+                  fontFamily: FONT.Montserrat_Regular,
+                  fontSize: heightPercentageToDP(2),
                   color: COLORS.darkGray,
                 }}>
                 Create Date
@@ -290,16 +323,21 @@ const Setting = () => {
                 borderRadius: heightPercentageToDP(1),
                 marginTop: heightPercentageToDP(2),
               }}>
-              <AntDesign
-                name={'logout'}
-                size={heightPercentageToDP(3)}
-                color={COLORS.white}
-              />
+               <LinearGradient
+                colors={[COLORS.lightWhite, COLORS.white_s]}
+                className="rounded-xl p-1">
+                <Entypo
+                  name={'trophy'}
+                  size={heightPercentageToDP(3)}
+                  color={COLORS.gray2}
+                />
+              </LinearGradient>
               <Text
                 style={{
                   marginStart: heightPercentageToDP(1),
                   flex: 1,
-                  fontFamily: FONT.SF_PRO_REGULAR,
+                  fontFamily: FONT.Montserrat_Regular,
+                  fontSize: heightPercentageToDP(2),
                   color: COLORS.darkGray,
                 }}>
                 Create Result
@@ -323,11 +361,16 @@ const Setting = () => {
                 borderRadius: heightPercentageToDP(1),
                 marginTop: heightPercentageToDP(2),
               }}>
-              <AntDesign
+                 <LinearGradient
+                colors={[COLORS.lightWhite, COLORS.white_s]}
+                className="rounded-xl p-1">
+                 <AntDesign
                 name={'logout'}
                 size={heightPercentageToDP(3)}
-                color={COLORS.white}
+                color={COLORS.gray2}
               />
+              </LinearGradient>
+             
               <Text
                 style={{
                   marginStart: heightPercentageToDP(1),

@@ -24,6 +24,9 @@ export const userReducer = createReducer(
       })
       .addCase('allUserRequest', state => {
         state.loadingAll = true;
+      })
+      .addCase('updateWalletRequest', state => {
+        state.loading = true;
       });
 
 
@@ -48,7 +51,12 @@ export const userReducer = createReducer(
       .addCase('allUserSuccess', (state, action) => {
         state.loadingAll = false;
         state.allusers = action.payload;
+      })
+      .addCase('updateWalletSuccess', (state, action) => {
+        state.loading = false;
+        state.message = action.payload;
       });
+
     builder
       .addCase('loginFail', (state, action) => {
         state.loading = false;
@@ -65,7 +73,13 @@ export const userReducer = createReducer(
       .addCase('allUserFail', (state, action) => {
         state.loadingAll = false;
         state.error = action.payload;
+      })
+      .addCase('updateWalletFail', (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
       });
+
+
     builder.addCase('registerFail', (state, action) => {
       state.loading = false;
       state.error = action.payload;

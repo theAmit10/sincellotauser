@@ -14,6 +14,7 @@ const RESULT_API = server + 'result/searchresult';
 
 // All User modification api
 const ALL_USERS_API = server + 'user/alluser';
+const USER_WALLET_MODIFICATION_API = server + 'user/wallet';
 
 // Creating through Admin FOR LOCATION
 const CREATE_LOCATION_API = server + 'result/addlotlocation';
@@ -75,4 +76,5 @@ export default {
   DELETE_RESULT_API,
   GET_ALL_RESULT_ACCORDING_TO_LOCATION_TIME_DATE_API,
   ALL_USERS_API,
+  USER_WALLET_MODIFICATION_API
 };

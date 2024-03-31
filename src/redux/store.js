@@ -18,3 +18,4 @@ export const store = configureStore({
 })
 
 export const server = "https://sincelott.onrender.com/api/v1/"
+export const serverName = "https://sincelott.onrender.com/"

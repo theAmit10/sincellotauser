@@ -19,6 +19,7 @@ import {check, request, PERMISSIONS, RESULTS} from 'react-native-permissions';
 import Toast from 'react-native-toast-message';
 import DocumentPicker from 'react-native-document-picker';
 import ImageResizer from '@bam.tech/react-native-image-resizer';
+import LinearGradient from 'react-native-linear-gradient';
 
 const AdminBackground = () => {
   const navigation = useNavigation();
@@ -136,21 +137,21 @@ const AdminBackground = () => {
       </View>
 
       <TouchableOpacity
-          onPress={() => navigation.navigate('Setting')}
-          className="rounded-md p-2"
-          style={{
-            backgroundColor: COLORS.grayHalfBg,
-            width: widthPercentageToDP(10),
-            margin: heightPercentageToDP(2),
-            position: 'absolute',
-            right: heightPercentageToDP(2),
-          }}>
-          <Ionicons
-            name={'settings-outline'}
-            size={heightPercentageToDP(3)}
-            color={COLORS.black}
-          />
-        </TouchableOpacity>
+        onPress={() => navigation.navigate('Setting')}
+        className="rounded-md p-2"
+        style={{
+          backgroundColor: COLORS.grayHalfBg,
+          width: widthPercentageToDP(10),
+          margin: heightPercentageToDP(2),
+          position: 'absolute',
+          right: heightPercentageToDP(2),
+        }}>
+        <Ionicons
+          name={'settings-outline'}
+          size={heightPercentageToDP(3)}
+          color={COLORS.black}
+        />
+      </TouchableOpacity>
 
       <View
         style={{
@@ -214,16 +215,17 @@ const AdminBackground = () => {
 
         {/** Email */}
 
-        <View
+        <LinearGradient
+          colors={[COLORS.darkGray, COLORS.white_s]}
           style={{
             width: heightPercentageToDP(15),
             height: heightPercentageToDP(20),
-            backgroundColor: COLORS.grayHalfBg,
+
             position: 'absolute',
             zIndex: 1,
             borderTopLeftRadius: heightPercentageToDP(5),
             borderBottomLeftRadius: heightPercentageToDP(5),
-          }}></View>
+          }}></LinearGradient>
       </View>
       <View
         style={{
@@ -232,14 +234,13 @@ const AdminBackground = () => {
           height: heightPercentageToDP(30),
           opacity: 80,
         }}>
-        
-
-        <View
+        <LinearGradient
+          colors={[COLORS.darkGray, COLORS.white_s]}
           className="rounded-full h-5 w-5"
           style={{
             margin: heightPercentageToDP(3),
             backgroundColor: COLORS.background,
-          }}></View>
+          }}></LinearGradient>
       </View>
     </View>
   );

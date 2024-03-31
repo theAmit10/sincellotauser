@@ -98,7 +98,7 @@ const Search = () => {
             height: heightPercentageToDP(15),
             margin: heightPercentageToDP(2),
           }}>
-          <GradientText style={styles.textStyle}>Search</GradientText>
+          <GradientText style={styles.textStyle}>All Locations</GradientText>
 
           <View
             style={{
@@ -170,6 +170,32 @@ const Search = () => {
 
         {/** Bottom Submit Container */}
 
+        <View
+          style={{
+            marginBottom: heightPercentageToDP(5),
+            marginHorizontal: heightPercentageToDP(2),
+            marginTop: heightPercentageToDP(2),
+          }}>
+          {/** Email container */}
+
+          <TouchableOpacity
+            onPress={() => navigation.navigate("CreateLocation")}
+            style={{
+              backgroundColor: COLORS.blue,
+              padding: heightPercentageToDP(2),
+              borderRadius: heightPercentageToDP(1),
+              alignItems: 'center',
+            }}>
+            <Text
+              style={{
+                color: COLORS.white,
+                fontFamily: FONT.Montserrat_Regular,
+              }}>
+              Create Location
+            </Text>
+          </TouchableOpacity>
+        </View> 
+
        
 
         
@@ -207,28 +233,3 @@ const styles = StyleSheet.create({
 
 
 
-// {/* <View
-//           style={{
-//             marginBottom: heightPercentageToDP(5),
-//             marginHorizontal: heightPercentageToDP(2),
-//             marginTop: heightPercentageToDP(2),
-//           }}>
-//           {/** Email container */}
-
-//           <TouchableOpacity
-//             onPress={submitHandler}
-//             style={{
-//               backgroundColor: COLORS.blue,
-//               padding: heightPercentageToDP(2),
-//               borderRadius: heightPercentageToDP(1),
-//               alignItems: 'center',
-//             }}>
-//             <Text
-//               style={{
-//                 color: COLORS.white,
-//                 fontFamily: FONT.Montserrat_Regular,
-//               }}>
-//               Submit
-//             </Text>
-//           </TouchableOpacity>
-//         </View> */}

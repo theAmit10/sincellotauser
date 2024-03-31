@@ -27,6 +27,7 @@ import CreateResult from '../screens/CreateResult';
 import AdminDashboard from '../screens/AdminDashboard';
 import AllUsers from '../screens/AllUsers';
 import UserDetails from '../screens/UserDetails';
+import EditUserWallet from '../screens/EditUserWallet';
 
 
 const Stack = createNativeStackNavigator()
@@ -68,6 +69,7 @@ const Main = () => {
                 <Stack.Screen  name="AdminDashboard" component={AdminDashboard}/>
                 <Stack.Screen  name="AllUsers" component={AllUsers}/>
                 <Stack.Screen  name="UserDetails" component={UserDetails}/>
+                <Stack.Screen  name="EditUserWallet" component={EditUserWallet}/>
 
             </Stack.Group>
         </Stack.Navigator>

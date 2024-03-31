@@ -94,37 +94,6 @@ const Profile = () => {
 
       {/** Profile Cointainer */}
 
-      <View
-        style={{
-          height: heightPercentageToDP(19),
-          backgroundColor: COLORS.white_s,
-          marginBottom: heightPercentageToDP(1),
-        }}>
-        {loading ? (
-          <Loading />
-        ) : (
-          user && (
-            <View style={{justifyContent: 'center', alignItems: 'center'}}>
-              <ScrollView
-                horizontal={true}
-                showsHorizontalScrollIndicator={false}>
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    marginHorizontal: heightPercentageToDP(1),
-                  }}>
-                  {user.walletOne.visibility && (
-                    <Wallet wallet={user.walletOne} />
-                  )}
-                  {user.walletTwo.visibility && (
-                    <Wallet wallet={user.walletTwo} />
-                  )}
-                </View>
-              </ScrollView>
-            </View>
-          )
-        )}
-      </View>
 
       <View
         style={{
@@ -173,6 +142,7 @@ const Profile = () => {
                 alignItems: 'center',
                 paddingHorizontal: heightPercentageToDP(2),
                 borderRadius: heightPercentageToDP(1),
+                
               }}>
               <MaterialCommunityIcons
                 name={'account'}
@@ -183,8 +153,9 @@ const Profile = () => {
                 style={{
                   marginStart: heightPercentageToDP(1),
                   flex: 1,
-                  fontFamily: FONT.SF_PRO_REGULAR,
-                  color: COLORS.darkGray
+                  fontFamily: FONT.Montserrat_Regular,
+                  color: COLORS.darkGray,
+                  fontSize: heightPercentageToDP(2)
                 }}>
                 Update Profile
               </Text>
@@ -216,8 +187,10 @@ const Profile = () => {
                 style={{
                   marginStart: heightPercentageToDP(1),
                   flex: 1,
-                  fontFamily: FONT.SF_PRO_REGULAR,
-                  color: COLORS.darkGray
+                  fontFamily: FONT.Montserrat_Regular,
+                  color: COLORS.darkGray,
+                  fontSize: heightPercentageToDP(2)
+                  
                 }}>
                 Change Password
               </Text>
@@ -249,8 +222,9 @@ const Profile = () => {
                 style={{
                   marginStart: heightPercentageToDP(1),
                   flex: 1,
-                  fontFamily: FONT.SF_PRO_REGULAR,
-                  color: COLORS.darkGray
+                  fontFamily: FONT.Montserrat_Regular,
+                  color: COLORS.darkGray,
+                  fontSize: heightPercentageToDP(2)
                 }}>
                 Logout
               </Text>
