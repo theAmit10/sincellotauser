@@ -36,7 +36,7 @@ const SplashScreen = () => {
           //   } else {
           //     navigation.navigate('Login');
           //   }
-          navigation.navigate('Home');
+          navigation.navigate('AdminDashboard');
 
           } else {
             navigation.navigate('Login');

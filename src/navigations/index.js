@@ -24,6 +24,9 @@ import CreateLocation from '../screens/CreateLocation';
 import CreateTime from '../screens/CreateTime';
 import CreateDate from '../screens/CreateDate';
 import CreateResult from '../screens/CreateResult';
+import AdminDashboard from '../screens/AdminDashboard';
+import AllUsers from '../screens/AllUsers';
+import UserDetails from '../screens/UserDetails';
 
 
 const Stack = createNativeStackNavigator()
@@ -62,6 +65,9 @@ const Main = () => {
                 <Stack.Screen  name="CreateTime" component={CreateTime}/>
                 <Stack.Screen  name="CreateDate" component={CreateDate}/>
                 <Stack.Screen  name="CreateResult" component={CreateResult}/>
+                <Stack.Screen  name="AdminDashboard" component={AdminDashboard}/>
+                <Stack.Screen  name="AllUsers" component={AllUsers}/>
+                <Stack.Screen  name="UserDetails" component={UserDetails}/>
 
             </Stack.Group>
         </Stack.Navigator>

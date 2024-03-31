@@ -21,6 +21,7 @@ import {useNavigation} from '@react-navigation/native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import Background from '../components/background/Background';
 
 const Setting = () => {
   const navigation = useNavigation();
@@ -37,9 +38,9 @@ const Setting = () => {
 
   return (
     <View style={{flex: 1}}>
-      <LoginBackground />
+      <Background/>
 
-      {/** Login Cointainer */}
+      {/** Setting Cointainer */}
 
       <View
         style={{

@@ -174,5 +174,36 @@ export const getUserAccessToken = (token) => async dispatch => {
   }
 };
 
+
+
+// Load All USERS
+export const loadAllUsers = (accesstoken) => async dispatch => {
+try {
+  dispatch({
+    type: 'allUserRequest',
+  });
+
+  const {data} = await axios.get(UrlHelper.ALL_USERS_API, {
+    headers: {
+      Authorization: `Bearer ${accesstoken}`,
+    },
+  });
+
+  dispatch({
+    type: 'allUserSuccess',
+    payload: data.users,
+  });
+} catch (error) {
+  console.log(error);
+  console.log(error.response);
+
+  dispatch({
+    type: 'loadUserFail',
+    payload: error.response.data.message,
+  });
+}
+};
+
+
   
   

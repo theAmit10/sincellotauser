@@ -61,6 +61,7 @@ export const getTimeDetails = (accesstoken,id) => async dispatch => {
   };
 
 
+  
   export const getTimeAccordingLocation = (accesstoken,id) => async dispatch => {
     try {
       dispatch({
@@ -93,3 +94,42 @@ export const getTimeDetails = (accesstoken,id) => async dispatch => {
       });
     }
   };
+
+  // For Creating Location 
+  export const createLocation = (accesstoken,lotlocation) => async dispatch => {
+    try {
+      dispatch({
+        type: 'createTimeRequest',
+      });
+  
+      const {data} = await axios.get(UrlHelper.CREATE_LOCATION_API, 
+        {
+          
+            lotlocation
+          
+        },
+        {
+        headers: {
+          Authorization: `Bearer ${accesstoken}`,
+          'Content-Type': 'application/json',
+        }
+        
+      });
+  
+      console.log('Data :: ' + data.message);
+  
+      dispatch({ 
+        type: 'createTimeSuccess',
+        payload: data.message,
+      });
+    } catch (error) {
+      console.log(error);
+      console.log(error.response.data.message);
+  
+      dispatch({
+        type: 'createTimeFail',
+        payload: error.response.data.message,
+      });
+    }
+  };
+
