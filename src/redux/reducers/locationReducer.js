@@ -52,5 +52,8 @@ export const locationReducer = createReducer(
     builder.addCase('clearMessage', state => {
       state.locations = [];
     });
+    builder.addCase('clearCreateLocationMessage', state => {
+      state.location = {};
+    });
   },
 );

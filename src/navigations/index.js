@@ -28,6 +28,15 @@ import AdminDashboard from '../screens/AdminDashboard';
 import AllUsers from '../screens/AllUsers';
 import UserDetails from '../screens/UserDetails';
 import EditUserWallet from '../screens/EditUserWallet';
+import GameDescription from '../screens/GameDescription';
+import GameDescritptionDetails from '../screens/GameDescritptionDetails';
+import LocationDescription from '../screens/LocationDescription';
+import Onboard from '../screens/Onboard';
+import UpdateLocation from '../screens/UpdateLocation';
+import UpdateTime from '../screens/UpdateTime';
+import UpdateDate from '../screens/UpdateDate';
+import UpdateResult from '../screens/UpdateResult';
+
 
 
 const Stack = createNativeStackNavigator()
@@ -70,6 +79,14 @@ const Main = () => {
                 <Stack.Screen  name="AllUsers" component={AllUsers}/>
                 <Stack.Screen  name="UserDetails" component={UserDetails}/>
                 <Stack.Screen  name="EditUserWallet" component={EditUserWallet}/>
+                <Stack.Screen  name="GameDescription" component={GameDescription}/>
+                <Stack.Screen  name="GameDescritptionDetails" component={GameDescritptionDetails}/>
+                <Stack.Screen  name="LocationDescription" component={LocationDescription}/>
+                <Stack.Screen  name="Onboard" component={Onboard}/>
+                <Stack.Screen  name="UpdateLocation" component={UpdateLocation}/>
+                <Stack.Screen  name="UpdateTime" component={UpdateTime}/>
+                <Stack.Screen  name="UpdateDate" component={UpdateDate}/>
+                <Stack.Screen  name="UpdateResult" component={UpdateResult}/>
 
             </Stack.Group>
         </Stack.Navigator>

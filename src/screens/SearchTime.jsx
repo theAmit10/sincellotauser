@@ -6,50 +6,51 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   heightPercentageToDP,
   widthPercentageToDP,
 } from 'react-native-responsive-screen';
-import { COLORS, FONT } from '../../assets/constants';
+import {COLORS, FONT} from '../../assets/constants';
 import GradientText from '../components/helpercComponent/GradientText';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import Toast from 'react-native-toast-message';
-import { useIsFocused, useNavigation } from '@react-navigation/native';
+import {useIsFocused, useNavigation} from '@react-navigation/native';
 import Background from '../components/background/Background';
 import Loading from '../components/helpercComponent/Loading';
-import { useDispatch, useSelector } from 'react-redux';
-import { getAllDate } from '../redux/actions/dateAction';
-import { getTimeAccordingLocation } from '../redux/actions/timeAction';
+import {useDispatch, useSelector} from 'react-redux';
+import {getAllDate} from '../redux/actions/dateAction';
+import {getTimeAccordingLocation} from '../redux/actions/timeAction';
+import NoDataFound from '../components/helpercComponent/NoDataFound';
 
-const SearchTime = ({ route }) => {
+const SearchTime = ({route}) => {
   const navigation = useNavigation();
 
-  const { locationdata } = route.params;
+  const {locationdata} = route.params;
 
-  console.log(locationdata)
+  console.log(locationdata);
 
   const [searchData, setSearchData] = useState('');
 
   const [showLoading, setLoading] = useState(false);
 
   const [data, setData] = useState([
-    { id: '1', title: '08 : 00 AM' },
-    { id: '2', title: '10 : 00 AM' },
-    { id: '3', title: '12 : 00 PM' },
-    { id: '4', title: '02 : 00 PM' },
-    { id: '5', title: '04 : 00 PM' },
-    { id: '6', title: '06 : 00 PM' },
-    { id: '7', title: '08 : 00 PM' },
-    { id: '8', title: '10 : 00 PM' },
+    {id: '1', title: '08 : 00 AM'},
+    {id: '2', title: '10 : 00 AM'},
+    {id: '3', title: '12 : 00 PM'},
+    {id: '4', title: '02 : 00 PM'},
+    {id: '5', title: '04 : 00 PM'},
+    {id: '6', title: '06 : 00 PM'},
+    {id: '7', title: '08 : 00 PM'},
+    {id: '8', title: '10 : 00 PM'},
   ]);
 
   const dispatch = useDispatch();
 
-  const { accesstoken } = useSelector(state => state.user);
-  const { loading, times } = useSelector(state => state.time);
+  const {accesstoken} = useSelector(state => state.user);
+  const {loading, times} = useSelector(state => state.time);
   const [filteredData, setFilteredData] = useState([]);
-  
+
   const handleSearch = text => {
     const filtered = times.filter(item =>
       item.lottime.toLowerCase().includes(text.toLowerCase()),
@@ -57,24 +58,18 @@ const SearchTime = ({ route }) => {
     setFilteredData(filtered);
   };
 
-  const focused = useIsFocused()
-
+  const focused = useIsFocused();
 
   useEffect(() => {
-    dispatch(getTimeAccordingLocation(accesstoken,locationdata._id))
-  },[dispatch,focused])
-
+    dispatch(getTimeAccordingLocation(accesstoken, locationdata._id));
+  }, [dispatch, focused]);
 
   useEffect(() => {
     setFilteredData(times); // Update filteredData whenever locations change
   }, [times]);
 
-
-  console.log("times :: "+times)
-  console.log("Filter length :: "+filteredData.length)
-
- 
-
+  console.log('times :: ' + times);
+  console.log('Filter length :: ' + filteredData.length);
 
   const submitHandler = () => {
     Toast.show({
@@ -84,11 +79,10 @@ const SearchTime = ({ route }) => {
   };
 
   return (
-    <View style={{ flex: 1 }}>
+    <View style={{flex: 1}}>
       <Background />
 
       {/** Main Cointainer */}
-
 
       <View
         style={{
@@ -116,8 +110,6 @@ const SearchTime = ({ route }) => {
         </View>
 
         {/** Content Container */}
-
-
 
         <View
           style={{
@@ -148,7 +140,7 @@ const SearchTime = ({ route }) => {
                 marginStart: heightPercentageToDP(1),
                 flex: 1,
                 fontFamily: FONT.SF_PRO_REGULAR,
-                fontSize: heightPercentageToDP(2)
+                fontSize: heightPercentageToDP(2),
               }}
               placeholder="Search for time"
               label="Search"
@@ -157,27 +149,39 @@ const SearchTime = ({ route }) => {
           </View>
         </View>
 
-        <View style={{ margin: heightPercentageToDP(2) }}>
-          <GradientText style={styles.textStyle}>{locationdata.lotlocation}</GradientText>
+        <View style={{margin: heightPercentageToDP(2)}}>
+          <GradientText style={styles.textStyle}>
+            {locationdata.lotlocation}
+          </GradientText>
         </View>
 
         <View
           style={{
             flex: 2,
           }}>
-          {
-            loading ? (<Loading />) : (<FlatList
+          {loading ? (
+            <Loading />
+          ) : filteredData.length === 0 ? (
+            <View style={{margin: heightPercentageToDP(2)}}>
+              <NoDataFound data={'No data available'} />
+            </View>
+          ) : (
+            <FlatList
               data={filteredData}
-              renderItem={({ item, index }) => (
+              renderItem={({item, index}) => (
                 <TouchableOpacity
-                  onPress={() => navigation.navigate("SearchDate",{
-                    timedata: item,
-                    locationdata: locationdata,
-                  })}
+                  onPress={() =>
+                    navigation.navigate('SearchDate', {
+                      timedata: item,
+                      locationdata: locationdata,
+                    })
+                  }
                   style={{
                     ...styles.item,
                     backgroundColor:
-                      index % 2 === 0 ? COLORS.lightDarkGray : COLORS.grayHalfBg,
+                      index % 2 === 0
+                        ? COLORS.lightDarkGray
+                        : COLORS.grayHalfBg,
                   }}>
                   <Text
                     style={{
@@ -193,14 +197,42 @@ const SearchTime = ({ route }) => {
               initialNumToRender={10} // Render initial 10 items
               maxToRenderPerBatch={10} // Batch size to render
               windowSize={10} // Number of items kept in memory
-            />)
-          }
-
+            />
+          )}
         </View>
 
-        {/** Bottom Submit Container */}
+         {/** Bottom Submit Container */}
 
-        
+         
+
+         <View
+          style={{
+            marginBottom: heightPercentageToDP(5),
+            marginHorizontal: heightPercentageToDP(2),
+            marginTop: heightPercentageToDP(2),
+          }}>
+          {/** Email container */}
+
+          <TouchableOpacity
+            onPress={() => navigation.navigate('CreateTime', {
+              locationdata: locationdata,
+            })}
+            
+            style={{
+              backgroundColor: COLORS.blue,
+              padding: heightPercentageToDP(2),
+              borderRadius: heightPercentageToDP(1),
+              alignItems: 'center',
+            }}>
+            <Text
+              style={{
+                color: COLORS.white,
+                fontFamily: FONT.Montserrat_Regular,
+              }}>
+              Create Time
+            </Text>
+          </TouchableOpacity>
+        </View>
 
         {/** end */}
       </View>
@@ -232,7 +264,6 @@ const styles = StyleSheet.create({
     fontFamily: FONT.SF_PRO_MEDIUM,
   },
 });
-
 
 // {/* <View
 //           style={{

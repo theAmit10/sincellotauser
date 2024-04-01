@@ -4,13 +4,17 @@ import { createReducer } from "@reduxjs/toolkit";
 export const dateReducer = createReducer({
     loading:false,
     dates: [],
-    date: {}
+    date: {},
+    
 },(builder)=>{
     
     builder.addCase("getAllDateRequest",(state) => {
         state.loading = true;
     })
     .addCase("getDateRequest",(state) => {
+        state.loading = true;
+    })
+    .addCase("createDateRequest",(state) => {
         state.loading = true;
     })
     
@@ -22,12 +26,20 @@ export const dateReducer = createReducer({
         state.loading = false;
         state.date = action.payload;
     })
+    .addCase("createDateSuccess",(state,action) => {
+        state.loading = false;
+        state.message = action.payload;
+    })
     
     builder.addCase("getAllDateFail",(state,action) => {
         state.loading = false;
         state.error = action.payload;
     })
     .addCase("getDateFail",(state,action) => {
+        state.loading = false;
+        state.error = action.payload;
+    })
+    .addCase("createDateFail",(state,action) => {
         state.loading = false;
         state.error = action.payload;
     })
@@ -39,5 +51,9 @@ export const dateReducer = createReducer({
     builder.addCase("clearMessage",(state) => { 
         state.dates = []
     });
+    builder.addCase("clearCreateDateessage",(state) =>  
+        state.message = {}
+       
+    );
 
 })

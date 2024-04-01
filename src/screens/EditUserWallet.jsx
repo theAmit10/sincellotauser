@@ -39,9 +39,7 @@ const EditUserWallet = ({route}) => {
   const {accesstoken} = useSelector(state => state.user);
 
   const toggleVisibility = () => {
-   
     setWalletVisibility(!walletVisibilty);
-    console.log('COOL : ' + walletVisibilty);
   };
 
   const submitHandler = async () => {
@@ -87,20 +85,7 @@ const EditUserWallet = ({route}) => {
     }
   };
 
-  //   const submitHandler = () => {
-  //     console.log('Working on login ');
-  //     if (!amount) {
-  //       Toast.show({
-  //         type: 'error',
-  //         text1: 'Please Enter Amount',
-  //       });
-  //     } else {
-  //       Toast.show({
-  //         type: 'success',
-  //         text1: 'Processing ',
-  //       });
-  //     }
-  //   };
+ 
 
   const loading = false;
 

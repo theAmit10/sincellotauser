@@ -26,7 +26,7 @@ import Loading from '../components/helpercComponent/Loading';
 import NoDataFound from '../components/helpercComponent/NoDataFound';
 
 const Result = ({route}) => {
-  const {datedata} = route.params;
+  const {datedata,locationdata,timedata} = route.params;
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [passwordVisible, setPasswordVisible] = useState(false);
@@ -111,7 +111,33 @@ const Result = ({route}) => {
           <Loading />
         ) : (
           
-            filteredData.length == 0 ? (<NoDataFound data={"No Result Found"}/>) : (<View
+          filteredData.length == 0 ? (
+              <View style={{flex: 1,margin: heightPercentageToDP(2), justifyContent: 'space-between'}}>
+                <NoDataFound data={"No Result Found"}/>
+                 <TouchableOpacity
+                    onPress={() =>
+                      navigation.navigate('CreateResult', {
+                        datedata: datedata,
+                        locationdata: locationdata,
+                        timedata: timedata
+                      })}
+                  style={{
+                    backgroundColor: COLORS.blue,
+                    padding: heightPercentageToDP(2),
+                    borderRadius: heightPercentageToDP(1),
+                    alignItems: 'center',
+                  }}>
+                  <Text
+                    style={{
+                      color: COLORS.white,
+                      fontFamily: FONT.Montserrat_Regular,
+                    }}>
+                    Create Result
+                  </Text>
+                </TouchableOpacity>
+                </View>
+            
+            ) : (<View
               style={{
                 flex: 1,
                 margin: heightPercentageToDP(2),
@@ -231,6 +257,9 @@ const Result = ({route}) => {
                     Download
                   </Text>
                 </TouchableOpacity>
+
+                    
+
               </View>
             </View>)
           

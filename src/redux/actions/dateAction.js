@@ -91,3 +91,44 @@ export const getDateDetails = (accesstoken,id) => async dispatch => {
       });
     }
   };
+
+
+  // For Creating Date
+export const createDate =
+(accesstoken, lottime,lotdate) => async dispatch => {
+  try {
+    dispatch({
+      type: 'createDateRequest',
+    });
+
+    const {data} = await axios.post(
+      UrlHelper.CREATE_DATE_API,
+      {
+        lotdate,
+        lottime,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${accesstoken}`,
+          'Content-Type': 'application/json',
+        },
+      },
+    );
+
+    console.log('Data :: ' + data.message);
+
+    dispatch({
+      type: 'createDateSuccess',
+      payload: data.message,
+    });
+  } catch (error) {
+    console.log(error);
+    console.log(error.response.data.message);
+
+    dispatch({
+      type: 'createDatefail',
+      payload: error.response.data.message,
+    });
+  }
+};
+

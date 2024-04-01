@@ -33,7 +33,12 @@ const CreateLocation = () => {
     
     setEnterData("")
 
-  },[loading])
+    dispatch({
+      type: 'clearCreateLocationMessage',
+    });
+
+
+  },[loading,dispatch])
 
   const submitHandler = () => {
     console.log('Working on login ');
@@ -41,15 +46,12 @@ const CreateLocation = () => {
       Toast.show({
         type: 'error',
         text1: 'Please Enter Location Name',
-       
-
       });
     } else {
       Toast.show({
         type: 'success',
         text1: 'Processing '
       });
-
       dispatch(createLocation(accesstoken, enterData));
     }
   };

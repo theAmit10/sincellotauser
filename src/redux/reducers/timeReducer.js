@@ -4,7 +4,7 @@ import { createReducer } from "@reduxjs/toolkit";
 export const timeReducer = createReducer({
     loading:false,
     times: [],
-    time: {}
+    time: {},
 },(builder)=>{
     
     builder.addCase("getAllTimeRequest",(state) => {
@@ -50,5 +50,9 @@ export const timeReducer = createReducer({
     builder.addCase("clearMessage",(state) => { 
         state.times = []
     });
+    builder.addCase("clearCreateTimeMessage",(state) =>  
+        state.time = {}
+     
+    );
 
 })

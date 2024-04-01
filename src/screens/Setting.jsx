@@ -119,6 +119,7 @@ const Setting = () => {
 
             {/** Add  Game Setting */}
             <TouchableOpacity
+            onPress={() => navigation.navigate("GameDescription")}
               style={{
                 height: heightPercentageToDP(7),
                 flexDirection: 'row',
