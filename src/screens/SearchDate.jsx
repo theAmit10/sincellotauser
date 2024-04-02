@@ -23,6 +23,10 @@ import Loading from '../components/helpercComponent/Loading';
 import {useDispatch, useSelector} from 'react-redux';
 import {getDateAccordingToLocationAndTime} from '../redux/actions/dateAction';
 import NoDataFound from '../components/helpercComponent/NoDataFound';
+import LinearGradient from 'react-native-linear-gradient';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import UrlHelper from '../helper/UrlHelper';
+import axios from 'axios';
 
 const SearchDate = ({route}) => {
   const navigation = useNavigation();
@@ -77,6 +81,52 @@ const SearchDate = ({route}) => {
       text1: 'Searching',
     });
   };
+
+  const [selectedItem, setSelectedItem] = useState("");
+  const [showProgressBar, setProgressBar] = useState(false);
+
+  const deleteLocationHandler = async (item) => {
+    console.log("Item clicked :: "+item._id)
+    setProgressBar(true);
+    setSelectedItem(item._id)
+
+    
+
+    try {
+      const url = `${UrlHelper.DELETE_DATE_API}/${item._id}`;
+
+      console.log("URL :: "+url)
+
+      const {data} = await axios.delete(url, {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${accesstoken}`,
+        },
+      });
+
+      console.log('datat :: ' + data);
+
+      Toast.show({
+        type: 'success',
+        text1: data.message,
+      });
+      setProgressBar(false);
+
+      navigation.reset({
+        index: 0,
+        routes: [{name: 'AdminDashboard'}],
+      });
+    } catch (error) {
+      setProgressBar(false);
+      Toast.show({
+        type: 'error',
+        text1: 'Something went wrong',
+        text2: 'Please, try after sometime'
+      });
+      console.log(error);
+    }
+  };
+
 
   return (
     <View style={{flex: 1}}>
@@ -177,7 +227,7 @@ const SearchDate = ({route}) => {
                     navigation.navigate('Result', {
                       datedata: item,
                       locationdata: locationdata,
-                      timedata: timedata
+                      timedata: timedata,
                     })
                   }
                   style={{
@@ -187,14 +237,96 @@ const SearchDate = ({route}) => {
                         ? COLORS.lightDarkGray
                         : COLORS.grayHalfBg,
                   }}>
-                  <Text
+                  <View
                     style={{
-                      color: COLORS.black,
-                      fontFamily: FONT.HELVETICA_BOLD,
-                      fontSize: heightPercentageToDP(2),
+                      flexDirection: 'row',
+                      justifyContent: 'space-between',
                     }}>
-                    {item.lotdate}
-                  </Text>
+                    <Text
+                      style={{
+                        color: COLORS.black,
+                        fontFamily: FONT.HELVETICA_BOLD,
+                        fontSize: heightPercentageToDP(2),
+                      }}>
+                      {item.lotdate}
+                    </Text>
+
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        gap: heightPercentageToDP(2),
+                      }}>
+                      {/** Update Locatiion */}
+
+                      <TouchableOpacity
+                        onPress={() =>
+                          navigation.navigate('UpdateDate', {
+                            locationdata: locationdata,
+                            timedata: timedata,
+                            datedata: item,
+                          })
+                        }>
+                        {filteredData.length === 0 ? (
+                          selectedItem === item._id ? (
+                            <Loading />
+                          ) : (
+                            <LinearGradient
+                              colors={[COLORS.lightWhite, COLORS.white_s]}
+                              className="rounded-xl p-1">
+                              <MaterialCommunityIcons
+                                name={'circle-edit-outline'}
+                                size={heightPercentageToDP(3)}
+                                color={COLORS.darkGray}
+                              />
+                            </LinearGradient>
+                          )
+                        ) : (
+                          <LinearGradient
+                            colors={[COLORS.lightWhite, COLORS.white_s]}
+                            className="rounded-xl p-1">
+                            <MaterialCommunityIcons
+                              name={'circle-edit-outline'}
+                              size={heightPercentageToDP(3)}
+                              color={COLORS.darkGray}
+                            />
+                          </LinearGradient>
+                        )}
+                      </TouchableOpacity>
+
+                      {/** Delete Locatiion */}
+
+                      <TouchableOpacity
+                        onPress={() => deleteLocationHandler(item)}>
+                        {showProgressBar ? (
+                          selectedItem === item._id ? (
+                            <Loading />
+                          ) : (
+                            <LinearGradient
+                              colors={[COLORS.lightWhite, COLORS.white_s]}
+                              className="rounded-xl p-1">
+                              <MaterialCommunityIcons
+                                name={'delete'}
+                                size={heightPercentageToDP(3)}
+                                color={COLORS.darkGray}
+                              />
+                            </LinearGradient>
+                          )
+                        ) : (
+                          <LinearGradient
+                            colors={[COLORS.lightWhite, COLORS.white_s]}
+                            className="rounded-xl p-1">
+                            <MaterialCommunityIcons
+                              name={'delete'}
+                              size={heightPercentageToDP(3)}
+                              color={COLORS.darkGray}
+                            />
+                          </LinearGradient>
+                        )}
+                      </TouchableOpacity>
+                    </View>
+                  </View>
                 </TouchableOpacity>
               )}
               keyExtractor={item => item._id}
@@ -206,8 +338,6 @@ const SearchDate = ({route}) => {
         </View>
 
         {/** Bottom Submit Container */}
-
-        
 
         <View
           style={{

@@ -27,9 +27,7 @@ import NoDataFound from '../components/helpercComponent/NoDataFound';
 
 const Result = ({route}) => {
   const {datedata,locationdata,timedata} = route.params;
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [passwordVisible, setPasswordVisible] = useState(false);
+
   const navigation = useNavigation();
 
   const dispatch = useDispatch();
@@ -242,7 +240,14 @@ const Result = ({route}) => {
                 </View>
   
                 <TouchableOpacity
-                  onPress={submitHandler}
+                  onPress={() =>
+                    navigation.navigate('UpdateResult', {
+                      locationdata: locationdata,
+                      timedata: timedata,
+                      datedata: datedata,
+                      resultdata: filteredData[0]
+                    })
+                  }
                   style={{
                     backgroundColor: COLORS.blue,
                     padding: heightPercentageToDP(2),
@@ -254,7 +259,7 @@ const Result = ({route}) => {
                       color: COLORS.white,
                       fontFamily: FONT.Montserrat_Regular,
                     }}>
-                    Download
+                    Update Result
                   </Text>
                 </TouchableOpacity>
 

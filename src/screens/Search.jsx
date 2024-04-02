@@ -32,7 +32,7 @@ const Search = () => {
 
   const {accesstoken} = useSelector(state => state.user);
   const {loading, locations} = useSelector(state => state.location);
-  const [selectedItem, setSelectedItem] = useState("");
+  
 
   // const [filteredData, setFilteredData] = useState(locations);
   const [filteredData, setFilteredData] = useState([]);
@@ -60,7 +60,8 @@ const Search = () => {
       text1: 'Searching',
     });
   };
-
+  
+  const [selectedItem, setSelectedItem] = useState("");
   const [showProgressBar, setProgressBar] = useState(false);
 
   const deleteLocationHandler = async (item) => {
@@ -245,7 +246,7 @@ const Search = () => {
                     onPress={() => deleteLocationHandler(item)}
                     >
                       {
-                        filteredData.length === 0 ? ( selectedItem === item._id ? (<Loading/>) :(<LinearGradient
+                        showProgressBar ? ( selectedItem === item._id ? (<Loading/>) :(<LinearGradient
                           colors={[COLORS.lightWhite, COLORS.white_s]}
                           className="rounded-xl p-1">
                           <MaterialCommunityIcons

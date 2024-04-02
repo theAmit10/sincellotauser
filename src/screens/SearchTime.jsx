@@ -22,13 +22,17 @@ import {useDispatch, useSelector} from 'react-redux';
 import {getAllDate} from '../redux/actions/dateAction';
 import {getTimeAccordingLocation} from '../redux/actions/timeAction';
 import NoDataFound from '../components/helpercComponent/NoDataFound';
+import LinearGradient from 'react-native-linear-gradient';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import UrlHelper from '../helper/UrlHelper';
+import axios from 'axios';
 
 const SearchTime = ({route}) => {
   const navigation = useNavigation();
 
   const {locationdata} = route.params;
 
-  console.log(locationdata);
+  // console.log(locationdata);
 
   const [searchData, setSearchData] = useState('');
 
@@ -68,8 +72,8 @@ const SearchTime = ({route}) => {
     setFilteredData(times); // Update filteredData whenever locations change
   }, [times]);
 
-  console.log('times :: ' + times);
-  console.log('Filter length :: ' + filteredData.length);
+  // console.log('times :: ' + times);
+  // console.log('Filter length :: ' + filteredData.length);
 
   const submitHandler = () => {
     Toast.show({
@@ -77,6 +81,47 @@ const SearchTime = ({route}) => {
       text1: 'Searching',
     });
   };
+
+  const [selectedItem, setSelectedItem] = useState("");
+  const [showProgressBar, setProgressBar] = useState(false);
+
+  const deleteLocationHandler = async (item) => {
+    console.log("Item clicked :: "+item._id)
+    setProgressBar(true);
+    setSelectedItem(item._id)
+
+    try {
+      const url = `${UrlHelper.DELETE_TIME_API}/${item._id}`;
+      const {data} = await axios.delete(url, {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${accesstoken}`,
+        },
+      });
+
+      console.log('datat :: ' + data);
+
+      Toast.show({
+        type: 'success',
+        text1: data.message,
+      });
+      setProgressBar(false);
+
+      navigation.reset({
+        index: 0,
+        routes: [{name: 'AdminDashboard'}],
+      });
+    } catch (error) {
+      setProgressBar(false);
+      Toast.show({
+        type: 'error',
+        text1: 'Something went wrong',
+        text2: 'Please, try after sometime'
+      });
+      console.log(error);
+    }
+  };
+
 
   return (
     <View style={{flex: 1}}>
@@ -183,6 +228,11 @@ const SearchTime = ({route}) => {
                         ? COLORS.lightDarkGray
                         : COLORS.grayHalfBg,
                   }}>
+                    <View
+                    style={{
+                      flexDirection: 'row',
+                      justifyContent: 'space-between',
+                    }}>
                   <Text
                     style={{
                       color: COLORS.black,
@@ -191,6 +241,72 @@ const SearchTime = ({route}) => {
                     }}>
                     {item.lottime}
                   </Text>
+
+                  <View style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center',gap: heightPercentageToDP(2)}}>
+                      {/** Update Locatiion */}
+
+                    <TouchableOpacity
+                    onPress={() => navigation.navigate('UpdateTime',{
+                      locationdata : locationdata,
+                      timedata: item,
+                    })}
+                    >
+                      {
+                        filteredData.length === 0 ? ( selectedItem === item._id ? (<Loading/>) :(<LinearGradient
+                          colors={[COLORS.lightWhite, COLORS.white_s]}
+                          className="rounded-xl p-1">
+                          <MaterialCommunityIcons
+                            name={'circle-edit-outline'}
+                            size={heightPercentageToDP(3)}
+                            color={COLORS.darkGray}
+                          />
+                        </LinearGradient>) ) : (
+                        <LinearGradient
+                          colors={[COLORS.lightWhite, COLORS.white_s]}
+                          className="rounded-xl p-1">
+                          <MaterialCommunityIcons
+                            name={'circle-edit-outline'}
+                            size={heightPercentageToDP(3)}
+                            color={COLORS.darkGray}
+                          />
+                        </LinearGradient>)
+                      }
+                      
+                    </TouchableOpacity>
+
+                      {/** Delete Locatiion */}
+
+                    <TouchableOpacity
+                    onPress={() => deleteLocationHandler(item)}
+                    >
+                      {
+                        showProgressBar ? ( selectedItem === item._id ? (<Loading/>) :(<LinearGradient
+                          colors={[COLORS.lightWhite, COLORS.white_s]}
+                          className="rounded-xl p-1">
+                          <MaterialCommunityIcons
+                            name={'delete'}
+                            size={heightPercentageToDP(3)}
+                            color={COLORS.darkGray}
+                          />
+                        </LinearGradient>) ) : (
+                        <LinearGradient
+                          colors={[COLORS.lightWhite, COLORS.white_s]}
+                          className="rounded-xl p-1">
+                          <MaterialCommunityIcons
+                            name={'delete'}
+                            size={heightPercentageToDP(3)}
+                            color={COLORS.darkGray}
+                          />
+                        </LinearGradient>)
+                      }
+                      
+                    </TouchableOpacity>
+
+
+                    </View>
+
+                    </View>
+
                 </TouchableOpacity>
               )}
               keyExtractor={item => item._id}
