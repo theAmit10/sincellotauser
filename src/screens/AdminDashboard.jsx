@@ -132,7 +132,7 @@ const AdminDashboard = () => {
               {/** All users container */}
 
               <TouchableOpacity
-                onPress={() => navigation.navigate('Onboard')}
+                onPress={() => navigation.navigate('AllUsers')}
                 style={{
                   height: heightPercentageToDP(15),
                   flexDirection: 'row',

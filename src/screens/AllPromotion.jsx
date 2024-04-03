@@ -1,0 +1,193 @@
+import {
+  FlatList,
+  Image,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from 'react-native';
+import React, {useEffect, useState} from 'react';
+
+import {
+  heightPercentageToDP,
+  widthPercentageToDP,
+} from 'react-native-responsive-screen';
+import {COLORS, FONT} from '../../assets/constants';
+import GradientText from '../components/helpercComponent/GradientText';
+import Fontisto from 'react-native-vector-icons/Fontisto';
+import Toast from 'react-native-toast-message';
+import {useIsFocused, useNavigation} from '@react-navigation/native';
+import Background from '../components/background/Background';
+import Loading from '../components/helpercComponent/Loading';
+import {useDispatch, useSelector} from 'react-redux';
+import {getAllLocations} from '../redux/actions/locationAction';
+import {getAllResult} from '../redux/actions/resultAction';
+import {loadAllPromotion} from '../redux/actions/userAction';
+import {serverName} from '../redux/store';
+
+const AllPromotion = () => {
+  const navigation = useNavigation();
+  const dispatch = useDispatch();
+
+  const {accesstoken, promotions, loadingPromotion} = useSelector(
+    state => state.user,
+  );
+  // const {loading, locations} = useSelector(state => state.location);
+
+  console.log('ALL Promtions ' + JSON.stringify(promotions));
+
+  const focused = useIsFocused();
+
+  useEffect(() => {
+    dispatch(loadAllPromotion(accesstoken));
+  }, [dispatch]);
+
+  const submitHandler = () => {
+    Toast.show({
+      type: 'success',
+      text1: 'Searching',
+    });
+  };
+
+  return (
+    <View style={{flex: 1}}>
+      <Background />
+
+      <View
+        style={{
+          margin: heightPercentageToDP(2),
+          backgroundColor: 'transparent',
+        }}>
+        <GradientText style={styles.textStyle}>All</GradientText>
+        <GradientText style={styles.textStyle}>Promotion</GradientText>
+      </View>
+
+      {/** Main Cointainer */}
+
+      <View
+        style={{
+          height: heightPercentageToDP(70),
+          width: widthPercentageToDP(100),
+          backgroundColor: COLORS.white_s,
+          borderTopLeftRadius: heightPercentageToDP(5),
+          borderTopRightRadius: heightPercentageToDP(5),
+        }}>
+        {/** Top Style View */}
+        <View
+          style={{
+            height: heightPercentageToDP(5),
+            width: widthPercentageToDP(100),
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}>
+          <View
+            style={{
+              width: widthPercentageToDP(20),
+              height: heightPercentageToDP(0.8),
+              backgroundColor: COLORS.grayBg,
+              borderRadius: heightPercentageToDP(2),
+            }}></View>
+        </View>
+
+        {/** Content Container */}
+
+        <View
+          style={{
+            flex: 2,
+          }}>
+          {loadingPromotion ? (
+            <Loading />
+          ) : (
+            <FlatList
+              data={promotions}
+              renderItem={({img, index}) => (
+                <TouchableOpacity
+                  style={{
+                    ...styles.item,
+                  }}>
+                  <View
+                    style={{
+                      backgroundColor: COLORS.grayHalfBg,
+                      height: heightPercentageToDP(20),
+                      borderRadius: heightPercentageToDP(2),
+                    }}>
+                    <Image
+                      source={{
+                        uri: `https://sincelott.onrender.com/uploads/promotion/${img?.url}`,
+                      }}
+                      resizeMode="cover"
+                      style={{
+                        height: heightPercentageToDP(20),
+                        width: '100%',
+                        borderRadius: heightPercentageToDP(2),
+                      }}
+                    />
+                  </View>
+                </TouchableOpacity>
+              )}
+              keyExtractor={item => item._id}
+              initialNumToRender={10} // Render initial 10 items
+              maxToRenderPerBatch={10} // Batch size to render
+              windowSize={10} // Number of items kept in memory
+            />
+          )}
+        </View>
+
+        {/** Bottom Submit Container */}
+
+        <View
+          style={{
+            marginBottom: heightPercentageToDP(5),
+            marginHorizontal: heightPercentageToDP(2),
+            marginTop: heightPercentageToDP(2),
+          }}>
+          {/** Email container */}
+
+          <TouchableOpacity
+            onPress={() => navigation.navigate('CreatePromotion')}
+            style={{
+              backgroundColor: COLORS.blue,
+              padding: heightPercentageToDP(2),
+              borderRadius: heightPercentageToDP(1),
+              alignItems: 'center',
+            }}>
+            <Text
+              style={{
+                color: COLORS.white,
+                fontFamily: FONT.Montserrat_Regular,
+              }}>
+              Create Promotion
+            </Text>
+          </TouchableOpacity>
+        </View>
+
+        {/** end */}
+      </View>
+    </View>
+  );
+};
+
+export default AllPromotion;
+
+const styles = StyleSheet.create({
+  textStyle: {
+    fontSize: heightPercentageToDP(4),
+    fontFamily: FONT.Montserrat_Bold,
+  },
+  container: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 20,
+    height: heightPercentageToDP(20),
+  },
+  item: {
+    marginVertical: heightPercentageToDP(1),
+    marginHorizontal: heightPercentageToDP(2),
+    borderRadius: heightPercentageToDP(1),
+  },
+  title: {
+    color: COLORS.white_s,
+    fontFamily: FONT.SF_PRO_MEDIUM,
+  },
+});

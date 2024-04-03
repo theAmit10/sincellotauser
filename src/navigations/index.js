@@ -36,6 +36,9 @@ import UpdateLocation from '../screens/UpdateLocation';
 import UpdateTime from '../screens/UpdateTime';
 import UpdateDate from '../screens/UpdateDate';
 import UpdateResult from '../screens/UpdateResult';
+import AllPromotion from '../screens/AllPromotion';
+import Notification from '../screens/Notification';
+import CreatePromotion from '../screens/CreatePromotion';
 
 
 
@@ -87,6 +90,9 @@ const Main = () => {
                 <Stack.Screen  name="UpdateTime" component={UpdateTime}/>
                 <Stack.Screen  name="UpdateDate" component={UpdateDate}/>
                 <Stack.Screen  name="UpdateResult" component={UpdateResult}/>
+                <Stack.Screen  name="AllPromotion" component={AllPromotion}/>
+                <Stack.Screen  name="Notification" component={Notification}/>
+                <Stack.Screen  name="CreatePromotion" component={CreatePromotion}/>
 
             </Stack.Group>
         </Stack.Navigator>

@@ -7,6 +7,8 @@ export const userReducer = createReducer(
     loading: false,
     loadingAll: false,
     allusers: [],
+    promotions: [],
+    loadingPromotion : false
   },
   builder => {
     builder
@@ -27,8 +29,10 @@ export const userReducer = createReducer(
       })
       .addCase('updateWalletRequest', state => {
         state.loading = true;
+      })
+      .addCase('getAllPromotionRequest', state => {
+        state.loadingPromotion = true;
       });
-
 
     builder
       .addCase('loginSuccess', (state, action) => {
@@ -55,6 +59,10 @@ export const userReducer = createReducer(
       .addCase('updateWalletSuccess', (state, action) => {
         state.loading = false;
         state.message = action.payload;
+      })
+      .addCase('getAllPromotionSuccess', (state, action) => {
+        state.loadingPromotion = false;
+        state.promotions = action.payload;
       });
 
     builder
@@ -77,8 +85,11 @@ export const userReducer = createReducer(
       .addCase('updateWalletFail', (state, action) => {
         state.loading = false;
         state.error = action.payload;
+      })
+      .addCase('getAllPromotionFail', (state, action) => {
+        state.loadingPromotion = false;
+        state.error = action.payload;
       });
-
 
     builder.addCase('registerFail', (state, action) => {
       state.loading = false;
@@ -94,7 +105,10 @@ export const userReducer = createReducer(
       state.message = null;
     });
     builder.addCase('clearAllUsers', state => {
-        state.allusers = [];
-      });
+      state.allusers = [];
+    });
+    builder.addCase('clearAllPromotion', state => {
+      state.promotions = [];
+    });
   },
 );

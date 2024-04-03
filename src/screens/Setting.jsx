@@ -80,6 +80,7 @@ const Setting = () => {
           <ScrollView showsVerticalScrollIndicator={false}>
             {/** Update Profile container */}
             <TouchableOpacity
+            onPress={() => navigation.navigate("UpdateProfile")}
               style={{
                 height: heightPercentageToDP(7),
                 flexDirection: 'row',
@@ -234,9 +235,90 @@ const Setting = () => {
               />
             </TouchableOpacity>
 
-            {/** Create Time */}
+            {/** Add Promotion */}
             <TouchableOpacity
-              onPress={() => navigation.navigate('CreateTime')}
+              onPress={() => navigation.navigate('AllPromotion')}
+              style={{
+                height: heightPercentageToDP(7),
+                flexDirection: 'row',
+                backgroundColor: COLORS.grayBg,
+                alignItems: 'center',
+                paddingHorizontal: heightPercentageToDP(2),
+                borderRadius: heightPercentageToDP(1),
+                marginTop: heightPercentageToDP(2),
+              }}>
+              <LinearGradient
+                colors={[COLORS.lightWhite, COLORS.white_s]}
+                className="rounded-xl p-1">
+                <Fontisto
+                  name={'date'}
+                  size={heightPercentageToDP(3)}
+                  color={COLORS.gray2}
+                />
+              </LinearGradient>
+              <Text
+                style={{
+                  marginStart: heightPercentageToDP(1),
+                  flex: 1,
+                  fontFamily: FONT.Montserrat_Regular,
+                  fontSize: heightPercentageToDP(2),
+                  color: COLORS.darkGray,
+                }}>
+                Add Promotion
+              </Text>
+
+              <Ionicons
+                name={'chevron-forward-outline'}
+                size={heightPercentageToDP(3)}
+                color={COLORS.white}
+              />
+            </TouchableOpacity>
+
+            {/** Add Notification */}
+            <TouchableOpacity
+              onPress={() => Toast.show({
+                type: 'info',
+                text1: 'You will get this feature with ios build'
+              })}
+              style={{
+                height: heightPercentageToDP(7),
+                flexDirection: 'row',
+                backgroundColor: COLORS.grayBg,
+                alignItems: 'center',
+                paddingHorizontal: heightPercentageToDP(2),
+                borderRadius: heightPercentageToDP(1),
+                marginTop: heightPercentageToDP(2),
+              }}>
+              <LinearGradient
+                colors={[COLORS.lightWhite, COLORS.white_s]}
+                className="rounded-xl p-1">
+                <Ionicons
+                  name={'notifications'}
+                  size={heightPercentageToDP(3)}
+                  color={COLORS.gray2}
+                />
+              </LinearGradient>
+              <Text
+                style={{
+                  marginStart: heightPercentageToDP(1),
+                  flex: 1,
+                  fontFamily: FONT.Montserrat_Regular,
+                  fontSize: heightPercentageToDP(2),
+                  color: COLORS.darkGray,
+                }}>
+                Notifiction
+              </Text>
+
+              <Ionicons
+                name={'chevron-forward-outline'}
+                size={heightPercentageToDP(3)}
+                color={COLORS.white}
+              />
+            </TouchableOpacity>
+
+            {/** Create Time */}
+            {/* <TouchableOpacity
+              onPress={() => navigation.navigate('Search')}
               style={{
                 height: heightPercentageToDP(7),
                 flexDirection: 'row',
@@ -271,10 +353,10 @@ const Setting = () => {
                 size={heightPercentageToDP(3)}
                 color={COLORS.white}
               />
-            </TouchableOpacity>
+            </TouchableOpacity> */}
 
             {/** Create Date */}
-            <TouchableOpacity
+            {/* <TouchableOpacity
               onPress={() => navigation.navigate('CreateDate')}
               style={{
                 height: heightPercentageToDP(7),
@@ -310,11 +392,11 @@ const Setting = () => {
                 size={heightPercentageToDP(3)}
                 color={COLORS.white}
               />
-            </TouchableOpacity>
+            </TouchableOpacity> */}
 
             {/** Create Result */}
             <TouchableOpacity
-              onPress={() => navigation.navigate('CreateResult')}
+              onPress={() => navigation.navigate('Search')}
               style={{
                 height: heightPercentageToDP(7),
                 flexDirection: 'row',

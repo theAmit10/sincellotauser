@@ -20,6 +20,8 @@ import Toast from 'react-native-toast-message';
 import DocumentPicker from 'react-native-document-picker';
 import ImageResizer from '@bam.tech/react-native-image-resizer';
 import LinearGradient from 'react-native-linear-gradient';
+import {serverName} from '../../redux/store';
+import Loading from '../helpercComponent/Loading';
 
 const AdminBackground = () => {
   const navigation = useNavigation();
@@ -170,6 +172,7 @@ const AdminBackground = () => {
           elevation: heightPercentageToDP(1),
         }}>
         {/** User Profile Image */}
+
         <TouchableOpacity
           onPress={() => navigation.navigate('Profile')}
           style={{
@@ -182,34 +185,57 @@ const AdminBackground = () => {
             top: heightPercentageToDP(-2),
             left: widthPercentageToDP(15),
           }}>
-          <Image
-            // source={{ uri: 'https://imgs.search.brave.com/bNjuaYsTPw2b4yerAkKyk82fwZ9sNFwkwb3JMnX7qBg/rs:fit:500:0:0/g:ce/aHR0cHM6Ly9pbWFn/ZXMudW5zcGxhc2gu/Y29tL3Bob3RvLTE1/NDU5OTYxMjQtMDUw/MWViYWU4NGQwP3E9/ODAmdz0xMDAwJmF1/dG89Zm9ybWF0JmZp/dD1jcm9wJml4bGli/PXJiLTQuMC4zJml4/aWQ9TTN3eE1qQTNm/REI4TUh4elpXRnlZ/Mmg4TWpCOGZHWmhZ/MlY4Wlc1OE1IeDhN/SHg4ZkRBPQ.jpeg' }}
-            source={imageSource}
-            resizeMode="cover"
-            style={{
-              height: heightPercentageToDP(15),
-              width: heightPercentageToDP(15),
-            }}
-          />
+          {user?.avatar?.url ? (
+            <Image
+              source={{uri: `${serverName}/uploads/${user?.avatar.url}`}}
+              resizeMode="cover"
+              style={{
+                height: heightPercentageToDP(15),
+                width: heightPercentageToDP(15),
+              }}
+            />
+          ) : (
+            <Image
+              source={require('../../../assets/image/dark_user.png')}
+              resizeMode="cover"
+              style={{
+                height: heightPercentageToDP(15),
+                width: heightPercentageToDP(15),
+              }}
+            />
+          )}
         </TouchableOpacity>
 
-        <View
-          style={{
-            flex: 1,
-            justifyContent: 'center',
-            alignItems: 'center',
-            backgroundColor: 'transparent',
-            zIndex: 3,
-            alignSelf: 'stretch',
-            marginTop: heightPercentageToDP(14),
-          }}>
-          <GradientText style={{...styles.textStyle}}>
-            {user ? user.name : ''}
-          </GradientText>
-          <GradientText style={styles.textStyleEmail}>
-            {user ? user.email : ''}
-          </GradientText>
-        </View>
+        {loading ? (
+          <View
+            style={{
+              flex: 1,
+              justifyContent: 'center',
+              alignItems: 'center',
+              marginTop: heightPercentageToDP(14),
+              zIndex: 2,
+            }}>
+            <Loading />
+          </View>
+        ) : (
+          <View
+            style={{
+              flex: 1,
+              justifyContent: 'center',
+              alignItems: 'center',
+              backgroundColor: 'transparent',
+              zIndex: 3,
+              alignSelf: 'stretch',
+              marginTop: heightPercentageToDP(14),
+            }}>
+            <GradientText style={{...styles.textStyle}}>
+              {user ? user.name : ''}
+            </GradientText>
+            <GradientText style={styles.textStyleEmail}>
+              {user ? user.email : ''}
+            </GradientText>
+          </View>
+        )}
 
         {/** Username */}
 

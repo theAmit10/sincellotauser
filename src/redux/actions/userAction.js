@@ -205,5 +205,34 @@ try {
 };
 
 
+// Load All PROMOTION
+export const loadAllPromotion = (accesstoken) => async dispatch => {
+  try {
+    dispatch({
+      type: 'getAllPromotionRequest',
+  });
+  
+    const {data} = await axios.get(UrlHelper.ALL_PROMOTIONS_API, {
+      headers: {
+        Authorization: `Bearer ${accesstoken}`,
+      },
+    });
+  
+    dispatch({
+      type: 'getAllPromotionSuccess',
+      payload: data.promotions,
+    });
+  } catch (error) {
+    console.log(error);
+    console.log(error.response);
+  
+    dispatch({
+      type: 'getAllPromotionFail',
+      payload: error.response.data.message,
+    });
+  }
+  };
+  
+
   
   

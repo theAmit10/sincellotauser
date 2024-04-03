@@ -176,7 +176,12 @@ const AllUsers = () => {
 
                     {/** User Name */}
 
-                    <Text
+                    <View style={{
+                      flex: 1,
+                      justifyContent: 'flex-start',
+                      alignItems: 'flex-start'
+                    }}>
+                      <Text
                       style={{
                         color: COLORS.black,
                         fontFamily: FONT.Montserrat_SemiBold,
@@ -185,6 +190,19 @@ const AllUsers = () => {
                       }}>
                       {item.name}
                     </Text>
+                    <Text
+                      style={{
+                        color: COLORS.black,
+                        fontFamily: FONT.Montserrat_Regular,
+                        fontSize: heightPercentageToDP(2),
+                        textAlignVertical: 'center',
+                      }}>
+                      User Id - {item.userId}
+                    </Text>
+
+                    </View>
+
+                    
                   </View>
                 </TouchableOpacity>
               )}

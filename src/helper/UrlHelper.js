@@ -43,6 +43,9 @@ const UPDATE_RESULT_API = server + 'result/single';
 const DELETE_RESULT_API = server + 'result/removelotdate';
 const GET_ALL_RESULT_ACCORDING_TO_LOCATION_TIME_DATE_API = server + 'result/allresultlocation';
 
+// For All Promtion 
+const ALL_PROMOTIONS_API = server + 'user/getallpromotion';
+
 
 
 
@@ -76,5 +79,6 @@ export default {
   DELETE_RESULT_API,
   GET_ALL_RESULT_ACCORDING_TO_LOCATION_TIME_DATE_API,
   ALL_USERS_API,
-  USER_WALLET_MODIFICATION_API
+  USER_WALLET_MODIFICATION_API,
+  ALL_PROMOTIONS_API
 };
