@@ -41,9 +41,10 @@ const Register = () => {
   };
 
   const dispatch = useDispatch();
-  const loading = useMessageAndErrorUser(navigation, dispatch, 'Login');
+  const loading = useMessageAndErrorUser(navigation, dispatch, "Login");
 
   const submitHandler = () => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!name) {
       Toast.show({
         type: 'error',
@@ -54,7 +55,13 @@ const Register = () => {
         type: 'error',
         text1: 'Enter email address',
       });
-    } else if (!password) {
+    }else if (!emailRegex.test(email)) {
+      Toast.show({
+        type: 'error',
+        text1: 'Enter valid email address',
+      });
+    } 
+    else if (!password) {
       Toast.show({
         type: 'error',
         text1: 'Enter password',

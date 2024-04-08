@@ -167,6 +167,7 @@ const CreateDate = ({route}) => {
                 marginStart: heightPercentageToDP(1),
                 flex: 1,
                 fontFamily: FONT.SF_PRO_REGULAR,
+                color: COLORS.black
               }}
               placeholder="For example - 05-03-2024"
               label="time"

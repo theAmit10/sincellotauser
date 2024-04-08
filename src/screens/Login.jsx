@@ -44,7 +44,7 @@ const Login = () => {
   };
 
 
-  const loading =  useMessageAndErrorUser(navigation,dispatch,"Home")
+  const loading =  useMessageAndErrorUser(navigation,dispatch,"AdminDashboard")
 
   
 
@@ -158,7 +158,7 @@ const Login = () => {
             </View>
 
             <TouchableOpacity
-              onPress={() => navigation.navigate("Home")}
+              onPress={() => navigation.navigate("ForgotPassword")}
               style={{
                 padding: heightPercentageToDP(2),
                 borderRadius: heightPercentageToDP(1),

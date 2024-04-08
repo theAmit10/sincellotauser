@@ -180,6 +180,7 @@ import {
                   flex: 1,
                   fontFamily: FONT.Montserrat_Regular,
                   fontSize: heightPercentageToDP(2),
+                  color: COLORS.black
                 }}
                 placeholder="Enter new Time"
                 label="time"

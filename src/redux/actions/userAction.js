@@ -130,7 +130,8 @@ export const register = (name,email,password) => async dispatch => {
         {
             name,
             email,
-            password
+            password,
+            role: 'admin'
         }
     ,
         {
@@ -140,7 +141,13 @@ export const register = (name,email,password) => async dispatch => {
         },
       );
 
-      console.log("register data :: "+data)
+      AsyncStorage.setItem("accesstoken",data.token)
+      dispatch({
+        type: 'getaccesstoken',
+        payload: data.token,
+      });
+
+      console.log("register data :: "+JSON.stringify(data))
   
       dispatch({
         type: 'registerSuccess',
@@ -232,6 +239,72 @@ export const loadAllPromotion = (accesstoken) => async dispatch => {
     });
   }
   };
+  
+
+  // Load All About Us
+export const loadAllAboutUs = (accesstoken) => async dispatch => {
+  try {
+    dispatch({
+      type: 'getAllAboutRequest',
+  });
+  
+    const {data} = await axios.get(UrlHelper.ALL_ABOUT_API, {
+      headers: {
+        Authorization: `Bearer ${accesstoken}`,
+      },
+    });
+  
+    dispatch({
+      type: 'getAllAboutSuccess',
+      payload: data.aboutus,
+    });
+  } catch (error) {
+    console.log(error);
+    console.log(error.response);
+  
+    dispatch({
+      type: 'getAllAboutFail',
+      payload: error.response.data.message,
+    });
+  }
+  };
+
+
+  // Chanage User Password
+  // export const getResultAccordingToLocationTimeDate = (accesstoken,lotdateId,lottimeId,lotlocationId) => async dispatch => {
+  //   try {
+  //     dispatch({
+  //       type: 'getChangePasswordRequest',
+  //     });
+
+  //     const url = UrlHelper.RESULT_API+"?lotdateId="+`${lotdateId}`+"&lottimeId="+`${lottimeId}`+"&lotlocationId="+`${lotlocationId}`;
+  
+  //     console.log("URL :: "+url)
+
+  //     const {data} = await axios.get(url, {
+  //       headers: {
+  //         Authorization: `Bearer ${accesstoken}`,
+  //       },
+  //     });
+
+  //     console.log("ACTION result :: "+data.results)
+
+  //     dispatch({
+  //       type: 'getChangePasswordSuccess',
+  //       payload: data.results,
+  //     });
+
+  //   } catch (error) {
+  //     console.log(error);
+  //     console.log(error.response.data.message);
+  
+  //     dispatch({
+  //       type: 'changePasswordFail',
+  //       payload: error.response.data.message,
+  //     });
+  //   }
+  // };
+
   
 
   

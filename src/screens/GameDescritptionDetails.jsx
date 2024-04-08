@@ -182,6 +182,7 @@ const GameDescritptionDetails = ({route}) => {
                     marginStart: heightPercentageToDP(1),
                     flex: 1,
                     fontFamily: FONT.Montserrat_Regular,
+                    color: COLORS.black
                   }}
                   placeholder="Enter Title"
                   label="location"
@@ -208,6 +209,7 @@ const GameDescritptionDetails = ({route}) => {
                     fontFamily: FONT.Montserrat_Regular,
                     minHeight: heightPercentageToDP(20),
                     textAlignVertical: 'top',
+                    color: COLORS.black
                   }}
                   placeholder="Enter Description"
                   label="location"

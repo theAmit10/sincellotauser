@@ -1,5 +1,5 @@
-import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import React, { useEffect } from 'react';
+import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import React, {useEffect} from 'react';
 import {useDispatch} from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
@@ -9,45 +9,41 @@ import {
 import {useNavigation} from '@react-navigation/native';
 import {COLORS, FONT} from '../../assets/constants';
 
-
 const SplashScreen = () => {
-    const dispatch = useDispatch();
-    const navigation = useNavigation();
+  const dispatch = useDispatch();
+  const navigation = useNavigation();
 
-    useEffect(() => {
-      getUserAccessToken()
-    }, []);
+  useEffect(() => {
+    getUserAccessToken();
+  }, []);
 
-    const getUserAccessToken = async () => {
-      try {
-          const val = await AsyncStorage.getItem('accesstoken');
+  const getUserAccessToken = async () => {
+    try {
+      const val = await AsyncStorage.getItem('accesstoken');
       console.log('From SS Access Token :: ' + val);
       // dispatch(getUserAccessToken(val));
       dispatch({
-          type: 'getaccesstoken',
-          payload: val,
-        });
+        type: 'getaccesstoken',
+        payload: val,
+      });
 
-        const timer = setTimeout(() => {
-          if (val) {
-
+      const timer = setTimeout(() => {
+        if (val) {
           //   if (auth) {
           //     navigation.navigate('Hcontainer');
           //   } else {
           //     navigation.navigate('Login');
           //   }
           navigation.navigate('AdminDashboard');
-
-          } else {
-            navigation.navigate('Login');
-            // navigation.navigate('Login');
-          }
-        }, 3000);
-
-      } catch (error) {
-        console.log('error' + error);
-      }
-    };
+        } else {
+          navigation.navigate('Login');
+          // navigation.navigate('Login');
+        }
+      }, 3000);
+    } catch (error) {
+      console.log('error' + error);
+    }
+  };
 
   return (
     <View
@@ -85,14 +81,13 @@ const SplashScreen = () => {
           width: widthPercentageToDP(50),
           flex: 1,
           opacity: 80,
-          elevation: heightPercentageToDP(2)
+          elevation: heightPercentageToDP(2),
         }}>
         <View
           className="rounded-full h-5 w-5"
           style={{
             margin: heightPercentageToDP(3),
             backgroundColor: COLORS.background,
-            
           }}></View>
       </View>
 
@@ -115,21 +110,38 @@ const SplashScreen = () => {
             backgroundColor: COLORS.white_s,
             padding: heightPercentageToDP(2),
             justifyContent: 'center',
-            alignItems: 'center'
+            alignItems: 'center',
+            overflow: 'hidden'
           }}
           className="rounded-full ">
-          <Text style={{fontFamily: FONT.ZCOOL_Regular, fontSize: heightPercentageToDP(2)}}>Since 1984</Text>
+           <Image
+              source={require('../../assets/image/logo.png')}
+              resizeMode="cover"
+              style={{
+                height: heightPercentageToDP(15),
+                width: heightPercentageToDP(15),
+              }}
+            />
         </View>
       </View>
 
-      <View style={{
-        backgroundColor: "transparent",
-        position: 'absolute',
-        transform: [{rotate: '90deg'}],
-        bottom: heightPercentageToDP(2),
-        zIndex: 2
-      }}>
-        <Text style={{fontFamily: FONT.ZCOOL_Regular, fontSize: heightPercentageToDP(10), marginStart: heightPercentageToDP(-30), color: COLORS.white_s}}>SINCE 1984</Text>
+      <View
+        style={{
+          backgroundColor: 'transparent',
+          position: 'absolute',
+          transform: [{rotate: '90deg'}],
+          bottom: heightPercentageToDP(2),
+          zIndex: 2,
+        }}>
+        <Text
+          style={{
+            fontFamily: FONT.ZCOOL_Regular,
+            fontSize: heightPercentageToDP(10),
+            marginStart: heightPercentageToDP(-30),
+            color: COLORS.white_s,
+          }}>
+          SINCE 1984
+        </Text>
       </View>
     </View>
   );

@@ -15,7 +15,7 @@ import {
 } from 'react-native-responsive-screen';
 import {COLORS, FONT} from '../../assets/constants';
 import GradientText from '../components/helpercComponent/GradientText';
-import Fontisto from 'react-native-vector-icons/Fontisto';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Toast from 'react-native-toast-message';
 import {useIsFocused, useNavigation} from '@react-navigation/native';
 import Background from '../components/background/Background';
@@ -25,6 +25,9 @@ import {getAllLocations} from '../redux/actions/locationAction';
 import {getAllResult} from '../redux/actions/resultAction';
 import {loadAllPromotion} from '../redux/actions/userAction';
 import {serverName} from '../redux/store';
+import LinearGradient from 'react-native-linear-gradient';
+import UrlHelper from '../helper/UrlHelper';
+import axios from 'axios';
 
 const AllPromotion = () => {
   const navigation = useNavigation();
@@ -41,7 +44,7 @@ const AllPromotion = () => {
 
   useEffect(() => {
     dispatch(loadAllPromotion(accesstoken));
-  }, [dispatch]);
+  }, [dispatch, focused]);
 
   const submitHandler = () => {
     Toast.show({
@@ -49,6 +52,43 @@ const AllPromotion = () => {
       text1: 'Searching',
     });
   };
+
+  const [selectedItem, setSelectedItem] = useState("");
+  const [showProgressBar, setProgressBar] = useState(false);
+
+  const deleteLocationHandler = async (item) => {
+    console.log("Item clicked :: "+item._id)
+    setProgressBar(true);
+    setSelectedItem(item._id)
+
+    try {
+      const url = `${UrlHelper.DELETE_PROMOTION_API}/${item._id}`;
+      const {data} = await axios.delete(url, {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${accesstoken}`,
+        },
+      });
+
+      console.log('datat :: ' + data);
+
+      Toast.show({
+        type: 'success',
+        text1: data.message,
+      });
+      setProgressBar(false);
+      navigation.goBack()
+    } catch (error) {
+      setProgressBar(false);
+      Toast.show({
+        type: 'error',
+        text1: 'Something went wrong',
+        text2: 'Please, try after sometime'
+      });
+      console.log(error);
+    }
+  };
+
 
   return (
     <View style={{flex: 1}}>
@@ -99,38 +139,74 @@ const AllPromotion = () => {
           {loadingPromotion ? (
             <Loading />
           ) : (
-            <FlatList
-              data={promotions}
-              renderItem={({img, index}) => (
-                <TouchableOpacity
-                  style={{
-                    ...styles.item,
-                  }}>
-                  <View
+            promotions.length !== 0 && (
+              <FlatList
+                data={promotions}
+                renderItem={({item, index}) => (
+                  <TouchableOpacity
                     style={{
-                      backgroundColor: COLORS.grayHalfBg,
-                      height: heightPercentageToDP(20),
-                      borderRadius: heightPercentageToDP(2),
+                      ...styles.item,
                     }}>
-                    <Image
-                      source={{
-                        uri: `https://sincelott.onrender.com/uploads/promotion/${img?.url}`,
-                      }}
-                      resizeMode="cover"
+                    <View
                       style={{
+                        backgroundColor: COLORS.grayHalfBg,
                         height: heightPercentageToDP(20),
-                        width: '100%',
                         borderRadius: heightPercentageToDP(2),
-                      }}
-                    />
-                  </View>
-                </TouchableOpacity>
-              )}
-              keyExtractor={item => item._id}
-              initialNumToRender={10} // Render initial 10 items
-              maxToRenderPerBatch={10} // Batch size to render
-              windowSize={10} // Number of items kept in memory
-            />
+                      }}>
+                      <Image
+                        source={{
+                          uri:
+                            'https://sincelott.onrender.com/uploads/promotion/' +
+                            item.url,
+                        }}
+                        resizeMode="cover"
+                        style={{
+                          height: heightPercentageToDP(20),
+                          width: '100%',
+                          borderRadius: heightPercentageToDP(2),
+                        }}
+                      />
+
+                      {/** Delete Locatiion */}
+                      <View style={{position : 'absolute', right: 0, margin: heightPercentageToDP(2)}}>
+                        <TouchableOpacity
+                          onPress={() => deleteLocationHandler(item)}>
+                          {showProgressBar ? (
+                            selectedItem === item._id ? (
+                              <Loading />
+                            ) : (
+                              <LinearGradient
+                                colors={[COLORS.lightWhite, COLORS.white_s]}
+                                className="rounded-xl p-1">
+                                <MaterialCommunityIcons
+                                  name={'delete'}
+                                  size={heightPercentageToDP(3)}
+                                  color={COLORS.darkGray}
+                                />
+                              </LinearGradient>
+                            )
+                          ) : (
+                            <LinearGradient
+                              colors={[COLORS.lightWhite, COLORS.white_s]}
+                              className="rounded-xl p-1">
+                              <MaterialCommunityIcons
+                                name={'delete'}
+                                size={heightPercentageToDP(3)}
+                                color={COLORS.darkGray}
+                              />
+                            </LinearGradient>
+                          )}
+                        </TouchableOpacity>
+                      </View>
+                    </View>
+                  </TouchableOpacity>
+                )}
+                keyExtractor={item => item._id}
+                initialNumToRender={10} // Render initial 10 items
+                maxToRenderPerBatch={10} // Batch size to render
+                windowSize={10} // Number of items kept in memory
+              />
+            )
           )}
         </View>
 

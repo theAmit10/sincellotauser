@@ -8,7 +8,10 @@ export const userReducer = createReducer(
     loadingAll: false,
     allusers: [],
     promotions: [],
-    loadingPromotion : false
+    loadingPromotion: false,
+    loadingAbout: false,
+    abouts: [],
+    loadingChangePassword: false,
   },
   builder => {
     builder
@@ -32,6 +35,12 @@ export const userReducer = createReducer(
       })
       .addCase('getAllPromotionRequest', state => {
         state.loadingPromotion = true;
+      })
+      .addCase('getAllAboutRequest', state => {
+        state.loadingAbout = true;
+      })
+      .addCase('getChangePasswordRequest', state => {
+        state.loadingChangePassword = true;
       });
 
     builder
@@ -63,6 +72,14 @@ export const userReducer = createReducer(
       .addCase('getAllPromotionSuccess', (state, action) => {
         state.loadingPromotion = false;
         state.promotions = action.payload;
+      })
+      .addCase('getAllAboutSuccess', (state, action) => {
+        state.loadingAbout = false;
+        state.abouts = action.payload;
+      })
+      .addCase('getChangePasswordSuccess', (state, action) => {
+        state.loadingChangePassword = false;
+        state.message = action.payload;
       });
 
     builder
@@ -89,12 +106,20 @@ export const userReducer = createReducer(
       .addCase('getAllPromotionFail', (state, action) => {
         state.loadingPromotion = false;
         state.error = action.payload;
+      })
+      .addCase('getAllAboutFail', (state, action) => {
+        state.loadingAbout = false;
+        state.error = action.payload;
+      })
+      .addCase('registerFail', (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      .addCase('changePasswordFail', (state, action) => {
+        state.loadingChangePassword = false;
+        state.error = action.payload;
       });
 
-    builder.addCase('registerFail', (state, action) => {
-      state.loading = false;
-      state.error = action.payload;
-    });
     builder.addCase('getaccesstoken', (state, action) => {
       state.accesstoken = action.payload;
     });
@@ -109,6 +134,9 @@ export const userReducer = createReducer(
     });
     builder.addCase('clearAllPromotion', state => {
       state.promotions = [];
+    });
+    builder.addCase('clearAllAbout', state => {
+      state.abouts = [];
     });
   },
 );

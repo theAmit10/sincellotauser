@@ -25,9 +25,16 @@ import UrlHelper from '../helper/UrlHelper';
 import LinearGradient from 'react-native-linear-gradient';
 
 const EditUserWallet = ({route}) => {
-  const {data} = route.params;
-  const url = `${UrlHelper.USER_WALLET_MODIFICATION_API}/${data._id}`;
+  const {data, forwallet} = route.params;
+
+  const url =
+    forwallet === 'one'
+      ? `${UrlHelper.USER_WALLET_ONE_MODIFICATION_API}/${data._id}`
+      : `${UrlHelper.USER_WALLET_TWO_MODIFICATION_API}/${data._id}`;
+
   console.log(JSON.stringify(data));
+  console.log("UPdate :: "+url)
+  
   const [amount, setAmount] = useState('');
   const [walletVisibilty, setWalletVisibility] = useState(data.visibility);
 
@@ -56,7 +63,7 @@ const EditUserWallet = ({route}) => {
           url,
           {
             balance: amount,
-            visibility: walletVisibilty
+            visibility: walletVisibilty,
           },
           {
             headers: {
@@ -73,7 +80,10 @@ const EditUserWallet = ({route}) => {
           text1: 'User Wallet Updated Successfully',
         });
         setProgressBar(false);
-        navigation.goBack();
+        navigation.reset({
+          index: 0,
+          routes: [{name: 'AdminDashboard'}],
+        });
       } catch (error) {
         setProgressBar(false);
         Toast.show({
@@ -84,8 +94,6 @@ const EditUserWallet = ({route}) => {
       }
     }
   };
-
- 
 
   const loading = false;
 
@@ -179,6 +187,7 @@ const EditUserWallet = ({route}) => {
                 flex: 1,
                 fontFamily: FONT.SF_PRO_REGULAR,
                 fontSize: heightPercentageToDP(2),
+                color: COLORS.black
               }}
               placeholder="Enter Amount"
               label="Balance"
@@ -232,7 +241,6 @@ const EditUserWallet = ({route}) => {
                   }}>
                   <Text style={{textAlignVertical: 'center'}}>
                     <Switch
-                      
                       value={walletVisibilty}
                       onValueChange={toggleVisibility}
                       trackColor={{false: '#767577', true: '#81b0ff'}} // Change background color

@@ -39,6 +39,14 @@ import UpdateResult from '../screens/UpdateResult';
 import AllPromotion from '../screens/AllPromotion';
 import Notification from '../screens/Notification';
 import CreatePromotion from '../screens/CreatePromotion';
+import AboutUs from '../screens/AboutUs';
+import CreateAboutUs from '../screens/CreateAboutUs';
+import UploadProfilePicture from '../screens/UploadProfilePicture';
+import ChangePassword from '../screens/ChangePassword';
+import ChangeEmail from '../screens/ChangeEmail';
+import ForgotPassword from '../screens/ForgotPassword';
+import WalletModification from '../screens/WalletModification';
+import AllWallet from '../screens/AllWallet';
 
 
 
@@ -93,6 +101,14 @@ const Main = () => {
                 <Stack.Screen  name="AllPromotion" component={AllPromotion}/>
                 <Stack.Screen  name="Notification" component={Notification}/>
                 <Stack.Screen  name="CreatePromotion" component={CreatePromotion}/>
+                <Stack.Screen  name="AboutUs" component={AboutUs}/>
+                <Stack.Screen  name="CreateAboutUs" component={CreateAboutUs}/>
+                <Stack.Screen  name="UploadProfilePicture" component={UploadProfilePicture}/>
+                <Stack.Screen  name="ChangePassword" component={ChangePassword}/>
+                <Stack.Screen  name="ChangeEmail" component={ChangeEmail}/>
+                <Stack.Screen  name="ForgotPassword" component={ForgotPassword}/>
+                <Stack.Screen  name="WalletModification" component={WalletModification}/>
+                <Stack.Screen  name="AllWallet" component={AllWallet}/>
 
             </Stack.Group>
         </Stack.Navigator>

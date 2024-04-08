@@ -166,6 +166,7 @@ const CreateTime = ({route}) => {
                 marginStart: heightPercentageToDP(1),
                 flex: 1,
                 fontFamily: FONT.SF_PRO_REGULAR,
+                color: COLORS.black
               }}
               placeholder="For Example 09-00 AM"
               label="time"

@@ -126,6 +126,7 @@ const AllResult = () => {
                 flex: 1,
                 fontFamily: FONT.SF_PRO_REGULAR,
                 fontSize: heightPercentageToDP(2),
+                color: COLORS.black
               }}
               placeholder="Search Result Date"
               label="Search"
@@ -172,6 +173,7 @@ const AllResult = () => {
                         style={{
                           fontFamily: FONT.Montserrat_Bold,
                           fontSize: heightPercentageToDP(2),
+                          color: COLORS.black
                         }}>
                         {item.lotlocation.lotlocation}
                       </Text>
@@ -188,6 +190,7 @@ const AllResult = () => {
                         style={{
                           fontFamily: FONT.Montserrat_Bold,
                           fontSize: heightPercentageToDP(5),
+                          color: COLORS.darkGray
                         }}>
                         {item.resultNumber}
                       </Text>
@@ -205,6 +208,7 @@ const AllResult = () => {
                         style={{
                           fontFamily: FONT.Montserrat_Regular,
                           fontSize: heightPercentageToDP(2),
+                          color: COLORS.black
                         }}>
                         {item.lotdate.lotdate}
                       </Text>
@@ -212,6 +216,7 @@ const AllResult = () => {
                         style={{
                           fontFamily: FONT.Montserrat_Regular,
                           fontSize: heightPercentageToDP(2),
+                          color: COLORS.black
                         }}>
                         {item.lottime.lottime}
                       </Text>

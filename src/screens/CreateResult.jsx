@@ -162,6 +162,7 @@ const CreateResult = ({route}) => {
                 flex: 1,
                 fontFamily: FONT.SF_PRO_MEDIUM,
                 fontSize: heightPercentageToDP(2),
+                color: COLORS.black
               }}
               placeholder="Enter result"
               label="time"

@@ -191,6 +191,7 @@ const SearchDate = ({route}) => {
                 flex: 1,
                 fontFamily: FONT.SF_PRO_REGULAR,
                 fontSize: heightPercentageToDP(2),
+                color: COLORS.black
               }}
               placeholder="Search for date"
               label="Search"

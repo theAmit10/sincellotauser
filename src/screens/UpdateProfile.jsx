@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import {
   heightPercentageToDP,
@@ -17,7 +17,7 @@ import GradientText from '../components/helpercComponent/GradientText';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import Entypo from 'react-native-vector-icons/Entypo';
 import Toast from 'react-native-toast-message';
-import { useNavigation } from '@react-navigation/native';
+import { useIsFocused, useNavigation } from '@react-navigation/native';
 import ProfileBackground from '../components/background/ProfileBackground';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -25,10 +25,13 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import Wallet from '../components/home/Wallet';
 import { Consumer } from 'react-native-paper/lib/typescript/core/settings';
 import { useDispatch, useSelector } from 'react-redux';
-import { logout } from '../redux/actions/userAction';
+import { loadProfile, logout } from '../redux/actions/userAction';
 import { useMessageAndErrorUser } from '../utils/hooks';
 import Loading from '../components/helpercComponent/Loading';
 import { HOVER } from 'nativewind/dist/utils/selector';
+import LinearGradient from 'react-native-linear-gradient';
+import UrlHelper from '../helper/UrlHelper';
+import axios from 'axios';
 
 
 const UpdateProfile = () => {
@@ -37,12 +40,18 @@ const UpdateProfile = () => {
   const dispatch = useDispatch()
 
   const [name, setName] = useState("")
-  const [email, setEmail] = useState('');
+  // const [email, setEmail] = useState('');
 
   const { user, accesstoken, loading } = useSelector(state => state.user);
 
 
   useMessageAndErrorUser(navigation, dispatch, "Login")
+
+  const isFocused = useIsFocused();
+
+  useEffect(() => {
+    dispatch(loadProfile(accesstoken))
+  },[isFocused])
 
 
   const logoutHandler = () => {
@@ -55,16 +64,7 @@ const UpdateProfile = () => {
     dispatch(logout())
   };
 
-  const updateProfileHandler = () => {
-
-    console.log("Updating profile")
-    navigation.navigate('UpdateProfile')
-
-    Toast.show({
-      type: 'success',
-      text1: 'Updating Profile',
-    });
-  };
+  
 
   const ChangePasswordHandler = () => {
 
@@ -73,6 +73,56 @@ const UpdateProfile = () => {
       text1: 'change password precessing',
     });
   };
+
+
+  const [showProgressBar,setProgressBar] = useState(false); 
+
+  const updateProfileHandler  = async () => {
+    if (!name) {
+     Toast.show({
+       type: 'error',
+       text1: 'Please enter your name',
+     });
+     
+   } else {
+     setProgressBar(true);
+
+     try {
+  
+       const {data} = await axios.put(
+        UrlHelper.UPDATE_USER_PROFILE_API,
+        {
+          name: name,
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${accesstoken}`,
+          },
+        },
+      );
+
+      console.log("datat :: "+data)
+
+      dispatch(loadProfile(accesstoken))
+      
+       Toast.show({
+         type: 'success',
+         text1: data.message,
+       });
+       setProgressBar(false);
+       navigation.goBack();
+     } catch (error) {
+      setProgressBar(false);
+       Toast.show({
+         type: 'error',
+         text1: 'Something went wrong',
+       });
+       console.log(error);
+
+     }
+   }
+ };
 
 
 
@@ -114,7 +164,7 @@ const UpdateProfile = () => {
 
       <View
         style={{
-          height: heightPercentageToDP(46),
+          height: heightPercentageToDP(42),
           width: widthPercentageToDP(100),
           backgroundColor: COLORS.white_s,
           borderTopLeftRadius: heightPercentageToDP(5),
@@ -152,7 +202,6 @@ const UpdateProfile = () => {
             style={{
 
               paddingVertical: heightPercentageToDP(2),
-              gap: heightPercentageToDP(2),
             }}>
 
 
@@ -166,18 +215,26 @@ const UpdateProfile = () => {
                 backgroundColor: COLORS.grayBg,
                 alignItems: 'center',
                 paddingHorizontal: heightPercentageToDP(2),
+                marginTop: heightPercentageToDP(2),
                 borderRadius: heightPercentageToDP(1),
               }}>
-              <MaterialCommunityIcons
-                name={'account'}
-                size={heightPercentageToDP(3)}
-                color={COLORS.white}
-              />
+                <LinearGradient
+                colors={[COLORS.lightWhite, COLORS.white_s]}
+                className="rounded-xl p-1">
+                <MaterialCommunityIcons
+                  name={'account'}
+                  size={heightPercentageToDP(3)}
+                  color={COLORS.gray2}
+                />
+              </LinearGradient>
+             
               <TextInput
                 style={{
                   marginStart: heightPercentageToDP(1),
                   flex: 1,
-                  fontFamily: FONT.SF_PRO_REGULAR,
+                  fontFamily: FONT.Montserrat_Regular,
+                  fontSize: heightPercentageToDP(2),
+                  color: COLORS.darkGray,
                 }}
                 placeholder="Name"
                 label="Name"
@@ -186,56 +243,37 @@ const UpdateProfile = () => {
               />
             </View>
 
-            {/** Email container */}
-            <View
-              style={{
-                height: heightPercentageToDP(7),
-                flexDirection: 'row',
-                backgroundColor: COLORS.grayBg,
-                alignItems: 'center',
-                paddingHorizontal: heightPercentageToDP(2),
-                borderRadius: heightPercentageToDP(1),
-              }}>
-              <Fontisto
-                name={'email'}
-                size={heightPercentageToDP(3)}
-                color={COLORS.white}
-              />
-              <TextInput
-                style={{
-                  marginStart: heightPercentageToDP(1),
-                  flex: 1,
-                  fontFamily: FONT.SF_PRO_REGULAR,
-                }}
-                placeholder="Email"
-                label="Email"
-                value={email}
-                onChangeText={text => setEmail(text)}
-              />
-            </View>
-
+           
             {/** Update Profile container */}
+
             <TouchableOpacity
-              onPress={updateProfileHandler}
+            onPress={() => navigation.navigate("UploadProfilePicture")}
               style={{
                 height: heightPercentageToDP(7),
                 flexDirection: 'row',
                 backgroundColor: COLORS.grayBg,
                 alignItems: 'center',
                 paddingHorizontal: heightPercentageToDP(2),
+                marginTop: heightPercentageToDP(2),
                 borderRadius: heightPercentageToDP(1),
-
               }}>
-              <MaterialCommunityIcons
-                name={'account'}
-                size={heightPercentageToDP(3)}
-                color={COLORS.white}
-              />
+              <LinearGradient
+                colors={[COLORS.lightWhite, COLORS.white_s]}
+                className="rounded-xl p-1">
+                <MaterialCommunityIcons
+                  name={'account'}
+                  size={heightPercentageToDP(3)}
+                  color={COLORS.gray2}
+                />
+              </LinearGradient>
               <Text
                 style={{
                   marginStart: heightPercentageToDP(1),
                   flex: 1,
-                  fontFamily: FONT.SF_PRO_REGULAR,
+                  fontFamily: FONT.Montserrat_Regular,
+                  fontSize: heightPercentageToDP(2),
+                  color: COLORS.darkGray,
+                  
                 }}>
                 Profile Picture
               </Text>
@@ -248,6 +286,7 @@ const UpdateProfile = () => {
             </TouchableOpacity>
 
 
+
             {/** Bottom Submit Container */}
 
             <View
@@ -255,25 +294,29 @@ const UpdateProfile = () => {
                 marginBottom: heightPercentageToDP(5),
                 marginTop: heightPercentageToDP(2),
               }}>
-
-
-              <TouchableOpacity
-                onPress={() => console.log("Cool")}
-                style={{
-                  backgroundColor: COLORS.blue,
-                  padding: heightPercentageToDP(2),
-                  borderRadius: heightPercentageToDP(1),
-                  alignItems: 'center',
-                }}>
-                <Text
+              {showProgressBar ? (
+                <Loading />
+              ) : (
+                <TouchableOpacity
+                  onPress={updateProfileHandler}
                   style={{
-                    color: COLORS.white,
-                    fontFamily: FONT.Montserrat_Regular,
+                    backgroundColor: COLORS.blue,
+                    padding: heightPercentageToDP(2),
+                    borderRadius: heightPercentageToDP(1),
+                    alignItems: 'center',
                   }}>
-                  Submit
-                </Text>
-              </TouchableOpacity>
+                  <Text
+                    style={{
+                      color: COLORS.white,
+                      fontFamily: FONT.Montserrat_Regular,
+                    }}>
+                    Submit
+                  </Text>
+                </TouchableOpacity>
+              )}
             </View>
+
+        
 
           </View>
         </View>

@@ -160,7 +160,7 @@ const UserDetails = ({route}) => {
       <ScrollView showsVerticalScrollIndicator={false}>
         <TouchableOpacity
           onPress={() =>
-            navigation.navigate('EditUserWallet', {data: userdata.walletOne})
+            navigation.navigate('EditUserWallet', {data: userdata.walletOne, forwallet: 'one'})
           }
           style={{
             height: heightPercentageToDP(25),
@@ -248,7 +248,7 @@ const UserDetails = ({route}) => {
 
         <TouchableOpacity
           onPress={() =>
-            navigation.navigate('EditUserWallet', {data: userdata.walletTwo})
+            navigation.navigate('EditUserWallet', {data: userdata.walletTwo, forwallet : 'two'})
           }
           style={{
             height: heightPercentageToDP(25),

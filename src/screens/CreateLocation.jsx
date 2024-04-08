@@ -128,6 +128,7 @@ const CreateLocation = () => {
                 marginStart: heightPercentageToDP(1),
                 flex: 1,
                 fontFamily: FONT.SF_PRO_REGULAR,
+                color: COLORS.black
               }}
               placeholder="Enter location"
               label="location"
