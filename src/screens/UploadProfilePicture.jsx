@@ -151,7 +151,7 @@ const UploadProfilePicture = () => {
             // console.error('Error resizing the image:', error);
           }
 
-          const response = await axios.put(
+          const response = await axios.post(
             UrlHelper.USER_PROFILE_PIC_API,
             formData,
             {

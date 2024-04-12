@@ -17,6 +17,7 @@ const CHANGE_PASSWORD_API = server + 'user/changepassword';
 
 // All User modification api
 const ALL_USERS_API = server + 'user/alluser';
+const UPDATE_USER_ID_API = server + 'user/updateuserid';
 const USER_WALLET_ONE_MODIFICATION_API = server + 'user/walletone';
 const USER_WALLET_TWO_MODIFICATION_API = server + 'user/wallettwo';
 
@@ -67,7 +68,7 @@ const UPDATE_WALLET_TWO_NAME_API = server + 'user/updatewallettwo';
 
 
 
-export default {
+ export default {
   LOGIN_API,
   USER_PROFILE_API,
   LOGOUT_API,
@@ -110,5 +111,6 @@ export default {
   UPDATE_WALLET_ONE_NAME_API,
   UPDATE_WALLET_TWO_NAME_API,
   USER_WALLET_ONE_MODIFICATION_API,
-  USER_WALLET_TWO_MODIFICATION_API
+  USER_WALLET_TWO_MODIFICATION_API,
+  UPDATE_USER_ID_API,
 };

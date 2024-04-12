@@ -88,7 +88,7 @@ import {
                 }}>
                 <View
                   style={{
-                    marginTop: heightPercentageToDP(3),
+                    marginTop: heightPercentageToDP(-3),
                     paddingVertical: heightPercentageToDP(2),
                     gap: heightPercentageToDP(2),
                   }}>
@@ -108,15 +108,18 @@ import {
                       {/** Top view left container */}
                       <View
                         style={{
-                          flex: 5,
+                          flex: 3,
                           justifyContent: 'center',
                           alignItems: 'center',
+                          marginStart: heightPercentageToDP(6)
+
                         }}>
                         <Text
                           style={{
                             fontFamily: FONT.Montserrat_Regular,
-                            fontSize: heightPercentageToDP(3),
+                            fontSize: heightPercentageToDP(4),
                             marginTop: heightPercentageToDP(1),
+                            color: COLORS.black
                           }}>
                           {data.lotlocation.lotlocation}
                         </Text>
@@ -140,10 +143,12 @@ import {
                         <Text
                           style={{
                             transform: [{rotate: '90deg'}],
-                            color: COLORS.black,
                             fontFamily: FONT.Montserrat_SemiBold,
-                            fontSize: heightPercentageToDP(1.5),
-                          }}>
+                            fontSize: heightPercentageToDP(2),
+                            color: COLORS.black,
+                          }}
+                          
+                          >
                           {data.lottime.lottime}
                         </Text>
                       </View>
@@ -179,6 +184,7 @@ import {
                         style={{
                           fontFamily: FONT.Montserrat_Regular,
                           fontSize: heightPercentageToDP(2),
+                          color: COLORS.black
                         }}>
                         {data.lotdate.lotdate}
                       </Text>

@@ -118,17 +118,18 @@ const AllResult = () => {
             <Fontisto
               name={'search'}
               size={heightPercentageToDP(3)}
-              color={COLORS.white}
+              color={COLORS.darkGray}
             />
             <TextInput
               style={{
                 marginStart: heightPercentageToDP(1),
                 flex: 1,
-                fontFamily: FONT.SF_PRO_REGULAR,
+                fontFamily: FONT.Montserrat_SemiBold,
                 fontSize: heightPercentageToDP(2),
                 color: COLORS.black
               }}
               placeholder="Search Result Date"
+              placeholderTextColor={COLORS.black}
               label="Search"
               onChangeText={handleSearch}
             />

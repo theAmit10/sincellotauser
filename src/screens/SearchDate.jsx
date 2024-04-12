@@ -166,7 +166,23 @@ const SearchDate = ({route}) => {
             height: heightPercentageToDP(15),
             margin: heightPercentageToDP(2),
           }}>
-          <GradientText style={styles.textStyle}>Search Date</GradientText>
+          
+          <View
+            style={{
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              flexDirection: 'row'
+            }}>
+            <GradientText style={styles.textStyle}>Search Date</GradientText>
+            <GradientText
+              style={{
+                fontSize: heightPercentageToDP(2),
+                fontFamily: FONT.Montserrat_Bold,
+                marginEnd: heightPercentageToDP(2)
+              }}>
+              {locationdata?.maximumRange}
+            </GradientText>
+          </View>
 
           {/** Search container */}
 
@@ -183,17 +199,18 @@ const SearchDate = ({route}) => {
             <Fontisto
               name={'search'}
               size={heightPercentageToDP(3)}
-              color={COLORS.white}
+              color={COLORS.darkGray}
             />
             <TextInput
               style={{
                 marginStart: heightPercentageToDP(1),
                 flex: 1,
-                fontFamily: FONT.SF_PRO_REGULAR,
+                fontFamily: FONT.Montserrat_SemiBold,
                 fontSize: heightPercentageToDP(2),
                 color: COLORS.black
               }}
               placeholder="Search for date"
+              placeholderTextColor={COLORS.black}
               label="Search"
               onChangeText={handleSearch}
             />
@@ -247,7 +264,7 @@ const SearchDate = ({route}) => {
                       style={{
                         color: COLORS.black,
                         fontFamily: FONT.HELVETICA_BOLD,
-                        fontSize: heightPercentageToDP(2),
+                        fontSize: heightPercentageToDP(2.5),
                       }}>
                       {item.lotdate}
                     </Text>

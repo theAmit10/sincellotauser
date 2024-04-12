@@ -80,10 +80,10 @@ const EditUserWallet = ({route}) => {
           text1: 'User Wallet Updated Successfully',
         });
         setProgressBar(false);
-        navigation.reset({
-          index: 0,
-          routes: [{name: 'AdminDashboard'}],
-        });
+        // navigation.reset({
+        //   index: 0,
+        //   routes: [{name: 'AdminDashboard'}],
+        // });
       } catch (error) {
         setProgressBar(false);
         Toast.show({
@@ -186,10 +186,11 @@ const EditUserWallet = ({route}) => {
                 marginStart: heightPercentageToDP(1),
                 flex: 1,
                 fontFamily: FONT.SF_PRO_REGULAR,
-                fontSize: heightPercentageToDP(2),
+                fontSize: heightPercentageToDP(2.2),
                 color: COLORS.black
               }}
               placeholder="Enter Amount"
+              placeholderTextColor={COLORS.black}
               label="Balance"
               value={amount}
               onChangeText={text => setAmount(text)}
@@ -224,11 +225,12 @@ const EditUserWallet = ({route}) => {
 
                   <Text
                     style={{
-                      color: COLORS.darkGray,
+                      color: COLORS.black,
                       fontFamily: FONT.Montserrat_Regular,
                       fontSize: heightPercentageToDP(2),
                       textAlignVertical: 'center',
                       paddingStart: heightPercentageToDP(1),
+                      
                     }}>
                     Visibilty
                   </Text>

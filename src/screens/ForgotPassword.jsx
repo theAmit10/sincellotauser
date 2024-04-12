@@ -166,9 +166,10 @@ import axios from 'axios';
                   flex: 1,
                   fontFamily: FONT.Montserrat_Regular,
                   fontSize: heightPercentageToDP(2),
-                  color: COLORS.darkGray,
+                  color: COLORS.black,
                 }}
                 placeholder="Enter email"
+                placeholderTextColor={COLORS.black}
                 label="Email"
                 value={enterValue}
                 onChangeText={text => setEnterValue(text)}

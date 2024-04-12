@@ -82,13 +82,13 @@ const SearchTime = ({route}) => {
     });
   };
 
-  const [selectedItem, setSelectedItem] = useState("");
+  const [selectedItem, setSelectedItem] = useState('');
   const [showProgressBar, setProgressBar] = useState(false);
 
-  const deleteLocationHandler = async (item) => {
-    console.log("Item clicked :: "+item._id)
+  const deleteLocationHandler = async item => {
+    console.log('Item clicked :: ' + item._id);
     setProgressBar(true);
-    setSelectedItem(item._id)
+    setSelectedItem(item._id);
 
     try {
       const url = `${UrlHelper.DELETE_TIME_API}/${item._id}`;
@@ -116,12 +116,11 @@ const SearchTime = ({route}) => {
       Toast.show({
         type: 'error',
         text1: 'Something went wrong',
-        text2: 'Please, try after sometime'
+        text2: 'Please, try after sometime',
       });
       console.log(error);
     }
   };
-
 
   return (
     <View style={{flex: 1}}>
@@ -159,9 +158,25 @@ const SearchTime = ({route}) => {
         <View
           style={{
             height: heightPercentageToDP(15),
-            margin: heightPercentageToDP(2),
+            marginHorizontal: heightPercentageToDP(2),
+            marginVertical: heightPercentageToDP(1)
           }}>
-          <GradientText style={styles.textStyle}>Search Time</GradientText>
+          <View
+            style={{
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              flexDirection: 'row'
+            }}>
+            <GradientText style={styles.textStyle}>Search Time</GradientText>
+            <GradientText
+              style={{
+                fontSize: heightPercentageToDP(2),
+                fontFamily: FONT.Montserrat_Bold,
+                marginEnd: heightPercentageToDP(2)
+              }}>
+              {locationdata?.maximumRange}
+            </GradientText>
+          </View>
 
           {/** Search container */}
 
@@ -178,16 +193,17 @@ const SearchTime = ({route}) => {
             <Fontisto
               name={'search'}
               size={heightPercentageToDP(3)}
-              color={COLORS.white}
+              color={COLORS.darkGray}
             />
             <TextInput
               style={{
                 marginStart: heightPercentageToDP(1),
                 flex: 1,
-                fontFamily: FONT.SF_PRO_REGULAR,
+                fontFamily: FONT.Montserrat_SemiBold,
                 fontSize: heightPercentageToDP(2),
-                color: COLORS.black
+                color: COLORS.black,
               }}
+              placeholderTextColor={COLORS.black}
               placeholder="Search for time"
               label="Search"
               onChangeText={handleSearch}
@@ -195,7 +211,11 @@ const SearchTime = ({route}) => {
           </View>
         </View>
 
-        <View style={{margin: heightPercentageToDP(2)}}>
+        <View
+          style={{
+            marginHorizontal: heightPercentageToDP(2),
+            marginVertical: heightPercentageToDP(1),
+          }}>
           <GradientText style={styles.textStyle}>
             {locationdata.lotlocation}
           </GradientText>
@@ -229,85 +249,95 @@ const SearchTime = ({route}) => {
                         ? COLORS.lightDarkGray
                         : COLORS.grayHalfBg,
                   }}>
-                    <View
+                  <View
                     style={{
                       flexDirection: 'row',
                       justifyContent: 'space-between',
                     }}>
-                  <Text
-                    style={{
-                      color: COLORS.black,
-                      fontFamily: FONT.HELVETICA_BOLD,
-                      fontSize: heightPercentageToDP(2),
-                    }}>
-                    {item.lottime}
-                  </Text>
+                    <Text
+                      style={{
+                        color: COLORS.black,
+                        fontFamily: FONT.HELVETICA_BOLD,
+                        fontSize: heightPercentageToDP(2.5),
+                      }}>
+                      {item.lottime}
+                    </Text>
 
-                  <View style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center',gap: heightPercentageToDP(2)}}>
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        gap: heightPercentageToDP(2),
+                      }}>
                       {/** Update Locatiion */}
 
-                    <TouchableOpacity
-                    onPress={() => navigation.navigate('UpdateTime',{
-                      locationdata : locationdata,
-                      timedata: item,
-                    })}
-                    >
-                      {
-                        filteredData.length === 0 ? ( selectedItem === item._id ? (<Loading/>) :(<LinearGradient
-                          colors={[COLORS.lightWhite, COLORS.white_s]}
-                          className="rounded-xl p-1">
-                          <MaterialCommunityIcons
-                            name={'circle-edit-outline'}
-                            size={heightPercentageToDP(3)}
-                            color={COLORS.darkGray}
-                          />
-                        </LinearGradient>) ) : (
-                        <LinearGradient
-                          colors={[COLORS.lightWhite, COLORS.white_s]}
-                          className="rounded-xl p-1">
-                          <MaterialCommunityIcons
-                            name={'circle-edit-outline'}
-                            size={heightPercentageToDP(3)}
-                            color={COLORS.darkGray}
-                          />
-                        </LinearGradient>)
-                      }
-                      
-                    </TouchableOpacity>
+                      <TouchableOpacity
+                        onPress={() =>
+                          navigation.navigate('UpdateTime', {
+                            locationdata: locationdata,
+                            timedata: item,
+                          })
+                        }>
+                        {filteredData.length === 0 ? (
+                          selectedItem === item._id ? (
+                            <Loading />
+                          ) : (
+                            <LinearGradient
+                              colors={[COLORS.lightWhite, COLORS.white_s]}
+                              className="rounded-xl p-1">
+                              <MaterialCommunityIcons
+                                name={'circle-edit-outline'}
+                                size={heightPercentageToDP(3)}
+                                color={COLORS.darkGray}
+                              />
+                            </LinearGradient>
+                          )
+                        ) : (
+                          <LinearGradient
+                            colors={[COLORS.lightWhite, COLORS.white_s]}
+                            className="rounded-xl p-1">
+                            <MaterialCommunityIcons
+                              name={'circle-edit-outline'}
+                              size={heightPercentageToDP(3)}
+                              color={COLORS.darkGray}
+                            />
+                          </LinearGradient>
+                        )}
+                      </TouchableOpacity>
 
                       {/** Delete Locatiion */}
 
-                    <TouchableOpacity
-                    onPress={() => deleteLocationHandler(item)}
-                    >
-                      {
-                        showProgressBar ? ( selectedItem === item._id ? (<Loading/>) :(<LinearGradient
-                          colors={[COLORS.lightWhite, COLORS.white_s]}
-                          className="rounded-xl p-1">
-                          <MaterialCommunityIcons
-                            name={'delete'}
-                            size={heightPercentageToDP(3)}
-                            color={COLORS.darkGray}
-                          />
-                        </LinearGradient>) ) : (
-                        <LinearGradient
-                          colors={[COLORS.lightWhite, COLORS.white_s]}
-                          className="rounded-xl p-1">
-                          <MaterialCommunityIcons
-                            name={'delete'}
-                            size={heightPercentageToDP(3)}
-                            color={COLORS.darkGray}
-                          />
-                        </LinearGradient>)
-                      }
-                      
-                    </TouchableOpacity>
-
-
+                      <TouchableOpacity
+                        onPress={() => deleteLocationHandler(item)}>
+                        {showProgressBar ? (
+                          selectedItem === item._id ? (
+                            <Loading />
+                          ) : (
+                            <LinearGradient
+                              colors={[COLORS.lightWhite, COLORS.white_s]}
+                              className="rounded-xl p-1">
+                              <MaterialCommunityIcons
+                                name={'delete'}
+                                size={heightPercentageToDP(3)}
+                                color={COLORS.darkGray}
+                              />
+                            </LinearGradient>
+                          )
+                        ) : (
+                          <LinearGradient
+                            colors={[COLORS.lightWhite, COLORS.white_s]}
+                            className="rounded-xl p-1">
+                            <MaterialCommunityIcons
+                              name={'delete'}
+                              size={heightPercentageToDP(3)}
+                              color={COLORS.darkGray}
+                            />
+                          </LinearGradient>
+                        )}
+                      </TouchableOpacity>
                     </View>
-
-                    </View>
-
+                  </View>
                 </TouchableOpacity>
               )}
               keyExtractor={item => item._id}
@@ -318,11 +348,9 @@ const SearchTime = ({route}) => {
           )}
         </View>
 
-         {/** Bottom Submit Container */}
+        {/** Bottom Submit Container */}
 
-         
-
-         <View
+        <View
           style={{
             marginBottom: heightPercentageToDP(5),
             marginHorizontal: heightPercentageToDP(2),
@@ -331,10 +359,11 @@ const SearchTime = ({route}) => {
           {/** Email container */}
 
           <TouchableOpacity
-            onPress={() => navigation.navigate('CreateTime', {
-              locationdata: locationdata,
-            })}
-            
+            onPress={() =>
+              navigation.navigate('CreateTime', {
+                locationdata: locationdata,
+              })
+            }
             style={{
               backgroundColor: COLORS.blue,
               padding: heightPercentageToDP(2),

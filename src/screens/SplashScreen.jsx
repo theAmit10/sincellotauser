@@ -115,7 +115,7 @@ const SplashScreen = () => {
           }}
           className="rounded-full ">
            <Image
-              source={require('../../assets/image/logo.png')}
+              source={require('../../assets/image/logonobg.png')}
               resizeMode="cover"
               style={{
                 height: heightPercentageToDP(15),

@@ -14,6 +14,7 @@ import {
 } from 'react-native-responsive-screen';
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import Entypo from 'react-native-vector-icons/Entypo';
 import {useNavigation} from '@react-navigation/native';
 
 import {useSelector} from 'react-redux';
@@ -102,6 +103,9 @@ const UserDetails = ({route}) => {
           <GradientText style={styles.textStyleEmail}>
             {userdata ? userdata.email : ''}
           </GradientText>
+          <GradientText style={styles.textStyleEmail}>
+            User ID - {userdata ? userdata.userId : ''}
+          </GradientText>
         </View>
 
         {/** Username */}
@@ -151,7 +155,7 @@ const UserDetails = ({route}) => {
 
       <View
         style={{
-          height: heightPercentageToDP(15),
+          height: heightPercentageToDP(12),
           backgroundColor: COLORS.grayHalfBg,
         }}></View>
 
@@ -331,6 +335,95 @@ const UserDetails = ({route}) => {
             />
           </View>
         </TouchableOpacity>
+
+
+            {/** User Id  */}
+            <TouchableOpacity
+          onPress={() =>
+            navigation.navigate('ChangeUserId', {userdata: userdata})
+          }
+          style={{
+            height: heightPercentageToDP(20),
+            flexDirection: 'row',
+            backgroundColor: COLORS.grayBg,
+            alignItems: 'center',
+            paddingHorizontal: heightPercentageToDP(2),
+            borderRadius: heightPercentageToDP(1),
+            margin: heightPercentageToDP(2),
+          }}>
+          <View
+            style={{
+              padding: heightPercentageToDP(2),
+            }}>
+            <Text
+              style={{
+                marginStart: heightPercentageToDP(1),
+                flex: 1,
+                fontFamily: FONT.Montserrat_Regular,
+                color: COLORS.darkGray,
+                width: widthPercentageToDP(25),
+                marginStart: heightPercentageToDP(-1),
+                textAlignVertical: 'bottom',
+              }}>
+              
+            </Text>
+            <Text
+              style={{
+                marginStart: heightPercentageToDP(1),
+                flex: 1,
+                fontFamily: FONT.Montserrat_Regular,
+                color: COLORS.darkGray,
+                fontSize: heightPercentageToDP(2),
+                marginStart: heightPercentageToDP(-1),
+              }}>
+              Change User Id
+            </Text>
+
+            <View
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'flex-start',
+                gap: heightPercentageToDP(1),
+                marginStart: heightPercentageToDP(-1),
+              }}>
+              <View
+                style={{
+                  backgroundColor: COLORS.white_s,
+                  padding: heightPercentageToDP(1),
+                  borderRadius: heightPercentageToDP(1),
+                  justifyContent: 'center',
+                }}>
+                <Entypo
+                  name={'user'}
+                  size={heightPercentageToDP(4)}
+                  color={COLORS.darkGray}
+                />
+              </View>
+              <GradientText
+                style={{...styles.textStyle, width: widthPercentageToDP(60)}}>
+                User Id
+              </GradientText>
+            </View>
+          </View>
+
+          <View
+            style={{
+              flex: 1,
+              backgroundColor: COLORS.white,
+              position: 'absolute',
+              right: heightPercentageToDP(2),
+              borderRadius: heightPercentageToDP(1),
+              padding: heightPercentageToDP(1),
+              top: heightPercentageToDP(2),
+            }}>
+            <MaterialCommunityIcons
+               name={'circle-edit-outline'}
+              size={heightPercentageToDP(4)}
+              color={COLORS.darkGray}
+            />
+          </View>
+        </TouchableOpacity>
+
       </ScrollView>
     </View>
   );

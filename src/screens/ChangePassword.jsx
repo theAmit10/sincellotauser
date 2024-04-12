@@ -19,10 +19,11 @@ import Toast from 'react-native-toast-message';
 import {useNavigation} from '@react-navigation/native';
 import Loading from '../components/helpercComponent/Loading';
 import {useDispatch, useSelector} from 'react-redux';
-import {login} from '../redux/actions/userAction';
+import {loadProfile, login} from '../redux/actions/userAction';
 import {useMessageAndErrorUser} from '../utils/hooks';
 import Background from '../components/background/Background';
 import UrlHelper from '../helper/UrlHelper';
+import axios from 'axios';
 
 const ChangePassword = () => {
   const [password, setPassword] = useState('');
@@ -36,17 +37,17 @@ const ChangePassword = () => {
 
   const [passwordVisible, setPasswordVisible] = useState(false);
 
+  const {accesstoken} = useSelector(state => state.user);
+
   const navigation = useNavigation();
 
-  const loading = false;
+  
 
 
   const dispatch = useDispatch();
 
   // For Password Visibility
-  const togglePasswordVisibility = () => {
-    setPasswordVisible(!passwordVisible);
-  };
+
 
   const togglePasswordVisibilityForOLDPASSWORD = () => {
     setOldPasswordVisible(!oldPasswordVisible);
@@ -59,6 +60,8 @@ const ChangePassword = () => {
   const togglePasswordVisibilityCONFIRMPASSWORD = () => {
     setConfirmPasswordVisible(!confirmPasswordVisible);
   };
+
+  const [showProgressbar , setProgressBar] = useState(false);
 
 
 
@@ -279,7 +282,7 @@ const ChangePassword = () => {
               />
             </View>
 
-            {loading ? (
+            {showProgressbar ? (
               <View style={{padding: heightPercentageToDP(2)}}>
                 <Loading />
               </View>

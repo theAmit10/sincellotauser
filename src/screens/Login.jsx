@@ -1,3 +1,4 @@
+
 import {
   StyleSheet,
   Text,
@@ -16,18 +17,22 @@ import GradientText from '../components/helpercComponent/GradientText';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import Entypo from 'react-native-vector-icons/Entypo';
 import Toast from 'react-native-toast-message';
-import { useNavigation } from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 import Loading from '../components/helpercComponent/Loading';
-import { useDispatch, useSelector } from 'react-redux';
-import { login } from '../redux/actions/userAction';
-import { useMessageAndErrorUser } from '../utils/hooks';
+import {useDispatch, useSelector} from 'react-redux';
+import {login} from '../redux/actions/userAction';
+import {useMessageAndErrorUser} from '../utils/hooks';
+import axios from 'axios';
+import UrlHelper from '../helper/UrlHelper';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [passwordVisible, setPasswordVisible] = useState(false);
 
-  const navigation  = useNavigation();
+  const navigation = useNavigation();
+  // const {loading, message, error} = useSelector(state => state.user);
 
   const dispatch = useDispatch();
   
@@ -36,22 +41,160 @@ const Login = () => {
     setPasswordVisible(!passwordVisible);
   };
 
+  const [showProgressbar , setProgressBar] = useState(false);
 
   // for Submitting Response
-  const submitHandler = () => {
+  const submitHandler = async () => {
     console.log('Working on login ');
-    dispatch(login(email,password))
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!email) {
+      Toast.show({
+        type: 'error',
+        text1: 'Enter email address',
+      });
+    } else if (!emailRegex.test(email)) {
+      Toast.show({
+        type: 'error',
+        text1: 'Enter valid email address',
+      });
+    } else if (!password) {
+      Toast.show({
+        type: 'error',
+        text1: 'Enter password',
+      });
+    }
+    else{
+      console.log(email,password)
+      dispatch(login(email, password));
+    }
+    // else {
+    //   setProgressBar(true);
+
+    //   try {
+    //     dispatch({
+    //       type: 'loginRequest',
+    //     });
+    
+    //     console.log('Email :: ' + email);
+    //     console.log('Password :: ' + password);
+    
+    //     // Axios Calling
+    
+    //     const {data} = await axios.post(
+    //       UrlHelper.LOGIN_API,
+    //       {
+    //         email,
+    //         password,
+    //       },
+    //       {
+    //         headers: {
+    //           'Content-Type': 'application/json',
+    //           // "Accept":"application/json"
+        
+    //         },
+    //       },
+    //     );
+    
+    //     console.log('Data :: ' + data.token);
+    //     // AsyncStorage.setItem('accessToken', response.data.access_token);
+    //     AsyncStorage.setItem("accesstoken",data.token)
+    //     // dispatch(updateAccessToken(response.data.access_token));
+    
+    //     dispatch({
+    //         type: 'getaccesstoken',
+    //         payload: data.token,
+    //       });
+    //     dispatch({
+    //       type: 'loginSuccess',
+    //       payload: data.message,
+    //     });
+
+
+    //     navigation.reset({
+    //       index: 0,
+    //       routes: [{name: 'AdminDashboard'}],
+    //     });
+        
+    //     Toast.show({
+    //       type: 'success',
+    //       text1: message,
+    //     });
+
+
+
+
+    //   } catch (error) {
+    //     setProgressBar(false);
+    //     console.log(error);
+    //     // console.log(error.response);
+    //     console.log(error.response.data);
+    //     console.log(error.response.data.message);
+    
+    //     Toast.show({
+    //       type: 'error',
+    //       text1: error.response.data.message,
+    //     });
+    //   }
+ 
+    
+    // }
+
+    
   };
 
+  const loading = useMessageAndErrorUser(
+    navigation,
+    dispatch,
+    'AdminDashboard',
+  );
 
-  const loading =  useMessageAndErrorUser(navigation,dispatch,"AdminDashboard")
-
-  
+  // console.log("Loadingb :: "+loading)
 
  
 
+  // useEffect(() => {
+
+
+
+  //   if (error) {
+  //     Toast.show({
+  //       type: 'error',
+  //       text1: error,
+  //     });
+
+  //     dispatch({
+  //       type: 'clearError',
+  //     });
+  //   }
+
+  //   // Project 
+
+  //   if (message) {
+  //     navigation.reset({
+  //       index: 0,
+  //       routes: [{name: 'AdminDashboard'}],
+  //     });
+
+  //     Toast.show({
+  //       type: 'success',
+  //       text1: message,
+  //     });
+
+  //     dispatch({
+  //       type: 'clearMessage',
+  //     });
+
+  //   }
+  // }, [error, message,loading, dispatch]);
+
+
+
+
+
   return (
     <View style={{flex: 1}}>
+
       <LoginBackground />
 
       {/** Login Cointainer */}
@@ -108,16 +251,18 @@ const Login = () => {
               <Fontisto
                 name={'email'}
                 size={heightPercentageToDP(3)}
-                color={COLORS.white}
+                color={COLORS.darkGray}
               />
               <TextInput
                 style={{
                   marginStart: heightPercentageToDP(1),
                   flex: 1,
                   fontFamily: FONT.SF_PRO_REGULAR,
+                  color:COLORS.black
                 }}
                 placeholder="Email"
                 label="Email"
+                placeholderTextColor={COLORS.black}
                 value={email}
                 onChangeText={text => setEmail(text)}
               />
@@ -136,15 +281,17 @@ const Login = () => {
               <Entypo
                 name={'lock'}
                 size={heightPercentageToDP(3)}
-                color={COLORS.white}
+                color={COLORS.darkGray}
               />
               <TextInput
                 style={{
                   marginStart: heightPercentageToDP(1),
                   flex: 1,
                   fontFamily: FONT.SF_PRO_REGULAR,
+                  color: COLORS.black
                 }}
                 placeholder="Password"
+                placeholderTextColor={COLORS.black}
                 value={password}
                 onChangeText={text => setPassword(text)}
                 secureTextEntry={!passwordVisible}
@@ -153,12 +300,12 @@ const Login = () => {
                 onPress={togglePasswordVisibility}
                 name={passwordVisible ? 'eye' : 'eye-with-line'}
                 size={heightPercentageToDP(3)}
-                color={COLORS.white}
+                color={COLORS.darkGray}
               />
             </View>
 
             <TouchableOpacity
-              onPress={() => navigation.navigate("ForgotPassword")}
+              onPress={() => navigation.navigate('ForgotPassword')}
               style={{
                 padding: heightPercentageToDP(2),
                 borderRadius: heightPercentageToDP(1),
@@ -173,8 +320,12 @@ const Login = () => {
               </Text>
             </TouchableOpacity>
 
-            {
-              loading ? (<View style={{padding:heightPercentageToDP(2)}}><Loading/></View>) : (<TouchableOpacity
+            {loading ? (
+              <View style={{padding: heightPercentageToDP(2)}}>
+                <Loading />
+              </View>
+            ) : (
+              <TouchableOpacity
                 onPress={submitHandler}
                 style={{
                   backgroundColor: COLORS.blue,
@@ -189,10 +340,8 @@ const Login = () => {
                   }}>
                   Submit
                 </Text>
-              </TouchableOpacity>)
-            }
-
-            
+              </TouchableOpacity>
+            )}
 
             <View
               style={{
@@ -212,9 +361,13 @@ const Login = () => {
               <TouchableOpacity
                 onPress={() => navigation.navigate('Register')}
                 style={{justifyContent: 'center', alignItems: 'center'}}>
-                <Text style={{
-                  color: COLORS.blue
-                }}> Sign Up</Text>
+                <Text
+                  style={{
+                    color: COLORS.blue,
+                  }}>
+                  {' '}
+                  Sign Up
+                </Text>
               </TouchableOpacity>
             </View>
           </View>

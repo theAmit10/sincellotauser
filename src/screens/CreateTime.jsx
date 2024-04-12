@@ -157,7 +157,7 @@ const CreateTime = ({route}) => {
               borderRadius: heightPercentageToDP(1),
             }}>
             <Entypo
-              name={'location'}
+              name={'clock'}
               size={heightPercentageToDP(3)}
               color={COLORS.white}
             />
@@ -165,10 +165,13 @@ const CreateTime = ({route}) => {
               style={{
                 marginStart: heightPercentageToDP(1),
                 flex: 1,
-                fontFamily: FONT.SF_PRO_REGULAR,
-                color: COLORS.black
+                fontFamily: FONT.Montserrat_Regular,
+                color: COLORS.black,
+                fontSize: heightPercentageToDP(2.5)
+
               }}
-              placeholder="For Example 09-00 AM"
+              placeholder="For Example 09:00 AM"
+              placeholderTextColor={COLORS.black}
               label="time"
               value={enterData}
               onChangeText={text => setEnterData(text)}

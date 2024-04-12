@@ -1,3 +1,4 @@
+
 import {
   ScrollView,
   StyleSheet,
@@ -55,54 +56,9 @@ const AdminDashboard = () => {
 
   useMessageAndErrorUser(navigation, dispatch, 'Login');
 
-  // Function to clear AsyncStorage data when the user logs out
-  const clearAsyncStorage = async () => {
-    try {
-      await AsyncStorage.clear();
-      console.log('AsyncStorage data cleared successfully.');
-      navigation.reset({
-        index: 0,
-        routes: [{name: 'Login'}],
-      });
-    } catch (error) {
-      Toast.show({
-        type: 'error',
-        text1: 'Something went wrong',
-        text2: error,
-      });
-    }
-  };
 
-  const logoutHandler = () => {
-    console.log('Logging Off...');
 
-    Toast.show({
-      type: 'success',
-      text1: 'Logging Out ',
-      text2: 'Please wait...',
-    });
-
-    setTimeout(() => {
-      clearAsyncStorage();
-    }, 1000);
-  };
-
-  const updateProfileHandler = () => {
-    console.log('Updating profile');
-    navigation.navigate('UpdateProfile');
-
-    Toast.show({
-      type: 'success',
-      text1: 'Updating Profile',
-    });
-  };
-
-  const ChangePasswordHandler = () => {
-    Toast.show({
-      type: 'success',
-      text1: 'change password precessing',
-    });
-  };
+ 
 
   return (
     <View style={{flex: 1}}>

@@ -160,9 +160,9 @@ const CreateResult = ({route}) => {
               style={{
                 marginStart: heightPercentageToDP(1),
                 flex: 1,
-                fontFamily: FONT.SF_PRO_MEDIUM,
-                fontSize: heightPercentageToDP(2),
-                color: COLORS.black
+                fontFamily: FONT.Montserrat_Regular,
+                color: COLORS.black,
+                fontSize: heightPercentageToDP(2.5)
               }}
               placeholder="Enter result"
               label="time"

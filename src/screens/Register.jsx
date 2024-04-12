@@ -152,15 +152,17 @@ const Register = () => {
               <Entypo
                 name={'user'}
                 size={heightPercentageToDP(3)}
-                color={COLORS.white}
+                color={COLORS.darkGray}
               />
               <TextInput
                 style={{
                   marginStart: heightPercentageToDP(1),
                   flex: 1,
                   fontFamily: FONT.SF_PRO_REGULAR,
+                  color:COLORS.black
                 }}
                 placeholder="Name"
+                placeholderTextColor={COLORS.black}
                 label="Name"
                 value={name}
                 onChangeText={text => setName(text)}
@@ -180,15 +182,17 @@ const Register = () => {
               <Fontisto
                 name={'email'}
                 size={heightPercentageToDP(3)}
-                color={COLORS.white}
+                color={COLORS.darkGray}
               />
               <TextInput
                 style={{
                   marginStart: heightPercentageToDP(1),
                   flex: 1,
                   fontFamily: FONT.SF_PRO_REGULAR,
+                  color: COLORS.black
                 }}
                 placeholder="Email"
+                placeholderTextColor={COLORS.black}
                 label="Email"
                 value={email}
                 onChangeText={text => setEmail(text)}
@@ -208,16 +212,18 @@ const Register = () => {
               <Entypo
                 name={'lock'}
                 size={heightPercentageToDP(3)}
-                color={COLORS.white}
+                color={COLORS.darkGray}
               />
               <TextInput
                 style={{
                   marginStart: heightPercentageToDP(1),
                   flex: 1,
                   fontFamily: FONT.SF_PRO_REGULAR,
+                  color: COLORS.black
                 }}
                 placeholder="Password"
                 value={password}
+                placeholderTextColor={COLORS.black}
                 onChangeText={text => setPassword(text)}
                 secureTextEntry={!passwordVisible}
               />
@@ -225,7 +231,7 @@ const Register = () => {
                 onPress={togglePasswordVisibility}
                 name={passwordVisible ? 'eye' : 'eye-with-line'}
                 size={heightPercentageToDP(3)}
-                color={COLORS.white}
+                color={COLORS.darkGray}
               />
             </View>
 
@@ -242,16 +248,18 @@ const Register = () => {
               <Entypo
                 name={'lock'}
                 size={heightPercentageToDP(3)}
-                color={COLORS.white}
+                color={COLORS.darkGray}
               />
               <TextInput
                 style={{
                   marginStart: heightPercentageToDP(1),
                   flex: 1,
                   fontFamily: FONT.SF_PRO_REGULAR,
+                  color: COLORS.black
                 }}
                 placeholder="Confirm Password"
                 value={confirmPassword}
+                placeholderTextColor={COLORS.black}
                 onChangeText={text => setConfirmPassword(text)}
                 secureTextEntry={!confirmPasswordVisible}
               />
@@ -259,7 +267,7 @@ const Register = () => {
                 onPress={togglePasswordVisibilityConfirmPassword}
                 name={passwordVisible ? 'eye' : 'eye-with-line'}
                 size={heightPercentageToDP(3)}
-                color={COLORS.white}
+                color={COLORS.darkGray}
               />
             </View>
 
@@ -284,7 +292,7 @@ const Register = () => {
               <Fontisto
                 name={'google'}
                 size={heightPercentageToDP(3)}
-                color={COLORS.white}
+                color={COLORS.darkGray}
               />
             </TouchableOpacity>
 

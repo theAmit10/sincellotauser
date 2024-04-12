@@ -13,10 +13,13 @@ export const getAllTime = accesstoken => async dispatch => {
       },
     });
 
+    const reversedTime = data.lotlocations.reverse();
+
     dispatch({
       type: 'getAllTimeSuccess',
-      payload: data.lotlocations,
+      payload: reversedTime,
     });
+    
   } catch (error) {
     console.log(error);
     console.log(error.response.data.message);

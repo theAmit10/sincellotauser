@@ -43,7 +43,7 @@ const Background = () => {
       </View>
       <View
         style={{
-          backgroundColor: COLORS.grayHalfBg,
+          backgroundColor: COLORS.profileDarkGray,
           width: widthPercentageToDP(50),
           flex: 1,
           opacity: 80,

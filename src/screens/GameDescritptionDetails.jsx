@@ -93,10 +93,11 @@ const GameDescritptionDetails = ({route}) => {
         });
         setProgressBar(false);
 
-        navigation.reset({
-          index: 0,
-          routes: [{name: 'AdminDashboard'}],
-        });
+        // navigation.reset({
+        //   index: 0,
+        //   routes: [{name: 'AdminDashboard'}],
+        // });
+      
       } catch (error) {
         setProgressBar(false);
         Toast.show({
@@ -185,6 +186,7 @@ const GameDescritptionDetails = ({route}) => {
                     color: COLORS.black
                   }}
                   placeholder="Enter Title"
+                  placeholderTextColor={COLORS.black}
                   label="location"
                   value={titleValue}
                   onChangeText={text => setTitle(text)}
@@ -212,6 +214,7 @@ const GameDescritptionDetails = ({route}) => {
                     color: COLORS.black
                   }}
                   placeholder="Enter Description"
+                  placeholderTextColor={COLORS.black}
                   label="location"
                   value={discriptionValue}
                   onChangeText={text => setDescription(text)}

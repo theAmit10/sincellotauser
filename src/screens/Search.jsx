@@ -32,7 +32,6 @@ const Search = () => {
 
   const {accesstoken} = useSelector(state => state.user);
   const {loading, locations} = useSelector(state => state.location);
-  
 
   // const [filteredData, setFilteredData] = useState(locations);
   const [filteredData, setFilteredData] = useState([]);
@@ -60,14 +59,14 @@ const Search = () => {
       text1: 'Searching',
     });
   };
-  
-  const [selectedItem, setSelectedItem] = useState("");
+
+  const [selectedItem, setSelectedItem] = useState('');
   const [showProgressBar, setProgressBar] = useState(false);
 
-  const deleteLocationHandler = async (item) => {
-    console.log("Item clicked :: "+item._id)
+  const deleteLocationHandler = async item => {
+    console.log('Item clicked :: ' + item._id);
     setProgressBar(true);
-    setSelectedItem(item._id)
+    setSelectedItem(item._id);
 
     try {
       const url = `${UrlHelper.DELETE_LOCATION_API}/${item._id}`;
@@ -95,13 +94,11 @@ const Search = () => {
       Toast.show({
         type: 'error',
         text1: 'Something went wrong',
-        text2: 'Please, try after sometime'
+        text2: 'Please, try after sometime',
       });
       console.log(error);
     }
   };
-
- 
 
   return (
     <View style={{flex: 1}}>
@@ -139,7 +136,8 @@ const Search = () => {
         <View
           style={{
             height: heightPercentageToDP(15),
-            margin: heightPercentageToDP(2),
+            marginHorizontal: heightPercentageToDP(2),
+            marginBottom: heightPercentageToDP(2),
           }}>
           <GradientText style={styles.textStyle}>All Locations</GradientText>
 
@@ -156,17 +154,18 @@ const Search = () => {
             <Fontisto
               name={'search'}
               size={heightPercentageToDP(3)}
-              color={COLORS.white}
+              color={COLORS.darkGray}
             />
             <TextInput
               style={{
                 marginStart: heightPercentageToDP(1),
                 flex: 1,
-                fontFamily: FONT.SF_PRO_REGULAR,
+                fontFamily: FONT.Montserrat_SemiBold,
                 fontSize: heightPercentageToDP(2),
-                color: COLORS.black
+                color: COLORS.black,
               }}
               placeholder="Search for location"
+              placeholderTextColor={COLORS.black}
               label="Search"
               onChangeText={handleSearch}
             />
@@ -205,77 +204,84 @@ const Search = () => {
                       style={{
                         color: COLORS.black,
                         fontFamily: FONT.HELVETICA_BOLD,
-                        fontSize: heightPercentageToDP(2),
+                        fontSize: heightPercentageToDP(2.5),
                       }}>
                       {item.lotlocation}
                     </Text>
 
-                    <View style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center',gap: heightPercentageToDP(2)}}>
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        gap: heightPercentageToDP(2),
+                      }}>
                       {/** Update Locatiion */}
 
-                    <TouchableOpacity
-                    onPress={() => navigation.navigate('UpdateLocation',{
-                      locationdata : item
-                    })}
-                    >
-                      {
-                        filteredData.length === 0 ? ( selectedItem === item._id ? (<Loading/>) :(<LinearGradient
-                          colors={[COLORS.lightWhite, COLORS.white_s]}
-                          className="rounded-xl p-1">
-                          <MaterialCommunityIcons
-                            name={'circle-edit-outline'}
-                            size={heightPercentageToDP(3)}
-                            color={COLORS.darkGray}
-                          />
-                        </LinearGradient>) ) : (
-                        <LinearGradient
-                          colors={[COLORS.lightWhite, COLORS.white_s]}
-                          className="rounded-xl p-1">
-                          <MaterialCommunityIcons
-                            name={'circle-edit-outline'}
-                            size={heightPercentageToDP(3)}
-                            color={COLORS.darkGray}
-                          />
-                        </LinearGradient>)
-                      }
-                      
-                    </TouchableOpacity>
+                      <TouchableOpacity
+                        onPress={() =>
+                          navigation.navigate('UpdateLocation', {
+                            locationdata: item,
+                          })
+                        }>
+                        {filteredData.length === 0 ? (
+                          selectedItem === item._id ? (
+                            <Loading />
+                          ) : (
+                            <LinearGradient
+                              colors={[COLORS.lightWhite, COLORS.white_s]}
+                              className="rounded-xl p-1">
+                              <MaterialCommunityIcons
+                                name={'circle-edit-outline'}
+                                size={heightPercentageToDP(3)}
+                                color={COLORS.darkGray}
+                              />
+                            </LinearGradient>
+                          )
+                        ) : (
+                          <LinearGradient
+                            colors={[COLORS.lightWhite, COLORS.white_s]}
+                            className="rounded-xl p-1">
+                            <MaterialCommunityIcons
+                              name={'circle-edit-outline'}
+                              size={heightPercentageToDP(3)}
+                              color={COLORS.darkGray}
+                            />
+                          </LinearGradient>
+                        )}
+                      </TouchableOpacity>
 
                       {/** Delete Locatiion */}
 
-                    <TouchableOpacity
-                    onPress={() => deleteLocationHandler(item)}
-                    >
-                      {
-                        showProgressBar ? ( selectedItem === item._id ? (<Loading/>) :(<LinearGradient
-                          colors={[COLORS.lightWhite, COLORS.white_s]}
-                          className="rounded-xl p-1">
-                          <MaterialCommunityIcons
-                            name={'delete'}
-                            size={heightPercentageToDP(3)}
-                            color={COLORS.darkGray}
-                          />
-                        </LinearGradient>) ) : (
-                        <LinearGradient
-                          colors={[COLORS.lightWhite, COLORS.white_s]}
-                          className="rounded-xl p-1">
-                          <MaterialCommunityIcons
-                            name={'delete'}
-                            size={heightPercentageToDP(3)}
-                            color={COLORS.darkGray}
-                          />
-                        </LinearGradient>)
-                      }
-                      
-                    </TouchableOpacity>
-
-
+                      <TouchableOpacity
+                        onPress={() => deleteLocationHandler(item)}>
+                        {showProgressBar ? (
+                          selectedItem === item._id ? (
+                            <Loading />
+                          ) : (
+                            <LinearGradient
+                              colors={[COLORS.lightWhite, COLORS.white_s]}
+                              className="rounded-xl p-1">
+                              <MaterialCommunityIcons
+                                name={'delete'}
+                                size={heightPercentageToDP(3)}
+                                color={COLORS.darkGray}
+                              />
+                            </LinearGradient>
+                          )
+                        ) : (
+                          <LinearGradient
+                            colors={[COLORS.lightWhite, COLORS.white_s]}
+                            className="rounded-xl p-1">
+                            <MaterialCommunityIcons
+                              name={'delete'}
+                              size={heightPercentageToDP(3)}
+                              color={COLORS.darkGray}
+                            />
+                          </LinearGradient>
+                        )}
+                      </TouchableOpacity>
                     </View>
-
-                    
-                    
-
-
                   </View>
                 </TouchableOpacity>
               )}

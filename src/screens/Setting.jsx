@@ -612,8 +612,9 @@ const Setting = () => {
                 style={{
                   marginStart: heightPercentageToDP(1),
                   flex: 1,
-                  fontFamily: FONT.SF_PRO_REGULAR,
+                  fontFamily: FONT.Montserrat_Regular,
                   color: COLORS.darkGray,
+                  fontSize: heightPercentageToDP(2),
                 }}>
                 Logout
               </Text>

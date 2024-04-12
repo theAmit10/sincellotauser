@@ -46,6 +46,7 @@ export const timeReducer = createReducer({
     
     builder.addCase("clearError",(state) => { 
         state.error = null
+        state.loading = false
     });
     builder.addCase("clearMessage",(state) => { 
         state.times = []

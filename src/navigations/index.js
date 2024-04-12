@@ -47,6 +47,7 @@ import ChangeEmail from '../screens/ChangeEmail';
 import ForgotPassword from '../screens/ForgotPassword';
 import WalletModification from '../screens/WalletModification';
 import AllWallet from '../screens/AllWallet';
+import ChangeUserId from '../screens/ChangeUserId';
 
 
 
@@ -109,6 +110,7 @@ const Main = () => {
                 <Stack.Screen  name="ForgotPassword" component={ForgotPassword}/>
                 <Stack.Screen  name="WalletModification" component={WalletModification}/>
                 <Stack.Screen  name="AllWallet" component={AllWallet}/>
+                <Stack.Screen  name="ChangeUserId" component={ChangeUserId}/>
 
             </Stack.Group>
         </Stack.Navigator>
