@@ -159,7 +159,7 @@ const CreateTime = ({route}) => {
             <Entypo
               name={'clock'}
               size={heightPercentageToDP(3)}
-              color={COLORS.white}
+              color={COLORS.darkGray}
             />
             <TextInput
               style={{

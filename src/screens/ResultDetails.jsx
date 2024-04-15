@@ -111,7 +111,7 @@ import {
                           flex: 3,
                           justifyContent: 'center',
                           alignItems: 'center',
-                          marginStart: heightPercentageToDP(6)
+                          marginStart: heightPercentageToDP(7)
 
                         }}>
                         <Text

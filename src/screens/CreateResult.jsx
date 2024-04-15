@@ -154,7 +154,7 @@ const CreateResult = ({route}) => {
             <Entypo
               name="trophy"
               size={heightPercentageToDP(3)}
-              color={COLORS.white}
+              color={COLORS.darkGray}
             />
             <TextInput
               style={{
@@ -165,6 +165,7 @@ const CreateResult = ({route}) => {
                 fontSize: heightPercentageToDP(2.5)
               }}
               placeholder="Enter result"
+              placeholderTextColor={COLORS.black}
               label="time"
               value={enterData}
               onChangeText={text => setEnterData(text)}

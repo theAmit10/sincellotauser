@@ -129,7 +129,7 @@ const CreateLocation = () => {
             <Entypo
               name={'location'}
               size={heightPercentageToDP(3)}
-              color={COLORS.white}
+              color={COLORS.darkGray}
             />
             <TextInput
               style={{
@@ -171,7 +171,7 @@ const CreateLocation = () => {
             <Entypo
               name={'area-graph'}
               size={heightPercentageToDP(3)}
-              color={COLORS.white}
+              color={COLORS.darkGray}
             />
             <TextInput
               style={{

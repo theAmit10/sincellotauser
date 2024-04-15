@@ -160,7 +160,7 @@ const CreateDate = ({route}) => {
             <Entypo
               name={'calendar'}
               size={heightPercentageToDP(3)}
-              color={COLORS.white}
+              color={COLORS.darkGray}
             />
             <TextInput
               style={{
@@ -171,6 +171,7 @@ const CreateDate = ({route}) => {
                 fontSize: heightPercentageToDP(2.5)
               }}
               placeholder="For example - 05-03-2024"
+              placeholderTextColor={COLORS.black}
               label="time"
               value={enterData}
               onChangeText={text => setEnterData(text)}
