@@ -12,6 +12,10 @@ export const userReducer = createReducer(
     loadingAbout: false,
     abouts: [],
     loadingChangePassword: false,
+    loadingSingleUser: false,
+    singleuser: {},
+    loadingAllOneDayUser: false,
+    allonedayusers: [],
   },
   builder => {
     builder
@@ -41,6 +45,12 @@ export const userReducer = createReducer(
       })
       .addCase('getChangePasswordRequest', state => {
         state.loadingChangePassword = true;
+      })
+      .addCase('getSingleUserLoadingRequest', state => {
+        state.loadingSingleUser = true;
+      })
+      .addCase('getAllOneDayUserLoadingRequest', state => {
+        state.loadingAllOneDayUser = true;
       });
 
     builder
@@ -80,6 +90,14 @@ export const userReducer = createReducer(
       .addCase('getChangePasswordSuccess', (state, action) => {
         state.loadingChangePassword = false;
         state.message = action.payload;
+      })
+      .addCase('getSingleUserSuccess', (state, action) => {
+        state.loadingSingleUser = false;
+        state.singleuser = action.payload;
+      })
+      .addCase('getAllOneDayUserSuccess', (state, action) => {
+        state.loadingAllOneDayUser = false;
+        state.allonedayusers = action.payload;
       });
 
     builder
@@ -118,6 +136,14 @@ export const userReducer = createReducer(
       .addCase('changePasswordFail', (state, action) => {
         state.loadingChangePassword = false;
         state.error = action.payload;
+      })
+      .addCase('getSingleUserFail', (state, action) => {
+        state.loadingSingleUser = false;
+        state.error = action.payload;
+      })
+      .addCase('getAllOneDayUserFail', (state, action) => {
+        state.loadingAllOneDayUser = false;
+        state.error = action.payload;
       });
 
     builder.addCase('getaccesstoken', (state, action) => {
@@ -137,6 +163,12 @@ export const userReducer = createReducer(
     });
     builder.addCase('clearAllAbout', state => {
       state.abouts = [];
+    });
+    builder.addCase('clearSingleUser', state => {
+      state.singleuser = {};
+    })
+    builder.addCase('clearAllOneDayUser', state => {
+      state.allonedayusers = [];
     });
   },
 );

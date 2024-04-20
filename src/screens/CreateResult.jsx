@@ -31,6 +31,7 @@ const CreateResult = ({route}) => {
   console.log(timedata);
 
   const [enterData, setEnterData] = useState('');
+  const [nextResultData, setNextResultData] = useState('');
   const {accesstoken} = useSelector(state => state.user);
   const [loading, setLoading] = useState(false);
   const navigation = useNavigation();
@@ -42,17 +43,23 @@ const CreateResult = ({route}) => {
         type: 'error',
         text1: 'Please enter result',
       });
-    } else {
+    }else if (!nextResultData) {
+      Toast.show({
+        type: 'error',
+        text1: 'Please enter new result time',
+      });
+    }
+     else {
       Toast.show({
         type: 'success',
         text1: 'Processing... ',
       });
 
-      createResult(accesstoken, timedata._id, datedata._id, locationdata._id);
+      createResult(accesstoken, timedata._id, datedata._id, locationdata._id,nextResultData);
     }
   };
 
-  const createResult = async (accesstoken, lottime, lotdate, lotlocation) => {
+  const createResult = async (accesstoken, lottime, lotdate, lotlocation,nextResultData) => {
     try {
       setLoading(true);
       const {data} = await axios.post(
@@ -62,6 +69,7 @@ const CreateResult = ({route}) => {
           lotdate,
           lottime,
           lotlocation,
+          nextresulttime: nextResultData,
         },
         {
           headers: {
@@ -171,6 +179,51 @@ const CreateResult = ({route}) => {
               onChangeText={text => setEnterData(text)}
             />
           </View>
+
+               {/** Next Result Data */}
+
+               <GradientText
+              style={{
+                fontFamily: FONT.Montserrat_Regular,
+                fontSize: heightPercentageToDP(2.5),
+                color: COLORS.black,
+                marginTop: heightPercentageToDP(3),
+              }}>
+              Next Result
+            </GradientText>
+
+                <View
+              style={{
+                height: heightPercentageToDP(7),
+                flexDirection: 'row',
+                backgroundColor: COLORS.grayHalfBg,
+                alignItems: 'center',
+                paddingHorizontal: heightPercentageToDP(2),
+                borderRadius: heightPercentageToDP(1),
+                marginTop: heightPercentageToDP(1),
+
+              }}>
+              <Entypo
+                name={'clock'}
+                size={heightPercentageToDP(3)}
+                color={COLORS.darkGray}
+              />
+              <TextInput
+                style={{
+                  marginStart: heightPercentageToDP(1),
+                  flex: 1,
+                  fontFamily: FONT.Montserrat_Regular,
+                  fontSize: heightPercentageToDP(2.5),
+                  color: COLORS.black
+                }}
+                placeholder="Enter Next Result Time"
+                placeholderTextColor={COLORS.black}
+                label="result"
+                value={nextResultData}
+                onChangeText={text => setNextResultData(text)}
+              />
+            </View>
+
         </View>
 
         {loading ? (

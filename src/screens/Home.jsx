@@ -36,11 +36,7 @@ const Home = () => {
 
   const navigation = useNavigation();
 
-  const [data, setData] = useState([
-    {id: '1', result: '7894', location: 'Pune', time: '01:00 PM'},
-    {id: '2', result: '1839', location: 'Sikkim', time: '01:00 PM'},
-    {id: '3', result: '7456', location: 'Bhopal', time: '01:00 PM'},
-  ]);
+
 
   // Getting User Profile
 

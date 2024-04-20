@@ -65,6 +65,10 @@ const DELETE_ABOUT_API = server + 'user/removeabout';
 const UPDATE_WALLET_ONE_NAME_API = server + 'user/updatewalletone';
 const UPDATE_WALLET_TWO_NAME_API = server + 'user/updatewallettwo';
 
+// Single user information
+const SINGLE_USER_API = server + 'user/singleuser';
+const ALL_ONE_DAY_USER_API = server + 'user/alluserlastday';
+
 
 
 
@@ -113,4 +117,6 @@ const UPDATE_WALLET_TWO_NAME_API = server + 'user/updatewallettwo';
   USER_WALLET_ONE_MODIFICATION_API,
   USER_WALLET_TWO_MODIFICATION_API,
   UPDATE_USER_ID_API,
+  SINGLE_USER_API,
+  ALL_ONE_DAY_USER_API,
 };

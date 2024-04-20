@@ -22,6 +22,7 @@ import {createDate} from '../redux/actions/dateAction';
 import Loading from '../components/helpercComponent/Loading';
 import axios from 'axios';
 import UrlHelper from '../helper/UrlHelper';
+import DateTimePicker from '@react-native-community/datetimepicker';
 
 const CreateDate = ({route}) => {
   const [enterData, setEnterData] = useState('');
@@ -32,11 +33,35 @@ const CreateDate = ({route}) => {
   // const {loading, message, error} = useSelector(state => state.date);
   const {accesstoken} = useSelector(state => state.user);
 
-  const [loading,setLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-  
+  const [fromDate, setFromDate] = useState(new Date());
+  const [showFrom, setShowFrom] = useState(false);
 
-  
+  const onChangeFrom = (event, selectedDate) => {
+    const currentDate = selectedDate || fromDate;
+    // Define options for formatting the date
+    const options = { day: '2-digit', month: 'numeric',year: 'numeric'};
+
+    // Format the date using toLocaleDateString
+    const formattedDate = currentDate.toLocaleDateString('en-US', options);
+    // setShow(Platform.OS === 'ios');
+    setShowFrom(Platform.OS === 'ios');
+    setFromDate(currentDate);
+    console.log(currentDate)
+    console.log(formattedDate)
+    setEnterData(currentDate)
+  };
+
+  const showModeFrom = currentMode => {
+    setShowFrom(true);
+    // setMode(currentMode);
+  };
+
+  const showDatepickerFrom = () => {
+    showModeFrom('date');
+    // handleDateChange(fromDate, 'START_DATE');
+  };
 
   const submitHandler = () => {
     console.log('Working on login ');
@@ -52,48 +77,44 @@ const CreateDate = ({route}) => {
       });
 
       // dispatch(createDate(accesstoken, timedata._id, enterData));
-      createDateForLocation(accesstoken, timedata._id, enterData)
+      createDateForLocation(accesstoken, timedata._id, enterData);
     }
   };
 
-  const createDateForLocation = async (accesstoken, lottime,lotdate) => {
-  try {
-   
-    setLoading(true)
-    const {data} = await axios.post(
-      UrlHelper.CREATE_DATE_API,
-      {
-        lotdate,
-        lottime,
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${accesstoken}`,
-          'Content-Type': 'application/json',
+  const createDateForLocation = async (accesstoken, lottime, lotdate) => {
+    try {
+      setLoading(true);
+      const {data} = await axios.post(
+        UrlHelper.CREATE_DATE_API,
+        {
+          lotdate,
+          lottime,
         },
-      },
-    );
+        {
+          headers: {
+            Authorization: `Bearer ${accesstoken}`,
+            'Content-Type': 'application/json',
+          },
+        },
+      );
 
-    console.log('Data :: ' + data.message);
-    Toast.show({
-      type: 'success',
-      text1: data.message
-    })
-    setEnterData("")   
-    navigation.goBack()
-
-  
-  } catch (error) {
-    setLoading(false)
-    console.log(" Err :: "+error);
-    console.log(error.response.data.message);
-    Toast.show({
-      type: 'error',
-      text1: error.response.data.message
-    })
-
-  }
-};
+      console.log('Data :: ' + data.message);
+      Toast.show({
+        type: 'success',
+        text1: data.message,
+      });
+      setEnterData('');
+      navigation.goBack();
+    } catch (error) {
+      setLoading(false);
+      console.log(' Err :: ' + error);
+      console.log(error.response.data.message);
+      Toast.show({
+        type: 'error',
+        text1: error.response.data.message,
+      });
+    }
+  };
 
   return (
     <View style={{flex: 1}}>
@@ -157,18 +178,21 @@ const CreateDate = ({route}) => {
               paddingHorizontal: heightPercentageToDP(2),
               borderRadius: heightPercentageToDP(1),
             }}>
-            <Entypo
-              name={'calendar'}
-              size={heightPercentageToDP(3)}
-              color={COLORS.darkGray}
-            />
+            <TouchableOpacity onPress={showDatepickerFrom}>
+              <Entypo
+                name={'calendar'}
+                size={heightPercentageToDP(3)}
+                color={COLORS.darkGray}
+              />
+            </TouchableOpacity>
+
             <TextInput
               style={{
                 marginStart: heightPercentageToDP(1),
                 flex: 1,
                 fontFamily: FONT.Montserrat_Regular,
                 color: COLORS.black,
-                fontSize: heightPercentageToDP(2.5)
+                fontSize: heightPercentageToDP(2.5),
               }}
               placeholder="For example - 05-03-2024"
               placeholderTextColor={COLORS.black}
@@ -177,6 +201,17 @@ const CreateDate = ({route}) => {
               onChangeText={text => setEnterData(text)}
             />
           </View>
+
+          {showFrom && (
+            <DateTimePicker
+              testID="dateTimePicker"
+              value={fromDate}
+              mode="date"
+              is24Hour={true}
+              display="default"
+              onChange={onChangeFrom}
+            />
+          )}
         </View>
 
         {loading ? (

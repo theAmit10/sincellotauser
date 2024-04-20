@@ -80,6 +80,7 @@ const EditUserWallet = ({route}) => {
           text1: 'User Wallet Updated Successfully',
         });
         setProgressBar(false);
+        navigation.goBack()
         // navigation.reset({
         //   index: 0,
         //   routes: [{name: 'AdminDashboard'}],

@@ -271,6 +271,70 @@ export const loadAllAboutUs = (accesstoken) => async dispatch => {
   };
 
 
+  // Load SINGLE USER
+export const loadSingleUser = (accesstoken,userid) => async dispatch => {
+  try {
+    dispatch({
+      type: 'getSingleUserLoadingRequest',
+    });
+
+    
+    const url = UrlHelper.SINGLE_USER_API+"/"+userid
+    console.log("Loading Single user details")
+    console.log(url)
+    console.log(userid)
+  
+    const {data} = await axios.get(url, {
+      headers: {
+        Authorization: `Bearer ${accesstoken}`,
+      },
+    });
+  
+    dispatch({
+      type: 'getSingleUserSuccess',
+      payload: data.user,
+    });
+  } catch (error) {
+    console.log(error);
+    console.log(error.response);
+  
+    dispatch({
+      type: 'getSingleUserFail',
+      payload: error.response.data.message,
+    });
+  }
+  };
+
+
+    // Load ALL 24 HOUR REGISTER USERS
+export const loadAllOneDayUser = (accesstoken,userid) => async dispatch => {
+  try {
+    dispatch({
+      type: 'getAllOneDayUserLoadingRequest',
+    });
+  
+    const {data} = await axios.get(UrlHelper.ALL_ONE_DAY_USER_API, {
+      headers: {
+        Authorization: `Bearer ${accesstoken}`,
+      },
+    });
+  
+    dispatch({
+      type: 'getAllOneDayUserSuccess',
+      payload: data.users,
+    });
+  } catch (error) {
+    console.log(error);
+    console.log(error.response);
+  
+    dispatch({
+      type: 'getAllOneDayUserFail',
+      payload: error.response.data.message,
+    });
+  }
+  };
+
+
   // Chanage User Password
   // export const getResultAccordingToLocationTimeDate = (accesstoken,lotdateId,lottimeId,lotlocationId) => async dispatch => {
   //   try {
