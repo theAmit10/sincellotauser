@@ -192,7 +192,7 @@ const Setting = () => {
 
             {/** Change Email container */}
 
-            <TouchableOpacity
+            {/* <TouchableOpacity
               onPress={() => navigation.navigate('ChangeEmail')}
               style={{
                 height: heightPercentageToDP(7),
@@ -228,7 +228,7 @@ const Setting = () => {
                 size={heightPercentageToDP(3)}
                 color={COLORS.white}
               />
-            </TouchableOpacity>
+            </TouchableOpacity> */}
 
             {/** Wallet container */}
             <TouchableOpacity

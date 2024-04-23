@@ -1,5 +1,6 @@
 import {
   FlatList,
+  SafeAreaView,
   StyleSheet,
   Text,
   TextInput,
@@ -84,12 +85,10 @@ const Search = () => {
         text1: data.message,
       });
       setProgressBar(false);
+      dispatch(getAllLocations(accesstoken));
 
-      navigation.reset({
-        index: 0,
-        routes: [{name: 'AdminDashboard'}],
-      });
     } catch (error) {
+      console.log(error.response.data.message);
       setProgressBar(false);
       Toast.show({
         type: 'error',
@@ -101,7 +100,7 @@ const Search = () => {
   };
 
   return (
-    <View style={{flex: 1}}>
+    <SafeAreaView style={{flex: 1}}>
       <Background />
 
       {/** Main Cointainer */}
@@ -323,7 +322,7 @@ const Search = () => {
 
         {/** end */}
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 

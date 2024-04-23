@@ -111,7 +111,7 @@ const UserDetails = ({route}) => {
             {userdata ? userdata.email : ''}
           </GradientText>
           <GradientText style={styles.textStyleEmail}>
-            User ID - {userdata ? userdata.userId : ''}
+            User ID - {singleuser ? singleuser.userId : ''}
           </GradientText>
         </View>
 
@@ -362,7 +362,7 @@ const UserDetails = ({route}) => {
           {/** User Id  */}
           <TouchableOpacity
             onPress={() =>
-              navigation.navigate('ChangeUserId', {userdata: userdata})
+              navigation.navigate('ChangeUserId', {userdata: singleuser})
             }
             style={{
               height: heightPercentageToDP(20),

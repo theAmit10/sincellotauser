@@ -48,6 +48,9 @@ import ForgotPassword from '../screens/ForgotPassword';
 import WalletModification from '../screens/WalletModification';
 import AllWallet from '../screens/AllWallet';
 import ChangeUserId from '../screens/ChangeUserId';
+import NewUser from '../screens/NewUser';
+import ResetPassword from '../screens/ResetPassword';
+import GoogleAuthPassword from '../screens/GoogleAuthPassword';
 
 
 
@@ -111,6 +114,9 @@ const Main = () => {
                 <Stack.Screen  name="WalletModification" component={WalletModification}/>
                 <Stack.Screen  name="AllWallet" component={AllWallet}/>
                 <Stack.Screen  name="ChangeUserId" component={ChangeUserId}/>
+                <Stack.Screen  name="NewUser" component={NewUser}/>
+                <Stack.Screen  name="ResetPassword" component={ResetPassword}/>
+                <Stack.Screen  name="GoogleAuthPassword" component={GoogleAuthPassword}/>
 
             </Stack.Group>
         </Stack.Navigator>

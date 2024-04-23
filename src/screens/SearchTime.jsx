@@ -107,10 +107,6 @@ const SearchTime = ({route}) => {
       });
       setProgressBar(false);
 
-      navigation.reset({
-        index: 0,
-        routes: [{name: 'AdminDashboard'}],
-      });
     } catch (error) {
       setProgressBar(false);
       Toast.show({

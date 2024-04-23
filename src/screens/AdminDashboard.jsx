@@ -1,5 +1,6 @@
 
 import {
+  SafeAreaView,
   ScrollView,
   StyleSheet,
   Text,
@@ -22,7 +23,7 @@ import {useIsFocused, useNavigation} from '@react-navigation/native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import {useDispatch, useSelector} from 'react-redux';
-import {loadAllUsers, loadProfile, logout} from '../redux/actions/userAction';
+import {loadAllOneDayUser, loadAllUsers, loadProfile, logout} from '../redux/actions/userAction';
 import {useMessageAndErrorUser} from '../utils/hooks';
 import AdminBackground from '../components/background/AdminBackground';
 import LinearGradient from 'react-native-linear-gradient';
@@ -33,7 +34,7 @@ const AdminDashboard = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
 
-  const {user, accesstoken,allusers, loading} = useSelector(state => state.user);
+  const {user, accesstoken,allusers, loading,allonedayusers} = useSelector(state => state.user);
   const {locations} = useSelector(state => state.location);
   const {results} = useSelector(state => state.result);
 
@@ -45,6 +46,7 @@ const AdminDashboard = () => {
     dispatch(loadAllUsers(accesstoken))
     dispatch(getAllLocations(accesstoken))
     dispatch(getAllResult(accesstoken));
+    dispatch(loadAllOneDayUser(accesstoken));
   }, [dispatch,isFocused]);
 
   useMessageAndErrorUser(navigation, dispatch, 'Login');
@@ -54,7 +56,7 @@ const AdminDashboard = () => {
  
 
   return (
-    <View style={{flex: 1}}>
+    <SafeAreaView style={{flex: 1}}>
       <AdminBackground />
 
       {/** Profile Cointainer */}
@@ -268,7 +270,7 @@ const AdminDashboard = () => {
                {/** All new register users container */}
 
                <TouchableOpacity
-                onPress={() => navigation.navigate('AllUsers')}
+                onPress={() => navigation.navigate('NewUser')}
                 style={{
                   height: heightPercentageToDP(15),
                   flexDirection: 'row',
@@ -314,7 +316,7 @@ const AdminDashboard = () => {
                     gap: heightPercentageToDP(1),
                   }}>
                   <GradientText style={{...styles.textStyle}}>
-                    {allusers.length}
+                    {allonedayusers.length}
                   </GradientText>
 
                   <LinearGradient
@@ -334,7 +336,7 @@ const AdminDashboard = () => {
           </ScrollView>
         </View>
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 

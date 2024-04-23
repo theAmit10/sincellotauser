@@ -69,6 +69,11 @@ const UPDATE_WALLET_TWO_NAME_API = server + 'user/updatewallettwo';
 const SINGLE_USER_API = server + 'user/singleuser';
 const ALL_ONE_DAY_USER_API = server + 'user/alluserlastday';
 
+const DELETE_LOT_RESULT_API = server + 'result/removeresult';
+
+// For Reset and Forgot password
+const FORGOT_PASSWORD_API = server + 'user/forgetpassword';
+
 
 
 
@@ -119,4 +124,6 @@ const ALL_ONE_DAY_USER_API = server + 'user/alluserlastday';
   UPDATE_USER_ID_API,
   SINGLE_USER_API,
   ALL_ONE_DAY_USER_API,
+  DELETE_LOT_RESULT_API,
+  FORGOT_PASSWORD_API
 };

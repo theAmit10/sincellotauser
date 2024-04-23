@@ -38,20 +38,44 @@ const CreateDate = ({route}) => {
   const [fromDate, setFromDate] = useState(new Date());
   const [showFrom, setShowFrom] = useState(false);
 
+  // const onChangeFrom = (event, selectedDate) => {
+  //   const currentDate = selectedDate || fromDate;
+  //   // Define options for formatting the date
+  //   const options = { day: '2-digit', month: 'numeric',year: 'numeric'};
+
+  //   // Format the date using toLocaleDateString
+  //   const formattedDate = currentDate.toLocaleDateString('en-US', options);
+  //   // setShow(Platform.OS === 'ios');
+  //   setShowFrom(Platform.OS === 'ios');
+  //   setFromDate(currentDate);
+  //   console.log(currentDate)
+  //   console.log(formattedDate)
+  //   setEnterData(currentDate)
+  // };
+
   const onChangeFrom = (event, selectedDate) => {
     const currentDate = selectedDate || fromDate;
+  
     // Define options for formatting the date
-    const options = { day: '2-digit', month: 'numeric',year: 'numeric'};
-
+    const options = { day: '2-digit', month: '2-digit', year: 'numeric' };
+  
     // Format the date using toLocaleDateString
     const formattedDate = currentDate.toLocaleDateString('en-US', options);
+  
+    // Rearrange the formatted date to match the desired format
+    const [month, day, year] = formattedDate.split('/');
+    const rearrangedDate = `${day}-${month}-${year}`;
+  
     // setShow(Platform.OS === 'ios');
     setShowFrom(Platform.OS === 'ios');
     setFromDate(currentDate);
-    console.log(currentDate)
-    console.log(formattedDate)
-    setEnterData(currentDate)
+    console.log(currentDate);
+    console.log(rearrangedDate);
+  
+    // Assuming setEnterData is a function to set some state related to the formatted date
+    setEnterData(rearrangedDate); // Set formatted date to state
   };
+  
 
   const showModeFrom = currentMode => {
     setShowFrom(true);

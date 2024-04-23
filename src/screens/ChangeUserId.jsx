@@ -92,12 +92,23 @@ import {
         setLoading(false)
         console.log(" Err :: "+error);
         console.log(error.response.data.message);
-        Toast.show({
-          type: 'error',
-          text1: 'Something went Wrong',
-          text2: 'Please try again'
-  
-        })
+        if(error.response.data.message === "New userId is already taken.")
+        {
+          Toast.show({
+            type: 'error',
+            text1: 'User Id is already taken.',
+            text2: 'Please try another id'
+    
+          })
+        }else{
+          Toast.show({
+            type: 'error',
+            text1: 'Something went Wrong',
+            text2: 'Please try again'
+    
+          })
+        }
+       
         
       }
     };
@@ -172,7 +183,7 @@ import {
               <Entypo
                 name={'user'}
                 size={heightPercentageToDP(3)}
-                color={COLORS.white}
+                color={COLORS.darkGray}
               />
               <TextInput
                 style={{
