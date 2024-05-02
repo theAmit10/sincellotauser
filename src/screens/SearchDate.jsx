@@ -35,16 +35,6 @@ const SearchDate = ({route}) => {
 
   const [searchData, setSearchData] = useState('');
   const [showLoading, setLoading] = useState(false);
-  const [data, setData] = useState([
-    {id: '1', title: '22 jan 2024'},
-    {id: '2', title: '23 jan 2024'},
-    {id: '3', title: '24 jan 2024'},
-    {id: '4', title: '25 jan 2024'},
-    {id: '5', title: '26 jan 2024'},
-    {id: '6', title: '27 jan 2024'},
-    {id: '7', title: '28 jan 2024'},
-    {id: '8', title: '29 jan 2024'},
-  ]);
 
   const dispatch = useDispatch();
 

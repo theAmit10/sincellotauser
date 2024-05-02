@@ -70,7 +70,7 @@ const UserDetails = ({route}) => {
             height: heightPercentageToDP(20),
             zIndex: 2,
             position: 'absolute',
-            top: heightPercentageToDP(-2),
+            top: heightPercentageToDP(-4),
             left: heightPercentageToDP(4),
           }}>
           {userdata.avatar?.url ? (
@@ -110,9 +110,21 @@ const UserDetails = ({route}) => {
           <GradientText style={styles.textStyleEmail}>
             {userdata ? userdata.email : ''}
           </GradientText>
+          {/* {
+             userdata && userdata?.contact ? (<GradientText style={styles.textStyleEmail}>
+              {userdata? userdata.contact: ""}
+              </GradientText>) : (null)
+           } */}
+
+            {
+             singleuser && singleuser.contact != singleuser.userId ? (<GradientText style={styles.textStyleEmail}>
+              {singleuser? singleuser.contact: ""}
+              </GradientText>) : (null)
+           }
           <GradientText style={styles.textStyleEmail}>
             User ID - {singleuser ? singleuser.userId : ''}
           </GradientText>
+
         </View>
 
         {/** Username */}

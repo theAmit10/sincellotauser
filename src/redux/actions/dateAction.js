@@ -76,11 +76,21 @@ export const getDateDetails = (accesstoken,id) => async dispatch => {
           Authorization: `Bearer ${accesstoken}`,
         },
       });
+
+      // Reverse the order of the lotdates array
+    const reversedLotDates = data.lotdates.reverse();
+
+    dispatch({
+      type: 'getAllDateSuccess',
+      payload: reversedLotDates,
+    });
+
   
-      dispatch({
-        type: 'getAllDateSuccess',
-        payload: data.lotdates,
-      });
+      // dispatch({
+      //   type: 'getAllDateSuccess',
+      //   payload: data.lotdates,
+      // });
+
     } catch (error) {
       console.log(error);
       console.log(error.response.data.message);

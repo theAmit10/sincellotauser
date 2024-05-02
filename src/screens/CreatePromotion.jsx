@@ -123,8 +123,8 @@ const CreatePromotion = () => {
         console.log('Started Compressing Image');
         const resizedImage = await ImageResizer.createResizedImage(
           imageSource.uri,
-          200, // Adjust the dimensions as needed
-          200, // Adjust the dimensions as needed
+          400, // Adjust the dimensions as needed
+          400, // Adjust the dimensions as needed
           'JPEG',
           100, // Image quality (0-100)
           0, // Rotation (0 = no rotation)

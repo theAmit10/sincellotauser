@@ -58,6 +58,7 @@ export const login = (email, password) => async dispatch => {
 export const loadProfile = (accesstoken) => async dispatch => {
 
     console.log("Loading Profile")
+    console.log("Access Token :: "+accesstoken)
 
   try {
     dispatch({
@@ -77,8 +78,10 @@ export const loadProfile = (accesstoken) => async dispatch => {
       payload: data.user,
     });
   } catch (error) {
+    console.log("Profile Error :: ")
     console.log(error);
-    console.log(error.response);
+    // console.log(error.response);
+    console.log(error.response.data.message);
 
     dispatch({
       type: 'loadUserFail',
