@@ -260,7 +260,7 @@ const Result = ({route}) => {
                         fontFamily: FONT.Montserrat_SemiBold,
                         fontSize: heightPercentageToDP(2),
                       }}>
-                      {filteredData[0].lottime.lottime}
+                      {filteredData[0]?.lottime?.lottime}
                     </Text>
                   </View>
                 </View>

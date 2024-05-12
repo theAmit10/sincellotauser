@@ -51,16 +51,17 @@ import ChangeUserId from '../screens/ChangeUserId';
 import NewUser from '../screens/NewUser';
 import ResetPassword from '../screens/ResetPassword';
 import GoogleAuthPassword from '../screens/GoogleAuthPassword';
+import SendNotification from '../screens/SendNotification';
+import CreateNotification from '../screens/CreateNotification';
+import CreateNotificationForAllUsers from '../screens/CreateNotificationForAllUsers';
+import LocationTimeZone from '../screens/LocationTimeZone';
+import CreateResultFromTimeZone from '../screens/CreateResultFromTimeZone';
 
 
 
 const Stack = createNativeStackNavigator()
 
 const Main = () => {
-
-  
-
-
   return (
     <NavigationContainer>
         <Stack.Navigator
@@ -117,6 +118,11 @@ const Main = () => {
                 <Stack.Screen  name="NewUser" component={NewUser}/>
                 <Stack.Screen  name="ResetPassword" component={ResetPassword}/>
                 <Stack.Screen  name="GoogleAuthPassword" component={GoogleAuthPassword}/>
+                <Stack.Screen  name="SendNotification" component={SendNotification}/>
+                <Stack.Screen  name="CreateNotification" component={CreateNotification}/>
+                <Stack.Screen  name="CreateNotificationForAllUsers" component={CreateNotificationForAllUsers}/>
+                <Stack.Screen  name="LocationTimeZone" component={LocationTimeZone}/>
+                <Stack.Screen  name="CreateResultFromTimeZone" component={CreateResultFromTimeZone}/>
 
             </Stack.Group>
         </Stack.Navigator>

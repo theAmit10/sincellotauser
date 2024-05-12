@@ -55,22 +55,26 @@ const AdminBackground = () => {
         <GradientText style={{...styles.textStyle}}>Dashboard</GradientText>
       </View>
 
-      <TouchableOpacity
-        onPress={() => navigation.navigate('Setting')}
-        className="rounded-md p-2"
-        style={{
-          backgroundColor: COLORS.grayHalfBg,
-          width: widthPercentageToDP(10),
-          margin: heightPercentageToDP(2),
-          position: 'absolute',
-          right: heightPercentageToDP(2),
-        }}>
-        <Ionicons
-          name={'settings-outline'}
-          size={heightPercentageToDP(3)}
-          color={COLORS.black}
-        />
-      </TouchableOpacity>
+      {
+        user && user.role === "admin" ? ( <TouchableOpacity
+          onPress={() => navigation.navigate('Setting')}
+          className="rounded-md p-2"
+          style={{
+            backgroundColor: COLORS.grayHalfBg,
+            width: widthPercentageToDP(10),
+            margin: heightPercentageToDP(2),
+            position: 'absolute',
+            right: heightPercentageToDP(2),
+          }}>
+          <Ionicons
+            name={'settings-outline'}
+            size={heightPercentageToDP(3)}
+            color={COLORS.black}
+          />
+        </TouchableOpacity>) : (null)
+      }
+
+     
 
       <View
         style={{
@@ -90,7 +94,7 @@ const AdminBackground = () => {
         {/** User Profile Image */}
 
         <TouchableOpacity
-          onPress={() => navigation.navigate('Profile')}
+          onPress={() => navigation.navigate('UpdateProfile')}
           style={{
             borderRadius: 100,
             overflow: 'hidden',

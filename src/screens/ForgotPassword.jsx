@@ -67,6 +67,8 @@ const ForgotPassword = () => {
           type: 'error',
           text1: 'Something went wrong',
         });
+        
+        console.log(error.response.data.message);
         console.log(error);
       }
     }

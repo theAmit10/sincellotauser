@@ -22,6 +22,7 @@ import Entypo from 'react-native-vector-icons/Entypo';
 import Loading from '../components/helpercComponent/Loading';
 import UrlHelper from '../helper/UrlHelper';
 import axios from 'axios';
+import DateTimePicker from '@react-native-community/datetimepicker';
 
 const UpdateResult = ({route}) => {
   const {locationdata, timedata, datedata, resultdata} = route.params;
@@ -36,12 +37,54 @@ const UpdateResult = ({route}) => {
 
   const {accesstoken} = useSelector(state => state.user);
 
+  const [time, setTime] = useState(new Date());
+  // const [time, setTime] = useState(new Date());
+  const [showPicker, setShowPicker] = useState(false);
+
+  const onChange = (event, selectedTime) => {
+    setShowPicker(false);
+    if (selectedTime) {
+      setTime(selectedTime);
+      setNextResultData(formatTime(selectedTime));
+      console.log('TIme :: ' + selectedTime);
+      console.log('TIme :: ' + formatTime(selectedTime));
+    }
+  };
+
+  const showTimepicker = () => {
+    setShowPicker(true);
+  };
+
+  const formatTime = date => {
+    const hours = date.getHours();
+    const minutes = date.getMinutes();
+    const ampm = hours >= 12 ? 'PM' : 'AM';
+    const formattedHours = hours % 12 === 0 ? 12 : hours % 12;
+    const paddedHours =
+      formattedHours < 10 ? '0' + formattedHours : formattedHours;
+    const paddedMinutes = minutes < 10 ? '0' + minutes : minutes;
+
+    return `${paddedHours}:${paddedMinutes} ${ampm}`;
+  };
+
+  const checkForSameTime = (selectedTime) => {
+    const currentTime = formatTime(new Date());
+    if (selectedTime === currentTime) {
+      Toast.show({
+        type: 'error',
+        text1: 'Error',
+        text2: 'Next result time and current time cannot be the same',
+      });
+    }
+  };
+
   useEffect(() => {
     setEnterData('');
   }, [loading]);
 
   const submitHandler = () => {
     console.log('Working on login ');
+    const currentTime = formatTime(new Date());
     if (!enterData) {
       Toast.show({
         type: 'error',
@@ -52,7 +95,14 @@ const UpdateResult = ({route}) => {
         type: 'error',
         text1: 'Please Enter Next Result Time',
       });
-    } else {
+    } else if (nextResultData === currentTime) {
+      Toast.show({
+        type: 'error',
+        text1: 'Error',
+        text2: 'Next result time and current time cannot be the same',
+      });
+    } 
+    else {
       Toast.show({
         type: 'success',
         text1: 'Processing ',
@@ -114,7 +164,22 @@ const UpdateResult = ({route}) => {
           backgroundColor: 'transparent',
         }}>
         <GradientText style={styles.textStyle}>Update</GradientText>
-        <GradientText style={styles.textStyle}>Result</GradientText>
+        <View
+          style={{
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            flexDirection: 'row',
+          }}>
+          <GradientText style={styles.textStyle}>Result</GradientText>
+          <GradientText
+            style={{
+              fontSize: heightPercentageToDP(2),
+              fontFamily: FONT.Montserrat_Bold,
+              marginEnd: heightPercentageToDP(2),
+            }}>
+            {locationdata?.maximumRange}
+          </GradientText>
+        </View>
       </View>
 
       {/** Login Cointainer */}

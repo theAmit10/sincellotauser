@@ -31,12 +31,20 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 
 const GameDescritptionDetails = ({route}) => {
   const [passwordVisible, setPasswordVisible] = useState(false);
-  const [titleValue, setTitle] = useState('');
-  const [discriptionValue, setDescription] = useState('');
+ 
   const {accesstoken} = useSelector(state => state.user);
   const {locationdata} = route.params;
 
   console.log(locationdata);
+
+  const [titleValue, setTitle] = useState(
+    locationdata?.locationTitle === '' ? '' : locationdata?.locationTitle,
+  );
+  const [discriptionValue, setDescription] = useState(
+    locationdata?.locationDescription === ''
+      ? ''
+      : locationdata?.locationDescription,
+  );
 
   const navigation = useNavigation();
 
@@ -97,7 +105,6 @@ const GameDescritptionDetails = ({route}) => {
         //   index: 0,
         //   routes: [{name: 'AdminDashboard'}],
         // });
-      
       } catch (error) {
         setProgressBar(false);
         Toast.show({
@@ -175,7 +182,7 @@ const GameDescritptionDetails = ({route}) => {
                   <MaterialIcons
                     name={'description'}
                     size={heightPercentageToDP(3)}
-                    color={COLORS.gray2}
+                    color={COLORS.black}
                   />
                 </LinearGradient>
                 <TextInput
@@ -183,7 +190,7 @@ const GameDescritptionDetails = ({route}) => {
                     marginStart: heightPercentageToDP(1),
                     flex: 1,
                     fontFamily: FONT.Montserrat_Regular,
-                    color: COLORS.black
+                    color: COLORS.black,
                   }}
                   placeholder="Enter Title"
                   placeholderTextColor={COLORS.black}
@@ -211,7 +218,7 @@ const GameDescritptionDetails = ({route}) => {
                     fontFamily: FONT.Montserrat_Regular,
                     minHeight: heightPercentageToDP(20),
                     textAlignVertical: 'top',
-                    color: COLORS.black
+                    color: COLORS.black,
                   }}
                   placeholder="Enter Description"
                   placeholderTextColor={COLORS.black}

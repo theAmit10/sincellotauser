@@ -22,6 +22,8 @@ import {serverName} from '../redux/store';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {loadSingleUser} from '../redux/actions/userAction';
 import Loading from '../components/helpercComponent/Loading';
+import Toast from 'react-native-toast-message';
+
 
 const UserDetails = ({route}) => {
   const navigation = useNavigation();
@@ -455,6 +457,96 @@ const UserDetails = ({route}) => {
               />
             </View>
           </TouchableOpacity>
+
+           {/** Single User */}
+           <TouchableOpacity
+            onPress={() => 
+              // Toast.show({
+              //   type: 'info',
+              //   text1: 'Comming soon'
+              // })
+              navigation.navigate('CreateNotification', {userdata: singleuser})
+          }
+            style={{
+              height: heightPercentageToDP(20),
+              flexDirection: 'row',
+              backgroundColor: COLORS.grayBg,
+              alignItems: 'center',
+              paddingHorizontal: heightPercentageToDP(2),
+              borderRadius: heightPercentageToDP(1),
+              margin: heightPercentageToDP(2),
+            }}>
+            <View
+              style={{
+                padding: heightPercentageToDP(2),
+              }}>
+              <Text
+                style={{
+                  marginStart: heightPercentageToDP(1),
+                  flex: 1,
+                  fontFamily: FONT.Montserrat_Regular,
+                  color: COLORS.darkGray,
+                  width: widthPercentageToDP(25),
+                  marginStart: heightPercentageToDP(-1),
+                  textAlignVertical: 'bottom',
+                }}></Text>
+              <Text
+                style={{
+                  marginStart: heightPercentageToDP(1),
+                  flex: 1,
+                  fontFamily: FONT.Montserrat_Regular,
+                  color: COLORS.darkGray,
+                  fontSize: heightPercentageToDP(2),
+                  marginStart: heightPercentageToDP(-1),
+                }}>
+                Push Notification
+              </Text>
+
+              <View
+                style={{
+                  flexDirection: 'row',
+                  justifyContent: 'flex-start',
+                  gap: heightPercentageToDP(1),
+                  marginStart: heightPercentageToDP(-1),
+                }}>
+                <View
+                  style={{
+                    backgroundColor: COLORS.white_s,
+                    padding: heightPercentageToDP(1),
+                    borderRadius: heightPercentageToDP(1),
+                    justifyContent: 'center',
+                  }}>
+                  <Entypo
+                    name={'user'}
+                    size={heightPercentageToDP(4)}
+                    color={COLORS.darkGray}
+                  />
+                </View>
+                <GradientText
+                  style={{...styles.textStyle, width: widthPercentageToDP(60)}}>
+                  Notification
+                </GradientText>
+              </View>
+            </View>
+
+            <View
+              style={{
+                flex: 1,
+                backgroundColor: COLORS.white,
+                position: 'absolute',
+                right: heightPercentageToDP(2),
+                borderRadius: heightPercentageToDP(1),
+                padding: heightPercentageToDP(1),
+                top: heightPercentageToDP(2),
+              }}>
+              <Ionicons
+                name={'notifications'}
+                size={heightPercentageToDP(4)}
+                color={COLORS.darkGray}
+              />
+            </View>
+          </TouchableOpacity>
+
         </ScrollView>
       )}
     </View>

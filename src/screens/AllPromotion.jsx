@@ -156,8 +156,7 @@ const AllPromotion = () => {
                       <Image
                         source={{
                           uri:
-                            'https://sincelott.onrender.com/uploads/promotion/' +
-                            item.url,
+                            `${serverName}uploads/promotion/${item.url}`,
                         }}
                         resizeMode="cover"
                         style={{

@@ -120,7 +120,7 @@ import { loadAllAboutUs } from '../redux/actions/userAction';
               <Fontisto
                 name={'search'}
                 size={heightPercentageToDP(3)}
-                color={COLORS.white}
+                color={COLORS.darkGray}
               />
               <TextInput
                 style={{
@@ -128,8 +128,10 @@ import { loadAllAboutUs } from '../redux/actions/userAction';
                   flex: 1,
                   fontFamily: FONT.SF_PRO_REGULAR,
                   fontSize: heightPercentageToDP(2),
+                  color: COLORS.black
                 }}
                 placeholder="Search"
+                placeholderTextColor={COLORS.black}
                 label="Search"
                 onChangeText={handleSearch}
               />
@@ -231,6 +233,7 @@ import { loadAllAboutUs } from '../redux/actions/userAction';
               style={{
                 color: COLORS.white,
                 fontFamily: FONT.Montserrat_Regular,
+
               }}>
               Create About us
             </Text>

@@ -13,8 +13,6 @@ import {
 } from 'react-native-responsive-screen';
 import {COLORS, FONT} from '../../assets/constants';
 import GradientText from '../components/helpercComponent/GradientText';
-import Fontisto from 'react-native-vector-icons/Fontisto';
-import Entypo from 'react-native-vector-icons/Entypo';
 import Toast from 'react-native-toast-message';
 import {useNavigation} from '@react-navigation/native';
 import axios from 'axios';
@@ -178,7 +176,7 @@ const OtpVerification = () => {
                 <TextInput
                   key={index}
                   style={{
-                    color: COLORS.darkGrays,
+                    color: COLORS.black,
                     borderColor: COLORS.gray2,
                     backgroundColor: COLORS.white,
                     ...styles.userOtpInput,

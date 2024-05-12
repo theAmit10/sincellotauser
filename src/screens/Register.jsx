@@ -1,4 +1,5 @@
 import {
+  ScrollView,
   StyleSheet,
   Text,
   TextInput,
@@ -25,6 +26,9 @@ import {
   GoogleSignin,
   statusCodes,
 } from '@react-native-google-signin/google-signin';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import UrlHelper from '../helper/UrlHelper';
+import axios from 'axios';
 
 const Register = () => {
   const [name, setName] = useState('');
@@ -34,10 +38,11 @@ const Register = () => {
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false);
 
-
   const [firstNameVal, setFirstName] = useState('');
   const [secondNameVal, setSecondName] = useState('');
   const [profileImage, setProfileImage] = useState('');
+
+  const [selectedRole, setSelectedRole] = useState('admin')
 
   const navigation = useNavigation();
 
@@ -45,7 +50,7 @@ const Register = () => {
     GoogleSignin.configure({
       webClientId:
         '412257267839-e6d36ambgqs0ufglgndb21pr74j720se.apps.googleusercontent.com',
-       
+
       // androidClientId: '191145196270-ru4ac3nj22665k2ldtvqjvd0c4361qiu.apps.googleusercontent.com',
       // offlineAccess: true
     });
@@ -57,13 +62,12 @@ const Register = () => {
       await GoogleSignin.signIn().then(result => {
         console.log(result);
 
-
         setEmail(result.user.email);
         setFirstName(result.user.givenName);
         setSecondName(result.user.familyName);
         setProfileImage(result.user.photo);
 
-        navigation.navigate('GoogleAuthPassword', { data: result });
+        navigation.navigate('GoogleAuthPassword', {data: result});
       });
     } catch (error) {
       if (error.code === statusCodes.SIGN_IN_CANCELLED) {
@@ -90,9 +94,11 @@ const Register = () => {
   };
 
   const dispatch = useDispatch();
-  const loading = useMessageAndErrorUser(navigation, dispatch, "Login");
+  const loading = useMessageAndErrorUser(navigation, dispatch, 'SplashScreen');
 
-  const submitHandler = () => {
+  const [showProgressBar, setProgressBar] = useState(false);
+
+  const submitHandler = async ()  => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!name) {
       Toast.show({
@@ -104,13 +110,12 @@ const Register = () => {
         type: 'error',
         text1: 'Enter email address',
       });
-    }else if (!emailRegex.test(email)) {
+    } else if (!emailRegex.test(email)) {
       Toast.show({
         type: 'error',
         text1: 'Enter valid email address',
       });
-    } 
-    else if (!password) {
+    } else if (!password) {
       Toast.show({
         type: 'error',
         text1: 'Enter password',
@@ -132,16 +137,57 @@ const Register = () => {
       // myform.append('email', email);
       // myform.append('password', password);
 
-      // console.log(name, email, password, confirmPassword);
+      console.log(name, email, password, confirmPassword, selectedRole);
 
-      dispatch(register(name,email,password));
+      // dispatch(register(name, email, password,selectedRole));
 
       Toast.show({
         type: 'success',
         text1: 'Processing',
       });
+
+      setProgressBar(true);
+
+      try {
+        const {data} = await axios.post(
+          UrlHelper.REGISTER_API,
+          {
+            name,
+            email,
+            password,
+            role: selectedRole,
+          },
+          {
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          },
+        );
+
+        console.log('datat :: ' + data);
+
+        Toast.show({
+          type: 'success',
+          text1: data.message,
+        });
+        setProgressBar(false);
+        navigation.navigate("Login")
+      } catch (error) {
+        setProgressBar(false);
+        Toast.show({
+          type: 'error',
+          text1: 'Something went wrong',
+        });
+        console.log(error);
+        console.log(error.response.data.message);
+        console.log(error.response);
+      }
+
+
     }
   };
+
+  
 
   return (
     <View style={{flex: 1}}>
@@ -182,6 +228,7 @@ const Register = () => {
           }}>
           <GradientText style={styles.textStyle}>Register Now</GradientText>
 
+          <ScrollView showsVerticalScrollIndicator={false}>
           <View
             style={{
               marginTop: heightPercentageToDP(3),
@@ -208,7 +255,7 @@ const Register = () => {
                   marginStart: heightPercentageToDP(1),
                   flex: 1,
                   fontFamily: FONT.SF_PRO_REGULAR,
-                  color:COLORS.black
+                  color: COLORS.black,
                 }}
                 placeholder="Name"
                 placeholderTextColor={COLORS.black}
@@ -238,7 +285,7 @@ const Register = () => {
                   marginStart: heightPercentageToDP(1),
                   flex: 1,
                   fontFamily: FONT.SF_PRO_REGULAR,
-                  color: COLORS.black
+                  color: COLORS.black,
                 }}
                 placeholder="Email"
                 placeholderTextColor={COLORS.black}
@@ -268,7 +315,7 @@ const Register = () => {
                   marginStart: heightPercentageToDP(1),
                   flex: 1,
                   fontFamily: FONT.SF_PRO_REGULAR,
-                  color: COLORS.black
+                  color: COLORS.black,
                 }}
                 placeholder="Password"
                 value={password}
@@ -304,7 +351,7 @@ const Register = () => {
                   marginStart: heightPercentageToDP(1),
                   flex: 1,
                   fontFamily: FONT.SF_PRO_REGULAR,
-                  color: COLORS.black
+                  color: COLORS.black,
                 }}
                 placeholder="Confirm Password"
                 value={confirmPassword}
@@ -319,6 +366,60 @@ const Register = () => {
                 color={COLORS.darkGray}
               />
             </View>
+
+            <View
+              style={{
+                height: heightPercentageToDP(7),
+                borderRadius: heightPercentageToDP(1),
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                gap: heightPercentageToDP(2)
+              }}>
+                <TouchableOpacity 
+                 onPress={() => setSelectedRole('admin')}
+                style={{
+                  flex: 1,
+                  backgroundColor: COLORS.grayBg,
+                  paddingHorizontal: heightPercentageToDP(1),
+                  borderRadius: heightPercentageToDP(1),
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  borderColor: selectedRole === 'admin' ? COLORS.green : COLORS.grayBg,
+                  borderWidth: 2
+                }}
+                >
+                  <Text style={{
+                    color: COLORS.black,
+                    fontFamily: FONT.Montserrat_Bold,
+                    fontSize: heightPercentageToDP(2)
+                  }}>
+                    Admin
+                  </Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity 
+                onPress={() => setSelectedRole('subadmin')}
+                style={{
+                  flex: 1,
+                  backgroundColor: COLORS.grayBg,
+                  paddingHorizontal: heightPercentageToDP(1),
+                  borderRadius: heightPercentageToDP(1),
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  borderColor: selectedRole === 'subadmin' ? COLORS.green : COLORS.grayBg,
+                  borderWidth: 2
+                }}
+                >
+                  <Text style={{
+                    color: COLORS.black,
+                    fontFamily: FONT.Montserrat_Bold,
+                    fontSize: heightPercentageToDP(2)
+                  }}>
+                    Sub Admin
+                  </Text>
+                </TouchableOpacity>
+
+              </View>
 
             <TouchableOpacity
               onPress={GoogleSingUp}
@@ -345,7 +446,7 @@ const Register = () => {
               />
             </TouchableOpacity>
 
-            {loading ? (
+            {showProgressBar ? (
               <View style={{padding: heightPercentageToDP(2)}}>
                 <Loading />
               </View>
@@ -395,7 +496,12 @@ const Register = () => {
                 </Text>
               </TouchableOpacity>
             </View>
+
+
           </View>
+          </ScrollView>
+          
+
         </View>
       </View>
     </View>

@@ -192,15 +192,17 @@ const ChangePassword = () => {
               <Entypo
                 name={'lock'}
                 size={heightPercentageToDP(3)}
-                color={COLORS.white}
+                color={COLORS.black}
               />
               <TextInput
                 style={{
                   marginStart: heightPercentageToDP(1),
                   flex: 1,
                   fontFamily: FONT.SF_PRO_REGULAR,
+                  color: COLORS.black
                 }}
                 placeholder="Old Password"
+                placeholderTextColor={COLORS.black}
                 value={oldPassword}
                 onChangeText={text => setOldPassword(text)}
                 secureTextEntry={!oldPasswordVisible}
@@ -209,7 +211,7 @@ const ChangePassword = () => {
                 onPress={togglePasswordVisibilityForOLDPASSWORD}
                 name={oldPasswordVisible ? 'eye' : 'eye-with-line'}
                 size={heightPercentageToDP(3)}
-                color={COLORS.white}
+                color={COLORS.black}
               />
             </View>
 
@@ -227,14 +229,16 @@ const ChangePassword = () => {
               <Entypo
                 name={'lock'}
                 size={heightPercentageToDP(3)}
-                color={COLORS.white}
+                color={COLORS.black}
               />
               <TextInput
                 style={{
                   marginStart: heightPercentageToDP(1),
                   flex: 1,
                   fontFamily: FONT.SF_PRO_REGULAR,
+                  color: COLORS.black
                 }}
+                placeholderTextColor={COLORS.black}
                 placeholder="New Password"
                 value={newPassword}
                 onChangeText={text => setNewPassword(text)}
@@ -244,7 +248,7 @@ const ChangePassword = () => {
                 onPress={togglePasswordVisibilityforNEWPASSWORD}
                 name={newPasswordVisible ? 'eye' : 'eye-with-line'}
                 size={heightPercentageToDP(3)}
-                color={COLORS.white}
+                color={COLORS.black}
               />
             </View>
 
@@ -261,15 +265,17 @@ const ChangePassword = () => {
               <Entypo
                 name={'lock'}
                 size={heightPercentageToDP(3)}
-                color={COLORS.white}
+                color={COLORS.black}
               />
               <TextInput
                 style={{
                   marginStart: heightPercentageToDP(1),
                   flex: 1,
                   fontFamily: FONT.SF_PRO_REGULAR,
+                  color: COLORS.black
                 }}
                 placeholder="Confirm Password"
+                placeholderTextColor={COLORS.black}
                 value={confirmPassword}
                 onChangeText={text => setConfirmPassword(text)}
                 secureTextEntry={!confirmPasswordVisible}
@@ -278,7 +284,7 @@ const ChangePassword = () => {
                 onPress={togglePasswordVisibilityCONFIRMPASSWORD}
                 name={confirmPasswordVisible ? 'eye' : 'eye-with-line'}
                 size={heightPercentageToDP(3)}
-                color={COLORS.white}
+                color={COLORS.black}
               />
             </View>
 

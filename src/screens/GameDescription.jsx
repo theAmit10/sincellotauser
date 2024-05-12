@@ -113,7 +113,7 @@
               <Fontisto
                 name={'search'}
                 size={heightPercentageToDP(3)}
-                color={COLORS.white}
+                color={COLORS.darkGray}
               />
               <TextInput
                 style={{
@@ -124,6 +124,7 @@
                   color: COLORS.black
                 }}
                 placeholder="Search for location"
+                placeholderTextColor={COLORS.black}
                 label="Search"
                 onChangeText={handleSearch}
               />

@@ -78,10 +78,12 @@ export const loadProfile = (accesstoken) => async dispatch => {
       payload: data.user,
     });
   } catch (error) {
-    console.log("Profile Error :: ")
+    console.log("My Profile Error :: ")
     console.log(error);
     // console.log(error.response);
     console.log(error.response.data.message);
+    console.log("moye :: "+error.response.data.message);
+    console.log("moye Error :: ")
 
     dispatch({
       type: 'loadUserFail',
@@ -123,7 +125,7 @@ export const logout = (accesstoken) => async dispatch => {
 };
 
 // Getting Registered
-export const register = (name,email,password) => async dispatch => {
+export const register = (name,email,password,selectedRole) => async dispatch => {
     console.log("Registering User")
     try {
       dispatch({
@@ -135,7 +137,7 @@ export const register = (name,email,password) => async dispatch => {
             name,
             email,
             password,
-            role: 'admin'
+            role: selectedRole,
         }
     ,
         {
@@ -145,11 +147,11 @@ export const register = (name,email,password) => async dispatch => {
         },
       );
 
-      AsyncStorage.setItem("accesstoken",data.token)
-      dispatch({
-        type: 'getaccesstoken',
-        payload: data.token,
-      });
+      // AsyncStorage.setItem("accesstoken",data.token)
+      // dispatch({
+      //   type: 'getaccesstoken',
+      //   payload: data.token,
+      // });
 
       console.log("register data :: "+JSON.stringify(data))
   

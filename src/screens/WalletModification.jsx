@@ -189,6 +189,7 @@ const WalletModification = ({route}) => {
                 color: COLORS.black
               }}
               placeholder="Enter name"
+              placeholderTextColor={COLORS.black}
               label="location"
               value={enterData}
               onChangeText={text => setEnterData(text)}

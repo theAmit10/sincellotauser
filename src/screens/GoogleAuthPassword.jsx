@@ -27,6 +27,7 @@ import Loading from '../components/helpercComponent/Loading';
 const GoogleAuthPassword = ({route}) => {
   const {data} = route.params;
   console.log('signuptype :: ' + data);
+  const [selectedRole, setSelectedRole] = useState('admin')
 
   console.log(data.user.email)
 
@@ -78,7 +79,7 @@ const GoogleAuthPassword = ({route}) => {
         text1: 'Password and Confirm Password Not Matched',
       });
     } else {
-      dispatch(register(name, email, password));
+      dispatch(register(name, email, password,selectedRole));
       Toast.show({
         type: 'success',
         text1: 'Processing',
@@ -203,6 +204,60 @@ const GoogleAuthPassword = ({route}) => {
                 color={COLORS.darkGray}
               />
             </View>
+
+            <View
+              style={{
+                height: heightPercentageToDP(7),
+                borderRadius: heightPercentageToDP(1),
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                gap: heightPercentageToDP(2)
+              }}>
+                <TouchableOpacity 
+                 onPress={() => setSelectedRole('admin')}
+                style={{
+                  flex: 1,
+                  backgroundColor: COLORS.grayBg,
+                  paddingHorizontal: heightPercentageToDP(1),
+                  borderRadius: heightPercentageToDP(1),
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  borderColor: selectedRole === 'admin' ? COLORS.green : COLORS.grayBg,
+                  borderWidth: 2
+                }}
+                >
+                  <Text style={{
+                    color: COLORS.black,
+                    fontFamily: FONT.Montserrat_Bold,
+                    fontSize: heightPercentageToDP(2)
+                  }}>
+                    Admin
+                  </Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity 
+                onPress={() => setSelectedRole('subadmin')}
+                style={{
+                  flex: 1,
+                  backgroundColor: COLORS.grayBg,
+                  paddingHorizontal: heightPercentageToDP(1),
+                  borderRadius: heightPercentageToDP(1),
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  borderColor: selectedRole === 'subadmin' ? COLORS.green : COLORS.grayBg,
+                  borderWidth: 2
+                }}
+                >
+                  <Text style={{
+                    color: COLORS.black,
+                    fontFamily: FONT.Montserrat_Bold,
+                    fontSize: heightPercentageToDP(2)
+                  }}>
+                    Sub Admin
+                  </Text>
+                </TouchableOpacity>
+
+              </View>
 
             {loading ? (
               <View

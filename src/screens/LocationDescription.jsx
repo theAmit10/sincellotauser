@@ -23,8 +23,10 @@ import {useDispatch, useSelector} from 'react-redux';
 import {login} from '../redux/actions/userAction';
 import {useMessageAndErrorUser} from '../utils/hooks';
 import Background from '../components/background/Background';
+import { getAllLocations } from '../redux/actions/locationAction';
 
 const LocationDescription = ({route}) => {
+  
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [passwordVisible, setPasswordVisible] = useState(false);
@@ -36,6 +38,8 @@ const LocationDescription = ({route}) => {
   const navigation = useNavigation();
 
   const dispatch = useDispatch();
+
+
 
   // For Password Visibility
   const togglePasswordVisibility = () => {

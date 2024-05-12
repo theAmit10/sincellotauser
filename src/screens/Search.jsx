@@ -31,7 +31,7 @@ const Search = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
 
-  const {accesstoken} = useSelector(state => state.user);
+  const {accesstoken, user} = useSelector(state => state.user);
   const {loading, locations} = useSelector(state => state.location);
 
   // const [filteredData, setFilteredData] = useState(locations);
@@ -86,7 +86,6 @@ const Search = () => {
       });
       setProgressBar(false);
       dispatch(getAllLocations(accesstoken));
-
     } catch (error) {
       console.log(error.response.data.message);
       setProgressBar(false);
@@ -207,25 +206,37 @@ const Search = () => {
                       }}>
                       {item.lotlocation}
                     </Text>
-
-                    <View
-                      style={{
-                        flexDirection: 'row',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        gap: heightPercentageToDP(2),
-                      }}>
-                      {/** Update Locatiion */}
-
-                      <TouchableOpacity
-                        onPress={() =>
-                          navigation.navigate('UpdateLocation', {
-                            locationdata: item,
-                          })
-                        }>
-                        {filteredData.length === 0 ? (
-                          selectedItem === item._id ? (
-                            <Loading />
+                      {/** Checking the user is admin or not */}
+                    {
+                      user && user.role === "admin" ? ( <View
+                        style={{
+                          flexDirection: 'row',
+                          justifyContent: 'center',
+                          alignItems: 'center',
+                          gap: heightPercentageToDP(2),
+                        }}>
+                        {/** Update Locatiion */}
+  
+                        <TouchableOpacity
+                          onPress={() =>
+                            navigation.navigate('UpdateLocation', {
+                              locationdata: item,
+                            })
+                          }>
+                          {filteredData.length === 0 ? (
+                            selectedItem === item._id ? (
+                              <Loading />
+                            ) : (
+                              <LinearGradient
+                                colors={[COLORS.lightWhite, COLORS.white_s]}
+                                className="rounded-xl p-1">
+                                <MaterialCommunityIcons
+                                  name={'circle-edit-outline'}
+                                  size={heightPercentageToDP(3)}
+                                  color={COLORS.darkGray}
+                                />
+                              </LinearGradient>
+                            )
                           ) : (
                             <LinearGradient
                               colors={[COLORS.lightWhite, COLORS.white_s]}
@@ -236,27 +247,27 @@ const Search = () => {
                                 color={COLORS.darkGray}
                               />
                             </LinearGradient>
-                          )
-                        ) : (
-                          <LinearGradient
-                            colors={[COLORS.lightWhite, COLORS.white_s]}
-                            className="rounded-xl p-1">
-                            <MaterialCommunityIcons
-                              name={'circle-edit-outline'}
-                              size={heightPercentageToDP(3)}
-                              color={COLORS.darkGray}
-                            />
-                          </LinearGradient>
-                        )}
-                      </TouchableOpacity>
-
-                      {/** Delete Locatiion */}
-
-                      <TouchableOpacity
-                        onPress={() => deleteLocationHandler(item)}>
-                        {showProgressBar ? (
-                          selectedItem === item._id ? (
-                            <Loading />
+                          )}
+                        </TouchableOpacity>
+  
+                        {/** Delete Locatiion */}
+  
+                        <TouchableOpacity
+                          onPress={() => deleteLocationHandler(item)}>
+                          {showProgressBar ? (
+                            selectedItem === item._id ? (
+                              <Loading />
+                            ) : (
+                              <LinearGradient
+                                colors={[COLORS.lightWhite, COLORS.white_s]}
+                                className="rounded-xl p-1">
+                                <MaterialCommunityIcons
+                                  name={'delete'}
+                                  size={heightPercentageToDP(3)}
+                                  color={COLORS.darkGray}
+                                />
+                              </LinearGradient>
+                            )
                           ) : (
                             <LinearGradient
                               colors={[COLORS.lightWhite, COLORS.white_s]}
@@ -267,20 +278,10 @@ const Search = () => {
                                 color={COLORS.darkGray}
                               />
                             </LinearGradient>
-                          )
-                        ) : (
-                          <LinearGradient
-                            colors={[COLORS.lightWhite, COLORS.white_s]}
-                            className="rounded-xl p-1">
-                            <MaterialCommunityIcons
-                              name={'delete'}
-                              size={heightPercentageToDP(3)}
-                              color={COLORS.darkGray}
-                            />
-                          </LinearGradient>
-                        )}
-                      </TouchableOpacity>
-                    </View>
+                          )}
+                        </TouchableOpacity>
+                      </View>) : (null)
+                    }
                   </View>
                 </TouchableOpacity>
               )}
@@ -294,31 +295,35 @@ const Search = () => {
 
         {/** Bottom Submit Container */}
 
-        <View
-          style={{
-            marginBottom: heightPercentageToDP(5),
-            marginHorizontal: heightPercentageToDP(2),
-            marginTop: heightPercentageToDP(2),
-          }}>
-          {/** Email container */}
-
-          <TouchableOpacity
-            onPress={() => navigation.navigate('CreateLocation')}
+        {
+          user && user.role === "admin" ? ( <View
             style={{
-              backgroundColor: COLORS.blue,
-              padding: heightPercentageToDP(2),
-              borderRadius: heightPercentageToDP(1),
-              alignItems: 'center',
+              marginBottom: heightPercentageToDP(5),
+              marginHorizontal: heightPercentageToDP(2),
+              marginTop: heightPercentageToDP(2),
             }}>
-            <Text
+            {/** Create location container */}
+  
+            <TouchableOpacity
+              onPress={() => navigation.navigate('CreateLocation')}
               style={{
-                color: COLORS.white,
-                fontFamily: FONT.Montserrat_Regular,
+                backgroundColor: COLORS.blue,
+                padding: heightPercentageToDP(2),
+                borderRadius: heightPercentageToDP(1),
+                alignItems: 'center',
               }}>
-              Create Location
-            </Text>
-          </TouchableOpacity>
-        </View>
+              <Text
+                style={{
+                  color: COLORS.white,
+                  fontFamily: FONT.Montserrat_Regular,
+                }}>
+                Create Location
+              </Text>
+            </TouchableOpacity>
+          </View>) : (null)
+        }
+
+       
 
         {/** end */}
       </View>

@@ -31,10 +31,10 @@ const SearchTime = ({route}) => {
   const navigation = useNavigation();
 
   const {locationdata} = route.params;
-
   // console.log(locationdata);
 
   const [searchData, setSearchData] = useState('');
+
 
   const [showLoading, setLoading] = useState(false);
 
@@ -51,7 +51,7 @@ const SearchTime = ({route}) => {
 
   const dispatch = useDispatch();
 
-  const {accesstoken} = useSelector(state => state.user);
+  const {accesstoken,user} = useSelector(state => state.user);
   const {loading, times} = useSelector(state => state.time);
   const [filteredData, setFilteredData] = useState([]);
 
@@ -117,6 +117,7 @@ const SearchTime = ({route}) => {
       console.log(error);
     }
   };
+
 
   return (
     <View style={{flex: 1}}>
@@ -259,25 +260,37 @@ const SearchTime = ({route}) => {
                       {item.lottime}
                     </Text>
 
-                    <View
-                      style={{
-                        flexDirection: 'row',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        gap: heightPercentageToDP(2),
-                      }}>
-                      {/** Update Locatiion */}
-
-                      <TouchableOpacity
-                        onPress={() =>
-                          navigation.navigate('UpdateTime', {
-                            locationdata: locationdata,
-                            timedata: item,
-                          })
-                        }>
-                        {filteredData.length === 0 ? (
-                          selectedItem === item._id ? (
-                            <Loading />
+                    {
+                      user && user.role === "admin" ? ( <View
+                        style={{
+                          flexDirection: 'row',
+                          justifyContent: 'center',
+                          alignItems: 'center',
+                          gap: heightPercentageToDP(2),
+                        }}>
+                        {/** Update Locatiion */}
+  
+                        <TouchableOpacity
+                          onPress={() =>
+                            navigation.navigate('UpdateTime', {
+                              locationdata: locationdata,
+                              timedata: item,
+                            })
+                          }>
+                          {filteredData.length === 0 ? (
+                            selectedItem === item._id ? (
+                              <Loading />
+                            ) : (
+                              <LinearGradient
+                                colors={[COLORS.lightWhite, COLORS.white_s]}
+                                className="rounded-xl p-1">
+                                <MaterialCommunityIcons
+                                  name={'circle-edit-outline'}
+                                  size={heightPercentageToDP(3)}
+                                  color={COLORS.darkGray}
+                                />
+                              </LinearGradient>
+                            )
                           ) : (
                             <LinearGradient
                               colors={[COLORS.lightWhite, COLORS.white_s]}
@@ -288,27 +301,27 @@ const SearchTime = ({route}) => {
                                 color={COLORS.darkGray}
                               />
                             </LinearGradient>
-                          )
-                        ) : (
-                          <LinearGradient
-                            colors={[COLORS.lightWhite, COLORS.white_s]}
-                            className="rounded-xl p-1">
-                            <MaterialCommunityIcons
-                              name={'circle-edit-outline'}
-                              size={heightPercentageToDP(3)}
-                              color={COLORS.darkGray}
-                            />
-                          </LinearGradient>
-                        )}
-                      </TouchableOpacity>
-
-                      {/** Delete Locatiion */}
-
-                      <TouchableOpacity
-                        onPress={() => deleteLocationHandler(item)}>
-                        {showProgressBar ? (
-                          selectedItem === item._id ? (
-                            <Loading />
+                          )}
+                        </TouchableOpacity>
+  
+                        {/** Delete Locatiion */}
+  
+                        <TouchableOpacity
+                          onPress={() => deleteLocationHandler(item)}>
+                          {showProgressBar ? (
+                            selectedItem === item._id ? (
+                              <Loading />
+                            ) : (
+                              <LinearGradient
+                                colors={[COLORS.lightWhite, COLORS.white_s]}
+                                className="rounded-xl p-1">
+                                <MaterialCommunityIcons
+                                  name={'delete'}
+                                  size={heightPercentageToDP(3)}
+                                  color={COLORS.darkGray}
+                                />
+                              </LinearGradient>
+                            )
                           ) : (
                             <LinearGradient
                               colors={[COLORS.lightWhite, COLORS.white_s]}
@@ -319,20 +332,12 @@ const SearchTime = ({route}) => {
                                 color={COLORS.darkGray}
                               />
                             </LinearGradient>
-                          )
-                        ) : (
-                          <LinearGradient
-                            colors={[COLORS.lightWhite, COLORS.white_s]}
-                            className="rounded-xl p-1">
-                            <MaterialCommunityIcons
-                              name={'delete'}
-                              size={heightPercentageToDP(3)}
-                              color={COLORS.darkGray}
-                            />
-                          </LinearGradient>
-                        )}
-                      </TouchableOpacity>
-                    </View>
+                          )}
+                        </TouchableOpacity>
+                      </View>) : (null)
+                    }
+
+                   
                   </View>
                 </TouchableOpacity>
               )}
@@ -352,8 +357,7 @@ const SearchTime = ({route}) => {
             marginHorizontal: heightPercentageToDP(2),
             marginTop: heightPercentageToDP(2),
           }}>
-          {/** Email container */}
-
+          {/** container */}
           <TouchableOpacity
             onPress={() =>
               navigation.navigate('CreateTime', {
@@ -406,6 +410,7 @@ const styles = StyleSheet.create({
     fontFamily: FONT.SF_PRO_MEDIUM,
   },
 });
+
 
 // {/* <View
 //           style={{

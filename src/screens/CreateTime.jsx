@@ -1,4 +1,5 @@
 import {
+  Button,
   RefreshControlBase,
   StyleSheet,
   Text,
@@ -19,11 +20,11 @@ import Background from '../components/background/Background';
 import Entypo from 'react-native-vector-icons/Entypo';
 import {useDispatch, useSelector} from 'react-redux';
 import {createTime} from '../redux/actions/timeAction';
-import { useNavigation } from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 import Loading from '../components/helpercComponent/Loading';
 import axios from 'axios';
 import UrlHelper from '../helper/UrlHelper';
-import { assets } from '../../react-native.config';
+import DateTimePicker from '@react-native-community/datetimepicker';
 
 const CreateTime = ({route}) => {
   const {locationdata} = route.params;
@@ -31,14 +32,45 @@ const CreateTime = ({route}) => {
   const dispatch = useDispatch();
   const {accesstoken} = useSelector(state => state.user);
 
-  const [loading,setLoading] = useState(false);
+  const [time, setTime] = useState(new Date());
+  const [showPicker, setShowPicker] = useState(false);
 
+
+  const onChange = (event, selectedTime) => {
+    setShowPicker(false);
+    if (selectedTime) {
+      setTime(selectedTime);
+      setEnterData(formatTime(selectedTime));
+      console.log("TIme :: "+selectedTime)
+      console.log("TIme :: "+formatTime(selectedTime))
+    }
+  };
+
+
+  const showTimepicker = () => {
+    setShowPicker(true);
+  };
+
+  const formatTime = (date) => {
+    const hours = date.getHours();
+    const minutes = date.getMinutes();
+    const ampm = hours >= 12 ? 'PM' : 'AM';
+    const formattedHours = hours % 12 === 0 ? 12 : hours % 12;
+    const paddedHours = formattedHours < 10 ? '0' + formattedHours : formattedHours;
+    const paddedMinutes = minutes < 10 ? '0' + minutes : minutes;
+    
+    return `${paddedHours}:${paddedMinutes} ${ampm}`;
+  };
+  
+
+  const [loading, setLoading] = useState(false);
 
   // const {loading, message,error} = useSelector(state => state.time);
+  
+ 
 
   const navigation = useNavigation();
 
- 
   const submitHandler = () => {
     console.log('Working on login ');
     if (!enterData) {
@@ -52,14 +84,13 @@ const CreateTime = ({route}) => {
         text1: 'Processing ',
       });
 
-      createTimeForLocation(accesstoken, locationdata._id, enterData)
+      createTimeForLocation(accesstoken, locationdata._id, enterData);
     }
   };
 
-
-  const createTimeForLocation = async (accesstoken, lotlocation, lottime) =>{
+  const createTimeForLocation = async (accesstoken, lotlocation, lottime) => {
     try {
-     setLoading(true)
+      setLoading(true);
       const {data} = await axios.post(
         UrlHelper.CREATE_TIME_API,
         {
@@ -78,19 +109,18 @@ const CreateTime = ({route}) => {
 
       Toast.show({
         type: 'success',
-        text1: data.message
-      })
-      setEnterData("")   
-      navigation.goBack()
+        text1: data.message,
+      });
+      setEnterData('');
+      navigation.goBack();
     } catch (error) {
-      setLoading(false)
-      console.log(" Err :: "+error);
+      setLoading(false);
+      console.log(' Err :: ' + error);
       console.log(error.response.data.message);
       Toast.show({
         type: 'error',
-        text1: error.response.data.message
-      })
-      
+        text1: error.response.data.message,
+      });
     }
   };
 
@@ -144,10 +174,11 @@ const CreateTime = ({route}) => {
               color: COLORS.black,
               marginBottom: heightPercentageToDP(1),
             }}>
-            Enter Time
+            Select Time
           </GradientText>
 
-          <View
+          <TouchableOpacity
+          onPress={showTimepicker}
             style={{
               height: heightPercentageToDP(7),
               flexDirection: 'row',
@@ -156,32 +187,45 @@ const CreateTime = ({route}) => {
               paddingHorizontal: heightPercentageToDP(2),
               borderRadius: heightPercentageToDP(1),
             }}>
-            <Entypo
-              name={'clock'}
-              size={heightPercentageToDP(3)}
-              color={COLORS.darkGray}
-            />
-            <TextInput
+          
+              <Entypo
+                name={'clock'}
+                size={heightPercentageToDP(3)}
+                color={COLORS.darkGray}
+              />
+    
+
+            <Text
               style={{
                 marginStart: heightPercentageToDP(1),
                 flex: 1,
                 fontFamily: FONT.Montserrat_Regular,
                 color: COLORS.black,
-                fontSize: heightPercentageToDP(2.5)
-
+                fontSize: heightPercentageToDP(2.5),
               }}
-              placeholder="For Example 09:00 AM"
-              placeholderTextColor={COLORS.black}
-              label="time"
-              value={enterData}
-              onChangeText={text => setEnterData(text)}
+            >{formatTime(time)}
+            </Text>
+          </TouchableOpacity>
+
+          
+          {showPicker && (
+            <DateTimePicker
+              value={time}
+              mode="time"
+              is24Hour={false}
+              display="default"
+              onChange={onChange}
             />
-          </View>
+          )}        
         </View>
 
-
-        {
-          loading ? (<View style={{justifyContent: 'center', alignItems: 'center',flex: 1}}><Loading/></View>) : (     <View
+        {loading ? (
+          <View
+            style={{justifyContent: 'center', alignItems: 'center', flex: 1}}>
+            <Loading />
+          </View>
+        ) : (
+          <View
             style={{
               justifyContent: 'flex-end',
               flex: 1,
@@ -207,13 +251,8 @@ const CreateTime = ({route}) => {
                 color={COLORS.white}
               />
             </TouchableOpacity>
-          </View>)
-         }
-
-
-   
-
-
+          </View>
+        )}
       </View>
     </View>
   );

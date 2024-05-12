@@ -12,6 +12,7 @@ export const useMessageAndErrorUser = (
 
   useEffect(() => {
     if (error) {
+      console.log("Register Hooks :: "+error)
       Toast.show({
         type: 'error',
         text1: error,
@@ -23,8 +24,8 @@ export const useMessageAndErrorUser = (
     }
 
     if (message) {
+      console.log("Register Hooks message :: "+message)
       //   navigation.navigate(navigateTo)
-
       // We are using navigation reset so that all the navigation stack will get clear
       navigation.reset({
         index: 0,

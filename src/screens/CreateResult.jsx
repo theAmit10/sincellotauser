@@ -21,6 +21,8 @@ import UrlHelper from '../helper/UrlHelper';
 import {useNavigation} from '@react-navigation/native';
 import axios from 'axios';
 import Loading from '../components/helpercComponent/Loading';
+import DateTimePicker from '@react-native-community/datetimepicker';
+
 
 const CreateResult = ({route}) => {
   const {datedata, locationdata, timedata} = route.params;
@@ -36,17 +38,65 @@ const CreateResult = ({route}) => {
   const [loading, setLoading] = useState(false);
   const navigation = useNavigation();
 
+  const [time, setTime] = useState(new Date());
+  const [showPicker, setShowPicker] = useState(false);
+
+  const onChange = (event, selectedTime) => {
+    setShowPicker(false);
+    if (selectedTime) {
+      setTime(selectedTime);
+      setNextResultData(formatTime(selectedTime));
+      console.log('TIme :: ' + selectedTime);
+      console.log('TIme :: ' + formatTime(selectedTime));
+    }
+  };
+
+  const showTimepicker = () => {
+    setShowPicker(true);
+  };
+
+  const formatTime = date => {
+    const hours = date.getHours();
+    const minutes = date.getMinutes();
+    const ampm = hours >= 12 ? 'PM' : 'AM';
+    const formattedHours = hours % 12 === 0 ? 12 : hours % 12;
+    const paddedHours =
+      formattedHours < 10 ? '0' + formattedHours : formattedHours;
+    const paddedMinutes = minutes < 10 ? '0' + minutes : minutes;
+
+    return `${paddedHours}:${paddedMinutes} ${ampm}`;
+  };
+
+  const checkForSameTime = (selectedTime) => {
+    const currentTime = formatTime(new Date());
+    if (selectedTime === currentTime) {
+      Toast.show({
+        type: 'error',
+        text1: 'Error',
+        text2: 'Next result time and current time cannot be the same',
+      });
+    }
+  };
+
   const submitHandler = () => {
     console.log('Working on login ');
+    const currentTime = formatTime(new Date());
+
     if (!enterData) {
       Toast.show({
         type: 'error',
         text1: 'Please enter result',
       });
-    }else if (!nextResultData) {
+    } else if (!nextResultData) {
       Toast.show({
         type: 'error',
-        text1: 'Please enter new result time',
+        text1: 'Please select new result time',
+      });
+    } else if (nextResultData === currentTime) {
+      Toast.show({
+        type: 'error',
+        text1: 'Error',
+        text2: 'Next result time and current time cannot be the same',
       });
     }
      else {
@@ -55,11 +105,23 @@ const CreateResult = ({route}) => {
         text1: 'Processing... ',
       });
 
-      createResult(accesstoken, timedata._id, datedata._id, locationdata._id,nextResultData);
+      createResult(
+        accesstoken,
+        timedata._id,
+        datedata._id,
+        locationdata._id,
+        nextResultData,
+      );
     }
   };
 
-  const createResult = async (accesstoken, lottime, lotdate, lotlocation,nextResultData) => {
+  const createResult = async (
+    accesstoken,
+    lottime,
+    lotdate,
+    lotlocation,
+    nextResultData,
+  ) => {
     try {
       setLoading(true);
       const {data} = await axios.post(
@@ -107,7 +169,23 @@ const CreateResult = ({route}) => {
           backgroundColor: 'transparent',
         }}>
         <GradientText style={styles.textStyle}>Create</GradientText>
-        <GradientText style={styles.textStyle}>Result</GradientText>
+
+        <View
+          style={{
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            flexDirection: 'row',
+          }}>
+          <GradientText style={styles.textStyle}>Result</GradientText>
+          <GradientText
+            style={{
+              fontSize: heightPercentageToDP(2),
+              fontFamily: FONT.Montserrat_Bold,
+              marginEnd: heightPercentageToDP(2),
+            }}>
+            {locationdata?.maximumRange}
+          </GradientText>
+        </View>
       </View>
 
       {/** Login Cointainer */}
@@ -135,6 +213,49 @@ const CreateResult = ({route}) => {
               backgroundColor: COLORS.grayBg,
               borderRadius: heightPercentageToDP(2),
             }}></View>
+        </View>
+
+        <GradientText
+          style={{
+            fontSize: heightPercentageToDP(4),
+            fontFamily: FONT.Montserrat_Bold,
+            color: COLORS.black,
+            margin: heightPercentageToDP(1),
+          }}>
+          {locationdata.lotlocation}
+        </GradientText>
+        
+
+        <View
+          style={{
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            flexDirection: 'row',
+          }}>
+          <GradientText
+          style={{
+            fontSize: heightPercentageToDP(4),
+            fontFamily: FONT.Montserrat_Bold,
+            color: COLORS.black,
+            marginStart: heightPercentageToDP(1),
+          }}>
+          {timedata.lottime}
+        </GradientText>
+         
+        <TouchableOpacity onPress={() =>  navigation.navigate('LocationTimeZone', {
+                       datedata: datedata,
+                       locationdata: locationdata,
+                       timedata: timedata,
+                    })}
+            className="rounded-md p-2" style={{backgroundColor: COLORS.gray2, width: widthPercentageToDP(10), margin: heightPercentageToDP(2)}}
+        >
+            <Entypo
+              name={'clock'}
+              size={heightPercentageToDP(3)}
+              color={COLORS.darkGray}
+            />
+          </TouchableOpacity>
+
         </View>
 
         {/** Result Main Container */}
@@ -170,7 +291,7 @@ const CreateResult = ({route}) => {
                 flex: 1,
                 fontFamily: FONT.Montserrat_Regular,
                 color: COLORS.black,
-                fontSize: heightPercentageToDP(2.5)
+                fontSize: heightPercentageToDP(2.5),
               }}
               placeholder="Enter result"
               placeholderTextColor={COLORS.black}
@@ -180,50 +301,56 @@ const CreateResult = ({route}) => {
             />
           </View>
 
-               {/** Next Result Data */}
+          {/** Next Result Data */}
 
-               <GradientText
+          <GradientText
+            style={{
+              fontFamily: FONT.Montserrat_Regular,
+              fontSize: heightPercentageToDP(2.5),
+              color: COLORS.black,
+              marginTop: heightPercentageToDP(3),
+            }}>
+            Next Result
+          </GradientText>
+
+          <TouchableOpacity
+            onPress={showTimepicker}
+            style={{
+              height: heightPercentageToDP(7),
+              flexDirection: 'row',
+              backgroundColor: COLORS.grayHalfBg,
+              alignItems: 'center',
+              paddingHorizontal: heightPercentageToDP(2),
+              borderRadius: heightPercentageToDP(1),
+              marginTop: heightPercentageToDP(1),
+            }}>
+            <Entypo
+              name={'clock'}
+              size={heightPercentageToDP(3)}
+              color={COLORS.darkGray}
+            />
+
+            <Text
               style={{
+                marginStart: heightPercentageToDP(1),
+                flex: 1,
                 fontFamily: FONT.Montserrat_Regular,
-                fontSize: heightPercentageToDP(2.5),
                 color: COLORS.black,
-                marginTop: heightPercentageToDP(3),
+                fontSize: heightPercentageToDP(2.5),
               }}>
-              Next Result
-            </GradientText>
+              {formatTime(time)}
+            </Text>
+          </TouchableOpacity>
 
-                <View
-              style={{
-                height: heightPercentageToDP(7),
-                flexDirection: 'row',
-                backgroundColor: COLORS.grayHalfBg,
-                alignItems: 'center',
-                paddingHorizontal: heightPercentageToDP(2),
-                borderRadius: heightPercentageToDP(1),
-                marginTop: heightPercentageToDP(1),
-
-              }}>
-              <Entypo
-                name={'clock'}
-                size={heightPercentageToDP(3)}
-                color={COLORS.darkGray}
-              />
-              <TextInput
-                style={{
-                  marginStart: heightPercentageToDP(1),
-                  flex: 1,
-                  fontFamily: FONT.Montserrat_Regular,
-                  fontSize: heightPercentageToDP(2.5),
-                  color: COLORS.black
-                }}
-                placeholder="Enter Next Result Time"
-                placeholderTextColor={COLORS.black}
-                label="result"
-                value={nextResultData}
-                onChangeText={text => setNextResultData(text)}
-              />
-            </View>
-
+          {showPicker && (
+            <DateTimePicker
+              value={time}
+              mode="time"
+              is24Hour={false}
+              display="default"
+              onChange={onChange}
+            />
+          )}
         </View>
 
         {loading ? (
@@ -236,7 +363,6 @@ const CreateResult = ({route}) => {
               justifyContent: 'flex-end',
               flex: 1,
               alignItems: 'flex-end',
-
               paddingVertical: heightPercentageToDP(4),
               paddingHorizontal: heightPercentageToDP(2),
             }}>

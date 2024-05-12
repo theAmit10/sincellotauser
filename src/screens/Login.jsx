@@ -6,8 +6,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, {useEffect, useState} from 'react';
-import LoginBackground from '../components/login/LoginBackground';
+import React, {useState} from 'react';
 import {
   heightPercentageToDP,
   widthPercentageToDP,
@@ -19,12 +18,11 @@ import Entypo from 'react-native-vector-icons/Entypo';
 import Toast from 'react-native-toast-message';
 import {useNavigation} from '@react-navigation/native';
 import Loading from '../components/helpercComponent/Loading';
-import {useDispatch, useSelector} from 'react-redux';
+import {useDispatch} from 'react-redux';
 import {login} from '../redux/actions/userAction';
 import {useMessageAndErrorUser} from '../utils/hooks';
-import axios from 'axios';
-import UrlHelper from '../helper/UrlHelper';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import AdminAuthLoginBackground from '../components/login/AdminAuthLoginBackground';
+
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -148,53 +146,11 @@ const Login = () => {
     'AdminDashboard',
   );
 
-  // console.log("Loadingb :: "+loading)
-
- 
-
-  // useEffect(() => {
-
-
-
-  //   if (error) {
-  //     Toast.show({
-  //       type: 'error',
-  //       text1: error,
-  //     });
-
-  //     dispatch({
-  //       type: 'clearError',
-  //     });
-  //   }
-
-  //   // Project 
-
-  //   if (message) {
-  //     navigation.reset({
-  //       index: 0,
-  //       routes: [{name: 'AdminDashboard'}],
-  //     });
-
-  //     Toast.show({
-  //       type: 'success',
-  //       text1: message,
-  //     });
-
-  //     dispatch({
-  //       type: 'clearMessage',
-  //     });
-
-  //   }
-  // }, [error, message,loading, dispatch]);
-
-
-
-
 
   return (
     <View style={{flex: 1}}>
 
-      <LoginBackground />
+      <AdminAuthLoginBackground />
 
       {/** Login Cointainer */}
 
@@ -342,7 +298,7 @@ const Login = () => {
               </TouchableOpacity>
             )}
 
-            <View
+            {/* <View
               style={{
                 padding: heightPercentageToDP(2),
                 borderRadius: heightPercentageToDP(1),
@@ -368,7 +324,7 @@ const Login = () => {
                   Sign Up
                 </Text>
               </TouchableOpacity>
-            </View>
+            </View> */}
           </View>
         </View>
       </View>

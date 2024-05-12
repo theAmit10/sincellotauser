@@ -219,7 +219,7 @@ const AllResult = () => {
                           fontSize: heightPercentageToDP(2),
                           color: COLORS.black
                         }}>
-                        {item.lottime.lottime}
+                        {item?.lottime?.lottime}
                       </Text>
                     </View>
                   </View>

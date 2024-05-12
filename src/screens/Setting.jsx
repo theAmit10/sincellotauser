@@ -129,7 +129,7 @@ const Setting = () => {
                 <MaterialCommunityIcons
                   name={'account'}
                   size={heightPercentageToDP(3)}
-                  color={COLORS.gray2}
+                  color={COLORS.darkGray}
                 />
               </LinearGradient>
               <Text
@@ -138,7 +138,7 @@ const Setting = () => {
                   flex: 1,
                   fontFamily: FONT.Montserrat_Regular,
                   fontSize: heightPercentageToDP(2),
-                  color: COLORS.darkGray,
+                  color: COLORS.black,
                 }}>
                 Update Profile
               </Text>
@@ -146,7 +146,7 @@ const Setting = () => {
               <Ionicons
                 name={'chevron-forward-outline'}
                 size={heightPercentageToDP(3)}
-                color={COLORS.white}
+                color={COLORS.darkGray}
               />
             </TouchableOpacity>
 
@@ -169,7 +169,7 @@ const Setting = () => {
                 <MaterialIcons
                   name={'password'}
                   size={heightPercentageToDP(3)}
-                  color={COLORS.gray2}
+                  color={COLORS.darkGray}
                 />
               </LinearGradient>
               <Text
@@ -178,7 +178,7 @@ const Setting = () => {
                   flex: 1,
                   fontFamily: FONT.Montserrat_Regular,
                   fontSize: heightPercentageToDP(2),
-                  color: COLORS.darkGray,
+                  color: COLORS.black,
                 }}>
                 Change Password
               </Text>
@@ -186,7 +186,7 @@ const Setting = () => {
               <Ionicons
                 name={'chevron-forward-outline'}
                 size={heightPercentageToDP(3)}
-                color={COLORS.white}
+                color={COLORS.darkGray}
               />
             </TouchableOpacity>
 
@@ -248,7 +248,7 @@ const Setting = () => {
                 <Ionicons
                     name={'wallet'}
                     size={heightPercentageToDP(3)}
-                    color={COLORS.gray2}
+                    color={COLORS.darkGray}
                   />
               </LinearGradient>
               <Text
@@ -257,7 +257,7 @@ const Setting = () => {
                   flex: 1,
                   fontFamily: FONT.Montserrat_Regular,
                   fontSize: heightPercentageToDP(2),
-                  color: COLORS.darkGray,
+                  color: COLORS.black,
                 }}>
                 Wallet Modification
               </Text>
@@ -265,7 +265,7 @@ const Setting = () => {
               <Ionicons
                 name={'chevron-forward-outline'}
                 size={heightPercentageToDP(3)}
-                color={COLORS.white}
+                color={COLORS.darkGray}
               />
             </TouchableOpacity>
 
@@ -287,7 +287,7 @@ const Setting = () => {
                 <MaterialCommunityIcons
                   name={'gamepad-variant-outline'}
                   size={heightPercentageToDP(3)}
-                  color={COLORS.gray2}
+                  color={COLORS.darkGray}
                 />
               </LinearGradient>
               <Text
@@ -296,7 +296,7 @@ const Setting = () => {
                   flex: 1,
                   fontFamily: FONT.Montserrat_Regular,
                   fontSize: heightPercentageToDP(2),
-                  color: COLORS.darkGray,
+                  color: COLORS.black,
                 }}>
                 Game Description
               </Text>
@@ -304,7 +304,7 @@ const Setting = () => {
               <Ionicons
                 name={'chevron-forward-outline'}
                 size={heightPercentageToDP(3)}
-                color={COLORS.white}
+                color={COLORS.darkGray}
               />
             </TouchableOpacity>
 
@@ -326,7 +326,7 @@ const Setting = () => {
                 <AntDesign
                   name={'infocirlceo'}
                   size={heightPercentageToDP(3)}
-                  color={COLORS.gray2}
+                  color={COLORS.darkGray}
                 />
               </LinearGradient>
               <Text
@@ -335,7 +335,7 @@ const Setting = () => {
                   flex: 1,
                   fontFamily: FONT.Montserrat_Regular,
                   fontSize: heightPercentageToDP(2),
-                  color: COLORS.darkGray,
+                  color: COLORS.black,
                 }}>
                 About Us
               </Text>
@@ -343,7 +343,7 @@ const Setting = () => {
               <Ionicons
                 name={'chevron-forward-outline'}
                 size={heightPercentageToDP(3)}
-                color={COLORS.white}
+                color={COLORS.darkGray}
               />
             </TouchableOpacity>
 
@@ -365,7 +365,7 @@ const Setting = () => {
                 <Entypo
                   name={'location'}
                   size={heightPercentageToDP(3)}
-                  color={COLORS.gray2}
+                  color={COLORS.darkGray}
                 />
               </LinearGradient>
               <Text
@@ -374,7 +374,7 @@ const Setting = () => {
                   flex: 1,
                   fontFamily: FONT.Montserrat_Regular,
                   fontSize: heightPercentageToDP(2),
-                  color: COLORS.darkGray,
+                  color: COLORS.black,
                 }}>
                 Create Location
               </Text>
@@ -382,7 +382,7 @@ const Setting = () => {
               <Ionicons
                 name={'chevron-forward-outline'}
                 size={heightPercentageToDP(3)}
-                color={COLORS.white}
+                color={COLORS.darkGray}
               />
             </TouchableOpacity>
 
@@ -404,7 +404,7 @@ const Setting = () => {
                 <Fontisto
                   name={'date'}
                   size={heightPercentageToDP(3)}
-                  color={COLORS.gray2}
+                  color={COLORS.darkGray}
                 />
               </LinearGradient>
               <Text
@@ -413,7 +413,7 @@ const Setting = () => {
                   flex: 1,
                   fontFamily: FONT.Montserrat_Regular,
                   fontSize: heightPercentageToDP(2),
-                  color: COLORS.darkGray,
+                  color: COLORS.black,
                 }}>
                 Add Promotion
               </Text>
@@ -421,17 +421,14 @@ const Setting = () => {
               <Ionicons
                 name={'chevron-forward-outline'}
                 size={heightPercentageToDP(3)}
-                color={COLORS.white}
+                color={COLORS.darkGray}
               />
             </TouchableOpacity>
 
             {/** Add Notification */}
-            {/* <TouchableOpacity
+            <TouchableOpacity
               onPress={() =>
-                Toast.show({
-                  type: 'info',
-                  text1: 'You will get this feature with ios build',
-                })
+                navigation.navigate("SendNotification")
               }
               style={{
                 height: heightPercentageToDP(7),
@@ -448,7 +445,7 @@ const Setting = () => {
                 <Ionicons
                   name={'notifications'}
                   size={heightPercentageToDP(3)}
-                  color={COLORS.gray2}
+                  color={COLORS.darkGray}
                 />
               </LinearGradient>
               <Text
@@ -457,17 +454,17 @@ const Setting = () => {
                   flex: 1,
                   fontFamily: FONT.Montserrat_Regular,
                   fontSize: heightPercentageToDP(2),
-                  color: COLORS.darkGray,
+                  color: COLORS.black,
                 }}>
-                Notifiction
+                Push Notifiction
               </Text>
 
               <Ionicons
                 name={'chevron-forward-outline'}
                 size={heightPercentageToDP(3)}
-                color={COLORS.white}
+                color={COLORS.darkGray}
               />
-            </TouchableOpacity> */}
+            </TouchableOpacity>
 
             {/** Create Time */}
             {/* <TouchableOpacity
@@ -565,7 +562,7 @@ const Setting = () => {
                 <Entypo
                   name={'trophy'}
                   size={heightPercentageToDP(3)}
-                  color={COLORS.gray2}
+                  color={COLORS.darkGray}
                 />
               </LinearGradient>
               <Text
@@ -574,7 +571,7 @@ const Setting = () => {
                   flex: 1,
                   fontFamily: FONT.Montserrat_Regular,
                   fontSize: heightPercentageToDP(2),
-                  color: COLORS.darkGray,
+                  color: COLORS.black,
                 }}>
                 Create Result
               </Text>
@@ -582,7 +579,7 @@ const Setting = () => {
               <Ionicons
                 name={'chevron-forward-outline'}
                 size={heightPercentageToDP(3)}
-                color={COLORS.white}
+                color={COLORS.darkGray}
               />
             </TouchableOpacity>
 
@@ -604,7 +601,7 @@ const Setting = () => {
                 <AntDesign
                   name={'logout'}
                   size={heightPercentageToDP(3)}
-                  color={COLORS.gray2}
+                  color={COLORS.darkGray}
                 />
               </LinearGradient>
 
@@ -613,7 +610,7 @@ const Setting = () => {
                   marginStart: heightPercentageToDP(1),
                   flex: 1,
                   fontFamily: FONT.Montserrat_Regular,
-                  color: COLORS.darkGray,
+                  color: COLORS.black,
                   fontSize: heightPercentageToDP(2),
                 }}>
                 Logout
@@ -622,7 +619,7 @@ const Setting = () => {
               <Ionicons
                 name={'chevron-forward-outline'}
                 size={heightPercentageToDP(3)}
-                color={COLORS.white}
+                color={COLORS.darkGray}
               />
             </TouchableOpacity>
           </ScrollView>

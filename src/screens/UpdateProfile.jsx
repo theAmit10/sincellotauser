@@ -6,161 +6,158 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 
 import {
   heightPercentageToDP,
   widthPercentageToDP,
 } from 'react-native-responsive-screen';
-import { COLORS, FONT } from '../../assets/constants';
+import {COLORS, FONT} from '../../assets/constants';
 import GradientText from '../components/helpercComponent/GradientText';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import Entypo from 'react-native-vector-icons/Entypo';
 import Toast from 'react-native-toast-message';
-import { useIsFocused, useNavigation } from '@react-navigation/native';
+import {useIsFocused, useNavigation} from '@react-navigation/native';
 import ProfileBackground from '../components/background/ProfileBackground';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Wallet from '../components/home/Wallet';
-import { Consumer } from 'react-native-paper/lib/typescript/core/settings';
-import { useDispatch, useSelector } from 'react-redux';
-import { loadProfile, logout } from '../redux/actions/userAction';
-import { useMessageAndErrorUser } from '../utils/hooks';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import {useDispatch, useSelector} from 'react-redux';
+import {loadProfile, logout} from '../redux/actions/userAction';
+import {useMessageAndErrorUser} from '../utils/hooks';
 import Loading from '../components/helpercComponent/Loading';
-import { HOVER } from 'nativewind/dist/utils/selector';
+import {HOVER} from 'nativewind/dist/utils/selector';
 import LinearGradient from 'react-native-linear-gradient';
 import UrlHelper from '../helper/UrlHelper';
 import axios from 'axios';
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const UpdateProfile = () => {
-
   const navigation = useNavigation();
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
-  const [name, setName] = useState("")
+  const [name, setName] = useState('');
   // const [email, setEmail] = useState('');
 
-  const { user, accesstoken, loading } = useSelector(state => state.user);
+  const {user, accesstoken, loading} = useSelector(state => state.user);
 
-
-  useMessageAndErrorUser(navigation, dispatch, "Login")
+  useMessageAndErrorUser(navigation, dispatch, 'Login');
 
   const isFocused = useIsFocused();
 
   useEffect(() => {
-    dispatch(loadProfile(accesstoken))
-  },[isFocused])
+    dispatch(loadProfile(accesstoken));
+  }, [isFocused]);
 
+  const [showProgressBar, setProgressBar] = useState(false);
+
+  const updateProfileHandler = async () => {
+    if (!name) {
+      Toast.show({
+        type: 'error',
+        text1: 'Please enter your name',
+      });
+    } else {
+      setProgressBar(true);
+
+      try {
+        const {data} = await axios.put(
+          UrlHelper.UPDATE_USER_PROFILE_API,
+          {
+            name: name,
+          },
+          {
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${accesstoken}`,
+            },
+          },
+        );
+
+        console.log('datat :: ' + data);
+
+        dispatch(loadProfile(accesstoken));
+
+        Toast.show({
+          type: 'success',
+          text1: data.message,
+        });
+        setProgressBar(false);
+        navigation.goBack();
+      } catch (error) {
+        setProgressBar(false);
+        Toast.show({
+          type: 'error',
+          text1: 'Something went wrong',
+        });
+        console.log(error);
+      }
+    }
+  };
+
+  // Function to clear AsyncStorage data when the user logs out
+  const clearAsyncStorage = async () => {
+    try {
+      await AsyncStorage.clear();
+      console.log('AsyncStorage data cleared successfully.');
+      navigation.reset({
+        index: 0,
+        routes: [{name: 'Login'}],
+      });
+    } catch (error) {
+      Toast.show({
+        type: 'error',
+        text1: 'Something went wrong',
+        text2: error,
+      });
+    }
+  };
 
   const logoutHandler = () => {
+    console.log('Logging Off...');
 
     Toast.show({
       type: 'success',
-      text1: 'Please wait... logging off',
+      text1: 'Logging Out ',
+      text2: 'Please wait...',
     });
 
-    dispatch(logout())
+    setTimeout(() => {
+      clearAsyncStorage();
+    }, 1000);
   };
-
-  
-
-  const ChangePasswordHandler = () => {
-
-    Toast.show({
-      type: 'success',
-      text1: 'change password precessing',
-    });
-  };
-
-
-  const [showProgressBar,setProgressBar] = useState(false); 
-
-  const updateProfileHandler  = async () => {
-    if (!name) {
-     Toast.show({
-       type: 'error',
-       text1: 'Please enter your name',
-     });
-     
-   } else {
-     setProgressBar(true);
-
-     try {
-  
-       const {data} = await axios.put(
-        UrlHelper.UPDATE_USER_PROFILE_API,
-        {
-          name: name,
-        },
-        {
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${accesstoken}`,
-          },
-        },
-      );
-
-      console.log("datat :: "+data)
-
-      dispatch(loadProfile(accesstoken))
-      
-       Toast.show({
-         type: 'success',
-         text1: data.message,
-       });
-       setProgressBar(false);
-       navigation.goBack();
-     } catch (error) {
-      setProgressBar(false);
-       Toast.show({
-         type: 'error',
-         text1: 'Something went wrong',
-       });
-       console.log(error);
-
-     }
-   }
- };
-
-
-
-
-
-
-
-
 
   return (
-    <View style={{ flex: 1 }}>
-
-
+    <View style={{flex: 1}}>
       <ProfileBackground />
-
 
       {/** Profile Cointainer */}
 
-      <View style={{
-        backgroundColor: COLORS.white_s,
-        margin: heightPercentageToDP(2),
-        borderRadius: heightPercentageToDP(1),
-        paddingStart: heightPercentageToDP(1)
-      }}>
+      <View
+        style={{
+          backgroundColor: COLORS.white_s,
+          margin: heightPercentageToDP(2),
+          borderRadius: heightPercentageToDP(1),
+          paddingStart: heightPercentageToDP(1),
+        }}>
+        <GradientText
+          style={{
+            fontSize: heightPercentageToDP(3.5),
+            fontFamily: FONT.Montserrat_Bold,
+          }}>
+          Update
+        </GradientText>
 
-        <GradientText style={{
-          fontSize: heightPercentageToDP(3.5),
-          fontFamily: FONT.Montserrat_Bold,
-        }}>Update</GradientText>
-
-        <GradientText style={{
-          fontSize: heightPercentageToDP(3.5),
-          fontFamily: FONT.Montserrat_Bold,
-        }}>Profile</GradientText>
-
+        <GradientText
+          style={{
+            fontSize: heightPercentageToDP(3.5),
+            fontFamily: FONT.Montserrat_Bold,
+          }}>
+          Profile
+        </GradientText>
       </View>
-
-
 
       <View
         style={{
@@ -169,10 +166,8 @@ const UpdateProfile = () => {
           backgroundColor: COLORS.white_s,
           borderTopLeftRadius: heightPercentageToDP(5),
           borderTopRightRadius: heightPercentageToDP(5),
-          elevation: heightPercentageToDP(3)
+          elevation: heightPercentageToDP(3),
         }}>
-
-
         {/** Top Style View */}
         <View
           style={{
@@ -190,136 +185,217 @@ const UpdateProfile = () => {
             }}></View>
         </View>
 
-
-
-        {/** Profile Main Container */}
-        <View
-          style={{
-            flex: 2,
-            margin: heightPercentageToDP(2),
-          }}>
+        <ScrollView showsVerticalScrollIndicator={false}>
+          {/** Profile Main Container */}
           <View
             style={{
-
-              paddingVertical: heightPercentageToDP(2),
+              flex: 2,
+              margin: heightPercentageToDP(2),
             }}>
-
-
-            {/** Change name container */}
-
-
             <View
               style={{
-                height: heightPercentageToDP(7),
-                flexDirection: 'row',
-                backgroundColor: COLORS.grayBg,
-                alignItems: 'center',
-                paddingHorizontal: heightPercentageToDP(2),
-                marginTop: heightPercentageToDP(2),
-                borderRadius: heightPercentageToDP(1),
+                paddingVertical: heightPercentageToDP(2),
               }}>
-                <LinearGradient
-                colors={[COLORS.lightWhite, COLORS.white_s]}
-                className="rounded-xl p-1">
-                <MaterialCommunityIcons
-                  name={'account'}
-                  size={heightPercentageToDP(3)}
-                  color={COLORS.gray2}
-                />
-              </LinearGradient>
-             
-              <TextInput
-                style={{
-                  marginStart: heightPercentageToDP(1),
-                  flex: 1,
-                  fontFamily: FONT.Montserrat_Regular,
-                  fontSize: heightPercentageToDP(2),
-                  color: COLORS.darkGray,
-                }}
-                placeholder="Name"
-                label="Name"
-                value={name}
-                onChangeText={text => setName(text)}
-              />
-            </View>
 
-           
-            {/** Update Profile container */}
+               {/** Logout container */}
 
-            <TouchableOpacity
-            onPress={() => navigation.navigate("UploadProfilePicture")}
-              style={{
-                height: heightPercentageToDP(7),
-                flexDirection: 'row',
-                backgroundColor: COLORS.grayBg,
-                alignItems: 'center',
-                paddingHorizontal: heightPercentageToDP(2),
-                marginTop: heightPercentageToDP(2),
-                borderRadius: heightPercentageToDP(1),
-              }}>
-              <LinearGradient
-                colors={[COLORS.lightWhite, COLORS.white_s]}
-                className="rounded-xl p-1">
-                <MaterialCommunityIcons
-                  name={'account'}
-                  size={heightPercentageToDP(3)}
-                  color={COLORS.gray2}
-                />
-              </LinearGradient>
-              <Text
-                style={{
-                  marginStart: heightPercentageToDP(1),
-                  flex: 1,
-                  fontFamily: FONT.Montserrat_Regular,
-                  fontSize: heightPercentageToDP(2),
-                  color: COLORS.darkGray,
-                  
-                }}>
-                Profile Picture
-              </Text>
-
-              <Ionicons
-                name={'chevron-forward-outline'}
-                size={heightPercentageToDP(3)}
-                color={COLORS.white}
-              />
-            </TouchableOpacity>
-
-
-
-            {/** Bottom Submit Container */}
-
-            <View
-              style={{
-                marginBottom: heightPercentageToDP(5),
-                marginTop: heightPercentageToDP(2),
-              }}>
-              {showProgressBar ? (
-                <Loading />
-              ) : (
+               {user && user.role === 'admin' ? null : (
                 <TouchableOpacity
-                  onPress={updateProfileHandler}
+                  onPress={logoutHandler}
                   style={{
-                    backgroundColor: COLORS.blue,
-                    padding: heightPercentageToDP(2),
-                    borderRadius: heightPercentageToDP(1),
+                    height: heightPercentageToDP(7),
+                    flexDirection: 'row',
+                    backgroundColor: COLORS.grayBg,
                     alignItems: 'center',
+                    paddingHorizontal: heightPercentageToDP(2),
+                    borderRadius: heightPercentageToDP(1),
+                    marginTop: heightPercentageToDP(-3),
                   }}>
+                  <LinearGradient
+                    colors={[COLORS.lightWhite, COLORS.white_s]}
+                    className="rounded-xl p-1">
+                    <AntDesign
+                      name={'logout'}
+                      size={heightPercentageToDP(3)}
+                      color={COLORS.darkGray}
+                    />
+                  </LinearGradient>
+
                   <Text
                     style={{
-                      color: COLORS.white,
+                      marginStart: heightPercentageToDP(1),
+                      flex: 1,
                       fontFamily: FONT.Montserrat_Regular,
+                      color: COLORS.black,
+                      fontSize: heightPercentageToDP(2),
                     }}>
-                    Submit
+                    Logout
                   </Text>
+
+                  <Ionicons
+                    name={'chevron-forward-outline'}
+                    size={heightPercentageToDP(3)}
+                    color={COLORS.darkGray}
+                  />
                 </TouchableOpacity>
               )}
+
+            
+
+              {/** Change Password container */}
+
+              {user && user.role === 'admin' ? null : (
+                <TouchableOpacity
+                  onPress={() => navigation.navigate('ChangePassword')}
+                  style={{
+                    height: heightPercentageToDP(7),
+                    flexDirection: 'row',
+                    backgroundColor: COLORS.grayBg,
+                    alignItems: 'center',
+                    paddingHorizontal: heightPercentageToDP(2),
+                    marginTop: heightPercentageToDP(2),
+                    borderRadius: heightPercentageToDP(1),
+                  }}>
+                  <LinearGradient
+                    colors={[COLORS.lightWhite, COLORS.white_s]}
+                    className="rounded-xl p-1">
+                    <MaterialIcons
+                      name={'password'}
+                      size={heightPercentageToDP(3)}
+                      color={COLORS.darkGray}
+                    />
+                  </LinearGradient>
+                  <Text
+                    style={{
+                      marginStart: heightPercentageToDP(1),
+                      flex: 1,
+                      fontFamily: FONT.Montserrat_Regular,
+                      fontSize: heightPercentageToDP(2),
+                      color: COLORS.black,
+                    }}>
+                    Change Password
+                  </Text>
+
+                  <Ionicons
+                    name={'chevron-forward-outline'}
+                    size={heightPercentageToDP(3)}
+                    color={COLORS.darkGray}
+                  />
+                </TouchableOpacity>
+              )}
+
+
+                {/** Update Profile container */}
+
+                <TouchableOpacity
+                onPress={() => navigation.navigate('UploadProfilePicture')}
+                style={{
+                  height: heightPercentageToDP(7),
+                  flexDirection: 'row',
+                  backgroundColor: COLORS.grayBg,
+                  alignItems: 'center',
+                  paddingHorizontal: heightPercentageToDP(2),
+                  marginTop: heightPercentageToDP(2),
+                  borderRadius: heightPercentageToDP(1),
+                }}>
+                <LinearGradient
+                  colors={[COLORS.lightWhite, COLORS.white_s]}
+                  className="rounded-xl p-1">
+                  <MaterialCommunityIcons
+                    name={'account'}
+                    size={heightPercentageToDP(3)}
+                    color={COLORS.black}
+                  />
+                </LinearGradient>
+                <Text
+                  style={{
+                    marginStart: heightPercentageToDP(1),
+                    flex: 1,
+                    fontFamily: FONT.Montserrat_Regular,
+                    fontSize: heightPercentageToDP(2),
+                    color: COLORS.black,
+                  }}>
+                  Profile Picture
+                </Text>
+
+                <Ionicons
+                  name={'chevron-forward-outline'}
+                  size={heightPercentageToDP(3)}
+                  color={COLORS.black}
+                />
+              </TouchableOpacity>
+
+             
+
+              {/** Change name container */}
+
+              <View
+                style={{
+                  height: heightPercentageToDP(7),
+                  flexDirection: 'row',
+                  backgroundColor: COLORS.grayBg,
+                  alignItems: 'center',
+                  paddingHorizontal: heightPercentageToDP(2),
+                  marginTop: heightPercentageToDP(2),
+                  borderRadius: heightPercentageToDP(1),
+                }}>
+                <LinearGradient
+                  colors={[COLORS.lightWhite, COLORS.white_s]}
+                  className="rounded-xl p-1">
+                  <MaterialCommunityIcons
+                    name={'account'}
+                    size={heightPercentageToDP(3)}
+                    color={COLORS.black}
+                  />
+                </LinearGradient>
+
+                <TextInput
+                  style={{
+                    marginStart: heightPercentageToDP(1),
+                    flex: 1,
+                    fontFamily: FONT.Montserrat_Regular,
+                    fontSize: heightPercentageToDP(2),
+                    color: COLORS.darkGray,
+                  }}
+                  placeholder="Name"
+                  placeholderTextColor={COLORS.black}
+                  label="Name"
+                  value={name}
+                  onChangeText={text => setName(text)}
+                />
+              </View>
+
+              {/** Bottom Submit Container */}
+
+              <View
+                style={{
+                  marginBottom: heightPercentageToDP(5),
+                  marginTop: heightPercentageToDP(2),
+                }}>
+                {showProgressBar ? (
+                  <Loading />
+                ) : (
+                  <TouchableOpacity
+                    onPress={updateProfileHandler}
+                    style={{
+                      backgroundColor: COLORS.blue,
+                      padding: heightPercentageToDP(2),
+                      borderRadius: heightPercentageToDP(1),
+                      alignItems: 'center',
+                    }}>
+                    <Text
+                      style={{
+                        color: COLORS.white,
+                        fontFamily: FONT.Montserrat_Regular,
+                      }}>
+                      Submit
+                    </Text>
+                  </TouchableOpacity>
+                )}
+              </View>
             </View>
-
-        
-
           </View>
-        </View>
+        </ScrollView>
       </View>
     </View>
   );
@@ -337,4 +413,3 @@ const styles = StyleSheet.create({
     fontFamily: FONT.Montserrat_Bold,
   },
 });
-

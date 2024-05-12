@@ -66,6 +66,31 @@ const Background = () => {
           }}></View>
       </View>
 
+      <View
+        style={{
+          flex: 1,
+          opacity: 80,
+          position: 'absolute',
+          right: 0
+        }}>
+        <TouchableOpacity onPress={() => navigation.navigate("AdminDashboard")}
+            className="rounded-md p-2" style={{backgroundColor: COLORS.white_s, width: widthPercentageToDP(10), margin: heightPercentageToDP(2)}}
+        >
+            <Ionicons
+              name={'home'}
+              size={heightPercentageToDP(3)}
+              color={COLORS.black}
+            />
+          </TouchableOpacity>
+
+        <View
+          className="rounded-full h-5 w-5"
+          style={{
+            margin: heightPercentageToDP(3),
+            backgroundColor: COLORS.background,
+          }}></View>
+      </View>
+
       
     </View>
   );

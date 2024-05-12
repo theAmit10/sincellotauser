@@ -23,12 +23,11 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Wallet from '../components/home/Wallet';
-import {Consumer} from 'react-native-paper/lib/typescript/core/settings';
+
 import {useDispatch, useSelector} from 'react-redux';
-import {logout} from '../redux/actions/userAction';
+
 import {useMessageAndErrorUser} from '../utils/hooks';
-import Loading from '../components/helpercComponent/Loading';
-import {HOVER} from 'nativewind/dist/utils/selector';
+
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Profile = () => {

@@ -160,7 +160,7 @@ const CreateAboutUs = () => {
               <MaterialIcons
                 name={'description'}
                 size={heightPercentageToDP(3)}
-                color={COLORS.gray2}
+                color={COLORS.black}
               />
             </LinearGradient>
             <TextInput
@@ -168,8 +168,10 @@ const CreateAboutUs = () => {
                 marginStart: heightPercentageToDP(1),
                 flex: 1,
                 fontFamily: FONT.Montserrat_Regular,
+                color: COLORS.black
               }}
               placeholder="Enter Title"
+              placeholderTextColor={COLORS.black}
               label="location"
               value={titleValue}
               onChangeText={text => setTitle(text)}
@@ -195,8 +197,10 @@ const CreateAboutUs = () => {
                 fontFamily: FONT.Montserrat_Regular,
                 minHeight: heightPercentageToDP(20),
                 textAlignVertical: 'top',
+                color: COLORS.black
               }}
               placeholder="Enter Description"
+              placeholderTextColor={COLORS.black}
               label="location"
               value={discriptionValue}
               onChangeText={text => setDescription(text)}
