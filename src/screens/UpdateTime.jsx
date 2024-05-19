@@ -172,7 +172,7 @@ import {
               <Entypo
                 name={'time-slot'}
                 size={heightPercentageToDP(3)}
-                color={COLORS.white}
+                color={COLORS.black}
               />
               <TextInput
                 style={{
@@ -183,6 +183,7 @@ import {
                   color: COLORS.black
                 }}
                 placeholder="Enter new Time"
+                placeholderTextColor={COLORS.black}
                 label="time"
                 value={enterData}
                 onChangeText={text => setEnterData(text)}

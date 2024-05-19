@@ -24,14 +24,11 @@
 		9390C9B5A69B4A8B83D2487D /* Montserrat-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 24711469774B4454BB78FB70 /* Montserrat-Regular.ttf */; };
 		99D1CED44A6F4736936C3B18 /* Montserrat-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4279438B49F542B9B3024F3C /* Montserrat-Bold.ttf */; };
 		9C0CB9467B734A008CE2CCC6 /* sincelogo.png in Resources */ = {isa = PBXBuildFile; fileRef = 342AC1F6FBDD455289970A7D /* sincelogo.png */; };
-		A46F0E83AD114030A2C9E2FF /* applogo.png in Resources */ = {isa = PBXBuildFile; fileRef = 597D5689D2C547F0B8EBBD7F /* applogo.png */; };
-		AC48CC4D05C544E8A0D48969 /* dummy_user.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = FC2C6F91929246138ECBEF78 /* dummy_user.jpeg */; };
 		BA2432BD568044CB8B6E0B4C /* orglogo.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = 69250B1A3A134EADB1B5976D /* orglogo.jpeg */; };
 		C10897C616BE488594A6D356 /* SFPRO-REGULAR.OTF in Resources */ = {isa = PBXBuildFile; fileRef = A0CAE6D1A3AE4E0B85C3F2F9 /* SFPRO-REGULAR.OTF */; };
 		CA3F2F60BB1543F7AEEBBD1B /* Elephant.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 09B322D672DC43978FCD7673 /* Elephant.ttf */; };
 		CDD765B00324200DC36D126B /* Pods_AdminSinceApp_AdminSinceAppTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2EE25BEC43883F713C86A7A3 /* Pods_AdminSinceApp_AdminSinceAppTests.framework */; };
-		D995AE32F642439981F3311F /* splashimage.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = 3516A0A6740E4A72981D3924 /* splashimage.jpeg */; };
-		FB1791DC4B73401AAC782118 /* logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 3369480E98BD4C4399C86052 /* logo.png */; };
+		3D43B256088E43919745EBB4 /* applogo.png in Resources */ = {isa = PBXBuildFile; fileRef = 9B4D11709142420CBCC24B00 /* applogo.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -59,13 +56,10 @@
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = AdminSinceApp/main.m; sourceTree = "<group>"; };
 		24711469774B4454BB78FB70 /* Montserrat-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Montserrat-Regular.ttf"; path = "../assets/fonts/Montserrat-Regular.ttf"; sourceTree = "<group>"; };
 		2EE25BEC43883F713C86A7A3 /* Pods_AdminSinceApp_AdminSinceAppTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AdminSinceApp_AdminSinceAppTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		3369480E98BD4C4399C86052 /* logo.png */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = logo.png; path = ../assets/image/logo.png; sourceTree = "<group>"; };
 		342AC1F6FBDD455289970A7D /* sincelogo.png */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = sincelogo.png; path = ../assets/image/sincelogo.png; sourceTree = "<group>"; };
-		3516A0A6740E4A72981D3924 /* splashimage.jpeg */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = splashimage.jpeg; path = ../assets/image/splashimage.jpeg; sourceTree = "<group>"; };
 		3B4392A12AC88292D35C810B /* Pods-AdminSinceApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AdminSinceApp.debug.xcconfig"; path = "Target Support Files/Pods-AdminSinceApp/Pods-AdminSinceApp.debug.xcconfig"; sourceTree = "<group>"; };
 		4279438B49F542B9B3024F3C /* Montserrat-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Montserrat-Bold.ttf"; path = "../assets/fonts/Montserrat-Bold.ttf"; sourceTree = "<group>"; };
 		5709B34CF0A7D63546082F79 /* Pods-AdminSinceApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AdminSinceApp.release.xcconfig"; path = "Target Support Files/Pods-AdminSinceApp/Pods-AdminSinceApp.release.xcconfig"; sourceTree = "<group>"; };
-		597D5689D2C547F0B8EBBD7F /* applogo.png */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = applogo.png; path = ../assets/image/applogo.png; sourceTree = "<group>"; };
 		5B7EB9410499542E8C5724F5 /* Pods-AdminSinceApp-AdminSinceAppTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AdminSinceApp-AdminSinceAppTests.debug.xcconfig"; path = "Target Support Files/Pods-AdminSinceApp-AdminSinceAppTests/Pods-AdminSinceApp-AdminSinceAppTests.debug.xcconfig"; sourceTree = "<group>"; };
 		68F4832E57AE4EB38A92D8B0 /* Montserrat-SemiBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Montserrat-SemiBold.ttf"; path = "../assets/fonts/Montserrat-SemiBold.ttf"; sourceTree = "<group>"; };
 		69250B1A3A134EADB1B5976D /* orglogo.jpeg */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = orglogo.jpeg; path = ../assets/image/orglogo.jpeg; sourceTree = "<group>"; };
@@ -79,7 +73,7 @@
 		E30B45746E28307D2F48E879 /* Pods_AdminSinceApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AdminSinceApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E91D09B1E62C499396E9E763 /* profileplaceholder.jpg */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = profileplaceholder.jpg; path = ../assets/image/profileplaceholder.jpg; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
-		FC2C6F91929246138ECBEF78 /* dummy_user.jpeg */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = dummy_user.jpeg; path = ../assets/image/dummy_user.jpeg; sourceTree = "<group>"; };
+		9B4D11709142420CBCC24B00 /* applogo.png */ = {isa = PBXFileReference; name = "applogo.png"; path = "../assets/image/applogo.png"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -149,20 +143,17 @@
 				9EA73F19FB344C2DADC32128 /* Helvetica.ttf */,
 				0900EC20888B468AA5419FCF /* SFPRO-MEDIUM.OTF */,
 				A0CAE6D1A3AE4E0B85C3F2F9 /* SFPRO-REGULAR.OTF */,
-				3369480E98BD4C4399C86052 /* logo.png */,
 				4279438B49F542B9B3024F3C /* Montserrat-Bold.ttf */,
 				24711469774B4454BB78FB70 /* Montserrat-Regular.ttf */,
 				68F4832E57AE4EB38A92D8B0 /* Montserrat-SemiBold.ttf */,
 				86EEFE5397684038BDC91DA0 /* ZCOOL-Regular.ttf */,
 				09B322D672DC43978FCD7673 /* Elephant.ttf */,
 				D889874D527548559DBE117C /* dark_user.png */,
-				FC2C6F91929246138ECBEF78 /* dummy_user.jpeg */,
 				DCD2D92D9A05428EBDBA85C4 /* logonobg.png */,
 				69250B1A3A134EADB1B5976D /* orglogo.jpeg */,
 				E91D09B1E62C499396E9E763 /* profileplaceholder.jpg */,
 				342AC1F6FBDD455289970A7D /* sincelogo.png */,
-				3516A0A6740E4A72981D3924 /* splashimage.jpeg */,
-				597D5689D2C547F0B8EBBD7F /* applogo.png */,
+				9B4D11709142420CBCC24B00 /* applogo.png */,
 			);
 			name = Resources;
 			path = "";
@@ -310,20 +301,17 @@
 				60F6EB790C5A43A9B9EB9B3E /* Helvetica.ttf in Resources */,
 				775D90B5A55B4534A7B02AC8 /* SFPRO-MEDIUM.OTF in Resources */,
 				C10897C616BE488594A6D356 /* SFPRO-REGULAR.OTF in Resources */,
-				FB1791DC4B73401AAC782118 /* logo.png in Resources */,
 				99D1CED44A6F4736936C3B18 /* Montserrat-Bold.ttf in Resources */,
 				9390C9B5A69B4A8B83D2487D /* Montserrat-Regular.ttf in Resources */,
 				101C01A4CE2147B5994C0BE1 /* Montserrat-SemiBold.ttf in Resources */,
 				31BD9DBB78E343FD9A89DDB5 /* ZCOOL-Regular.ttf in Resources */,
 				CA3F2F60BB1543F7AEEBBD1B /* Elephant.ttf in Resources */,
 				8318501D50F340FC9BECF58D /* dark_user.png in Resources */,
-				AC48CC4D05C544E8A0D48969 /* dummy_user.jpeg in Resources */,
 				439945B11FC54CBCA39C42D8 /* logonobg.png in Resources */,
 				BA2432BD568044CB8B6E0B4C /* orglogo.jpeg in Resources */,
 				21EF6D09C8DA4348BCCABE5D /* profileplaceholder.jpg in Resources */,
 				9C0CB9467B734A008CE2CCC6 /* sincelogo.png in Resources */,
-				D995AE32F642439981F3311F /* splashimage.jpeg in Resources */,
-				A46F0E83AD114030A2C9E2FF /* applogo.png in Resources */,
+				3D43B256088E43919745EBB4 /* applogo.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

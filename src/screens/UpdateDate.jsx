@@ -172,7 +172,7 @@ import {
               <Entypo
                 name='calendar'
                 size={heightPercentageToDP(3)}
-                color={COLORS.white}
+                color={COLORS.black}
               />
               <TextInput
                 style={{
@@ -183,6 +183,7 @@ import {
                   color: COLORS.black
                 }}
                 placeholder="Enter new Date"
+                placeholderTextColor={COLORS.black}
                 label="date"
                 value={enterData}
                 onChangeText={text => setEnterData(text)}

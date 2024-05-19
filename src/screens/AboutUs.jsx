@@ -173,6 +173,7 @@ import { loadAllAboutUs } from '../redux/actions/userAction';
                           style={{
                             fontFamily: FONT.Montserrat_Bold,
                             fontSize: heightPercentageToDP(2),
+                            color: COLORS.black
                           }}>
                           {item.aboutTitle}
                         </Text>
@@ -189,6 +190,7 @@ import { loadAllAboutUs } from '../redux/actions/userAction';
                           style={{
                             fontFamily: FONT.Montserrat_Regular,
                             fontSize: heightPercentageToDP(2),
+                            color: COLORS.black
                           }}>
                           {item.aboutDescription}
                         </Text>
