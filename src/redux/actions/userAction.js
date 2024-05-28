@@ -339,6 +339,34 @@ export const loadAllOneDayUser = (accesstoken,userid) => async dispatch => {
   }
   };
 
+    // Load All Notification
+export const loadAllNotification = (accesstoken) => async dispatch => {
+  try {
+    dispatch({
+      type: 'getAllNotificationRequest',
+  });
+  
+    const {data} = await axios.get(UrlHelper.NOTIFICATION_API, {
+      headers: {
+        Authorization: `Bearer ${accesstoken}`,
+      },
+    });
+  
+    dispatch({
+      type: 'getAllNotificationSuccess',
+      payload: data.notifications,
+    });
+  } catch (error) {
+    console.log(error);
+    console.log(error.response);
+  
+    dispatch({
+      type: 'getAllNotificationFail',
+      payload: error.response.data.message,
+    });
+  }
+  };
+
 
   // Chanage User Password
   // export const getResultAccordingToLocationTimeDate = (accesstoken,lotdateId,lottimeId,lotlocationId) => async dispatch => {

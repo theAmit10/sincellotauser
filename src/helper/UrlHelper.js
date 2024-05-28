@@ -75,6 +75,8 @@ const DELETE_LOT_RESULT_API = server + 'result/removeresult';
 
 // For Reset and Forgot password
 const FORGOT_PASSWORD_API = server + 'user/forgetpassword';
+const NOTIFICATION_API = server + 'user/allnotification';
+const DELETE_NOTIFICATION_API = server + 'user/removenotification';
 
 
 
@@ -130,4 +132,6 @@ const FORGOT_PASSWORD_API = server + 'user/forgetpassword';
   FORGOT_PASSWORD_API,
   SEND_NOTIFICATION_FOR_ALL_USER,
   SEND_NOTIFICATION_SINGLE_USER,
+  NOTIFICATION_API,
+  DELETE_NOTIFICATION_API
 };

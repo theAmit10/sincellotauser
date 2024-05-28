@@ -1,30 +1,23 @@
 import {
-  FlatList,
+  ScrollView,
   StyleSheet,
   Text,
-  TextInput,
   TouchableOpacity,
   View,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
-
 import {
   heightPercentageToDP,
   widthPercentageToDP,
 } from 'react-native-responsive-screen';
 import {COLORS, FONT} from '../../assets/constants';
 import GradientText from '../components/helpercComponent/GradientText';
-import Fontisto from 'react-native-vector-icons/Fontisto';
 import Entypo from 'react-native-vector-icons/Entypo';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Toast from 'react-native-toast-message';
 import {useIsFocused, useNavigation} from '@react-navigation/native';
 import Background from '../components/background/Background';
-import Loading from '../components/helpercComponent/Loading';
 import {useDispatch, useSelector} from 'react-redux';
-import {getAllLocations} from '../redux/actions/locationAction';
-import {getAllResult} from '../redux/actions/resultAction';
 import {loadAllAboutUs} from '../redux/actions/userAction';
 
 const SendNotification = () => {
@@ -104,7 +97,10 @@ const SendNotification = () => {
 
         {/** Content Container */}
 
-        <View
+        <ScrollView
+        showsVerticalScrollIndicator={false}
+        >
+ <View
           style={{
             flex: 2,
           }}>
@@ -279,7 +275,96 @@ const SendNotification = () => {
               />
             </View>
           </TouchableOpacity>
+
+                {/** All Notification */}
+          <TouchableOpacity
+            onPress={() => navigation.navigate('Notification')}
+            style={{
+              height: heightPercentageToDP(20),
+              flexDirection: 'row',
+              backgroundColor: COLORS.grayBg,
+              alignItems: 'center',
+              paddingHorizontal: heightPercentageToDP(2),
+              borderRadius: heightPercentageToDP(1),
+              margin: heightPercentageToDP(2),
+            }}>
+            <View
+              style={{
+                padding: heightPercentageToDP(2),
+              }}>
+              <Text
+                style={{
+                  marginStart: heightPercentageToDP(1),
+                  flex: 1,
+                  fontFamily: FONT.Montserrat_Regular,
+                  color: COLORS.darkGray,
+                  width: widthPercentageToDP(25),
+                  marginStart: heightPercentageToDP(-1),
+                  textAlignVertical: 'bottom',
+                }}></Text>
+              <Text
+                style={{
+                  marginStart: heightPercentageToDP(1),
+                  flex: 1,
+                  fontFamily: FONT.Montserrat_Regular,
+                  color: COLORS.darkGray,
+                  fontSize: heightPercentageToDP(2),
+                  marginStart: heightPercentageToDP(-1),
+                }}>
+                List of previous Notification
+              </Text>
+
+              <View
+                style={{
+                  flexDirection: 'row',
+                  justifyContent: 'flex-start',
+                  gap: heightPercentageToDP(1),
+                  marginStart: heightPercentageToDP(-1),
+                }}>
+                <View
+                  style={{
+                    backgroundColor: COLORS.white_s,
+                    padding: heightPercentageToDP(1),
+                    borderRadius: heightPercentageToDP(1),
+                    justifyContent: 'center',
+                  }}>
+                  <Entypo
+                    name={'user'}
+                    size={heightPercentageToDP(4)}
+                    color={COLORS.darkGray}
+                  />
+                </View>
+                <GradientText
+                  style={{...styles.textStyle, width: widthPercentageToDP(60)}}>
+                  Notifications
+                </GradientText>
+              </View>
+            </View>
+
+            <View
+              style={{
+                flex: 1,
+                backgroundColor: COLORS.white,
+                position: 'absolute',
+                right: heightPercentageToDP(2),
+                borderRadius: heightPercentageToDP(1),
+                padding: heightPercentageToDP(1),
+                top: heightPercentageToDP(2),
+              }}>
+              <Ionicons
+                name={'notifications'}
+                size={heightPercentageToDP(4)}
+                color={COLORS.darkGray}
+              />
+            </View>
+          </TouchableOpacity>
+
+
         </View>
+
+        </ScrollView>
+
+       
 
         {/** Bottom Submit Container */}
 

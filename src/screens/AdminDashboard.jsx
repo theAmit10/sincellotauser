@@ -334,6 +334,7 @@ const AdminDashboard = () => {
                             alignItems: 'center',
                             paddingHorizontal: heightPercentageToDP(2),
                             borderRadius: heightPercentageToDP(1),
+                            marginBottom: heightPercentageToDP(5)
                           }}>
                           <View
                             style={{

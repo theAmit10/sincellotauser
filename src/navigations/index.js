@@ -56,6 +56,7 @@ import CreateNotification from '../screens/CreateNotification';
 import CreateNotificationForAllUsers from '../screens/CreateNotificationForAllUsers';
 import LocationTimeZone from '../screens/LocationTimeZone';
 import CreateResultFromTimeZone from '../screens/CreateResultFromTimeZone';
+import UpdateAboutUs from '../screens/UpdateAboutUs';
 
 
 
@@ -123,6 +124,7 @@ const Main = () => {
                 <Stack.Screen  name="CreateNotificationForAllUsers" component={CreateNotificationForAllUsers}/>
                 <Stack.Screen  name="LocationTimeZone" component={LocationTimeZone}/>
                 <Stack.Screen  name="CreateResultFromTimeZone" component={CreateResultFromTimeZone}/>
+                <Stack.Screen  name="UpdateAboutUs" component={UpdateAboutUs}/>
 
             </Stack.Group>
         </Stack.Navigator>

@@ -1,6 +1,5 @@
 import {
   Image,
-  Platform,
   ScrollView,
   StyleSheet,
   Text,
@@ -23,17 +22,18 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import {loadSingleUser} from '../redux/actions/userAction';
 import Loading from '../components/helpercComponent/Loading';
 import Toast from 'react-native-toast-message';
-
+import Clipboard from '@react-native-clipboard/clipboard';
 
 const UserDetails = ({route}) => {
   const navigation = useNavigation();
 
   const {userdata} = route.params;
 
-  
   const {singleuser, accesstoken, loadingSingleUser} = useSelector(
     state => state.user,
   );
+
+  const [text, setText] = useState(singleuser.contact);
 
   console.log('Users Detials :: ' + JSON.stringify(singleuser));
 
@@ -43,6 +43,15 @@ const UserDetails = ({route}) => {
   useEffect(() => {
     dispatch(loadSingleUser(accesstoken, userdata._id));
   }, [dispatch, isFocused]);
+
+  const copyToClipboard = val => {
+    Clipboard.setString(val);
+    Toast.show({
+      type: 'success',
+      text1: 'Text Copied',
+      text2: 'The Text has been copied to your clipboard!',
+    });
+  };
 
   return (
     <View
@@ -106,27 +115,40 @@ const UserDetails = ({route}) => {
             alignSelf: 'stretch',
             marginTop: heightPercentageToDP(14),
           }}>
-          <GradientText style={{...styles.textStyle}}>
-            {userdata ? userdata.name : ''}
-          </GradientText>
-          <GradientText style={styles.textStyleEmail}>
-            {userdata ? userdata.email : ''}
-          </GradientText>
+          <TouchableOpacity
+            onPress={() => copyToClipboard(userdata.name.toString())}>
+            <GradientText style={{...styles.textStyle}}>
+              {userdata ? userdata.name : ''}
+            </GradientText>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            onPress={() => copyToClipboard(userdata.email.toString())}>
+            <GradientText style={styles.textStyleEmail}>
+              {userdata ? userdata.email : ''}
+            </GradientText>
+          </TouchableOpacity>
+
           {/* {
              userdata && userdata?.contact ? (<GradientText style={styles.textStyleEmail}>
               {userdata? userdata.contact: ""}
               </GradientText>) : (null)
            } */}
 
-            {
-             singleuser && singleuser.contact != singleuser.userId ? (<GradientText style={styles.textStyleEmail}>
-              {singleuser? singleuser.contact: ""}
-              </GradientText>) : (null)
-           }
-          <GradientText style={styles.textStyleEmail}>
-            User ID - {singleuser ? singleuser.userId : ''}
-          </GradientText>
-
+          {singleuser && singleuser.contact != singleuser.userId ? (
+            <TouchableOpacity
+              onPress={() => copyToClipboard(singleuser.contact.toString())}>
+              <GradientText style={styles.textStyleEmail}>
+                {singleuser ? singleuser.contact : ''}
+              </GradientText>
+            </TouchableOpacity>
+          ) : null}
+          <TouchableOpacity
+            onPress={() => copyToClipboard(singleuser.userId.toString())}>
+            <GradientText style={styles.textStyleEmail}>
+              User ID - {singleuser ? singleuser.userId : ''}
+            </GradientText>
+          </TouchableOpacity>
         </View>
 
         {/** Username */}
@@ -458,15 +480,15 @@ const UserDetails = ({route}) => {
             </View>
           </TouchableOpacity>
 
-           {/** Single User */}
-           <TouchableOpacity
-            onPress={() => 
+          {/** Single User */}
+          <TouchableOpacity
+            onPress={() =>
               // Toast.show({
               //   type: 'info',
               //   text1: 'Comming soon'
               // })
               navigation.navigate('CreateNotification', {userdata: singleuser})
-          }
+            }
             style={{
               height: heightPercentageToDP(20),
               flexDirection: 'row',
@@ -546,7 +568,6 @@ const UserDetails = ({route}) => {
               />
             </View>
           </TouchableOpacity>
-
         </ScrollView>
       )}
     </View>

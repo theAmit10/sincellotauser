@@ -14,6 +14,7 @@
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		21EF6D09C8DA4348BCCABE5D /* profileplaceholder.jpg in Resources */ = {isa = PBXBuildFile; fileRef = E91D09B1E62C499396E9E763 /* profileplaceholder.jpg */; };
 		31BD9DBB78E343FD9A89DDB5 /* ZCOOL-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 86EEFE5397684038BDC91DA0 /* ZCOOL-Regular.ttf */; };
+		3D43B256088E43919745EBB4 /* applogo.png in Resources */ = {isa = PBXBuildFile; fileRef = 9B4D11709142420CBCC24B00 /* applogo.png */; };
 		439945B11FC54CBCA39C42D8 /* logonobg.png in Resources */ = {isa = PBXBuildFile; fileRef = DCD2D92D9A05428EBDBA85C4 /* logonobg.png */; };
 		60F6EB790C5A43A9B9EB9B3E /* Helvetica.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9EA73F19FB344C2DADC32128 /* Helvetica.ttf */; };
 		70FAB351EE3324C5D19E3198 /* Pods_AdminSinceApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E30B45746E28307D2F48E879 /* Pods_AdminSinceApp.framework */; };
@@ -28,7 +29,6 @@
 		C10897C616BE488594A6D356 /* SFPRO-REGULAR.OTF in Resources */ = {isa = PBXBuildFile; fileRef = A0CAE6D1A3AE4E0B85C3F2F9 /* SFPRO-REGULAR.OTF */; };
 		CA3F2F60BB1543F7AEEBBD1B /* Elephant.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 09B322D672DC43978FCD7673 /* Elephant.ttf */; };
 		CDD765B00324200DC36D126B /* Pods_AdminSinceApp_AdminSinceAppTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2EE25BEC43883F713C86A7A3 /* Pods_AdminSinceApp_AdminSinceAppTests.framework */; };
-		3D43B256088E43919745EBB4 /* applogo.png in Resources */ = {isa = PBXBuildFile; fileRef = 9B4D11709142420CBCC24B00 /* applogo.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -66,6 +66,7 @@
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = AdminSinceApp/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		86EEFE5397684038BDC91DA0 /* ZCOOL-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "ZCOOL-Regular.ttf"; path = "../assets/fonts/ZCOOL-Regular.ttf"; sourceTree = "<group>"; };
 		89C6BE57DB24E9ADA2F236DE /* Pods-AdminSinceApp-AdminSinceAppTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AdminSinceApp-AdminSinceAppTests.release.xcconfig"; path = "Target Support Files/Pods-AdminSinceApp-AdminSinceAppTests/Pods-AdminSinceApp-AdminSinceAppTests.release.xcconfig"; sourceTree = "<group>"; };
+		9B4D11709142420CBCC24B00 /* applogo.png */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = applogo.png; path = ../assets/image/applogo.png; sourceTree = "<group>"; };
 		9EA73F19FB344C2DADC32128 /* Helvetica.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = Helvetica.ttf; path = ../assets/fonts/Helvetica.ttf; sourceTree = "<group>"; };
 		A0CAE6D1A3AE4E0B85C3F2F9 /* SFPRO-REGULAR.OTF */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "SFPRO-REGULAR.OTF"; path = "../assets/fonts/SFPRO-REGULAR.OTF"; sourceTree = "<group>"; };
 		D889874D527548559DBE117C /* dark_user.png */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = dark_user.png; path = ../assets/image/dark_user.png; sourceTree = "<group>"; };
@@ -73,7 +74,6 @@
 		E30B45746E28307D2F48E879 /* Pods_AdminSinceApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AdminSinceApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E91D09B1E62C499396E9E763 /* profileplaceholder.jpg */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = profileplaceholder.jpg; path = ../assets/image/profileplaceholder.jpg; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
-		9B4D11709142420CBCC24B00 /* applogo.png */ = {isa = PBXFileReference; name = "applogo.png"; path = "../assets/image/applogo.png"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */

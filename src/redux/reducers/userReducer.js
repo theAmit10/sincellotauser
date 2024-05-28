@@ -16,6 +16,7 @@ export const userReducer = createReducer(
     singleuser: {},
     loadingAllOneDayUser: false,
     allonedayusers: [],
+    loadingNotification: false,
   },
   builder => {
     builder
@@ -51,6 +52,9 @@ export const userReducer = createReducer(
       })
       .addCase('getAllOneDayUserLoadingRequest', state => {
         state.loadingAllOneDayUser = true;
+      })
+      .addCase('getAllNotificationRequest', state => {
+        state.loadingNotification = true;
       });
 
     builder
@@ -98,6 +102,10 @@ export const userReducer = createReducer(
       .addCase('getAllOneDayUserSuccess', (state, action) => {
         state.loadingAllOneDayUser = false;
         state.allonedayusers = action.payload;
+      })
+      .addCase('getAllNotificationSuccess', (state, action) => {
+        state.loadingNotification = false;
+        state.notifications = action.payload;
       });
 
     builder
@@ -144,6 +152,10 @@ export const userReducer = createReducer(
       .addCase('getAllOneDayUserFail', (state, action) => {
         state.loadingAllOneDayUser = false;
         state.error = action.payload;
+      })
+      .addCase('getAllNotificationFail', (state, action) => {
+        state.loadingNotification = false;
+        state.error = action.payload;
       });
 
     builder.addCase('getaccesstoken', (state, action) => {
@@ -169,6 +181,9 @@ export const userReducer = createReducer(
     })
     builder.addCase('clearAllOneDayUser', state => {
       state.allonedayusers = [];
+    });
+    builder.addCase('clearAllNotication', state => {
+      state.notifications = [];
     });
   },
 );
