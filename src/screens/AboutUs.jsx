@@ -1,5 +1,6 @@
 import {
   FlatList,
+  SafeAreaView,
   StyleSheet,
   Text,
   TextInput,
@@ -99,7 +100,7 @@ const AboutUs = () => {
   
 
   return (
-    <View style={{flex: 1}}>
+    <SafeAreaView style={{flex: 1}}>
       <Background />
 
       <View
@@ -317,7 +318,7 @@ const AboutUs = () => {
 
         {/** end */}
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 

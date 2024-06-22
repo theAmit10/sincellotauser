@@ -1,6 +1,7 @@
 import {
   Alert,
   Platform,
+    SafeAreaView,
     StyleSheet,
     Text,
     TextInput,
@@ -157,7 +158,7 @@ FileViewer.open(path)
 };
   
     return (
-      <View style={{flex: 1}}>
+      <SafeAreaView style={{flex: 1}}>
         <Background />
   
         <View
@@ -322,7 +323,7 @@ FileViewer.open(path)
               </View>
          
         </View>
-      </View>
+      </SafeAreaView>
     );
   };
   

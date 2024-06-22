@@ -1,4 +1,4 @@
-import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {SafeAreaView, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import React from 'react';
 import {
   heightPercentageToDP,
@@ -24,7 +24,7 @@ const WalletBalance = ({route}) => {
   };
 
   return (
-    <View style={{flex: 1}}>
+    <SafeAreaView style={{flex: 1}}>
       <Background />
 
       <View
@@ -70,7 +70,7 @@ const WalletBalance = ({route}) => {
           <GradientText style={styles.textStyle}>₹ {data.balance}</GradientText>
         </View>
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 

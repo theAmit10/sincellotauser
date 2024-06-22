@@ -1,6 +1,7 @@
 import {
     FlatList,
     Image,
+    SafeAreaView,
     StyleSheet,
     Text,
     TextInput,
@@ -49,7 +50,7 @@ import { loadAllOneDayUser } from '../redux/actions/userAction';
     
   
     return (
-      <View style={{flex: 1}}>
+      <SafeAreaView style={{flex: 1}}>
         <Background />
   
         {/** Main Cointainer */}
@@ -220,7 +221,7 @@ import { loadAllOneDayUser } from '../redux/actions/userAction';
   
           {/** end */}
         </View>
-      </View>
+      </SafeAreaView>
     );
   };
   

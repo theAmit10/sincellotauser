@@ -1,5 +1,6 @@
 import {
   FlatList,
+  SafeAreaView,
   StyleSheet,
   Text,
   TextInput,
@@ -120,7 +121,7 @@ const SearchTime = ({route}) => {
 
 
   return (
-    <View style={{flex: 1}}>
+    <SafeAreaView style={{flex: 1}}>
       <Background />
 
       {/** Main Cointainer */}
@@ -382,7 +383,7 @@ const SearchTime = ({route}) => {
 
         {/** end */}
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 

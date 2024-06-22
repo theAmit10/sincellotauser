@@ -1,4 +1,5 @@
 import {
+  SafeAreaView,
   StyleSheet,
   Text,
   TextInput,
@@ -108,7 +109,7 @@ const Result = ({route}) => {
   };
 
   return (
-    <View style={{flex: 1}}>
+    <SafeAreaView style={{flex: 1}}>
       <Background />
 
       <View
@@ -352,7 +353,7 @@ const Result = ({route}) => {
           </View>
         )}
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 

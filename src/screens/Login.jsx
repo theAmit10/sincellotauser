@@ -1,5 +1,6 @@
 
 import {
+  SafeAreaView,
   StyleSheet,
   Text,
   TextInput,
@@ -148,7 +149,7 @@ const Login = () => {
 
 
   return (
-    <View style={{flex: 1}}>
+    <SafeAreaView style={{flex: 1}}>
 
       <AdminAuthLoginBackground />
 
@@ -328,7 +329,7 @@ const Login = () => {
           </View>
         </View>
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 

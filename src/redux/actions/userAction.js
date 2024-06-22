@@ -209,10 +209,11 @@ try {
 } catch (error) {
   console.log(error);
   console.log(error.response);
+  console.log(error.response.data.message);
 
   dispatch({
     type: 'loadUserFail',
-    payload: error.response.data.message,
+    payload: 'something went wrong',
   });
 }
 };
@@ -331,10 +332,11 @@ export const loadAllOneDayUser = (accesstoken,userid) => async dispatch => {
   } catch (error) {
     console.log(error);
     console.log(error.response);
+    console.log(error.response.data.message);
   
     dispatch({
       type: 'getAllOneDayUserFail',
-      payload: error.response.data.message,
+      payload: 'Something went wrong',
     });
   }
   };

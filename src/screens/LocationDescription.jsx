@@ -24,6 +24,7 @@ import {login} from '../redux/actions/userAction';
 import {useMessageAndErrorUser} from '../utils/hooks';
 import Background from '../components/background/Background';
 import { getAllLocations } from '../redux/actions/locationAction';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const LocationDescription = ({route}) => {
   
@@ -54,7 +55,7 @@ const LocationDescription = ({route}) => {
   const loading = false;
 
   return (
-    <View style={{flex: 1}}>
+    <SafeAreaView style={{flex: 1}}>
       <Background />
 
       {/** Login Cointainer */}
@@ -182,7 +183,7 @@ const LocationDescription = ({route}) => {
           </TouchableOpacity>
         </View>
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 

@@ -1,4 +1,5 @@
 import {
+  SafeAreaView,
   ScrollView,
   StyleSheet,
   Text,
@@ -117,7 +118,7 @@ const GameDescritptionDetails = ({route}) => {
   };
 
   return (
-    <View style={{flex: 1}}>
+    <SafeAreaView style={{flex: 1}}>
       <Background />
 
       {/** Login Cointainer */}
@@ -266,7 +267,7 @@ const GameDescritptionDetails = ({route}) => {
           </View>
         )}
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 

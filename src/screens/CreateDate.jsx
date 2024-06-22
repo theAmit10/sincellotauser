@@ -1,4 +1,5 @@
 import {
+  SafeAreaView,
   StyleSheet,
   Text,
   TextInput,
@@ -141,7 +142,7 @@ const CreateDate = ({route}) => {
   };
 
   return (
-    <View style={{flex: 1}}>
+    <SafeAreaView style={{flex: 1}}>
       <Background />
 
       <View
@@ -272,7 +273,7 @@ const CreateDate = ({route}) => {
           </View>
         )}
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 

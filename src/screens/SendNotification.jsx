@@ -1,4 +1,5 @@
 import {
+  SafeAreaView,
   ScrollView,
   StyleSheet,
   Text,
@@ -56,7 +57,7 @@ const SendNotification = () => {
   };
 
   return (
-    <View style={{flex: 1}}>
+    <SafeAreaView style={{flex: 1}}>
       <Background />
 
       <View
@@ -370,7 +371,7 @@ const SendNotification = () => {
 
         {/** end */}
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 

@@ -1,4 +1,5 @@
 import {
+  SafeAreaView,
   ScrollView,
   StyleSheet,
   Text,
@@ -50,7 +51,7 @@ const Register = () => {
     GoogleSignin.configure({
       webClientId:
         '412257267839-e6d36ambgqs0ufglgndb21pr74j720se.apps.googleusercontent.com',
-
+      iosClientId:'933772582958-d9jg0dvdkei7r75uapoc169vdq0tu25m.apps.googleusercontent.com',
       // androidClientId: '191145196270-ru4ac3nj22665k2ldtvqjvd0c4361qiu.apps.googleusercontent.com',
       // offlineAccess: true
     });
@@ -190,7 +191,7 @@ const Register = () => {
   
 
   return (
-    <View style={{flex: 1}}>
+    <SafeAreaView style={{flex: 1}}>
       <LoginBackground />
 
       {/** Login Cointainer */}
@@ -504,7 +505,7 @@ const Register = () => {
 
         </View>
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 

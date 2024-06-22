@@ -1,6 +1,7 @@
 import {
   Button,
   RefreshControlBase,
+  SafeAreaView,
   StyleSheet,
   Text,
   TextInput,
@@ -125,7 +126,7 @@ const CreateTime = ({route}) => {
   };
 
   return (
-    <View style={{flex: 1}}>
+    <SafeAreaView style={{flex: 1}}>
       <Background />
 
       <View
@@ -254,7 +255,7 @@ const CreateTime = ({route}) => {
           </View>
         )}
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 

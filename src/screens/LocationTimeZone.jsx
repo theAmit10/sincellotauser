@@ -1,5 +1,6 @@
 import {
     FlatList,
+    SafeAreaView,
     StyleSheet,
     Text,
     TextInput,
@@ -101,7 +102,7 @@ import {
     };
   
     return (
-      <View style={{flex: 1}}>
+      <SafeAreaView style={{flex: 1}}>
         <Background />
   
         {/** Main Cointainer */}
@@ -260,7 +261,7 @@ import {
   
           {/** end */}
         </View>
-      </View>
+      </SafeAreaView>
     );
   };
   

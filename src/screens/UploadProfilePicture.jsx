@@ -1,3 +1,5 @@
+
+
 import {
   StyleSheet,
   Text,
@@ -6,6 +8,7 @@ import {
   View,
   Platform,
   Image,
+  SafeAreaView,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {
@@ -31,6 +34,7 @@ import {check, request, PERMISSIONS, RESULTS} from 'react-native-permissions';
 import DocumentPicker from 'react-native-document-picker';
 import ImageResizer from '@bam.tech/react-native-image-resizer';
 
+
 const UploadProfilePicture = () => {
   const [enterData, setEnterData] = useState('');
   const {accesstoken} = useSelector(state => state.user);
@@ -47,26 +51,59 @@ const UploadProfilePicture = () => {
   );
 
   const checkAndRequestPermission = async () => {
+    console.log("Checking permission")
     const result = await check(PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE);
 
-    if (result === RESULTS.DENIED) {
-      if (Platform.OS === 'android' && Platform.Version <= 29) {
-        // Target Android 10 and above
-        const permissionResult = await request(
-          PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE,
-        );
-        if (permissionResult !== RESULTS.GRANTED) {
-          console.log('Permission not granted!');
-          Toast.show({
-            type: 'info',
-            text1: 'Permission not granted!',
-          });
-          return;
+    if(Platform.OS === 'android')
+    {
+      if (result === RESULTS.DENIED) {
+        if (Platform.OS === 'android' && Platform.Version <= 29) {
+          // Target Android 10 and above
+          const permissionResult = await request(
+            PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE,
+          );
+          if (permissionResult !== RESULTS.GRANTED) {
+            console.log('Permission not granted!');
+            Toast.show({
+              type: 'info',
+              text1: 'Permission not granted!',
+            });
+            return;
+          }
         }
       }
+
+    }else{
+      console.log("ios device found")
+      requestPhotoLibraryPermission()
     }
+
+   
     // Call your DocumentPicker.pick() function here
     selectDoc();
+  };
+
+  const requestPhotoLibraryPermission = async () => {
+    console.log('checking permission on ios')
+    const photoLibraryStatus = await PERMISSIONS.check(PERMISSIONS.IOS.PHOTOLIBRARY);
+  
+    if (photoLibraryStatus === PERMISSIONS.RESULTS.GRANTED) {
+      // Permission already granted, proceed to access photos
+      console.log('Photo library permission granted');
+      // Your code to access the photo library here (using ImagePicker or other methods)
+    } else if (photoLibraryStatus === PERMISSIONS.RESULTS.UNDEFINED) {
+      const requestResult = await PERMISSIONS.request(PERMISSIONS.IOS.PHOTOLIBRARY);
+      if (requestResult === PERMISSIONS.RESULTS.GRANTED) {
+        console.log('Photo library permission granted after request');
+        // Access photos here
+      } else {
+        console.log('Photo library permission denied');
+        // Handle permission denial (e.g., display an informative message)
+      }
+    } else {
+      console.log('Photo library permission already denied or restricted');
+      // Handle permission denial or restriction (e.g., guide user to app settings)
+    }
   };
 
   // For Opening PhoneStorage
@@ -185,7 +222,7 @@ const UploadProfilePicture = () => {
   };
 
   return (
-    <View style={{flex: 1}}>
+    <SafeAreaView style={{flex: 1}}>
       <Background />
 
       <View
@@ -227,6 +264,9 @@ const UploadProfilePicture = () => {
         {/** Result Main Container */}
 
         <View style={{padding: heightPercentageToDP(2)}}>
+          <TouchableOpacity
+          onPress={checkAndRequestPermission}
+          >
           <GradientText
             style={{
               fontFamily: FONT.Montserrat_Regular,
@@ -236,6 +276,8 @@ const UploadProfilePicture = () => {
             }}>
             Choose Image
           </GradientText>
+          </TouchableOpacity>
+          
 
           {/** Title container */}
 
@@ -260,7 +302,7 @@ const UploadProfilePicture = () => {
                 overflow: 'hidden',
                 width: heightPercentageToDP(20),
                 height: heightPercentageToDP(20),
-                zIndex: 2,
+                zIndex: 99,
                 position: 'absolute',
                 top: heightPercentageToDP(-2),
                 left: heightPercentageToDP(4),
@@ -276,20 +318,7 @@ const UploadProfilePicture = () => {
               />
             </TouchableOpacity>
 
-            {/** Username */}
-
-            {/** Email */}
-
-            <View
-              style={{
-                width: heightPercentageToDP(15),
-                height: heightPercentageToDP(30),
-                backgroundColor: COLORS.grayHalfBg,
-                position: 'absolute',
-                zIndex: 1,
-                borderTopLeftRadius: heightPercentageToDP(5),
-                borderBottomLeftRadius: heightPercentageToDP(5),
-              }}></View>
+           
           </View>
         </View>
 
@@ -333,7 +362,7 @@ const UploadProfilePicture = () => {
           </View>
         )}
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 
@@ -348,226 +377,9 @@ const styles = StyleSheet.create({
 
 
 
-// import React, { useState } from 'react';
-// import {
-//   StyleSheet,
-//   TouchableOpacity,
-//   View,
-//   Platform,
-//   Image,
-// } from 'react-native';
-// import ImageCropPicker from 'react-native-image-crop-picker';
-// import ImageResizer from '@bam.tech/react-native-image-resizer';
-// import axios from 'axios';
-// import { useSelector } from 'react-redux';
-// import { useNavigation } from '@react-navigation/native';
-// import { PERMISSIONS, request, RESULTS } from 'react-native-permissions';
-// import Toast from 'react-native-toast-message';
-// import { heightPercentageToDP, widthPercentageToDP } from 'react-native-responsive-screen';
-// import { COLORS, FONT } from '../../assets/constants';
-// import Background from '../components/background/Background';
-// import GradientText from '../components/helpercComponent/GradientText';
-// import Loading from '../components/helpercComponent/Loading';
-// import UrlHelper from '../helper/UrlHelper';
-// import Ionicons from 'react-native-vector-icons/Ionicons';
-// import mime from 'mime';
-
-// const UploadProfilePicture = () => {
-//   const { accesstoken,user } = useSelector(state => state.user);
-//   const navigation = useNavigation();
-//   const [showProgressBar, setProgressBar] = useState(false);
-//   const [imageSource, setImageSource] = useState(require('../../assets/image/dark_user.png'));
-//   const [selectedImage, setSelectedImage] = useState(null);
-
-//   const checkAndRequestPermission = async () => {
-//     const result = await request(PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE);
-//     if (result) {
-//       selectImage();
-//     } else {
-//       Toast.show({
-//         type: 'info',
-//         text1: 'Permission not granted!',
-//       });
-//     }
-//   };
-
-//   const selectImage = async () => {
-//     try {
-//       const image = await ImageCropPicker.openPicker({
-//         width: 400,
-//         height: 400,
-//         cropping: true,
-//         cropperCircleOverlay: true,
-//         avoidEmptySpaceAroundImage: true,
-//         freeStyleCropEnabled: true,
-//         mediaType: 'photo',
-//       });
-//       setSelectedImage(image);
-//       setImageSource({ uri: image.path });
-//     } catch (error) {
-//       console.log('Error:', error);
-//     }
-//   };
-
-//   const handleUpdateProfile = async () => {
-//     if (!selectedImage) {
-//       Toast.show({
-//         type: 'error',
-//         text1: 'Please select an image',
-//       });
-//       return;
-//     }
-
-//     setProgressBar(true);
-
-//     try {
-//       const resizedImage = await ImageResizer.createResizedImage(
-//         selectedImage.path,
-//         200,
-//         200,
-//         'JPEG',
-//         80,
-//         0,
-//         null,
-//       );
-
-//       const formData = new FormData();
-//       // formData.append('file', {
-//       //   uri: resizedImage.uri,
-//       //   name: 'profile.jpg',
-//       //   type: 'image/jpeg', // Set the correct MIME type
-//       //   filename: resizedImage.uri,
-//       // });
-
-//       console.log("Imafe data :: "+JSON.stringify(resizedImage))
-
-//       console.log("name :: "+resizedImage.path.split("/").pop())
-//       console.log("uri :: "+resizedImage.uri)
-//       console.log("typw :: "+mime.getType(resizedImage.uri))
-
-//       formData.append('file', {
-//         uri: resizedImage.uri,
-//         name: resizedImage.path.split("/").pop(),
-//         filename:resizedImage.path.split("/").pop(),
-//         type: mime.getType(resizedImage.uri), // Set the correct MIME type
-        
-//       });
-
-    
-//       if(user.avatar && user.avatar.url)
-//       {
-//         console.log("USER HAVE PROFILE PICTURE")
-//         const response = await axios.put(
-//           UrlHelper.USER_PROFILE_PIC_API,
-//           formData,
-//           {
-//             headers: {
-//               Authorization: `Bearer ${accesstoken}`,
-//               'Content-Type': 'multipart/form-data',
-//             },
-//           },
-//         );
-
-//         console.log('Profile updated successfully:', response.data);
-//         Toast.show({
-//           type: 'success',
-//           text1: 'Profile updated successfully',
-//         });
-//       }else{
-//         console.log("NO PROFILE PICTURE")
-//         const response = await axios.post(
-//           UrlHelper.USER_PROFILE_PIC_API,
-//           formData,
-//           {
-//             headers: {
-//               Authorization: `Bearer ${accesstoken}`,
-//               'Content-Type': 'multipart/form-data',
-//             },
-//           },
-//         );
-
-//         console.log('Profile updated successfully:', response.data);
-//         Toast.show({
-//           type: 'success',
-//           text1: 'Profile added successfully',
-//         });
-//       }
 
 
-     
 
-    
-     
-
-//       setImageSource({ uri: resizedImage.uri });
-//       setProgressBar(false);
-//       navigation.goBack();
-//     } catch (error) {
-//       setProgressBar(false);
-//       console.log('Error updating profile:', error);
-//       Toast.show({
-//         type: 'error',
-//         text1: 'Something went wrong',
-//         text2: 'Please try again later',
-//       });
-//     }
-//   };
-
-//     function getFilenameFromPath(filePath) {
-//     // Split the filePath string by the forward slash (/) to get an array of path segments
-//     const pathSegments = filePath.split('/');
-    
-//     // Get the last segment of the path, which represents the filename
-//     const filenameWithExtension = pathSegments[pathSegments.length - 1];
-    
-//     return filenameWithExtension;
-// }
-
-
-//   return (
-//     <View style={{ flex: 1 }}>
-//       <Background />
-//       <View style={{ margin: heightPercentageToDP(2), backgroundColor: 'transparent' }}>
-//         <GradientText style={styles.textStyle}>Upload</GradientText>
-//         <GradientText style={styles.textStyle}>Profile Picture</GradientText>
-//       </View>
-
-//       <View style={{ height: heightPercentageToDP(65), width: widthPercentageToDP(100), backgroundColor: COLORS.white_s, borderTopLeftRadius: heightPercentageToDP(5), borderTopRightRadius: heightPercentageToDP(5) }}>
-//         <View style={{ height: heightPercentageToDP(5), width: widthPercentageToDP(100), justifyContent: 'center', alignItems: 'center' }}>
-//           <View style={{ width: widthPercentageToDP(20), height: heightPercentageToDP(0.8), backgroundColor: COLORS.grayBg, borderRadius: heightPercentageToDP(2) }} />
-//         </View>
-//         <View style={{ padding: heightPercentageToDP(2) }}>
-//           <GradientText style={{ fontFamily: FONT.Montserrat_Regular, fontSize: heightPercentageToDP(2.5), color: COLORS.black, marginBottom: heightPercentageToDP(1) }}>Choose Image</GradientText>
-//           <View style={{ width: heightPercentageToDP(30), height: heightPercentageToDP(30), backgroundColor: COLORS.grayHalfBg, position: 'absolute', borderRadius: heightPercentageToDP(5), zIndex: 1, top: heightPercentageToDP(10), left: widthPercentageToDP(20), elevation: heightPercentageToDP(1) }}>
-//             <TouchableOpacity onPress={checkAndRequestPermission} style={{ borderRadius: 100, overflow: 'hidden', width: heightPercentageToDP(20), height: heightPercentageToDP(20), zIndex: 2, position: 'absolute', top: heightPercentageToDP(-2), left: heightPercentageToDP(4) }}>
-//               <Image source={imageSource} resizeMode="cover" style={{ height: heightPercentageToDP(20), width: heightPercentageToDP(20) }} />
-//             </TouchableOpacity>
-//           </View>
-//         </View>
-//         {showProgressBar ? (
-//           <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', zIndex: 2 }}>
-//             <Loading />
-//           </View>
-//         ) : (
-//           <View style={{ justifyContent: 'flex-end', flex: 1, alignItems: 'flex-end', paddingVertical: heightPercentageToDP(4), paddingHorizontal: heightPercentageToDP(2) }}>
-//             <TouchableOpacity onPress={handleUpdateProfile} style={{ height: heightPercentageToDP(7), width: heightPercentageToDP(7), flexDirection: 'row', backgroundColor: COLORS.blue, alignItems: 'center', paddingHorizontal: heightPercentageToDP(2), borderRadius: heightPercentageToDP(1) }}>
-//               <Ionicons name={'send'} size={heightPercentageToDP(3)} color={COLORS.white} />
-//             </TouchableOpacity>
-//           </View>
-//         )}
-//       </View>
-//     </View>
-//   );
-// };
-
-// export default UploadProfilePicture;
-
-// const styles = StyleSheet.create({
-//   textStyle: {
-//     fontSize: heightPercentageToDP(4),
-//     fontFamily: FONT.Montserrat_Bold,
-//   },
-// });
 
 
 

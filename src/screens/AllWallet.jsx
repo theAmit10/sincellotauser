@@ -1,6 +1,7 @@
 import {
   Image,
   Platform,
+  SafeAreaView,
   ScrollView,
   StyleSheet,
   Text,
@@ -54,7 +55,7 @@ const AllWallet = () => {
   // console.log('Users Detials :: ' + JSON.stringify(userdata));
 
   return (
-    <View
+    <SafeAreaView
       style={{
         flex: 1,
         backgroundColor: COLORS.white_s,
@@ -337,7 +338,7 @@ const AllWallet = () => {
           </>
         )}
       </ScrollView>
-    </View>
+    </SafeAreaView>
   );
 };
 

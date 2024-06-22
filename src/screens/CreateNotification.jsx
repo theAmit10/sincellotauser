@@ -1,4 +1,5 @@
 import {
+  SafeAreaView,
     StyleSheet,
     Text,
     TextInput,
@@ -93,7 +94,7 @@ import {
     };
   
     return (
-      <View style={{flex: 1}}>
+      <SafeAreaView style={{flex: 1}}>
         <Background />
   
         <View
@@ -246,7 +247,7 @@ import {
             </View>
           )}
         </View>
-      </View>
+      </SafeAreaView>
     );
   };
   

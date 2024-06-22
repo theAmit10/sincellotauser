@@ -22,6 +22,7 @@ import Loading from '../components/helpercComponent/Loading';
 import {useNavigation} from '@react-navigation/native';
 import UrlHelper from '../helper/UrlHelper';
 import axios from 'axios';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const WalletModification = ({route}) => {
   const {walletname} = route.params;
@@ -107,7 +108,7 @@ const WalletModification = ({route}) => {
   };
 
   return (
-    <View style={{flex: 1}}>
+    <SafeAreaView style={{flex: 1}}>
       <Background />
 
       <View
@@ -231,7 +232,7 @@ const WalletModification = ({route}) => {
           </View>
         )}
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 

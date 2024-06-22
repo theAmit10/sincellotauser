@@ -6,6 +6,7 @@ import {
   View,
   Platform,
   Image,
+  SafeAreaView,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {
@@ -183,7 +184,7 @@ const CreatePromotion = () => {
   }
 };
   return (
-    <View style={{flex: 1}}>
+    <SafeAreaView style={{flex: 1}}>
       <Background />
 
       <View
@@ -329,7 +330,7 @@ const CreatePromotion = () => {
           </View>
         )}
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 

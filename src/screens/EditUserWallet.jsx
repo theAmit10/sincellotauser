@@ -1,4 +1,5 @@
 import {
+  SafeAreaView,
   StyleSheet,
   Switch,
   Text,
@@ -99,7 +100,7 @@ const EditUserWallet = ({route}) => {
   const loading = false;
 
   return (
-    <View style={{flex: 1}}>
+    <SafeAreaView style={{flex: 1}}>
       <Background />
 
       <View
@@ -291,7 +292,7 @@ const EditUserWallet = ({route}) => {
           </View>
         )}
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 

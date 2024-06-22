@@ -1,4 +1,5 @@
 import {
+  SafeAreaView,
     StyleSheet,
     Text,
     TextInput,
@@ -91,7 +92,7 @@ import axios from 'axios';
    
   
     return (
-      <View style={{flex: 1}}>
+      <SafeAreaView style={{flex: 1}}>
         <Background/>
   
         {/** Login Cointainer */}
@@ -201,7 +202,7 @@ import axios from 'axios';
               )}
           </View>
         </View>
-      </View>
+      </SafeAreaView>
     );
   };
   
