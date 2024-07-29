@@ -29,6 +29,14 @@
 		C10897C616BE488594A6D356 /* SFPRO-REGULAR.OTF in Resources */ = {isa = PBXBuildFile; fileRef = A0CAE6D1A3AE4E0B85C3F2F9 /* SFPRO-REGULAR.OTF */; };
 		CA3F2F60BB1543F7AEEBBD1B /* Elephant.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 09B322D672DC43978FCD7673 /* Elephant.ttf */; };
 		CDD765B00324200DC36D126B /* Pods_AdminSinceApp_AdminSinceAppTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2EE25BEC43883F713C86A7A3 /* Pods_AdminSinceApp_AdminSinceAppTests.framework */; };
+		33A37AD2697047FC8BDE3510 /* bank.png in Resources */ = {isa = PBXBuildFile; fileRef = 4A940F25308E4078993D2C4C /* bank.png */; };
+		3026E6816CCE4C5EA8968CF5 /* crypto.png in Resources */ = {isa = PBXBuildFile; fileRef = C4475FA8DBE749BA9AA4964F /* crypto.png */; };
+		18AD31B123A34AAE9920E6D1 /* deposit.png in Resources */ = {isa = PBXBuildFile; fileRef = EC505D97D90E485CB81E8A2D /* deposit.png */; };
+		ED3F7A96741A40E2AEA88C79 /* paypal.png in Resources */ = {isa = PBXBuildFile; fileRef = FE70889CFF0743979910AB8A /* paypal.png */; };
+		68C1EBBC2FE747EEA8F23880 /* skrill.png in Resources */ = {isa = PBXBuildFile; fileRef = D2042D1771584225BDA26B47 /* skrill.png */; };
+		F8970EAC93294C1CACDBDD1A /* tlwbg.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 4438D81A34BD42118CAA1144 /* tlwbg.jpg */; };
+		8BC37A2DAFCC43219731A302 /* upi.png in Resources */ = {isa = PBXBuildFile; fileRef = 8561F973C22C47328EC67A81 /* upi.png */; };
+		E83BF72CA46A4076AA0CD675 /* withdraw.png in Resources */ = {isa = PBXBuildFile; fileRef = A930CC3CC9FF439485F43BCC /* withdraw.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -74,6 +82,14 @@
 		E30B45746E28307D2F48E879 /* Pods_AdminSinceApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AdminSinceApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E91D09B1E62C499396E9E763 /* profileplaceholder.jpg */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = profileplaceholder.jpg; path = ../assets/image/profileplaceholder.jpg; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
+		4A940F25308E4078993D2C4C /* bank.png */ = {isa = PBXFileReference; name = "bank.png"; path = "../assets/image/bank.png"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		C4475FA8DBE749BA9AA4964F /* crypto.png */ = {isa = PBXFileReference; name = "crypto.png"; path = "../assets/image/crypto.png"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		EC505D97D90E485CB81E8A2D /* deposit.png */ = {isa = PBXFileReference; name = "deposit.png"; path = "../assets/image/deposit.png"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		FE70889CFF0743979910AB8A /* paypal.png */ = {isa = PBXFileReference; name = "paypal.png"; path = "../assets/image/paypal.png"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		D2042D1771584225BDA26B47 /* skrill.png */ = {isa = PBXFileReference; name = "skrill.png"; path = "../assets/image/skrill.png"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		4438D81A34BD42118CAA1144 /* tlwbg.jpg */ = {isa = PBXFileReference; name = "tlwbg.jpg"; path = "../assets/image/tlwbg.jpg"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		8561F973C22C47328EC67A81 /* upi.png */ = {isa = PBXFileReference; name = "upi.png"; path = "../assets/image/upi.png"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		A930CC3CC9FF439485F43BCC /* withdraw.png */ = {isa = PBXFileReference; name = "withdraw.png"; path = "../assets/image/withdraw.png"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -154,6 +170,14 @@
 				E91D09B1E62C499396E9E763 /* profileplaceholder.jpg */,
 				342AC1F6FBDD455289970A7D /* sincelogo.png */,
 				9B4D11709142420CBCC24B00 /* applogo.png */,
+				4A940F25308E4078993D2C4C /* bank.png */,
+				C4475FA8DBE749BA9AA4964F /* crypto.png */,
+				EC505D97D90E485CB81E8A2D /* deposit.png */,
+				FE70889CFF0743979910AB8A /* paypal.png */,
+				D2042D1771584225BDA26B47 /* skrill.png */,
+				4438D81A34BD42118CAA1144 /* tlwbg.jpg */,
+				8561F973C22C47328EC67A81 /* upi.png */,
+				A930CC3CC9FF439485F43BCC /* withdraw.png */,
 			);
 			name = Resources;
 			path = "";
@@ -312,6 +336,14 @@
 				21EF6D09C8DA4348BCCABE5D /* profileplaceholder.jpg in Resources */,
 				9C0CB9467B734A008CE2CCC6 /* sincelogo.png in Resources */,
 				3D43B256088E43919745EBB4 /* applogo.png in Resources */,
+				33A37AD2697047FC8BDE3510 /* bank.png in Resources */,
+				3026E6816CCE4C5EA8968CF5 /* crypto.png in Resources */,
+				18AD31B123A34AAE9920E6D1 /* deposit.png in Resources */,
+				ED3F7A96741A40E2AEA88C79 /* paypal.png in Resources */,
+				68C1EBBC2FE747EEA8F23880 /* skrill.png in Resources */,
+				F8970EAC93294C1CACDBDD1A /* tlwbg.jpg in Resources */,
+				8BC37A2DAFCC43219731A302 /* upi.png in Resources */,
+				E83BF72CA46A4076AA0CD675 /* withdraw.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

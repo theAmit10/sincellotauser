@@ -51,7 +51,14 @@ const COLORS = {
   blue: "#246BFD",
   darkGray: '#4E4B4B',
   lightDarkGray: "#A7A5B1",
-  profileDarkGray: '#7E7D84'
+  profileDarkGray: '#7E7D84',
+
+  time_firstblue: '#267FA3',
+  time_secondbluw: '#7DD3F3',
+
+  time_firstgreen: '#6D8341',
+  time_secondgreen: '#C0D98A',
+  
 };
 
 const FONT = {

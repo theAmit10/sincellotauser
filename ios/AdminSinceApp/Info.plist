@@ -68,7 +68,7 @@
 	<false/>
 	<key>UIAppFonts</key>
 	<array>
-	<string>AntDesign.ttf</string>
+		<string>AntDesign.ttf</string>
 		<string>Entypo.ttf</string>
 		<string>EvilIcons.ttf</string>
 		<string>Feather.ttf</string>
@@ -95,9 +95,7 @@
 		<string>ZCOOL-Regular.ttf</string>
 		<string>Elephant.ttf</string>
 	</array>
-		<key>NSPhotoLibraryUsageDescription</key>
-  	<string>PhotoPermission</string>
-
-
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>PhotoPermission</string>
 </dict>
 </plist>
