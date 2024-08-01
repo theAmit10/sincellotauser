@@ -1,5 +1,6 @@
 import {
   FlatList,
+  ImageBackground,
   SafeAreaView,
   StyleSheet,
   Text,
@@ -23,7 +24,6 @@ import {useDispatch, useSelector} from 'react-redux';
 import {loadAllAboutUs} from '../redux/actions/userAction';
 import UrlHelper from '../helper/UrlHelper';
 import axios from 'axios';
-
 
 const AboutUs = () => {
   const navigation = useNavigation();
@@ -97,226 +97,238 @@ const AboutUs = () => {
     }
   };
 
-  
-
   return (
     <SafeAreaView style={{flex: 1}}>
       <Background />
 
-      <View
-        style={{
-          margin: heightPercentageToDP(2),
-          backgroundColor: 'transparent',
-        }}>
-        <GradientText style={styles.textStyle}>About</GradientText>
-        <GradientText style={styles.textStyle}>Us</GradientText>
-      </View>
-
       {/** Main Cointainer */}
 
-      <View
-        style={{
-          height: heightPercentageToDP(70),
-          width: widthPercentageToDP(100),
-          backgroundColor: COLORS.white_s,
-          borderTopLeftRadius: heightPercentageToDP(5),
-          borderTopRightRadius: heightPercentageToDP(5),
-        }}>
-        {/** Top Style View */}
+      <View style={{flex: 1, justifyContent: 'flex-end'}}>
         <View
           style={{
-            height: heightPercentageToDP(5),
-            width: widthPercentageToDP(100),
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}>
-          <View
-            style={{
-              width: widthPercentageToDP(20),
-              height: heightPercentageToDP(0.8),
-              backgroundColor: COLORS.grayBg,
-              borderRadius: heightPercentageToDP(2),
-            }}></View>
-        </View>
-
-        {/** Content Container */}
-
-        <View
-          style={{
-            height: heightPercentageToDP(10),
             margin: heightPercentageToDP(2),
+            backgroundColor: 'transparent',
+          }}>
+          <GradientText style={styles.textStyle}>About</GradientText>
+          <GradientText style={styles.textStyle}>Us</GradientText>
+        </View>
+        <ImageBackground
+          source={require('../../assets/image/tlwbg.jpg')}
+          style={{
+            width: '100%',
+            height: heightPercentageToDP(70),
+          }}
+          imageStyle={{
+            borderTopLeftRadius: heightPercentageToDP(5),
+            borderTopRightRadius: heightPercentageToDP(5),
           }}>
           <View
             style={{
-              height: heightPercentageToDP(7),
-              flexDirection: 'row',
-              backgroundColor: COLORS.grayHalfBg,
-              alignItems: 'center',
-              paddingHorizontal: heightPercentageToDP(2),
-              borderRadius: heightPercentageToDP(1),
-              marginTop: heightPercentageToDP(2),
+              height: heightPercentageToDP(70),
+              width: widthPercentageToDP(100),
+
+              borderTopLeftRadius: heightPercentageToDP(5),
+              borderTopRightRadius: heightPercentageToDP(5),
             }}>
-            <Fontisto
-              name={'search'}
-              size={heightPercentageToDP(3)}
-              color={COLORS.darkGray}
-            />
-            <TextInput
+            {/** Top Style View */}
+            <View
               style={{
-                marginStart: heightPercentageToDP(1),
-                flex: 1,
-                fontFamily: FONT.SF_PRO_REGULAR,
-                fontSize: heightPercentageToDP(2),
-                color: COLORS.black,
-              }}
-              placeholder="Search"
-              placeholderTextColor={COLORS.black}
-              label="Search"
-              onChangeText={handleSearch}
-            />
-          </View>
-        </View>
+                height: heightPercentageToDP(5),
+                width: widthPercentageToDP(100),
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}>
+              <View
+                style={{
+                  width: widthPercentageToDP(20),
+                  height: heightPercentageToDP(0.8),
+                  backgroundColor: COLORS.grayBg,
+                  borderRadius: heightPercentageToDP(2),
+                }}></View>
+            </View>
 
-        <View
-          style={{
-            flex: 2,
-          }}>
-          {loadingAbout ? (
-            <Loading />
-          ) : (
-            <FlatList
-              data={filteredData}
-              renderItem={({item, index}) => (
-                <TouchableOpacity
-                onPress={() => navigation.navigate("UpdateAboutUs",{
-                  aboutdata: item
-                })}
+            {/** Content Container */}
+
+            <View
+              style={{
+                height: heightPercentageToDP(10),
+                margin: heightPercentageToDP(2),
+              }}>
+              <View
+                style={{
+                  height: heightPercentageToDP(7),
+                  flexDirection: 'row',
+                  backgroundColor: COLORS.white_s,
+                  alignItems: 'center',
+                  paddingHorizontal: heightPercentageToDP(2),
+                  borderRadius: heightPercentageToDP(1),
+                  marginTop: heightPercentageToDP(2),
+                }}>
+                <Fontisto
+                  name={'search'}
+                  size={heightPercentageToDP(3)}
+                  color={COLORS.darkGray}
+                />
+                <TextInput
                   style={{
-                    ...styles.item,
-                  }}>
-                  <View
-                    style={{
-                      backgroundColor: COLORS.grayHalfBg,
-                      borderRadius: heightPercentageToDP(2),
-                    }}>
-                    <View
+                    marginStart: heightPercentageToDP(1),
+                    flex: 1,
+                    fontFamily: FONT.SF_PRO_REGULAR,
+                    fontSize: heightPercentageToDP(2),
+                    color: COLORS.black,
+                  }}
+                  placeholder="Search"
+                  placeholderTextColor={COLORS.black}
+                  label="Search"
+                  onChangeText={handleSearch}
+                />
+              </View>
+            </View>
+
+            <View
+              style={{
+                flex: 2,
+              }}>
+              {loadingAbout ? (
+                <Loading />
+              ) : (
+                <FlatList
+                  data={filteredData}
+                  renderItem={({item, index}) => (
+                    <TouchableOpacity
+                      onPress={() =>
+                        navigation.navigate('UpdateAboutUs', {
+                          aboutdata: item,
+                        })
+                      }
                       style={{
-                        backgroundColor:
-                          index % 2 === 0
-                            ? COLORS.lightDarkGray
-                            : COLORS.grayBg,
-
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        padding: heightPercentageToDP(1),
+                        ...styles.item,
                       }}>
-                      <Text
+                      <View
                         style={{
-                          fontFamily: FONT.Montserrat_Bold,
-                          fontSize: heightPercentageToDP(2),
-                          color: COLORS.black,
+                          backgroundColor: COLORS.white_s,
+                          borderRadius: heightPercentageToDP(2),
                         }}>
-                        {item.aboutTitle}
-                      </Text>
-                    </View>
-
-                    <View
-                      style={{
-                        alignItems: 'center',
-                        padding: heightPercentageToDP(1),
-                      }}>
-                      <Text
-                        style={{
-                          fontFamily: FONT.Montserrat_Regular,
-                          fontSize: heightPercentageToDP(2),
-                          color: COLORS.black,
-                        }}>
-                        {item.aboutDescription}
-                      </Text>
-                    </View>
-
-                    {/** For Deleting About Us Content */}
-                    {showProgressBar ? (
-                      selectedItem === item._id ? (
-                        <Loading />
-                      ) : (
-                        <TouchableOpacity
-                          onPress={() => deleteLocationHandler(item)}
+                        <View
                           style={{
-                            backgroundColor: COLORS.darkGray,
-                            padding: heightPercentageToDP(2),
-                            borderRadius: heightPercentageToDP(1),
+                            backgroundColor:
+                              index % 2 === 0
+                                ? COLORS.lightDarkGray
+                                : COLORS.grayBg,
+
+                            justifyContent: 'center',
                             alignItems: 'center',
-                            marginTop: heightPercentageToDP(1),
+                            padding: heightPercentageToDP(1),
                           }}>
                           <Text
                             style={{
-                              color: COLORS.white,
-                              fontFamily: FONT.Montserrat_Regular,
+                              fontFamily: FONT.Montserrat_Bold,
+                              fontSize: heightPercentageToDP(2),
+                              color: COLORS.black,
                             }}>
-                            Delete
+                            {item.aboutTitle}
                           </Text>
-                        </TouchableOpacity>
-                      )
-                    ) : (
-                      <TouchableOpacity
-                        onPress={() => deleteLocationHandler(item)}
-                        style={{
-                          backgroundColor: COLORS.darkGray,
-                          padding: heightPercentageToDP(2),
-                          borderRadius: heightPercentageToDP(1),
-                          alignItems: 'center',
-                          marginTop: heightPercentageToDP(1),
-                        }}>
-                        <Text
+                        </View>
+
+                        <View
                           style={{
-                            color: COLORS.white,
-                            fontFamily: FONT.Montserrat_Regular,
+                            alignItems: 'center',
+                            padding: heightPercentageToDP(1),
                           }}>
-                          Delete
-                        </Text>
-                      </TouchableOpacity>
-                    )}
-                  </View>
-                </TouchableOpacity>
+                          <Text
+                            style={{
+                              fontFamily: FONT.Montserrat_Regular,
+                              fontSize: heightPercentageToDP(2),
+                              color: COLORS.black,
+                            }}>
+                            {item.aboutDescription}
+                          </Text>
+                        </View>
+
+                        {/** For Deleting About Us Content */}
+                        {showProgressBar ? (
+                          selectedItem === item._id ? (
+                            <Loading />
+                          ) : (
+                            <TouchableOpacity
+                              onPress={() => deleteLocationHandler(item)}
+                              style={{
+                                backgroundColor: COLORS.darkGray,
+                                padding: heightPercentageToDP(2),
+                                borderRadius: heightPercentageToDP(1),
+                                alignItems: 'center',
+                                marginTop: heightPercentageToDP(1),
+                              }}>
+                              <Text
+                                style={{
+                                  color: COLORS.white,
+                                  fontFamily: FONT.Montserrat_Regular,
+                                }}>
+                                Delete
+                              </Text>
+                            </TouchableOpacity>
+                          )
+                        ) : (
+                          <TouchableOpacity
+                            onPress={() => deleteLocationHandler(item)}
+                            style={{
+                              backgroundColor: COLORS.darkGray,
+                              padding: heightPercentageToDP(2),
+                              borderRadius: heightPercentageToDP(1),
+                              alignItems: 'center',
+                              margin: heightPercentageToDP(1),
+                            }}>
+                            <Text
+                              style={{
+                                color: COLORS.white,
+                                fontFamily: FONT.Montserrat_Regular,
+                              }}>
+                              Delete
+                            </Text>
+                          </TouchableOpacity>
+                        )}
+                      </View>
+                    </TouchableOpacity>
+                  )}
+                  keyExtractor={item => item._id}
+                  initialNumToRender={10} // Render initial 10 items
+                  maxToRenderPerBatch={10} // Batch size to render
+                  windowSize={10} // Number of items kept in memory
+                />
               )}
-              keyExtractor={item => item._id}
-              initialNumToRender={10} // Render initial 10 items
-              maxToRenderPerBatch={10} // Batch size to render
-              windowSize={10} // Number of items kept in memory
-            />
-          )}
-        </View>
+            </View>
 
-        {/** Bottom Submit Container */}
+            {/** Bottom Submit Container */}
 
-        <View
-          style={{
-            marginBottom: heightPercentageToDP(5),
-            marginHorizontal: heightPercentageToDP(2),
-            marginTop: heightPercentageToDP(2),
-          }}>
-          {/** Email container */}
-
-          <TouchableOpacity
-            onPress={() => navigation.navigate('CreateAboutUs')}
-            style={{
-              backgroundColor: COLORS.blue,
-              padding: heightPercentageToDP(2),
-              borderRadius: heightPercentageToDP(1),
-              alignItems: 'center',
-            }}>
-            <Text
+            <View
               style={{
-                color: COLORS.white,
-                fontFamily: FONT.Montserrat_Regular,
+                marginBottom: heightPercentageToDP(5),
+                marginHorizontal: heightPercentageToDP(2),
+                marginTop: heightPercentageToDP(2),
               }}>
-              Create About us
-            </Text>
-          </TouchableOpacity>
-        </View>
+              {/** Email container */}
 
-        {/** end */}
+              <TouchableOpacity
+                onPress={() => navigation.navigate('CreateAboutUs')}
+                style={{
+                  backgroundColor: COLORS.blue,
+                  padding: heightPercentageToDP(2),
+                  borderRadius: heightPercentageToDP(1),
+                  alignItems: 'center',
+                }}>
+                <Text
+                  style={{
+                    color: COLORS.white,
+                    fontFamily: FONT.Montserrat_Regular,
+                  }}>
+                  Create About us
+                </Text>
+              </TouchableOpacity>
+            </View>
+
+            {/** end */}
+          </View>
+        </ImageBackground>
       </View>
     </SafeAreaView>
   );
@@ -328,6 +340,7 @@ const styles = StyleSheet.create({
   textStyle: {
     fontSize: heightPercentageToDP(4),
     fontFamily: FONT.Montserrat_Bold,
+    color: COLORS.white_s,
   },
   container: {
     justifyContent: 'center',

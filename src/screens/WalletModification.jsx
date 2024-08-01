@@ -1,4 +1,5 @@
 import {
+  ImageBackground,
   StyleSheet,
   Text,
   TextInput,
@@ -22,12 +23,12 @@ import Loading from '../components/helpercComponent/Loading';
 import {useNavigation} from '@react-navigation/native';
 import UrlHelper from '../helper/UrlHelper';
 import axios from 'axios';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import {SafeAreaView} from 'react-native-safe-area-context';
+import GradientTextWhite from '../components/helpercComponent/GradientTextWhite';
 
 const WalletModification = ({route}) => {
   const {walletname} = route.params;
   console.log('For Which wallet :: ' + walletname);
-
 
   const [enterData, setEnterData] = useState('');
   const {accesstoken} = useSelector(state => state.user);
@@ -111,126 +112,138 @@ const WalletModification = ({route}) => {
     <SafeAreaView style={{flex: 1}}>
       <Background />
 
-      <View
-        style={{
-          margin: heightPercentageToDP(2),
-          backgroundColor: 'transparent',
-        }}>
-        <GradientText style={styles.textStyle}>Wallet</GradientText>
-        <GradientText style={styles.textStyle}>Modification</GradientText>
-      </View>
-
-      {/** Login Cointainer */}
-
-      <View
-        style={{
-          height: heightPercentageToDP(65),
-          width: widthPercentageToDP(100),
-          backgroundColor: COLORS.white_s,
-          borderTopLeftRadius: heightPercentageToDP(5),
-          borderTopRightRadius: heightPercentageToDP(5),
-        }}>
-        {/** Top Style View */}
+      <View style={{flex: 1, justifyContent: 'flex-end'}}>
         <View
           style={{
-            height: heightPercentageToDP(5),
-            width: widthPercentageToDP(100),
-            justifyContent: 'center',
-            alignItems: 'center',
+            margin: heightPercentageToDP(2),
+            backgroundColor: 'transparent',
           }}>
-          <View
-            style={{
-              width: widthPercentageToDP(20),
-              height: heightPercentageToDP(0.8),
-              backgroundColor: COLORS.grayBg,
-              borderRadius: heightPercentageToDP(2),
-            }}></View>
+          <GradientText style={styles.textStyle}>Wallet</GradientText>
+          <GradientText style={styles.textStyle}>Modification</GradientText>
         </View>
 
-        {/** Result Main Container */}
-
-        <View style={{padding: heightPercentageToDP(2)}}>
-          <GradientText
-            style={{
-              fontFamily: FONT.Montserrat_Regular,
-              fontSize: heightPercentageToDP(2.5),
-              color: COLORS.black,
-              marginBottom: heightPercentageToDP(1),
-            }}>
-            Wallet Name
-          </GradientText>
+        <ImageBackground
+          source={require('../../assets/image/tlwbg.jpg')}
+          style={{
+            width: '100%',
+            height: heightPercentageToDP(65),
+          }}
+          imageStyle={{
+            borderTopLeftRadius: heightPercentageToDP(5),
+            borderTopRightRadius: heightPercentageToDP(5),
+          }}>
+          {/** Login Cointainer */}
 
           <View
             style={{
-              height: heightPercentageToDP(7),
-              flexDirection: 'row',
-              backgroundColor: COLORS.grayHalfBg,
-              alignItems: 'center',
-              paddingHorizontal: heightPercentageToDP(2),
-              borderRadius: heightPercentageToDP(1),
+              height: heightPercentageToDP(65),
+              width: widthPercentageToDP(100),
+              borderTopLeftRadius: heightPercentageToDP(5),
+              borderTopRightRadius: heightPercentageToDP(5),
             }}>
+            {/** Top Style View */}
             <View
               style={{
-                backgroundColor: COLORS.white_s,
-                padding: heightPercentageToDP(1),
-                borderRadius: heightPercentageToDP(1),
+                height: heightPercentageToDP(5),
+                width: widthPercentageToDP(100),
                 justifyContent: 'center',
-              }}>
-              <Ionicons
-                name={'wallet'}
-                size={heightPercentageToDP(2)}
-                color={COLORS.darkGray}
-              />
-            </View>
-            <TextInput
-              style={{
-                marginStart: heightPercentageToDP(1),
-                flex: 1,
-                fontFamily: FONT.SF_PRO_REGULAR,
-                color: COLORS.black
-              }}
-              placeholder="Enter name"
-              placeholderTextColor={COLORS.black}
-              label="location"
-              value={enterData}
-              onChangeText={text => setEnterData(text)}
-            />
-          </View>
-        </View>
-
-        {showProgressBar ? (
-          <View style={{flex: 1}}>
-            <Loading />
-          </View>
-        ) : (
-          <View
-            style={{
-              justifyContent: 'flex-end',
-              flex: 1,
-              alignItems: 'flex-end',
-              paddingVertical: heightPercentageToDP(4),
-              paddingHorizontal: heightPercentageToDP(2),
-            }}>
-            <TouchableOpacity
-              onPress={submitHandler}
-              className="rounded-full"
-              style={{
-                height: heightPercentageToDP(7),
-                width: heightPercentageToDP(7),
-                flexDirection: 'row',
-                backgroundColor: COLORS.blue,
                 alignItems: 'center',
-                paddingHorizontal: heightPercentageToDP(2),
-                borderRadius: heightPercentageToDP(1),
               }}>
-              <Ionicons
-                name={'send'}
-                size={heightPercentageToDP(3)}
-                color={COLORS.white}
-              />
-            </TouchableOpacity>
+              <View
+                style={{
+                  width: widthPercentageToDP(20),
+                  height: heightPercentageToDP(0.8),
+                  backgroundColor: COLORS.grayBg,
+                  borderRadius: heightPercentageToDP(2),
+                }}></View>
+            </View>
+
+            {/** Result Main Container */}
+
+            <View style={{padding: heightPercentageToDP(2)}}>
+              <GradientTextWhite
+                style={{
+                  fontFamily: FONT.Montserrat_Regular,
+                  fontSize: heightPercentageToDP(2.5),
+                  color: COLORS.black,
+                  marginBottom: heightPercentageToDP(1),
+                }}>
+                Wallet Name
+              </GradientTextWhite>
+
+              <View
+                style={{
+                  height: heightPercentageToDP(7),
+                  flexDirection: 'row',
+                  backgroundColor: COLORS.white_s,
+                  alignItems: 'center',
+                  paddingHorizontal: heightPercentageToDP(2),
+                  borderRadius: heightPercentageToDP(1),
+                }}>
+                <View
+                  style={{
+                    backgroundColor: COLORS.white_s,
+                    padding: heightPercentageToDP(1),
+                    borderRadius: heightPercentageToDP(1),
+                    justifyContent: 'center',
+                  }}>
+                  <Ionicons
+                    name={'wallet'}
+                    size={heightPercentageToDP(2)}
+                    color={COLORS.darkGray}
+                  />
+                </View>
+                <TextInput
+                  style={{
+                    marginStart: heightPercentageToDP(1),
+                    flex: 1,
+                    fontFamily: FONT.SF_PRO_REGULAR,
+                    color: COLORS.black,
+                  }}
+                  placeholder="Enter name"
+                  placeholderTextColor={COLORS.black}
+                  label="location"
+                  value={enterData}
+                  onChangeText={text => setEnterData(text)}
+                />
+              </View>
+            </View>
+
+            {showProgressBar ? (
+              <View style={{flex: 1}}>
+                <Loading />
+              </View>
+            ) : (
+              <View
+                style={{
+                  justifyContent: 'flex-end',
+                  flex: 1,
+                  alignItems: 'flex-end',
+                  paddingVertical: heightPercentageToDP(4),
+                  paddingHorizontal: heightPercentageToDP(2),
+                }}>
+                <TouchableOpacity
+                  onPress={submitHandler}
+                  className="rounded-full"
+                  style={{
+                    height: heightPercentageToDP(7),
+                    width: heightPercentageToDP(7),
+                    flexDirection: 'row',
+                    backgroundColor: COLORS.blue,
+                    alignItems: 'center',
+                    paddingHorizontal: heightPercentageToDP(2),
+                    borderRadius: heightPercentageToDP(1),
+                  }}>
+                  <Ionicons
+                    name={'send'}
+                    size={heightPercentageToDP(3)}
+                    color={COLORS.white}
+                  />
+                </TouchableOpacity>
+              </View>
+            )}
           </View>
-        )}
+        </ImageBackground>
       </View>
     </SafeAreaView>
   );
@@ -242,5 +255,6 @@ const styles = StyleSheet.create({
   textStyle: {
     fontSize: heightPercentageToDP(4),
     fontFamily: FONT.Montserrat_Bold,
+    color: COLORS.white,
   },
 });

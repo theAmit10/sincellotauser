@@ -1,4 +1,5 @@
 import {
+  ImageBackground,
   ScrollView,
   StyleSheet,
   Text,
@@ -25,6 +26,7 @@ import {useMessageAndErrorUser} from '../utils/hooks';
 import Background from '../components/background/Background';
 import { getAllLocations } from '../redux/actions/locationAction';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import GradientTextWhite from '../components/helpercComponent/GradientTextWhite';
 
 const LocationDescription = ({route}) => {
   
@@ -58,13 +60,25 @@ const LocationDescription = ({route}) => {
     <SafeAreaView style={{flex: 1}}>
       <Background />
 
+      <View style={{flex: 1, justifyContent: 'flex-end'}}>
+        <ImageBackground
+          source={require('../../assets/image/tlwbg.jpg')}
+          style={{
+            width: '100%',
+            height: heightPercentageToDP(75),
+          }}
+          imageStyle={{
+            borderTopLeftRadius: heightPercentageToDP(5),
+            borderTopRightRadius: heightPercentageToDP(5),
+          }}>
+
       {/** Login Cointainer */}
 
       <View
         style={{
           height: heightPercentageToDP(75),
           width: widthPercentageToDP(100),
-          backgroundColor: COLORS.white_s,
+
           borderTopLeftRadius: heightPercentageToDP(5),
           borderTopRightRadius: heightPercentageToDP(5),
         }}>
@@ -91,10 +105,10 @@ const LocationDescription = ({route}) => {
             flex: 1,
             margin: heightPercentageToDP(2),
           }}>
-          <GradientText style={styles.textStyle}>
+          <GradientTextWhite style={styles.textStyle}>
             {locationdata.lotlocation}
-          </GradientText>
-          <GradientText style={styles.textStyle}>Details</GradientText>
+          </GradientTextWhite>
+          <GradientTextWhite style={styles.textStyle}>Details</GradientTextWhite>
 
           <ScrollView showsVerticalScrollIndicator={false}>
             <View
@@ -107,7 +121,7 @@ const LocationDescription = ({route}) => {
               <View
                 style={{
                   flexDirection: 'row',
-                  backgroundColor: COLORS.grayBg,
+                  backgroundColor: COLORS.white_s,
                   alignItems: 'center',
                   paddingHorizontal: heightPercentageToDP(2),
                   borderRadius: heightPercentageToDP(1),
@@ -132,7 +146,7 @@ const LocationDescription = ({route}) => {
               <View
                 style={{
                   flexDirection: 'row',
-                  backgroundColor: COLORS.grayBg,
+                  backgroundColor: COLORS.white_s,
                   alignItems: 'center',
                   paddingHorizontal: heightPercentageToDP(2),
                   borderRadius: heightPercentageToDP(1),
@@ -183,6 +197,11 @@ const LocationDescription = ({route}) => {
           </TouchableOpacity>
         </View>
       </View>
+
+          </ImageBackground>
+          </View>
+
+
     </SafeAreaView>
   );
 };
@@ -193,5 +212,6 @@ const styles = StyleSheet.create({
   textStyle: {
     fontSize: heightPercentageToDP(4),
     fontFamily: FONT.Montserrat_Bold,
+    color: COLORS.white_s
   },
 });

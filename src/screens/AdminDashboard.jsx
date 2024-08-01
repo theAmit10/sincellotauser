@@ -489,14 +489,24 @@ const AdminDashboard = () => {
                 {/* Retry Section */}
                 {!user &&
                   retrying && ( // Show retry section only when retrying
-                    <View style={styles.retryContainer}>
-                      <Text style={styles.retryText}>
+                    <View style={{
+                      height: heightPercentageToDP(30),
+                      justifyContent : 'center',
+                      alignItems: 'center'
+                    }}>
+                      <Text style={{
+                        color: COLORS.white_s,
+                        fontFamily: FONT.Montserrat_SemiBold
+                      }}>
                         There was an issue fetching the data.
                       </Text>
                       <TouchableOpacity
                         onPress={fetchData}
                         style={styles.retryButton}>
-                        <Text style={styles.retryButtonText}>Retry</Text>
+                        <Text style={{
+                           color: COLORS.white_s,
+                           fontFamily: FONT.Montserrat_SemiBold
+                        }}>Retry</Text>
                       </TouchableOpacity>
 
                       {/** Logout container */}

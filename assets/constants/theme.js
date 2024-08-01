@@ -53,6 +53,22 @@ const COLORS = {
   lightDarkGray: "#A7A5B1",
   profileDarkGray: '#7E7D84',
 
+  lightblue: '#9FE7F5',
+  midblue: '#429EBD',
+  darkblue: '#053F5C',
+
+  lightyellow: '#FFD75F',
+  darkyellow: '#F7AD19',
+
+  result_lightblue : '#1993FF',
+  result_green: '#7EC530',
+  result_yellow: '#EFC62A',
+  result_orange: '#FF8500',
+  result_pink: '#EE3D64',
+  result_darkblue: '#2260FF',
+  result_purple: '#A628F2',
+  result_cyan: '#34BFC8',
+
   time_firstblue: '#267FA3',
   time_secondbluw: '#7DD3F3',
 

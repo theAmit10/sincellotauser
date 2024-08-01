@@ -78,6 +78,19 @@ const FORGOT_PASSWORD_API = server + 'user/forgetpassword';
 const NOTIFICATION_API = server + 'user/allnotification';
 const DELETE_NOTIFICATION_API = server + 'user/removenotification';
 
+// FOR PAYMENT METHOD
+const ALL_UPI_API = server + 'result/allupipaymets';
+const ALL_BANK_API = server + 'result/allbankpaymets';
+const ALL_SKRILL_API = server + 'result/allskrillpaymets';
+const ALL_PAYPAL_API = server + 'result/allpaypalpaymets';
+const ALL_CRYPTO_API = server + 'result/allcryptopaymets';
+
+const CREATE_UPI_API = server + 'result/addupipayment';
+const CREATE_BANK_API = server + 'result/addbankpayment';
+const CREATE_PAYPAL_API = server + 'result/addpaypalpayment';
+const CREATE_SKRILL_API = server + 'result/addskrillpayment';
+const CREATE_CRYPTO_API = server + 'result/addcryptopayment';
+
 
 
 
@@ -133,5 +146,15 @@ const DELETE_NOTIFICATION_API = server + 'user/removenotification';
   SEND_NOTIFICATION_FOR_ALL_USER,
   SEND_NOTIFICATION_SINGLE_USER,
   NOTIFICATION_API,
-  DELETE_NOTIFICATION_API
+  DELETE_NOTIFICATION_API,
+  ALL_UPI_API,
+  ALL_BANK_API,
+  ALL_PAYPAL_API,
+  ALL_SKRILL_API,
+  ALL_CRYPTO_API,
+  CREATE_UPI_API,
+  CREATE_BANK_API,
+  CREATE_PAYPAL_API,
+  CREATE_SKRILL_API,
+  CREATE_CRYPTO_API,
 };

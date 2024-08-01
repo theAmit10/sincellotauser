@@ -57,6 +57,17 @@ import CreateNotificationForAllUsers from '../screens/CreateNotificationForAllUs
 import LocationTimeZone from '../screens/LocationTimeZone';
 import CreateResultFromTimeZone from '../screens/CreateResultFromTimeZone';
 import UpdateAboutUs from '../screens/UpdateAboutUs';
+import Payment from '../screens/payment/Payment';
+import AllUpiDepositPayment from '../screens/payment/AllUpiDepositPayment';
+import UpiDeposit from '../screens/payment/UpiDeposit';
+import AllBankDepositPayment from '../screens/payment/AllBankDepositPayment';
+import BankDeposit from '../screens/payment/BankDeposit';
+import AllPaypalDepositPayment from '../screens/payment/AllPaypalDepositPayment';
+import AllCryptoDepositPayment from '../screens/payment/AllCryptoDepositPayment';
+import AllSkrillPaymentPayment from '../screens/payment/AllSkrillPaymentPayment';
+import PaypalDeposit from '../screens/payment/PaypalDeposit';
+import Skrill from '../screens/payment/Skrill';
+import CryptoDeposit from '../screens/payment/CryptoDeposit';
 
 
 
@@ -125,6 +136,21 @@ const Main = () => {
                 <Stack.Screen  name="LocationTimeZone" component={LocationTimeZone}/>
                 <Stack.Screen  name="CreateResultFromTimeZone" component={CreateResultFromTimeZone}/>
                 <Stack.Screen  name="UpdateAboutUs" component={UpdateAboutUs}/>
+
+                {/** PAYMENT */}
+                <Stack.Screen  name="Payment" component={Payment}/>
+                <Stack.Screen  name="AllUpiDepositPayment" component={AllUpiDepositPayment}/>
+                <Stack.Screen  name="UpiDeposit" component={UpiDeposit}/>
+                <Stack.Screen  name="AllBankDepositPayment" component={AllBankDepositPayment}/>
+                <Stack.Screen  name="BankDeposit" component={BankDeposit}/>
+                <Stack.Screen  name="AllPaypalDepositPayment" component={AllPaypalDepositPayment}/>
+                <Stack.Screen  name="AllCryptoDepositPayment" component={AllCryptoDepositPayment}/>
+                <Stack.Screen  name="AllSkrillPaymentPayment" component={AllSkrillPaymentPayment}/>
+                <Stack.Screen  name="PaypalDeposit" component={PaypalDeposit}/>
+                <Stack.Screen  name="Skrill" component={Skrill}/>
+                <Stack.Screen  name="CryptoDeposit" component={CryptoDeposit}/>
+
+
 
             </Stack.Group>
         </Stack.Navigator>

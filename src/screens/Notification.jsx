@@ -1,4 +1,12 @@
-import {SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {
+  ImageBackground,
+  SafeAreaView,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import React, {useEffect, useState} from 'react';
 
 import {
@@ -42,7 +50,7 @@ const Notification = () => {
     console.log('Item clicked :: ' + item._id);
     setProgressBar(true);
     setSelectedItem(item._id);
-    
+
     try {
       const url = `${UrlHelper.DELETE_NOTIFICATION_API}/${item._id}`;
       const {data} = await axios.delete(url, {
@@ -76,132 +84,141 @@ const Notification = () => {
     <SafeAreaView style={{flex: 1}}>
       <Background />
 
-      <View
-        style={{
-          margin: heightPercentageToDP(2),
-          backgroundColor: 'transparent',
-        }}>
-        <GradientText style={styles.textStyle}>Notification</GradientText>
-      </View>
-
-      {/** Main Cointainer */}
-
-      <View
-        style={{
-          height: heightPercentageToDP(70),
-          width: widthPercentageToDP(100),
-          backgroundColor: COLORS.white_s,
-          borderTopLeftRadius: heightPercentageToDP(5),
-          borderTopRightRadius: heightPercentageToDP(5),
-        }}>
-        {/** Top Style View */}
+      <View style={{flex: 1, justifyContent: 'flex-end'}}>
         <View
           style={{
-            height: heightPercentageToDP(5),
-            width: widthPercentageToDP(100),
-            justifyContent: 'center',
-            alignItems: 'center',
+            margin: heightPercentageToDP(2),
+            backgroundColor: 'transparent',
           }}>
+          <GradientText style={styles.textStyle}>Notification</GradientText>
+        </View>
+        <ImageBackground
+          source={require('../../assets/image/tlwbg.jpg')}
+          style={{
+            width: '100%',
+            height: heightPercentageToDP(70),
+          }}
+          imageStyle={{
+            borderTopLeftRadius: heightPercentageToDP(5),
+            borderTopRightRadius: heightPercentageToDP(5),
+          }}>
+          {/** Main Cointainer */}
+
           <View
             style={{
-              width: widthPercentageToDP(20),
-              height: heightPercentageToDP(0.8),
-              backgroundColor: COLORS.grayBg,
-              borderRadius: heightPercentageToDP(2),
-            }}></View>
-        </View>
+              height: heightPercentageToDP(70),
+              width: widthPercentageToDP(100),
 
-        {/** Content Container */}
-
-        <ScrollView showsVerticalScrollIndicator={false}>
-          {loadingNotification ? (
+              borderTopLeftRadius: heightPercentageToDP(5),
+              borderTopRightRadius: heightPercentageToDP(5),
+            }}>
+            {/** Top Style View */}
             <View
               style={{
-                flex: 1,
+                height: heightPercentageToDP(5),
+                width: widthPercentageToDP(100),
                 justifyContent: 'center',
                 alignItems: 'center',
-                paddingTop: heightPercentageToDP(2),
               }}>
-              <Loading />
-            </View>
-          ) : notifications && notifications.length == 0 ? (
-            <View
-              style={{
-                height: heightPercentageToDP(10),
-                margin: heightPercentageToDP(2),
-              }}>
-              <NoDataFound data={'No data found '} />
-            </View>
-          ) : (
-            notifications?.map((item, index) => (
               <View
-                key={index}
                 style={{
-                  minHeight: heightPercentageToDP(10),
+                  width: widthPercentageToDP(20),
+                  height: heightPercentageToDP(0.8),
                   backgroundColor: COLORS.grayBg,
-                  margin: heightPercentageToDP(2),
-                  padding: heightPercentageToDP(2),
                   borderRadius: heightPercentageToDP(2),
-                  flexDirection: 'row'
-                }}>
-                <View
-                  style={{
-                    flex: 4,
-                  }}>
-                  <Text
-                    style={{
-                      color: COLORS.black,
-                      fontFamily: FONT.Montserrat_SemiBold,
-                      fontSize: heightPercentageToDP(2),
-                    }}
-                    numberOfLines={1}>
-                    {item.title}
-                  </Text>
+                }}></View>
+            </View>
 
-                  <Text
-                    style={{
-                      color: COLORS.black,
-                      fontFamily: FONT.Montserrat_Regular,
-                      fontSize: heightPercentageToDP(2),
-                    }}
-                    numberOfLines={2}>
-                    {item.description}
-                  </Text>
-                </View>
+            {/** Content Container */}
+
+            <ScrollView showsVerticalScrollIndicator={false}>
+              {loadingNotification ? (
                 <View
                   style={{
                     flex: 1,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    paddingTop: heightPercentageToDP(2),
                   }}>
-                     {/** For Deleting Notification */}
-                {selectedItem === item._id ? (
                   <Loading />
-                ) : (
-                  <TouchableOpacity
+                </View>
+              ) : notifications && notifications.length == 0 ? (
+                <View
+                  style={{
+                    height: heightPercentageToDP(30),
+                    margin: heightPercentageToDP(2),
+                  }}>
+                  <NoDataFound data={'No data found '} />
+                </View>
+              ) : (
+                notifications?.map((item, index) => (
+                  <View
+                    key={index}
                     style={{
-                      justifyContent: 'flex-end',
-                      alignItems: 'flex-end',
-                      marginBottom: heightPercentageToDP(2),
-                    }}
-                    onPress={() => deleteLocationHandler(item)}>
-                    <LinearGradient
-                      colors={[COLORS.gray2, COLORS.white_s]}
-                      className="rounded-xl p-1">
-                      <MaterialCommunityIcons
-                        name={'delete'}
-                        size={heightPercentageToDP(3)}
-                        color={COLORS.darkGray}
-                      />
-                    </LinearGradient>
-                  </TouchableOpacity>
-                )}
+                      minHeight: heightPercentageToDP(10),
+                      backgroundColor: COLORS.grayBg,
+                      margin: heightPercentageToDP(2),
+                      padding: heightPercentageToDP(2),
+                      borderRadius: heightPercentageToDP(2),
+                      flexDirection: 'row',
+                    }}>
+                    <View
+                      style={{
+                        flex: 4,
+                      }}>
+                      <Text
+                        style={{
+                          color: COLORS.black,
+                          fontFamily: FONT.Montserrat_SemiBold,
+                          fontSize: heightPercentageToDP(2),
+                        }}
+                        numberOfLines={1}>
+                        {item.title}
+                      </Text>
 
+                      <Text
+                        style={{
+                          color: COLORS.black,
+                          fontFamily: FONT.Montserrat_Regular,
+                          fontSize: heightPercentageToDP(2),
+                        }}
+                        numberOfLines={2}>
+                        {item.description}
+                      </Text>
+                    </View>
+                    <View
+                      style={{
+                        flex: 1,
+                      }}>
+                      {/** For Deleting Notification */}
+                      {selectedItem === item._id ? (
+                        <Loading />
+                      ) : (
+                        <TouchableOpacity
+                          style={{
+                            justifyContent: 'flex-end',
+                            alignItems: 'flex-end',
+                            marginBottom: heightPercentageToDP(2),
+                          }}
+                          onPress={() => deleteLocationHandler(item)}>
+                          <LinearGradient
+                            colors={[COLORS.gray2, COLORS.white_s]}
+                            className="rounded-xl p-1">
+                            <MaterialCommunityIcons
+                              name={'delete'}
+                              size={heightPercentageToDP(3)}
+                              color={COLORS.darkGray}
+                            />
+                          </LinearGradient>
+                        </TouchableOpacity>
+                      )}
+                    </View>
                   </View>
-
-               
-              </View>
-            ))
-          )}
-        </ScrollView>
+                ))
+              )}
+            </ScrollView>
+          </View>
+        </ImageBackground>
       </View>
     </SafeAreaView>
   );

@@ -1,6 +1,7 @@
 import {
   FlatList,
   Image,
+  ImageBackground,
   SafeAreaView,
   StyleSheet,
   Text,
@@ -54,13 +55,13 @@ const AllPromotion = () => {
     });
   };
 
-  const [selectedItem, setSelectedItem] = useState("");
+  const [selectedItem, setSelectedItem] = useState('');
   const [showProgressBar, setProgressBar] = useState(false);
 
-  const deleteLocationHandler = async (item) => {
-    console.log("Item clicked :: "+item._id)
+  const deleteLocationHandler = async item => {
+    console.log('Item clicked :: ' + item._id);
     setProgressBar(true);
-    setSelectedItem(item._id)
+    setSelectedItem(item._id);
 
     try {
       const url = `${UrlHelper.DELETE_PROMOTION_API}/${item._id}`;
@@ -78,167 +79,182 @@ const AllPromotion = () => {
         text1: data.message,
       });
       setProgressBar(false);
-      navigation.goBack()
+      navigation.goBack();
     } catch (error) {
       setProgressBar(false);
       Toast.show({
         type: 'error',
         text1: 'Something went wrong',
-        text2: 'Please, try after sometime'
+        text2: 'Please, try after sometime',
       });
       console.log(error);
     }
   };
 
-
   return (
     <SafeAreaView style={{flex: 1}}>
       <Background />
 
-      <View
-        style={{
-          margin: heightPercentageToDP(2),
-          backgroundColor: 'transparent',
-        }}>
-        <GradientText style={styles.textStyle}>All</GradientText>
-        <GradientText style={styles.textStyle}>Promotion</GradientText>
-      </View>
-
-      {/** Main Cointainer */}
-
-      <View
-        style={{
-          height: heightPercentageToDP(70),
-          width: widthPercentageToDP(100),
-          backgroundColor: COLORS.white_s,
-          borderTopLeftRadius: heightPercentageToDP(5),
-          borderTopRightRadius: heightPercentageToDP(5),
-        }}>
-        {/** Top Style View */}
+      <View style={{flex: 1, justifyContent: 'flex-end'}}>
         <View
           style={{
-            height: heightPercentageToDP(5),
-            width: widthPercentageToDP(100),
-            justifyContent: 'center',
-            alignItems: 'center',
+            margin: heightPercentageToDP(2),
+            backgroundColor: 'transparent',
           }}>
+          <GradientText style={styles.textStyle}>All</GradientText>
+          <GradientText style={styles.textStyle}>Promotion</GradientText>
+        </View>
+        <ImageBackground
+          source={require('../../assets/image/tlwbg.jpg')}
+          style={{
+            width: '100%',
+            height: heightPercentageToDP(70),
+          }}
+          imageStyle={{
+            borderTopLeftRadius: heightPercentageToDP(5),
+            borderTopRightRadius: heightPercentageToDP(5),
+          }}>
+          {/** Main Cointainer */}
+
           <View
             style={{
-              width: widthPercentageToDP(20),
-              height: heightPercentageToDP(0.8),
-              backgroundColor: COLORS.grayBg,
-              borderRadius: heightPercentageToDP(2),
-            }}></View>
-        </View>
+              height: heightPercentageToDP(70),
+              width: widthPercentageToDP(100),
 
-        {/** Content Container */}
-
-        <View
-          style={{
-            flex: 2,
-          }}>
-          {loadingPromotion ? (
-            <Loading />
-          ) : (
-            promotions.length !== 0 && (
-              <FlatList
-                data={promotions}
-                renderItem={({item, index}) => (
-                  <TouchableOpacity
-                    style={{
-                      ...styles.item,
-                    }}>
-                    <View
-                      style={{
-                        backgroundColor: COLORS.grayHalfBg,
-                        height: heightPercentageToDP(20),
-                        borderRadius: heightPercentageToDP(2),
-                      }}>
-                      <Image
-                        source={{
-                          uri:
-                            `${serverName}uploads/promotion/${item.url}`,
-                        }}
-                        resizeMode="cover"
-                        style={{
-                          height: heightPercentageToDP(20),
-                          width: '100%',
-                          borderRadius: heightPercentageToDP(2),
-                        }}
-                      />
-
-                      {/** Delete Locatiion */}
-                      <View style={{position : 'absolute', right: 0, margin: heightPercentageToDP(2)}}>
-                        <TouchableOpacity
-                          onPress={() => deleteLocationHandler(item)}>
-                          {showProgressBar ? (
-                            selectedItem === item._id ? (
-                              <Loading />
-                            ) : (
-                              <LinearGradient
-                                colors={[COLORS.lightWhite, COLORS.white_s]}
-                                className="rounded-xl p-1">
-                                <MaterialCommunityIcons
-                                  name={'delete'}
-                                  size={heightPercentageToDP(3)}
-                                  color={COLORS.darkGray}
-                                />
-                              </LinearGradient>
-                            )
-                          ) : (
-                            <LinearGradient
-                              colors={[COLORS.lightWhite, COLORS.white_s]}
-                              className="rounded-xl p-1">
-                              <MaterialCommunityIcons
-                                name={'delete'}
-                                size={heightPercentageToDP(3)}
-                                color={COLORS.darkGray}
-                              />
-                            </LinearGradient>
-                          )}
-                        </TouchableOpacity>
-                      </View>
-                    </View>
-                  </TouchableOpacity>
-                )}
-                keyExtractor={item => item._id}
-                initialNumToRender={10} // Render initial 10 items
-                maxToRenderPerBatch={10} // Batch size to render
-                windowSize={10} // Number of items kept in memory
-              />
-            )
-          )}
-        </View>
-
-        {/** Bottom Submit Container */}
-
-        <View
-          style={{
-            marginBottom: heightPercentageToDP(5),
-            marginHorizontal: heightPercentageToDP(2),
-            marginTop: heightPercentageToDP(2),
-          }}>
-          {/** Email container */}
-
-          <TouchableOpacity
-            onPress={() => navigation.navigate('CreatePromotion')}
-            style={{
-              backgroundColor: COLORS.blue,
-              padding: heightPercentageToDP(2),
-              borderRadius: heightPercentageToDP(1),
-              alignItems: 'center',
+              borderTopLeftRadius: heightPercentageToDP(5),
+              borderTopRightRadius: heightPercentageToDP(5),
             }}>
-            <Text
+            {/** Top Style View */}
+            <View
               style={{
-                color: COLORS.white,
-                fontFamily: FONT.Montserrat_Regular,
+                height: heightPercentageToDP(5),
+                width: widthPercentageToDP(100),
+                justifyContent: 'center',
+                alignItems: 'center',
               }}>
-              Create Promotion
-            </Text>
-          </TouchableOpacity>
-        </View>
+              <View
+                style={{
+                  width: widthPercentageToDP(20),
+                  height: heightPercentageToDP(0.8),
+                  backgroundColor: COLORS.grayBg,
+                  borderRadius: heightPercentageToDP(2),
+                }}></View>
+            </View>
 
-        {/** end */}
+            {/** Content Container */}
+
+            <View
+              style={{
+                flex: 2,
+              }}>
+              {loadingPromotion ? (
+                <Loading />
+              ) : (
+                promotions.length !== 0 && (
+                  <FlatList
+                    data={promotions}
+                    renderItem={({item, index}) => (
+                      <TouchableOpacity
+                        style={{
+                          ...styles.item,
+                        }}>
+                        <View
+                          style={{
+                            backgroundColor: COLORS.grayHalfBg,
+                            height: heightPercentageToDP(20),
+                            borderRadius: heightPercentageToDP(2),
+                          }}>
+                          <Image
+                            source={{
+                              uri: `${serverName}uploads/promotion/${item.url}`,
+                            }}
+                            resizeMode="cover"
+                            style={{
+                              height: heightPercentageToDP(20),
+                              width: '100%',
+                              borderRadius: heightPercentageToDP(2),
+                            }}
+                          />
+
+                          {/** Delete Locatiion */}
+                          <View
+                            style={{
+                              position: 'absolute',
+                              right: 0,
+                              margin: heightPercentageToDP(2),
+                            }}>
+                            <TouchableOpacity
+                              onPress={() => deleteLocationHandler(item)}>
+                              {showProgressBar ? (
+                                selectedItem === item._id ? (
+                                  <Loading />
+                                ) : (
+                                  <LinearGradient
+                                    colors={[COLORS.lightWhite, COLORS.white_s]}
+                                    className="rounded-xl p-1">
+                                    <MaterialCommunityIcons
+                                      name={'delete'}
+                                      size={heightPercentageToDP(3)}
+                                      color={COLORS.darkGray}
+                                    />
+                                  </LinearGradient>
+                                )
+                              ) : (
+                                <LinearGradient
+                                  colors={[COLORS.lightWhite, COLORS.white_s]}
+                                  className="rounded-xl p-1">
+                                  <MaterialCommunityIcons
+                                    name={'delete'}
+                                    size={heightPercentageToDP(3)}
+                                    color={COLORS.darkGray}
+                                  />
+                                </LinearGradient>
+                              )}
+                            </TouchableOpacity>
+                          </View>
+                        </View>
+                      </TouchableOpacity>
+                    )}
+                    keyExtractor={item => item._id}
+                    initialNumToRender={10} // Render initial 10 items
+                    maxToRenderPerBatch={10} // Batch size to render
+                    windowSize={10} // Number of items kept in memory
+                  />
+                )
+              )}
+            </View>
+
+            {/** Bottom Submit Container */}
+
+            <View
+              style={{
+                marginBottom: heightPercentageToDP(5),
+                marginHorizontal: heightPercentageToDP(2),
+                marginTop: heightPercentageToDP(2),
+              }}>
+              {/** Email container */}
+
+              <TouchableOpacity
+                onPress={() => navigation.navigate('CreatePromotion')}
+                style={{
+                  backgroundColor: COLORS.blue,
+                  padding: heightPercentageToDP(2),
+                  borderRadius: heightPercentageToDP(1),
+                  alignItems: 'center',
+                }}>
+                <Text
+                  style={{
+                    color: COLORS.white,
+                    fontFamily: FONT.Montserrat_Regular,
+                  }}>
+                  Create Promotion
+                </Text>
+              </TouchableOpacity>
+            </View>
+
+            {/** end */}
+          </View>
+        </ImageBackground>
       </View>
     </SafeAreaView>
   );
@@ -250,6 +266,7 @@ const styles = StyleSheet.create({
   textStyle: {
     fontSize: heightPercentageToDP(4),
     fontFamily: FONT.Montserrat_Bold,
+    color: COLORS.white_s,
   },
   container: {
     justifyContent: 'center',

@@ -1,4 +1,5 @@
 import {
+  ImageBackground,
   SafeAreaView,
   StyleSheet,
   Text,
@@ -25,6 +26,7 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import LinearGradient from 'react-native-linear-gradient';
 import UrlHelper from '../helper/UrlHelper';
 import axios from 'axios';
+import GradientTextWhite from '../components/helpercComponent/GradientTextWhite';
 
 const CreateNotificationForAllUsers = () => {
   const [enterData, setEnterData] = useState('');
@@ -93,6 +95,9 @@ const CreateNotificationForAllUsers = () => {
     <SafeAreaView style={{flex: 1}}>
       <Background />
 
+      
+
+      <View style={{flex: 1, justifyContent: 'flex-end'}}>
       <View
         style={{
           margin: heightPercentageToDP(2),
@@ -101,14 +106,23 @@ const CreateNotificationForAllUsers = () => {
         <GradientText style={styles.textStyle}>Push</GradientText>
         <GradientText style={styles.textStyle}>Notification</GradientText>
       </View>
-
-      {/** Login Cointainer */}
+        <ImageBackground
+          source={require('../../assets/image/tlwbg.jpg')}
+          style={{
+            width: '100%',
+            height: heightPercentageToDP(65),
+          }}
+          imageStyle={{
+            borderTopLeftRadius: heightPercentageToDP(5),
+            borderTopRightRadius: heightPercentageToDP(5),
+          }}>
+             {/** Login Cointainer */}
 
       <View
         style={{
           height: heightPercentageToDP(65),
           width: widthPercentageToDP(100),
-          backgroundColor: COLORS.white_s,
+        
           borderTopLeftRadius: heightPercentageToDP(5),
           borderTopRightRadius: heightPercentageToDP(5),
         }}>
@@ -132,7 +146,7 @@ const CreateNotificationForAllUsers = () => {
         {/** Result Main Container */}
 
         <View style={{padding: heightPercentageToDP(2)}}>
-          <GradientText
+          <GradientTextWhite
             style={{
               fontFamily: FONT.Montserrat_Regular,
               fontSize: heightPercentageToDP(2.5),
@@ -140,7 +154,7 @@ const CreateNotificationForAllUsers = () => {
               marginBottom: heightPercentageToDP(1),
             }}>
             Send Notification For All User
-          </GradientText>
+          </GradientTextWhite>
 
           {/** Title container */}
 
@@ -148,7 +162,7 @@ const CreateNotificationForAllUsers = () => {
             style={{
               height: heightPercentageToDP(7),
               flexDirection: 'row',
-              backgroundColor: COLORS.grayHalfBg,
+              backgroundColor: COLORS.white_s,
               alignItems: 'center',
               paddingHorizontal: heightPercentageToDP(2),
               borderRadius: heightPercentageToDP(1),
@@ -183,7 +197,7 @@ const CreateNotificationForAllUsers = () => {
             style={{
               height: heightPercentageToDP(20),
               flexDirection: 'row',
-              backgroundColor: COLORS.grayHalfBg,
+              backgroundColor: COLORS.white_s,
               alignItems: 'flex-start',
               paddingHorizontal: heightPercentageToDP(2),
               borderRadius: heightPercentageToDP(1),
@@ -242,6 +256,11 @@ const CreateNotificationForAllUsers = () => {
           </View>
         )}
       </View>
+
+          </ImageBackground>
+          </View>
+
+     
     </SafeAreaView>
   );
 };
@@ -252,5 +271,6 @@ const styles = StyleSheet.create({
   textStyle: {
     fontSize: heightPercentageToDP(4),
     fontFamily: FONT.Montserrat_Bold,
+    color: COLORS.white_s
   },
 });

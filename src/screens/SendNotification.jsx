@@ -1,4 +1,5 @@
 import {
+  ImageBackground,
   SafeAreaView,
   ScrollView,
   StyleSheet,
@@ -60,316 +61,329 @@ const SendNotification = () => {
     <SafeAreaView style={{flex: 1}}>
       <Background />
 
-      <View
-        style={{
-          margin: heightPercentageToDP(2),
-          backgroundColor: 'transparent',
-        }}>
-        <GradientText style={styles.textStyle}>Push</GradientText>
-        <GradientText style={styles.textStyle}>Notifiction</GradientText>
-      </View>
-
-      {/** Main Cointainer */}
-
-      <View
-        style={{
-          height: heightPercentageToDP(70),
-          width: widthPercentageToDP(100),
-          backgroundColor: COLORS.white_s,
-          borderTopLeftRadius: heightPercentageToDP(5),
-          borderTopRightRadius: heightPercentageToDP(5),
-        }}>
-        {/** Top Style View */}
+      <View style={{flex: 1, justifyContent: 'flex-end'}}>
         <View
           style={{
-            height: heightPercentageToDP(5),
-            width: widthPercentageToDP(100),
-            justifyContent: 'center',
-            alignItems: 'center',
+            margin: heightPercentageToDP(2),
+            backgroundColor: 'transparent',
           }}>
+          <GradientText style={styles.textStyle}>Push</GradientText>
+          <GradientText style={styles.textStyle}>Notifiction</GradientText>
+        </View>
+        <ImageBackground
+          source={require('../../assets/image/tlwbg.jpg')}
+          style={{
+            width: '100%',
+            height: heightPercentageToDP(70),
+          }}
+          imageStyle={{
+            borderTopLeftRadius: heightPercentageToDP(5),
+            borderTopRightRadius: heightPercentageToDP(5),
+          }}>
+          {/** Main Cointainer */}
+
           <View
             style={{
-              width: widthPercentageToDP(20),
-              height: heightPercentageToDP(0.8),
-              backgroundColor: COLORS.grayBg,
-              borderRadius: heightPercentageToDP(2),
-            }}></View>
-        </View>
-
-        {/** Content Container */}
-
-        <ScrollView
-        showsVerticalScrollIndicator={false}
-        >
- <View
-          style={{
-            flex: 2,
-          }}>
-          {/** AllUser */}
-          <TouchableOpacity
-            onPress={() => 
-              navigation.navigate('CreateNotificationForAllUsers')
-              // Toast.show({
-              //   type: 'info',
-              //   text1: 'Comming Soon'
-              // })
-          }
-            style={{
-              height: heightPercentageToDP(20),
-              flexDirection: 'row',
-              backgroundColor: COLORS.grayBg,
-              alignItems: 'center',
-              paddingHorizontal: heightPercentageToDP(2),
-              borderRadius: heightPercentageToDP(1),
-              margin: heightPercentageToDP(2),
+              height: heightPercentageToDP(70),
+              width: widthPercentageToDP(100),
+              borderTopLeftRadius: heightPercentageToDP(5),
+              borderTopRightRadius: heightPercentageToDP(5),
             }}>
+            {/** Top Style View */}
             <View
               style={{
-                padding: heightPercentageToDP(2),
+                height: heightPercentageToDP(5),
+                width: widthPercentageToDP(100),
+                justifyContent: 'center',
+                alignItems: 'center',
               }}>
-              <Text
-                style={{
-                  marginStart: heightPercentageToDP(1),
-                  flex: 1,
-                  fontFamily: FONT.Montserrat_Regular,
-                  color: COLORS.darkGray,
-                  width: widthPercentageToDP(25),
-                  marginStart: heightPercentageToDP(-1),
-                  textAlignVertical: 'bottom',
-                }}></Text>
-              <Text
-                style={{
-                  marginStart: heightPercentageToDP(1),
-                  flex: 1,
-                  fontFamily: FONT.Montserrat_Regular,
-                  color: COLORS.darkGray,
-                  fontSize: heightPercentageToDP(2),
-                  marginStart: heightPercentageToDP(-1),
-                }}>
-                Push Notification for all user
-              </Text>
-
               <View
                 style={{
-                  flexDirection: 'row',
-                  justifyContent: 'flex-start',
-                  gap: heightPercentageToDP(1),
-                  marginStart: heightPercentageToDP(-1),
-                }}>
-                <View
-                  style={{
-                    backgroundColor: COLORS.white_s,
-                    padding: heightPercentageToDP(1),
-                    borderRadius: heightPercentageToDP(1),
-                    justifyContent: 'center',
-                  }}>
-                  <Entypo
-                    name={'user'}
-                    size={heightPercentageToDP(4)}
-                    color={COLORS.darkGray}
-                  />
-                </View>
-                <GradientText
-                  style={{...styles.textStyle, width: widthPercentageToDP(60)}}>
-                  All User
-                </GradientText>
-              </View>
+                  width: widthPercentageToDP(20),
+                  height: heightPercentageToDP(0.8),
+                  backgroundColor: COLORS.grayBg,
+                  borderRadius: heightPercentageToDP(2),
+                }}></View>
             </View>
 
-            <View
-              style={{
-                flex: 1,
-                backgroundColor: COLORS.white,
-                position: 'absolute',
-                right: heightPercentageToDP(2),
-                borderRadius: heightPercentageToDP(1),
-                padding: heightPercentageToDP(1),
-                top: heightPercentageToDP(2),
-              }}>
-               <Ionicons
-                name={'notifications'}
-                size={heightPercentageToDP(4)}
-                color={COLORS.darkGray}
-              />
-            </View>
-          </TouchableOpacity>
+            {/** Content Container */}
 
-          {/** Single User */}
-          <TouchableOpacity
-            onPress={() => navigation.navigate('AllUsers')}
-            style={{
-              height: heightPercentageToDP(20),
-              flexDirection: 'row',
-              backgroundColor: COLORS.grayBg,
-              alignItems: 'center',
-              paddingHorizontal: heightPercentageToDP(2),
-              borderRadius: heightPercentageToDP(1),
-              margin: heightPercentageToDP(2),
-            }}>
-            <View
-              style={{
-                padding: heightPercentageToDP(2),
-              }}>
-              <Text
-                style={{
-                  marginStart: heightPercentageToDP(1),
-                  flex: 1,
-                  fontFamily: FONT.Montserrat_Regular,
-                  color: COLORS.darkGray,
-                  width: widthPercentageToDP(25),
-                  marginStart: heightPercentageToDP(-1),
-                  textAlignVertical: 'bottom',
-                }}></Text>
-              <Text
-                style={{
-                  marginStart: heightPercentageToDP(1),
-                  flex: 1,
-                  fontFamily: FONT.Montserrat_Regular,
-                  color: COLORS.darkGray,
-                  fontSize: heightPercentageToDP(2),
-                  marginStart: heightPercentageToDP(-1),
-                }}>
-                Push Notification for Single user
-              </Text>
-
+            <ScrollView showsVerticalScrollIndicator={false}>
               <View
                 style={{
-                  flexDirection: 'row',
-                  justifyContent: 'flex-start',
-                  gap: heightPercentageToDP(1),
-                  marginStart: heightPercentageToDP(-1),
+                  flex: 2,
                 }}>
-                <View
+                {/** AllUser */}
+                <TouchableOpacity
+                  onPress={
+                    () => navigation.navigate('CreateNotificationForAllUsers')
+                    // Toast.show({
+                    //   type: 'info',
+                    //   text1: 'Comming Soon'
+                    // })
+                  }
                   style={{
+                    height: heightPercentageToDP(20),
+                    flexDirection: 'row',
                     backgroundColor: COLORS.white_s,
-                    padding: heightPercentageToDP(1),
+                    alignItems: 'center',
+                    paddingHorizontal: heightPercentageToDP(2),
                     borderRadius: heightPercentageToDP(1),
-                    justifyContent: 'center',
+                    margin: heightPercentageToDP(2),
                   }}>
-                  <Entypo
-                    name={'user'}
-                    size={heightPercentageToDP(4)}
-                    color={COLORS.darkGray}
-                  />
-                </View>
-                <GradientText
-                  style={{...styles.textStyle, width: widthPercentageToDP(60)}}>
-                  Single User
-                </GradientText>
-              </View>
-            </View>
+                  <View
+                    style={{
+                      padding: heightPercentageToDP(2),
+                    }}>
+                    <Text
+                      style={{
+                        marginStart: heightPercentageToDP(1),
+                        flex: 1,
+                        fontFamily: FONT.Montserrat_Regular,
+                        color: COLORS.darkGray,
+                        width: widthPercentageToDP(25),
+                        marginStart: heightPercentageToDP(-1),
+                        textAlignVertical: 'bottom',
+                      }}></Text>
+                    <Text
+                      style={{
+                        marginStart: heightPercentageToDP(1),
+                        flex: 1,
+                        fontFamily: FONT.Montserrat_Regular,
+                        color: COLORS.darkGray,
+                        fontSize: heightPercentageToDP(2),
+                        marginStart: heightPercentageToDP(-1),
+                      }}>
+                      Push Notification for all user
+                    </Text>
 
-            <View
-              style={{
-                flex: 1,
-                backgroundColor: COLORS.white,
-                position: 'absolute',
-                right: heightPercentageToDP(2),
-                borderRadius: heightPercentageToDP(1),
-                padding: heightPercentageToDP(1),
-                top: heightPercentageToDP(2),
-              }}>
-              <Ionicons
-                name={'notifications'}
-                size={heightPercentageToDP(4)}
-                color={COLORS.darkGray}
-              />
-            </View>
-          </TouchableOpacity>
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        justifyContent: 'flex-start',
+                        gap: heightPercentageToDP(1),
+                        marginStart: heightPercentageToDP(-1),
+                      }}>
+                      <View
+                        style={{
+                          backgroundColor: COLORS.grayHalfBg,
+                          padding: heightPercentageToDP(1),
+                          borderRadius: heightPercentageToDP(1),
+                          justifyContent: 'center',
+                        }}>
+                        <Entypo
+                          name={'user'}
+                          size={heightPercentageToDP(4)}
+                          color={COLORS.darkGray}
+                        />
+                      </View>
+                      <GradientText
+                        style={{
+                          ...styles.textStyle,
+                          width: widthPercentageToDP(60),
+                        }}>
+                        All User
+                      </GradientText>
+                    </View>
+                  </View>
+
+                  <View
+                    style={{
+                      flex: 1,
+                      backgroundColor: COLORS.grayHalfBg,
+                      position: 'absolute',
+                      right: heightPercentageToDP(2),
+                      borderRadius: heightPercentageToDP(1),
+                      padding: heightPercentageToDP(1),
+                      top: heightPercentageToDP(2),
+                    }}>
+                    <Ionicons
+                      name={'notifications'}
+                      size={heightPercentageToDP(4)}
+                      color={COLORS.darkGray}
+                    />
+                  </View>
+                </TouchableOpacity>
+
+                {/** Single User */}
+                <TouchableOpacity
+                  onPress={() => navigation.navigate('AllUsers')}
+                  style={{
+                    height: heightPercentageToDP(20),
+                    flexDirection: 'row',
+                    backgroundColor: COLORS.white_s,
+                    alignItems: 'center',
+                    paddingHorizontal: heightPercentageToDP(2),
+                    borderRadius: heightPercentageToDP(1),
+                    margin: heightPercentageToDP(2),
+                  }}>
+                  <View
+                    style={{
+                      padding: heightPercentageToDP(2),
+                    }}>
+                    <Text
+                      style={{
+                        marginStart: heightPercentageToDP(1),
+                        flex: 1,
+                        fontFamily: FONT.Montserrat_Regular,
+                        color: COLORS.darkGray,
+                        width: widthPercentageToDP(25),
+                        marginStart: heightPercentageToDP(-1),
+                        textAlignVertical: 'bottom',
+                      }}></Text>
+                    <Text
+                      style={{
+                        marginStart: heightPercentageToDP(1),
+                        flex: 1,
+                        fontFamily: FONT.Montserrat_Regular,
+                        color: COLORS.darkGray,
+                        fontSize: heightPercentageToDP(2),
+                        marginStart: heightPercentageToDP(-1),
+                      }}>
+                      Push Notification for Single user
+                    </Text>
+
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        justifyContent: 'flex-start',
+                        gap: heightPercentageToDP(1),
+                        marginStart: heightPercentageToDP(-1),
+                      }}>
+                      <View
+                        style={{
+                          backgroundColor: COLORS.grayHalfBg,
+                          padding: heightPercentageToDP(1),
+                          borderRadius: heightPercentageToDP(1),
+                          justifyContent: 'center',
+                        }}>
+                        <Entypo
+                          name={'user'}
+                          size={heightPercentageToDP(4)}
+                          color={COLORS.darkGray}
+                        />
+                      </View>
+                      <GradientText
+                        style={{
+                          ...styles.textStyle,
+                          width: widthPercentageToDP(60),
+                        }}>
+                        Single User
+                      </GradientText>
+                    </View>
+                  </View>
+
+                  <View
+                    style={{
+                      flex: 1,
+                      backgroundColor: COLORS.grayHalfBg,
+                      position: 'absolute',
+                      right: heightPercentageToDP(2),
+                      borderRadius: heightPercentageToDP(1),
+                      padding: heightPercentageToDP(1),
+                      top: heightPercentageToDP(2),
+                    }}>
+                    <Ionicons
+                      name={'notifications'}
+                      size={heightPercentageToDP(4)}
+                      color={COLORS.darkGray}
+                    />
+                  </View>
+                </TouchableOpacity>
 
                 {/** All Notification */}
-          <TouchableOpacity
-            onPress={() => navigation.navigate('Notification')}
-            style={{
-              height: heightPercentageToDP(20),
-              flexDirection: 'row',
-              backgroundColor: COLORS.grayBg,
-              alignItems: 'center',
-              paddingHorizontal: heightPercentageToDP(2),
-              borderRadius: heightPercentageToDP(1),
-              margin: heightPercentageToDP(2),
-            }}>
-            <View
-              style={{
-                padding: heightPercentageToDP(2),
-              }}>
-              <Text
-                style={{
-                  marginStart: heightPercentageToDP(1),
-                  flex: 1,
-                  fontFamily: FONT.Montserrat_Regular,
-                  color: COLORS.darkGray,
-                  width: widthPercentageToDP(25),
-                  marginStart: heightPercentageToDP(-1),
-                  textAlignVertical: 'bottom',
-                }}></Text>
-              <Text
-                style={{
-                  marginStart: heightPercentageToDP(1),
-                  flex: 1,
-                  fontFamily: FONT.Montserrat_Regular,
-                  color: COLORS.darkGray,
-                  fontSize: heightPercentageToDP(2),
-                  marginStart: heightPercentageToDP(-1),
-                }}>
-                List of previous Notification
-              </Text>
-
-              <View
-                style={{
-                  flexDirection: 'row',
-                  justifyContent: 'flex-start',
-                  gap: heightPercentageToDP(1),
-                  marginStart: heightPercentageToDP(-1),
-                }}>
-                <View
+                <TouchableOpacity
+                  onPress={() => navigation.navigate('Notification')}
                   style={{
+                    height: heightPercentageToDP(20),
+                    flexDirection: 'row',
                     backgroundColor: COLORS.white_s,
-                    padding: heightPercentageToDP(1),
+                    alignItems: 'center',
+                    paddingHorizontal: heightPercentageToDP(2),
                     borderRadius: heightPercentageToDP(1),
-                    justifyContent: 'center',
+                    margin: heightPercentageToDP(2),
                   }}>
-                  <Entypo
-                    name={'user'}
-                    size={heightPercentageToDP(4)}
-                    color={COLORS.darkGray}
-                  />
-                </View>
-                <GradientText
-                  style={{...styles.textStyle, width: widthPercentageToDP(60)}}>
-                  Notifications
-                </GradientText>
+                  <View
+                    style={{
+                      padding: heightPercentageToDP(2),
+                    }}>
+                    <Text
+                      style={{
+                        marginStart: heightPercentageToDP(1),
+                        flex: 1,
+                        fontFamily: FONT.Montserrat_Regular,
+                        color: COLORS.darkGray,
+                        width: widthPercentageToDP(25),
+                        marginStart: heightPercentageToDP(-1),
+                        textAlignVertical: 'bottom',
+                      }}></Text>
+                    <Text
+                      style={{
+                        marginStart: heightPercentageToDP(1),
+                        flex: 1,
+                        fontFamily: FONT.Montserrat_Regular,
+                        color: COLORS.darkGray,
+                        fontSize: heightPercentageToDP(2),
+                        marginStart: heightPercentageToDP(-1),
+                      }}>
+                      List of previous Notification
+                    </Text>
+
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        justifyContent: 'flex-start',
+                        gap: heightPercentageToDP(1),
+                        marginStart: heightPercentageToDP(-1),
+                      }}>
+                      <View
+                        style={{
+                          backgroundColor: COLORS.grayHalfBg,
+                          padding: heightPercentageToDP(1),
+                          borderRadius: heightPercentageToDP(1),
+                          justifyContent: 'center',
+                        }}>
+                        <Entypo
+                          name={'user'}
+                          size={heightPercentageToDP(4)}
+                          color={COLORS.darkGray}
+                        />
+                      </View>
+                      <GradientText
+                        style={{
+                          ...styles.textStyle,
+                          width: widthPercentageToDP(60),
+                        }}>
+                        Notifications
+                      </GradientText>
+                    </View>
+                  </View>
+
+                  <View
+                    style={{
+                      flex: 1,
+                      backgroundColor: COLORS.grayHalfBg,
+                      position: 'absolute',
+                      right: heightPercentageToDP(2),
+                      borderRadius: heightPercentageToDP(1),
+                      padding: heightPercentageToDP(1),
+                      top: heightPercentageToDP(2),
+                    }}>
+                    <Ionicons
+                      name={'notifications'}
+                      size={heightPercentageToDP(4)}
+                      color={COLORS.darkGray}
+                    />
+                  </View>
+                </TouchableOpacity>
               </View>
-            </View>
+            </ScrollView>
 
-            <View
-              style={{
-                flex: 1,
-                backgroundColor: COLORS.white,
-                position: 'absolute',
-                right: heightPercentageToDP(2),
-                borderRadius: heightPercentageToDP(1),
-                padding: heightPercentageToDP(1),
-                top: heightPercentageToDP(2),
-              }}>
-              <Ionicons
-                name={'notifications'}
-                size={heightPercentageToDP(4)}
-                color={COLORS.darkGray}
-              />
-            </View>
-          </TouchableOpacity>
+            {/** Bottom Submit Container */}
 
-
-        </View>
-
-        </ScrollView>
-
-       
-
-        {/** Bottom Submit Container */}
-
-        {/** end */}
+            {/** end */}
+          </View>
+        </ImageBackground>
       </View>
     </SafeAreaView>
   );
@@ -381,6 +395,7 @@ const styles = StyleSheet.create({
   textStyle: {
     fontSize: heightPercentageToDP(4),
     fontFamily: FONT.Montserrat_Bold,
+    color: COLORS.white_s,
   },
   container: {
     justifyContent: 'center',

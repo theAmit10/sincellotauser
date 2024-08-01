@@ -1,4 +1,5 @@
 import {
+  ImageBackground,
   SafeAreaView,
     StyleSheet,
     Text,
@@ -22,6 +23,7 @@ import {
   import Loading from '../components/helpercComponent/Loading';
   import UrlHelper from '../helper/UrlHelper';
   import axios from 'axios';
+import GradientTextWhite from '../components/helpercComponent/GradientTextWhite';
   
   const ChangeUserId = ({route}) => {
     const {userdata} = route.params;
@@ -119,6 +121,9 @@ import {
       <SafeAreaView style={{flex: 1}}>
         <Background />
   
+       
+
+        <View style={{flex: 1, justifyContent: 'flex-end'}}>
         <View
           style={{
             margin: heightPercentageToDP(2),
@@ -127,14 +132,23 @@ import {
           <GradientText style={styles.textStyle}>Update</GradientText>
           <GradientText style={styles.textStyle}>User Id</GradientText>
         </View>
-  
-        {/** Login Cointainer */}
+        <ImageBackground
+          source={require('../../assets/image/tlwbg.jpg')}
+          style={{
+            width: '100%',
+            height: heightPercentageToDP(65),
+          }}
+          imageStyle={{
+            borderTopLeftRadius: heightPercentageToDP(5),
+            borderTopRightRadius: heightPercentageToDP(5),
+          }}>
+
+             {/** Login Cointainer */}
   
         <View
           style={{
             height: heightPercentageToDP(65),
             width: widthPercentageToDP(100),
-            backgroundColor: COLORS.white_s,
             borderTopLeftRadius: heightPercentageToDP(5),
             borderTopRightRadius: heightPercentageToDP(5),
           }}>
@@ -158,15 +172,15 @@ import {
           {/** Result Main Container */}
   
           <View style={{padding: heightPercentageToDP(2)}}>
-            <GradientText
+            <GradientTextWhite
               style={{
                 fontFamily: FONT.Montserrat_Regular,
                 fontSize: heightPercentageToDP(3),
-                color: COLORS.black,
+                color: COLORS.white_s,
                 marginBottom: heightPercentageToDP(1),
               }}>
               Current User Id
-            </GradientText>
+            </GradientTextWhite>
             <GradientText style={styles.textStyle}>
               {userdata.userId}
             </GradientText>
@@ -238,6 +252,11 @@ import {
             </View>
           )}
         </View>
+
+          </ImageBackground>
+          </View>
+  
+       
       </SafeAreaView>
     );
   };
@@ -248,6 +267,7 @@ import {
     textStyle: {
       fontSize: heightPercentageToDP(4),
       fontFamily: FONT.Montserrat_Bold,
+      color: COLORS.white_s
     },
   });
   

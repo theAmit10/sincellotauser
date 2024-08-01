@@ -1,4 +1,5 @@
 import {
+  ImageBackground,
   SafeAreaView,
   StyleSheet,
   Text,
@@ -20,8 +21,9 @@ import Entypo from 'react-native-vector-icons/Entypo';
 import {useDispatch, useSelector} from 'react-redux';
 import {createLocation} from '../redux/actions/locationAction';
 import Loading from '../components/helpercComponent/Loading';
-import { useNavigation } from '@react-navigation/native';
-import { HOVER } from 'nativewind/dist/utils/selector';
+import {useNavigation} from '@react-navigation/native';
+import {HOVER} from 'nativewind/dist/utils/selector';
+import GradientTextWhite from '../components/helpercComponent/GradientTextWhite';
 
 const CreateLocation = () => {
   const [enterData, setEnterData] = useState('');
@@ -30,18 +32,15 @@ const CreateLocation = () => {
   const {loading, location} = useSelector(state => state.location);
 
   const dispatch = useDispatch();
-  const navigation = useNavigation()
+  const navigation = useNavigation();
 
   useEffect(() => {
-    
-    setEnterData("")
+    setEnterData('');
 
     dispatch({
       type: 'clearCreateLocationMessage',
     });
-
-
-  },[loading,dispatch])
+  }, [loading, dispatch]);
 
   const submitHandler = () => {
     console.log('Working on login ');
@@ -50,18 +49,17 @@ const CreateLocation = () => {
         type: 'error',
         text1: 'Please Enter Location Name',
       });
-    }else if (!rangeData) {
+    } else if (!rangeData) {
       Toast.show({
         type: 'error',
         text1: 'Please Enter Maximum Range for this location',
       });
-    }
-     else {
+    } else {
       Toast.show({
         type: 'success',
-        text1: 'Processing '
+        text1: 'Processing ',
       });
-      dispatch(createLocation(accesstoken, enterData,rangeData));
+      dispatch(createLocation(accesstoken, enterData, rangeData));
     }
   };
 
@@ -69,159 +67,172 @@ const CreateLocation = () => {
     <SafeAreaView style={{flex: 1}}>
       <Background />
 
-      <View
-        style={{
-          margin: heightPercentageToDP(2),
-          backgroundColor: 'transparent',
-        }}>
-        <GradientText style={styles.textStyle}>Create</GradientText>
-        <GradientText style={styles.textStyle}>Location</GradientText>
-      </View>
-
-      {/** Login Cointainer */}
-
-      <View
-        style={{
-          height: heightPercentageToDP(65),
-          width: widthPercentageToDP(100),
-          backgroundColor: COLORS.white_s,
-          borderTopLeftRadius: heightPercentageToDP(5),
-          borderTopRightRadius: heightPercentageToDP(5),
-        }}>
-        {/** Top Style View */}
+      <View style={{flex: 1, justifyContent: 'flex-end'}}>
         <View
           style={{
-            height: heightPercentageToDP(5),
-            width: widthPercentageToDP(100),
-            justifyContent: 'center',
-            alignItems: 'center',
+            margin: heightPercentageToDP(2),
+            backgroundColor: 'transparent',
           }}>
-          <View
-            style={{
-              width: widthPercentageToDP(20),
-              height: heightPercentageToDP(0.8),
-              backgroundColor: COLORS.grayBg,
-              borderRadius: heightPercentageToDP(2),
-            }}></View>
+          <GradientText style={styles.textStyle}>Create</GradientText>
+          <GradientText style={styles.textStyle}>Location</GradientText>
         </View>
-
-        {/** Result Main Container */}
-
-        <View style={{padding: heightPercentageToDP(2)}}>
-          <GradientText
-            style={{
-              fontFamily: FONT.Montserrat_Regular,
-              fontSize: heightPercentageToDP(2.5),
-              color: COLORS.black,
-              marginBottom: heightPercentageToDP(1),
-            }}>
-            Location Name
-          </GradientText>
+        <ImageBackground
+          source={require('../../assets/image/tlwbg.jpg')}
+          style={{
+            width: '100%',
+            height: heightPercentageToDP(65),
+          }}
+          imageStyle={{
+            borderTopLeftRadius: heightPercentageToDP(5),
+            borderTopRightRadius: heightPercentageToDP(5),
+          }}>
+          {/** Login Cointainer */}
 
           <View
             style={{
-              height: heightPercentageToDP(7),
-              flexDirection: 'row',
-              backgroundColor: COLORS.grayHalfBg,
-              alignItems: 'center',
-              paddingHorizontal: heightPercentageToDP(2),
-              borderRadius: heightPercentageToDP(1),
+              height: heightPercentageToDP(65),
+              width: widthPercentageToDP(100),
+
+              borderTopLeftRadius: heightPercentageToDP(5),
+              borderTopRightRadius: heightPercentageToDP(5),
             }}>
-            <Entypo
-              name={'location'}
-              size={heightPercentageToDP(3)}
-              color={COLORS.darkGray}
-            />
-            <TextInput
+            {/** Top Style View */}
+            <View
               style={{
-                marginStart: heightPercentageToDP(1),
-                flex: 1,
-                fontFamily: FONT.Montserrat_Regular,
-                color: COLORS.black,
-                fontSize: heightPercentageToDP(2.5)
-              }}
-              placeholder="Enter location"
-              label="location"
-              placeholderTextColor={COLORS.darkGray}
-              value={enterData}
-              onChangeText={text => setEnterData(text)}
-            />
-          </View>
+                height: heightPercentageToDP(5),
+                width: widthPercentageToDP(100),
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}>
+              <View
+                style={{
+                  width: widthPercentageToDP(20),
+                  height: heightPercentageToDP(0.8),
+                  backgroundColor: COLORS.grayBg,
+                  borderRadius: heightPercentageToDP(2),
+                }}></View>
+            </View>
 
-          <GradientText
-            style={{
-              fontFamily: FONT.Montserrat_Regular,
-              fontSize: heightPercentageToDP(2.5),
-              color: COLORS.black,
-              marginBottom: heightPercentageToDP(1),
-              marginTop: heightPercentageToDP(2),
-            }}>
-            Maximum Range
-          </GradientText>
+            {/** Result Main Container */}
 
-          <View
-            style={{
-              
-              height: heightPercentageToDP(7),
-              flexDirection: 'row',
-              backgroundColor: COLORS.grayHalfBg,
-              alignItems: 'center',
-              paddingHorizontal: heightPercentageToDP(2),
-              borderRadius: heightPercentageToDP(1),
-            }}>
-            <Entypo
-              name={'area-graph'}
-              size={heightPercentageToDP(3)}
-              color={COLORS.darkGray}
-            />
-            <TextInput
-              style={{
-                marginStart: heightPercentageToDP(1),
-                flex: 1,
-                fontFamily: FONT.Montserrat_Regular,
-                color: COLORS.black,
-                fontSize: heightPercentageToDP(2.5)
-              }}
-              placeholder="Enter Maximum Range"
-              label="maximum range"
-              placeholderTextColor={COLORS.darkGray}
-              value={rangeData}
-              onChangeText={text => setRangeData(text)}
-            />
-          </View>
+            <View style={{padding: heightPercentageToDP(2)}}>
+              <GradientTextWhite
+                style={{
+                  fontFamily: FONT.Montserrat_Regular,
+                  fontSize: heightPercentageToDP(2.5),
+                  color: COLORS.black,
+                  marginBottom: heightPercentageToDP(1),
+                }}>
+                Location Name
+              </GradientTextWhite>
 
-        </View>
-
-              {
-                loading ? (<View style={{flex: 1}}><Loading/></View>) : (<View
+              <View
+                style={{
+                  height: heightPercentageToDP(7),
+                  flexDirection: 'row',
+                  backgroundColor: COLORS.white_s,
+                  alignItems: 'center',
+                  paddingHorizontal: heightPercentageToDP(2),
+                  borderRadius: heightPercentageToDP(1),
+                }}>
+                <Entypo
+                  name={'location'}
+                  size={heightPercentageToDP(3)}
+                  color={COLORS.darkGray}
+                />
+                <TextInput
                   style={{
-                    justifyContent: 'flex-end',
+                    marginStart: heightPercentageToDP(1),
                     flex: 1,
-                    alignItems: 'flex-end',
-                    paddingVertical: heightPercentageToDP(4),
+                    fontFamily: FONT.Montserrat_Regular,
+                    color: COLORS.black,
+                    fontSize: heightPercentageToDP(2.5),
+                  }}
+                  placeholder="Enter location"
+                  label="location"
+                  placeholderTextColor={COLORS.darkGray}
+                  value={enterData}
+                  onChangeText={text => setEnterData(text)}
+                />
+              </View>
+
+              <GradientText
+                style={{
+                  fontFamily: FONT.Montserrat_Regular,
+                  fontSize: heightPercentageToDP(2.5),
+                  color: COLORS.black,
+                  marginBottom: heightPercentageToDP(1),
+                  marginTop: heightPercentageToDP(2),
+                }}>
+                Maximum Range
+              </GradientText>
+
+              <View
+                style={{
+                  height: heightPercentageToDP(7),
+                  flexDirection: 'row',
+                  backgroundColor: COLORS.white_s,
+                  alignItems: 'center',
+                  paddingHorizontal: heightPercentageToDP(2),
+                  borderRadius: heightPercentageToDP(1),
+                }}>
+                <Entypo
+                  name={'area-graph'}
+                  size={heightPercentageToDP(3)}
+                  color={COLORS.darkGray}
+                />
+                <TextInput
+                  style={{
+                    marginStart: heightPercentageToDP(1),
+                    flex: 1,
+                    fontFamily: FONT.Montserrat_Regular,
+                    color: COLORS.black,
+                    fontSize: heightPercentageToDP(2.5),
+                  }}
+                  placeholder="Enter Maximum Range"
+                  label="maximum range"
+                  placeholderTextColor={COLORS.darkGray}
+                  value={rangeData}
+                  onChangeText={text => setRangeData(text)}
+                />
+              </View>
+            </View>
+
+            {loading ? (
+              <View style={{flex: 1}}>
+                <Loading />
+              </View>
+            ) : (
+              <View
+                style={{
+                  justifyContent: 'flex-end',
+                  flex: 1,
+                  alignItems: 'flex-end',
+                  paddingVertical: heightPercentageToDP(4),
+                  paddingHorizontal: heightPercentageToDP(2),
+                }}>
+                <TouchableOpacity
+                  onPress={submitHandler}
+                  className="rounded-full"
+                  style={{
+                    height: heightPercentageToDP(7),
+                    width: heightPercentageToDP(7),
+                    flexDirection: 'row',
+                    backgroundColor: COLORS.blue,
+                    alignItems: 'center',
                     paddingHorizontal: heightPercentageToDP(2),
+                    borderRadius: heightPercentageToDP(1),
                   }}>
-                   <TouchableOpacity
-                      onPress={submitHandler}
-                      className="rounded-full"
-                      style={{
-                        height: heightPercentageToDP(7),
-                        width: heightPercentageToDP(7),
-                        flexDirection: 'row',
-                        backgroundColor: COLORS.blue,
-                        alignItems: 'center',
-                        paddingHorizontal: heightPercentageToDP(2),
-                        borderRadius: heightPercentageToDP(1),
-                      }}>
-                      <Ionicons
-                        name={'send'}
-                        size={heightPercentageToDP(3)}
-                        color={COLORS.white}
-                      />
-                    </TouchableOpacity>
-                </View>) 
-              }
-        
+                  <Ionicons
+                    name={'send'}
+                    size={heightPercentageToDP(3)}
+                    color={COLORS.white}
+                  />
+                </TouchableOpacity>
+              </View>
+            )}
+          </View>
+        </ImageBackground>
       </View>
     </SafeAreaView>
   );
@@ -233,5 +244,6 @@ const styles = StyleSheet.create({
   textStyle: {
     fontSize: heightPercentageToDP(4),
     fontFamily: FONT.Montserrat_Bold,
+    color: COLORS.white_s,
   },
 });

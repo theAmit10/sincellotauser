@@ -1,4 +1,5 @@
 import {
+  ImageBackground,
   SafeAreaView,
   StyleSheet,
   Text,
@@ -56,27 +57,26 @@ const CreateDate = ({route}) => {
 
   const onChangeFrom = (event, selectedDate) => {
     const currentDate = selectedDate || fromDate;
-  
+
     // Define options for formatting the date
-    const options = { day: '2-digit', month: '2-digit', year: 'numeric' };
-  
+    const options = {day: '2-digit', month: '2-digit', year: 'numeric'};
+
     // Format the date using toLocaleDateString
     const formattedDate = currentDate.toLocaleDateString('en-US', options);
-  
+
     // Rearrange the formatted date to match the desired format
     const [month, day, year] = formattedDate.split('/');
     const rearrangedDate = `${day}-${month}-${year}`;
-  
+
     // setShow(Platform.OS === 'ios');
     setShowFrom(Platform.OS === 'ios');
     setFromDate(currentDate);
     console.log(currentDate);
     console.log(rearrangedDate);
-  
+
     // Assuming setEnterData is a function to set some state related to the formatted date
     setEnterData(rearrangedDate); // Set formatted date to state
   };
-  
 
   const showModeFrom = currentMode => {
     setShowFrom(true);
@@ -145,133 +145,145 @@ const CreateDate = ({route}) => {
     <SafeAreaView style={{flex: 1}}>
       <Background />
 
-      <View
-        style={{
-          margin: heightPercentageToDP(2),
-          backgroundColor: 'transparent',
-        }}>
-        <GradientText style={styles.textStyle}>Create</GradientText>
-        <GradientText style={styles.textStyle}>Date</GradientText>
-      </View>
-
-      {/** Login Cointainer */}
-
-      <View
-        style={{
-          height: heightPercentageToDP(65),
-          width: widthPercentageToDP(100),
-          backgroundColor: COLORS.white_s,
-          borderTopLeftRadius: heightPercentageToDP(5),
-          borderTopRightRadius: heightPercentageToDP(5),
-        }}>
-        {/** Top Style View */}
+      <View style={{flex: 1, justifyContent: 'flex-end'}}>
         <View
           style={{
-            height: heightPercentageToDP(5),
-            width: widthPercentageToDP(100),
-            justifyContent: 'center',
-            alignItems: 'center',
+            margin: heightPercentageToDP(2),
+            backgroundColor: 'transparent',
           }}>
-          <View
-            style={{
-              width: widthPercentageToDP(20),
-              height: heightPercentageToDP(0.8),
-              backgroundColor: COLORS.grayBg,
-              borderRadius: heightPercentageToDP(2),
-            }}></View>
+          <GradientText style={styles.textStyle}>Create</GradientText>
+          <GradientText style={styles.textStyle}>Date</GradientText>
         </View>
-
-        {/** Result Main Container */}
-
-        <View style={{padding: heightPercentageToDP(2)}}>
-          <GradientText
-            style={{
-              fontFamily: FONT.Montserrat_Regular,
-              fontSize: heightPercentageToDP(2.5),
-              color: COLORS.black,
-              marginBottom: heightPercentageToDP(1),
-            }}>
-            Enter Date
-          </GradientText>
+        <ImageBackground
+          source={require('../../assets/image/tlwbg.jpg')}
+          style={{
+            width: '100%',
+            height: heightPercentageToDP(65),
+          }}
+          imageStyle={{
+            borderTopLeftRadius: heightPercentageToDP(5),
+            borderTopRightRadius: heightPercentageToDP(5),
+          }}>
+          {/** Login Cointainer */}
 
           <View
             style={{
-              height: heightPercentageToDP(7),
-              flexDirection: 'row',
-              backgroundColor: COLORS.grayHalfBg,
-              alignItems: 'center',
-              paddingHorizontal: heightPercentageToDP(2),
-              borderRadius: heightPercentageToDP(1),
+              height: heightPercentageToDP(65),
+              width: widthPercentageToDP(100),
+
+              borderTopLeftRadius: heightPercentageToDP(5),
+              borderTopRightRadius: heightPercentageToDP(5),
             }}>
-            <TouchableOpacity onPress={showDatepickerFrom}>
-              <Entypo
-                name={'calendar'}
-                size={heightPercentageToDP(3)}
-                color={COLORS.darkGray}
-              />
-            </TouchableOpacity>
-
-            <TextInput
+            {/** Top Style View */}
+            <View
               style={{
-                marginStart: heightPercentageToDP(1),
-                flex: 1,
-                fontFamily: FONT.Montserrat_Regular,
-                color: COLORS.black,
-                fontSize: heightPercentageToDP(2.5),
-              }}
-              placeholder="For example - 05-03-2024"
-              placeholderTextColor={COLORS.black}
-              label="time"
-              value={enterData}
-              onChangeText={text => setEnterData(text)}
-            />
-          </View>
-
-          {showFrom && (
-            <DateTimePicker
-              testID="dateTimePicker"
-              value={fromDate}
-              mode="date"
-              is24Hour={true}
-              display="default"
-              onChange={onChangeFrom}
-            />
-          )}
-        </View>
-
-        {loading ? (
-          <View style={{flex: 1}}>
-            <Loading />
-          </View>
-        ) : (
-          <View
-            style={{
-              justifyContent: 'flex-end',
-              flex: 1,
-              alignItems: 'flex-end',
-              paddingVertical: heightPercentageToDP(4),
-              paddingHorizontal: heightPercentageToDP(2),
-            }}>
-            <TouchableOpacity
-              onPress={submitHandler}
-              className="rounded-full"
-              style={{
-                height: heightPercentageToDP(7),
-                width: heightPercentageToDP(7),
-                flexDirection: 'row',
-                backgroundColor: COLORS.blue,
+                height: heightPercentageToDP(5),
+                width: widthPercentageToDP(100),
+                justifyContent: 'center',
                 alignItems: 'center',
-                paddingHorizontal: heightPercentageToDP(2),
-                borderRadius: heightPercentageToDP(1),
               }}>
-              <Ionicons
-                name={'send'}
-                size={heightPercentageToDP(3)}
-                color={COLORS.white}
-              />
-            </TouchableOpacity>
+              <View
+                style={{
+                  width: widthPercentageToDP(20),
+                  height: heightPercentageToDP(0.8),
+                  backgroundColor: COLORS.grayBg,
+                  borderRadius: heightPercentageToDP(2),
+                }}></View>
+            </View>
+
+            {/** Result Main Container */}
+
+            <View style={{padding: heightPercentageToDP(2)}}>
+              <GradientText
+                style={{
+                  fontFamily: FONT.Montserrat_Regular,
+                  fontSize: heightPercentageToDP(2.5),
+                  color: COLORS.black,
+                  marginBottom: heightPercentageToDP(1),
+                }}>
+                Enter Date
+              </GradientText>
+
+              <View
+                style={{
+                  height: heightPercentageToDP(7),
+                  flexDirection: 'row',
+                  backgroundColor: COLORS.grayHalfBg,
+                  alignItems: 'center',
+                  paddingHorizontal: heightPercentageToDP(2),
+                  borderRadius: heightPercentageToDP(1),
+                }}>
+                <TouchableOpacity onPress={showDatepickerFrom}>
+                  <Entypo
+                    name={'calendar'}
+                    size={heightPercentageToDP(3)}
+                    color={COLORS.darkGray}
+                  />
+                </TouchableOpacity>
+
+                <TextInput
+                  style={{
+                    marginStart: heightPercentageToDP(1),
+                    flex: 1,
+                    fontFamily: FONT.Montserrat_Regular,
+                    color: COLORS.black,
+                    fontSize: heightPercentageToDP(2.5),
+                  }}
+                  placeholder="For example - 05-03-2024"
+                  placeholderTextColor={COLORS.black}
+                  label="time"
+                  value={enterData}
+                  onChangeText={text => setEnterData(text)}
+                />
+              </View>
+
+              {showFrom && (
+                <DateTimePicker
+                  testID="dateTimePicker"
+                  value={fromDate}
+                  mode="date"
+                  is24Hour={true}
+                  display="default"
+                  onChange={onChangeFrom}
+                />
+              )}
+            </View>
+
+            {loading ? (
+              <View style={{flex: 1}}>
+                <Loading />
+              </View>
+            ) : (
+              <View
+                style={{
+                  justifyContent: 'flex-end',
+                  flex: 1,
+                  alignItems: 'flex-end',
+                  paddingVertical: heightPercentageToDP(4),
+                  paddingHorizontal: heightPercentageToDP(2),
+                }}>
+                <TouchableOpacity
+                  onPress={submitHandler}
+                  className="rounded-full"
+                  style={{
+                    height: heightPercentageToDP(7),
+                    width: heightPercentageToDP(7),
+                    flexDirection: 'row',
+                    backgroundColor: COLORS.blue,
+                    alignItems: 'center',
+                    paddingHorizontal: heightPercentageToDP(2),
+                    borderRadius: heightPercentageToDP(1),
+                  }}>
+                  <Ionicons
+                    name={'send'}
+                    size={heightPercentageToDP(3)}
+                    color={COLORS.white}
+                  />
+                </TouchableOpacity>
+              </View>
+            )}
           </View>
-        )}
+        </ImageBackground>
       </View>
     </SafeAreaView>
   );
@@ -283,5 +295,6 @@ const styles = StyleSheet.create({
   textStyle: {
     fontSize: heightPercentageToDP(4),
     fontFamily: FONT.Montserrat_Bold,
+    color: COLORS.white_s,
   },
 });

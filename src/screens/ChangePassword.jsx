@@ -1,4 +1,5 @@
 import {
+  ImageBackground,
   SafeAreaView,
   StyleSheet,
   Text,
@@ -25,6 +26,7 @@ import {useMessageAndErrorUser} from '../utils/hooks';
 import Background from '../components/background/Background';
 import UrlHelper from '../helper/UrlHelper';
 import axios from 'axios';
+import GradientTextWhite from '../components/helpercComponent/GradientTextWhite';
 
 const ChangePassword = () => {
   const [password, setPassword] = useState('');
@@ -42,13 +44,9 @@ const ChangePassword = () => {
 
   const navigation = useNavigation();
 
-  
-
-
   const dispatch = useDispatch();
 
   // For Password Visibility
-
 
   const togglePasswordVisibilityForOLDPASSWORD = () => {
     setOldPasswordVisible(!oldPasswordVisible);
@@ -62,257 +60,260 @@ const ChangePassword = () => {
     setConfirmPasswordVisible(!confirmPasswordVisible);
   };
 
-  const [showProgressbar , setProgressBar] = useState(false);
-
-
+  const [showProgressbar, setProgressBar] = useState(false);
 
   const changePasswordHandler = async () => {
     if (!oldPassword) {
-     Toast.show({
-       type: 'error',
-       text1: 'Please enter your old password',
-     });
-     
-   } else if (!newPassword) {
-    Toast.show({
-      type: 'error',
-      text1: 'Please enter your new password',
-    });
-   
-  } else if (!confirmPassword) {
-    Toast.show({
-      type: 'error',
-      text1: 'Please enter your confirm password',
-    });
-   
-  } else if (newPassword != confirmPassword) {
-    Toast.show({
-      type: 'error',
-      text1: 'New password and confirm password not matched',
-    });
-   
-  } 
-    else {
-     setProgressBar(true);
+      Toast.show({
+        type: 'error',
+        text1: 'Please enter your old password',
+      });
+    } else if (!newPassword) {
+      Toast.show({
+        type: 'error',
+        text1: 'Please enter your new password',
+      });
+    } else if (!confirmPassword) {
+      Toast.show({
+        type: 'error',
+        text1: 'Please enter your confirm password',
+      });
+    } else if (newPassword != confirmPassword) {
+      Toast.show({
+        type: 'error',
+        text1: 'New password and confirm password not matched',
+      });
+    } else {
+      setProgressBar(true);
 
-     try {
-  
-       const {data} = await axios.put(
-        UrlHelper.CHANGE_PASSWORD_API,
-        {
-          oldPassword: oldPassword,
-          newPassword: newPassword,
-        },
-        {
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${accesstoken}`,
+      try {
+        const {data} = await axios.put(
+          UrlHelper.CHANGE_PASSWORD_API,
+          {
+            oldPassword: oldPassword,
+            newPassword: newPassword,
           },
-        },
-      );
+          {
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${accesstoken}`,
+            },
+          },
+        );
 
-      console.log("datat :: "+data)
+        console.log('datat :: ' + data);
 
-      dispatch(loadProfile(accesstoken))
-      
-       Toast.show({
-         type: 'success',
-         text1: data.message,
-       });
-       setProgressBar(false);
-       navigation.goBack();
-     } catch (error) {
-      setProgressBar(false);
-       Toast.show({
-         type: 'error',
-         text1: 'Something went wrong',
-       });
-       console.log(error);
+        dispatch(loadProfile(accesstoken));
 
-     }
-   }
- };
-
- 
+        Toast.show({
+          type: 'success',
+          text1: data.message,
+        });
+        setProgressBar(false);
+        navigation.goBack();
+      } catch (error) {
+        setProgressBar(false);
+        Toast.show({
+          type: 'error',
+          text1: 'Something went wrong',
+        });
+        console.log(error);
+      }
+    }
+  };
 
   return (
     <SafeAreaView style={{flex: 1}}>
-      <Background/>
+      <Background />
 
-      {/** Login Cointainer */}
-
-      <View
-        style={{
-          height: heightPercentageToDP(65),
-          width: widthPercentageToDP(100),
-          backgroundColor: COLORS.white_s,
-          borderTopLeftRadius: heightPercentageToDP(5),
-          borderTopRightRadius: heightPercentageToDP(5),
-        }}>
-        {/** Top Style View */}
-        <View
+      <View style={{flex: 1, justifyContent: 'flex-end'}}>
+        <ImageBackground
+          source={require('../../assets/image/tlwbg.jpg')}
           style={{
-            height: heightPercentageToDP(5),
-            width: widthPercentageToDP(100),
-            justifyContent: 'center',
-            alignItems: 'center',
+            width: '100%',
+            height: heightPercentageToDP(65),
+          }}
+          imageStyle={{
+            borderTopLeftRadius: heightPercentageToDP(5),
+            borderTopRightRadius: heightPercentageToDP(5),
           }}>
-          <View
-            style={{
-              width: widthPercentageToDP(20),
-              height: heightPercentageToDP(0.8),
-              backgroundColor: COLORS.grayBg,
-              borderRadius: heightPercentageToDP(2),
-            }}></View>
-        </View>
-
-        {/** Login Main Container */}
-        <View
-          style={{
-            flex: 1,
-            margin: heightPercentageToDP(2),
-          }}>
-          <GradientText style={styles.textStyle}>Change Password</GradientText>
+          {/** Login Cointainer */}
 
           <View
             style={{
-              marginTop: heightPercentageToDP(3),
-              paddingVertical: heightPercentageToDP(2),
-              gap: heightPercentageToDP(2),
+              height: heightPercentageToDP(65),
+              width: widthPercentageToDP(100),
+              borderTopLeftRadius: heightPercentageToDP(5),
+              borderTopRightRadius: heightPercentageToDP(5),
             }}>
-            {/** old password container */}
+            {/** Top Style View */}
             <View
               style={{
-                height: heightPercentageToDP(7),
-                flexDirection: 'row',
-                backgroundColor: COLORS.grayBg,
+                height: heightPercentageToDP(5),
+                width: widthPercentageToDP(100),
+                justifyContent: 'center',
                 alignItems: 'center',
-                paddingHorizontal: heightPercentageToDP(2),
-                borderRadius: heightPercentageToDP(1),
               }}>
-              <Entypo
-                name={'lock'}
-                size={heightPercentageToDP(3)}
-                color={COLORS.black}
-              />
-              <TextInput
+              <View
                 style={{
-                  marginStart: heightPercentageToDP(1),
-                  flex: 1,
-                  fontFamily: FONT.SF_PRO_REGULAR,
-                  color: COLORS.black
-                }}
-                placeholder="Old Password"
-                placeholderTextColor={COLORS.black}
-                value={oldPassword}
-                onChangeText={text => setOldPassword(text)}
-                secureTextEntry={!oldPasswordVisible}
-              />
-              <Entypo
-                onPress={togglePasswordVisibilityForOLDPASSWORD}
-                name={oldPasswordVisible ? 'eye' : 'eye-with-line'}
-                size={heightPercentageToDP(3)}
-                color={COLORS.black}
-              />
+                  width: widthPercentageToDP(20),
+                  height: heightPercentageToDP(0.8),
+                  backgroundColor: COLORS.grayBg,
+                  borderRadius: heightPercentageToDP(2),
+                }}></View>
             </View>
 
-            {/** new  Password container */}
-
+            {/** Login Main Container */}
             <View
               style={{
-                height: heightPercentageToDP(7),
-                flexDirection: 'row',
-                backgroundColor: COLORS.grayBg,
-                alignItems: 'center',
-                paddingHorizontal: heightPercentageToDP(2),
-                borderRadius: heightPercentageToDP(1),
+                flex: 1,
+                margin: heightPercentageToDP(2),
               }}>
-              <Entypo
-                name={'lock'}
-                size={heightPercentageToDP(3)}
-                color={COLORS.black}
-              />
-              <TextInput
-                style={{
-                  marginStart: heightPercentageToDP(1),
-                  flex: 1,
-                  fontFamily: FONT.SF_PRO_REGULAR,
-                  color: COLORS.black
-                }}
-                placeholderTextColor={COLORS.black}
-                placeholder="New Password"
-                value={newPassword}
-                onChangeText={text => setNewPassword(text)}
-                secureTextEntry={!newPasswordVisible}
-              />
-              <Entypo
-                onPress={togglePasswordVisibilityforNEWPASSWORD}
-                name={newPasswordVisible ? 'eye' : 'eye-with-line'}
-                size={heightPercentageToDP(3)}
-                color={COLORS.black}
-              />
-            </View>
+              <GradientTextWhite style={styles.textStyle}>
+                Change Password
+              </GradientTextWhite>
 
-            {/** Confirm  Password container */}
-            <View
-              style={{
-                height: heightPercentageToDP(7),
-                flexDirection: 'row',
-                backgroundColor: COLORS.grayBg,
-                alignItems: 'center',
-                paddingHorizontal: heightPercentageToDP(2),
-                borderRadius: heightPercentageToDP(1),
-              }}>
-              <Entypo
-                name={'lock'}
-                size={heightPercentageToDP(3)}
-                color={COLORS.black}
-              />
-              <TextInput
+              <View
                 style={{
-                  marginStart: heightPercentageToDP(1),
-                  flex: 1,
-                  fontFamily: FONT.SF_PRO_REGULAR,
-                  color: COLORS.black
-                }}
-                placeholder="Confirm Password"
-                placeholderTextColor={COLORS.black}
-                value={confirmPassword}
-                onChangeText={text => setConfirmPassword(text)}
-                secureTextEntry={!confirmPasswordVisible}
-              />
-              <Entypo
-                onPress={togglePasswordVisibilityCONFIRMPASSWORD}
-                name={confirmPasswordVisible ? 'eye' : 'eye-with-line'}
-                size={heightPercentageToDP(3)}
-                color={COLORS.black}
-              />
-            </View>
-
-            {showProgressbar ? (
-              <View style={{padding: heightPercentageToDP(2)}}>
-                <Loading />
-              </View>
-            ) : (
-              <TouchableOpacity
-                onPress={changePasswordHandler}
-                style={{
-                  backgroundColor: COLORS.blue,
-                  padding: heightPercentageToDP(2),
-                  borderRadius: heightPercentageToDP(1),
-                  alignItems: 'center',
+                  marginTop: heightPercentageToDP(3),
+                  paddingVertical: heightPercentageToDP(2),
+                  gap: heightPercentageToDP(2),
                 }}>
-                <Text
+                {/** old password container */}
+                <View
                   style={{
-                    color: COLORS.white,
-                    fontFamily: FONT.Montserrat_Regular,
+                    height: heightPercentageToDP(7),
+                    flexDirection: 'row',
+                    backgroundColor: COLORS.white_s,
+                    alignItems: 'center',
+                    paddingHorizontal: heightPercentageToDP(2),
+                    borderRadius: heightPercentageToDP(1),
                   }}>
-                  Submit
-                </Text>
-              </TouchableOpacity>
-            )}
+                  <Entypo
+                    name={'lock'}
+                    size={heightPercentageToDP(3)}
+                    color={COLORS.black}
+                  />
+                  <TextInput
+                    style={{
+                      marginStart: heightPercentageToDP(1),
+                      flex: 1,
+                      fontFamily: FONT.SF_PRO_REGULAR,
+                      color: COLORS.black,
+                    }}
+                    placeholder="Old Password"
+                    placeholderTextColor={COLORS.black}
+                    value={oldPassword}
+                    onChangeText={text => setOldPassword(text)}
+                    secureTextEntry={!oldPasswordVisible}
+                  />
+                  <Entypo
+                    onPress={togglePasswordVisibilityForOLDPASSWORD}
+                    name={oldPasswordVisible ? 'eye' : 'eye-with-line'}
+                    size={heightPercentageToDP(3)}
+                    color={COLORS.black}
+                  />
+                </View>
+
+                {/** new  Password container */}
+
+                <View
+                  style={{
+                    height: heightPercentageToDP(7),
+                    flexDirection: 'row',
+                    backgroundColor: COLORS.white_s,
+                    alignItems: 'center',
+                    paddingHorizontal: heightPercentageToDP(2),
+                    borderRadius: heightPercentageToDP(1),
+                  }}>
+                  <Entypo
+                    name={'lock'}
+                    size={heightPercentageToDP(3)}
+                    color={COLORS.black}
+                  />
+                  <TextInput
+                    style={{
+                      marginStart: heightPercentageToDP(1),
+                      flex: 1,
+                      fontFamily: FONT.SF_PRO_REGULAR,
+                      color: COLORS.black,
+                    }}
+                    placeholderTextColor={COLORS.black}
+                    placeholder="New Password"
+                    value={newPassword}
+                    onChangeText={text => setNewPassword(text)}
+                    secureTextEntry={!newPasswordVisible}
+                  />
+                  <Entypo
+                    onPress={togglePasswordVisibilityforNEWPASSWORD}
+                    name={newPasswordVisible ? 'eye' : 'eye-with-line'}
+                    size={heightPercentageToDP(3)}
+                    color={COLORS.black}
+                  />
+                </View>
+
+                {/** Confirm  Password container */}
+                <View
+                  style={{
+                    height: heightPercentageToDP(7),
+                    flexDirection: 'row',
+                    backgroundColor: COLORS.white_s,
+                    alignItems: 'center',
+                    paddingHorizontal: heightPercentageToDP(2),
+                    borderRadius: heightPercentageToDP(1),
+                  }}>
+                  <Entypo
+                    name={'lock'}
+                    size={heightPercentageToDP(3)}
+                    color={COLORS.black}
+                  />
+                  <TextInput
+                    style={{
+                      marginStart: heightPercentageToDP(1),
+                      flex: 1,
+                      fontFamily: FONT.SF_PRO_REGULAR,
+                      color: COLORS.black,
+                    }}
+                    placeholder="Confirm Password"
+                    placeholderTextColor={COLORS.black}
+                    value={confirmPassword}
+                    onChangeText={text => setConfirmPassword(text)}
+                    secureTextEntry={!confirmPasswordVisible}
+                  />
+                  <Entypo
+                    onPress={togglePasswordVisibilityCONFIRMPASSWORD}
+                    name={confirmPasswordVisible ? 'eye' : 'eye-with-line'}
+                    size={heightPercentageToDP(3)}
+                    color={COLORS.black}
+                  />
+                </View>
+
+                {showProgressbar ? (
+                  <View style={{padding: heightPercentageToDP(2)}}>
+                    <Loading />
+                  </View>
+                ) : (
+                  <TouchableOpacity
+                    onPress={changePasswordHandler}
+                    style={{
+                      backgroundColor: COLORS.blue,
+                      padding: heightPercentageToDP(2),
+                      borderRadius: heightPercentageToDP(1),
+                      alignItems: 'center',
+                    }}>
+                    <Text
+                      style={{
+                        color: COLORS.white,
+                        fontFamily: FONT.Montserrat_Regular,
+                      }}>
+                      Submit
+                    </Text>
+                  </TouchableOpacity>
+                )}
+              </View>
+            </View>
           </View>
-        </View>
+        </ImageBackground>
       </View>
     </SafeAreaView>
   );
@@ -324,5 +325,6 @@ const styles = StyleSheet.create({
   textStyle: {
     fontSize: heightPercentageToDP(4),
     fontFamily: FONT.Montserrat_Bold,
+    color: COLORS.white_s,
   },
 });

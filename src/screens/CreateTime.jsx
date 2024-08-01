@@ -1,5 +1,6 @@
 import {
   Button,
+  ImageBackground,
   RefreshControlBase,
   SafeAreaView,
   StyleSheet,
@@ -26,6 +27,7 @@ import Loading from '../components/helpercComponent/Loading';
 import axios from 'axios';
 import UrlHelper from '../helper/UrlHelper';
 import DateTimePicker from '@react-native-community/datetimepicker';
+import GradientTextWhite from '../components/helpercComponent/GradientTextWhite';
 
 const CreateTime = ({route}) => {
   const {locationdata} = route.params;
@@ -36,39 +38,35 @@ const CreateTime = ({route}) => {
   const [time, setTime] = useState(new Date());
   const [showPicker, setShowPicker] = useState(false);
 
-
   const onChange = (event, selectedTime) => {
     setShowPicker(false);
     if (selectedTime) {
       setTime(selectedTime);
       setEnterData(formatTime(selectedTime));
-      console.log("TIme :: "+selectedTime)
-      console.log("TIme :: "+formatTime(selectedTime))
+      console.log('TIme :: ' + selectedTime);
+      console.log('TIme :: ' + formatTime(selectedTime));
     }
   };
-
 
   const showTimepicker = () => {
     setShowPicker(true);
   };
 
-  const formatTime = (date) => {
+  const formatTime = date => {
     const hours = date.getHours();
     const minutes = date.getMinutes();
     const ampm = hours >= 12 ? 'PM' : 'AM';
     const formattedHours = hours % 12 === 0 ? 12 : hours % 12;
-    const paddedHours = formattedHours < 10 ? '0' + formattedHours : formattedHours;
+    const paddedHours =
+      formattedHours < 10 ? '0' + formattedHours : formattedHours;
     const paddedMinutes = minutes < 10 ? '0' + minutes : minutes;
-    
+
     return `${paddedHours}:${paddedMinutes} ${ampm}`;
   };
-  
 
   const [loading, setLoading] = useState(false);
 
   // const {loading, message,error} = useSelector(state => state.time);
-  
- 
 
   const navigation = useNavigation();
 
@@ -129,131 +127,143 @@ const CreateTime = ({route}) => {
     <SafeAreaView style={{flex: 1}}>
       <Background />
 
-      <View
-        style={{
-          margin: heightPercentageToDP(2),
-          backgroundColor: 'transparent',
-        }}>
-        <GradientText style={styles.textStyle}>Create</GradientText>
-        <GradientText style={styles.textStyle}>Time</GradientText>
-      </View>
-
-      {/** Login Cointainer */}
-
-      <View
-        style={{
-          height: heightPercentageToDP(65),
-          width: widthPercentageToDP(100),
-          backgroundColor: COLORS.white_s,
-          borderTopLeftRadius: heightPercentageToDP(5),
-          borderTopRightRadius: heightPercentageToDP(5),
-        }}>
-        {/** Top Style View */}
+      <View style={{flex: 1, justifyContent: 'flex-end'}}>
         <View
           style={{
-            height: heightPercentageToDP(5),
-            width: widthPercentageToDP(100),
-            justifyContent: 'center',
-            alignItems: 'center',
+            margin: heightPercentageToDP(2),
+            backgroundColor: 'transparent',
           }}>
-          <View
-            style={{
-              width: widthPercentageToDP(20),
-              height: heightPercentageToDP(0.8),
-              backgroundColor: COLORS.grayBg,
-              borderRadius: heightPercentageToDP(2),
-            }}></View>
+          <GradientText style={styles.textStyle}>Create</GradientText>
+          <GradientText style={styles.textStyle}>Time</GradientText>
         </View>
+        <ImageBackground
+          source={require('../../assets/image/tlwbg.jpg')}
+          style={{
+            width: '100%',
+            height: heightPercentageToDP(65),
+          }}
+          imageStyle={{
+            borderTopLeftRadius: heightPercentageToDP(5),
+            borderTopRightRadius: heightPercentageToDP(5),
+          }}>
+          {/** Login Cointainer */}
 
-        {/** Result Main Container */}
-
-        <View style={{padding: heightPercentageToDP(2)}}>
-          <GradientText
-            style={{
-              fontFamily: FONT.Montserrat_Regular,
-              fontSize: heightPercentageToDP(2.5),
-              color: COLORS.black,
-              marginBottom: heightPercentageToDP(1),
-            }}>
-            Select Time
-          </GradientText>
-
-          <TouchableOpacity
-          onPress={showTimepicker}
-            style={{
-              height: heightPercentageToDP(7),
-              flexDirection: 'row',
-              backgroundColor: COLORS.grayHalfBg,
-              alignItems: 'center',
-              paddingHorizontal: heightPercentageToDP(2),
-              borderRadius: heightPercentageToDP(1),
-            }}>
-          
-              <Entypo
-                name={'clock'}
-                size={heightPercentageToDP(3)}
-                color={COLORS.darkGray}
-              />
-    
-
-            <Text
-              style={{
-                marginStart: heightPercentageToDP(1),
-                flex: 1,
-                fontFamily: FONT.Montserrat_Regular,
-                color: COLORS.black,
-                fontSize: heightPercentageToDP(2.5),
-              }}
-            >{formatTime(time)}
-            </Text>
-          </TouchableOpacity>
-
-          
-          {showPicker && (
-            <DateTimePicker
-              value={time}
-              mode="time"
-              is24Hour={false}
-              display="default"
-              onChange={onChange}
-            />
-          )}        
-        </View>
-
-        {loading ? (
-          <View
-            style={{justifyContent: 'center', alignItems: 'center', flex: 1}}>
-            <Loading />
-          </View>
-        ) : (
           <View
             style={{
-              justifyContent: 'flex-end',
-              flex: 1,
-              alignItems: 'flex-end',
-              paddingVertical: heightPercentageToDP(4),
-              paddingHorizontal: heightPercentageToDP(2),
+              height: heightPercentageToDP(65),
+              width: widthPercentageToDP(100),
+              borderTopLeftRadius: heightPercentageToDP(5),
+              borderTopRightRadius: heightPercentageToDP(5),
             }}>
-            <TouchableOpacity
-              onPress={submitHandler}
-              className="rounded-full"
+            {/** Top Style View */}
+            <View
               style={{
-                height: heightPercentageToDP(7),
-                width: heightPercentageToDP(7),
-                flexDirection: 'row',
-                backgroundColor: COLORS.blue,
+                height: heightPercentageToDP(5),
+                width: widthPercentageToDP(100),
+                justifyContent: 'center',
                 alignItems: 'center',
-                paddingHorizontal: heightPercentageToDP(2),
-                borderRadius: heightPercentageToDP(1),
               }}>
-              <Ionicons
-                name={'send'}
-                size={heightPercentageToDP(3)}
-                color={COLORS.white}
-              />
-            </TouchableOpacity>
+              <View
+                style={{
+                  width: widthPercentageToDP(20),
+                  height: heightPercentageToDP(0.8),
+                  backgroundColor: COLORS.grayBg,
+                  borderRadius: heightPercentageToDP(2),
+                }}></View>
+            </View>
+
+            {/** Result Main Container */}
+
+            <View style={{padding: heightPercentageToDP(2)}}>
+              <GradientTextWhite
+                style={{
+                  fontFamily: FONT.Montserrat_Regular,
+                  fontSize: heightPercentageToDP(2.5),
+                  color: COLORS.black,
+                  marginBottom: heightPercentageToDP(1),
+                }}>
+                Select Time
+              </GradientTextWhite>
+
+              <TouchableOpacity
+                onPress={showTimepicker}
+                style={{
+                  height: heightPercentageToDP(7),
+                  flexDirection: 'row',
+                  backgroundColor: COLORS.grayHalfBg,
+                  alignItems: 'center',
+                  paddingHorizontal: heightPercentageToDP(2),
+                  borderRadius: heightPercentageToDP(1),
+                }}>
+                <Entypo
+                  name={'clock'}
+                  size={heightPercentageToDP(3)}
+                  color={COLORS.darkGray}
+                />
+
+                <Text
+                  style={{
+                    marginStart: heightPercentageToDP(1),
+                    flex: 1,
+                    fontFamily: FONT.Montserrat_Regular,
+                    color: COLORS.black,
+                    fontSize: heightPercentageToDP(2.5),
+                  }}>
+                  {formatTime(time)}
+                </Text>
+              </TouchableOpacity>
+
+              {showPicker && (
+                <DateTimePicker
+                  value={time}
+                  mode="time"
+                  is24Hour={false}
+                  display="default"
+                  onChange={onChange}
+                />
+              )}
+            </View>
+
+            {loading ? (
+              <View
+                style={{
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  flex: 1,
+                }}>
+                <Loading />
+              </View>
+            ) : (
+              <View
+                style={{
+                  justifyContent: 'flex-end',
+                  flex: 1,
+                  alignItems: 'flex-end',
+                  paddingVertical: heightPercentageToDP(4),
+                  paddingHorizontal: heightPercentageToDP(2),
+                }}>
+                <TouchableOpacity
+                  onPress={submitHandler}
+                  className="rounded-full"
+                  style={{
+                    height: heightPercentageToDP(7),
+                    width: heightPercentageToDP(7),
+                    flexDirection: 'row',
+                    backgroundColor: COLORS.blue,
+                    alignItems: 'center',
+                    paddingHorizontal: heightPercentageToDP(2),
+                    borderRadius: heightPercentageToDP(1),
+                  }}>
+                  <Ionicons
+                    name={'send'}
+                    size={heightPercentageToDP(3)}
+                    color={COLORS.white}
+                  />
+                </TouchableOpacity>
+              </View>
+            )}
           </View>
-        )}
+        </ImageBackground>
       </View>
     </SafeAreaView>
   );
@@ -265,5 +275,6 @@ const styles = StyleSheet.create({
   textStyle: {
     fontSize: heightPercentageToDP(4),
     fontFamily: FONT.Montserrat_Bold,
+    color: COLORS.white_s
   },
 });

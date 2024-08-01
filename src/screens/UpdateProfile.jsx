@@ -1,4 +1,5 @@
 import {
+  ImageBackground,
   SafeAreaView,
   ScrollView,
   StyleSheet,
@@ -34,6 +35,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import UrlHelper from '../helper/UrlHelper';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import GradientTextWhite from '../components/helpercComponent/GradientTextWhite';
 
 const UpdateProfile = () => {
   const navigation = useNavigation();
@@ -134,269 +136,269 @@ const UpdateProfile = () => {
     <SafeAreaView style={{flex: 1}}>
       <ProfileBackground />
 
-      {/** Profile Cointainer */}
-
-      <View
-        style={{
-          backgroundColor: COLORS.white_s,
-          margin: heightPercentageToDP(2),
-          borderRadius: heightPercentageToDP(1),
-          paddingStart: heightPercentageToDP(1),
-        }}>
-        <GradientText
+      <View style={{flex: 1, justifyContent: 'flex-end'}}>
+        <ImageBackground
+          source={require('../../assets/image/tlwbg.jpg')}
           style={{
-            fontSize: heightPercentageToDP(3.5),
-            fontFamily: FONT.Montserrat_Bold,
+            width: '100%',
+            height: heightPercentageToDP(52),
+          }}
+          imageStyle={{
+            borderTopLeftRadius: heightPercentageToDP(5),
+            borderTopRightRadius: heightPercentageToDP(5),
           }}>
-          Update
-        </GradientText>
+          {/** Profile Cointainer */}
 
-        <GradientText
-          style={{
-            fontSize: heightPercentageToDP(3.5),
-            fontFamily: FONT.Montserrat_Bold,
-          }}>
-          Profile
-        </GradientText>
-      </View>
-
-      <View
-        style={{
-          height: heightPercentageToDP(42),
-          width: widthPercentageToDP(100),
-          backgroundColor: COLORS.white_s,
-          borderTopLeftRadius: heightPercentageToDP(5),
-          borderTopRightRadius: heightPercentageToDP(5),
-          elevation: heightPercentageToDP(3),
-        }}>
-        {/** Top Style View */}
-        <View
-          style={{
-            height: heightPercentageToDP(5),
-            width: widthPercentageToDP(100),
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}>
           <View
             style={{
-              width: widthPercentageToDP(20),
-              height: heightPercentageToDP(0.8),
-              backgroundColor: COLORS.grayBg,
-              borderRadius: heightPercentageToDP(2),
-            }}></View>
-        </View>
+              height: heightPercentageToDP(52),
+              width: widthPercentageToDP(100),
 
-        <ScrollView showsVerticalScrollIndicator={false}>
-          {/** Profile Main Container */}
-          <View
-            style={{
-              flex: 2,
-              margin: heightPercentageToDP(2),
+              borderTopLeftRadius: heightPercentageToDP(5),
+              borderTopRightRadius: heightPercentageToDP(5),
+              elevation: heightPercentageToDP(3),
             }}>
+            {/** Top Style View */}
             <View
               style={{
-                paddingVertical: heightPercentageToDP(2),
+                height: heightPercentageToDP(5),
+                width: widthPercentageToDP(100),
+                justifyContent: 'center',
+                alignItems: 'center',
               }}>
-
-               {/** Logout container */}
-
-               {user && user.role === 'admin' ? null : (
-                <TouchableOpacity
-                  onPress={logoutHandler}
-                  style={{
-                    height: heightPercentageToDP(7),
-                    flexDirection: 'row',
-                    backgroundColor: COLORS.grayBg,
-                    alignItems: 'center',
-                    paddingHorizontal: heightPercentageToDP(2),
-                    borderRadius: heightPercentageToDP(1),
-                    marginTop: heightPercentageToDP(-3),
-                  }}>
-                  <LinearGradient
-                    colors={[COLORS.lightWhite, COLORS.white_s]}
-                    className="rounded-xl p-1">
-                    <AntDesign
-                      name={'logout'}
-                      size={heightPercentageToDP(3)}
-                      color={COLORS.darkGray}
-                    />
-                  </LinearGradient>
-
-                  <Text
-                    style={{
-                      marginStart: heightPercentageToDP(1),
-                      flex: 1,
-                      fontFamily: FONT.Montserrat_Regular,
-                      color: COLORS.black,
-                      fontSize: heightPercentageToDP(2),
-                    }}>
-                    Logout
-                  </Text>
-
-                  <Ionicons
-                    name={'chevron-forward-outline'}
-                    size={heightPercentageToDP(3)}
-                    color={COLORS.darkGray}
-                  />
-                </TouchableOpacity>
-              )}
-
-            
-
-              {/** Change Password container */}
-
-              {user && user.role === 'admin' ? null : (
-                <TouchableOpacity
-                  onPress={() => navigation.navigate('ChangePassword')}
-                  style={{
-                    height: heightPercentageToDP(7),
-                    flexDirection: 'row',
-                    backgroundColor: COLORS.grayBg,
-                    alignItems: 'center',
-                    paddingHorizontal: heightPercentageToDP(2),
-                    marginTop: heightPercentageToDP(2),
-                    borderRadius: heightPercentageToDP(1),
-                  }}>
-                  <LinearGradient
-                    colors={[COLORS.lightWhite, COLORS.white_s]}
-                    className="rounded-xl p-1">
-                    <MaterialIcons
-                      name={'password'}
-                      size={heightPercentageToDP(3)}
-                      color={COLORS.darkGray}
-                    />
-                  </LinearGradient>
-                  <Text
-                    style={{
-                      marginStart: heightPercentageToDP(1),
-                      flex: 1,
-                      fontFamily: FONT.Montserrat_Regular,
-                      fontSize: heightPercentageToDP(2),
-                      color: COLORS.black,
-                    }}>
-                    Change Password
-                  </Text>
-
-                  <Ionicons
-                    name={'chevron-forward-outline'}
-                    size={heightPercentageToDP(3)}
-                    color={COLORS.darkGray}
-                  />
-                </TouchableOpacity>
-              )}
-
-
-                {/** Update Profile container */}
-
-                <TouchableOpacity
-                onPress={() => navigation.navigate('UploadProfilePicture')}
-                style={{
-                  height: heightPercentageToDP(7),
-                  flexDirection: 'row',
-                  backgroundColor: COLORS.grayBg,
-                  alignItems: 'center',
-                  paddingHorizontal: heightPercentageToDP(2),
-                  marginTop: heightPercentageToDP(2),
-                  borderRadius: heightPercentageToDP(1),
-                }}>
-                <LinearGradient
-                  colors={[COLORS.lightWhite, COLORS.white_s]}
-                  className="rounded-xl p-1">
-                  <MaterialCommunityIcons
-                    name={'account'}
-                    size={heightPercentageToDP(3)}
-                    color={COLORS.black}
-                  />
-                </LinearGradient>
-                <Text
-                  style={{
-                    marginStart: heightPercentageToDP(1),
-                    flex: 1,
-                    fontFamily: FONT.Montserrat_Regular,
-                    fontSize: heightPercentageToDP(2),
-                    color: COLORS.black,
-                  }}>
-                  Profile Picture
-                </Text>
-
-                <Ionicons
-                  name={'chevron-forward-outline'}
-                  size={heightPercentageToDP(3)}
-                  color={COLORS.black}
-                />
-              </TouchableOpacity>
-
-             
-
-              {/** Change name container */}
-
               <View
                 style={{
-                  height: heightPercentageToDP(7),
-                  flexDirection: 'row',
+                  width: widthPercentageToDP(20),
+                  height: heightPercentageToDP(0.8),
                   backgroundColor: COLORS.grayBg,
-                  alignItems: 'center',
-                  paddingHorizontal: heightPercentageToDP(2),
-                  marginTop: heightPercentageToDP(2),
-                  borderRadius: heightPercentageToDP(1),
-                }}>
-                <LinearGradient
-                  colors={[COLORS.lightWhite, COLORS.white_s]}
-                  className="rounded-xl p-1">
-                  <MaterialCommunityIcons
-                    name={'account'}
-                    size={heightPercentageToDP(3)}
-                    color={COLORS.black}
-                  />
-                </LinearGradient>
+                  borderRadius: heightPercentageToDP(2),
+                }}></View>
+            </View>
 
-                <TextInput
-                  style={{
-                    marginStart: heightPercentageToDP(1),
-                    flex: 1,
-                    fontFamily: FONT.Montserrat_Regular,
-                    fontSize: heightPercentageToDP(2),
-                    color: COLORS.darkGray,
-                  }}
-                  placeholder="Name"
-                  placeholderTextColor={COLORS.black}
-                  label="Name"
-                  value={name}
-                  onChangeText={text => setName(text)}
-                />
-              </View>
-
-              {/** Bottom Submit Container */}
-
+            <ScrollView showsVerticalScrollIndicator={false}>
+              {/** Profile Main Container */}
               <View
                 style={{
-                  marginBottom: heightPercentageToDP(5),
-                  marginTop: heightPercentageToDP(2),
+                  flex: 2,
+                  margin: heightPercentageToDP(2),
                 }}>
-                {showProgressBar ? (
-                  <Loading />
-                ) : (
+                <View
+                  style={{
+                    paddingVertical: heightPercentageToDP(2),
+                  }}>
+                  <GradientText
+                    style={{
+                      fontSize: heightPercentageToDP(3.5),
+                      fontFamily: FONT.Montserrat_Bold,
+                      color: COLORS.white_s,
+                    }}>
+                    Update
+                  </GradientText>
+
+                  <GradientText
+                    style={{
+                      fontSize: heightPercentageToDP(3.5),
+                      fontFamily: FONT.Montserrat_Bold,
+                      color: COLORS.white_s,
+                    }}>
+                    Profile
+                  </GradientText>
+                  {/** Logout container */}
+
+                  {user && user.role === 'admin' ? null : (
+                    <TouchableOpacity
+                      onPress={logoutHandler}
+                      style={{
+                        height: heightPercentageToDP(7),
+                        flexDirection: 'row',
+                        backgroundColor: COLORS.white_s,
+                        alignItems: 'center',
+                        paddingHorizontal: heightPercentageToDP(2),
+                        borderRadius: heightPercentageToDP(1),
+                        marginTop: heightPercentageToDP(-3),
+                      }}>
+                      <LinearGradient
+                        colors={[COLORS.lightWhite, COLORS.white_s]}
+                        className="rounded-xl p-1">
+                        <AntDesign
+                          name={'logout'}
+                          size={heightPercentageToDP(3)}
+                          color={COLORS.darkGray}
+                        />
+                      </LinearGradient>
+
+                      <Text
+                        style={{
+                          marginStart: heightPercentageToDP(1),
+                          flex: 1,
+                          fontFamily: FONT.Montserrat_Regular,
+                          color: COLORS.black,
+                          fontSize: heightPercentageToDP(2),
+                        }}>
+                        Logout
+                      </Text>
+
+                      <Ionicons
+                        name={'chevron-forward-outline'}
+                        size={heightPercentageToDP(3)}
+                        color={COLORS.darkGray}
+                      />
+                    </TouchableOpacity>
+                  )}
+
+                  {/** Change Password container */}
+
+                  {user && user.role === 'admin' ? null : (
+                    <TouchableOpacity
+                      onPress={() => navigation.navigate('ChangePassword')}
+                      style={{
+                        height: heightPercentageToDP(7),
+                        flexDirection: 'row',
+                        backgroundColor: COLORS.white_s,
+                        alignItems: 'center',
+                        paddingHorizontal: heightPercentageToDP(2),
+                        marginTop: heightPercentageToDP(2),
+                        borderRadius: heightPercentageToDP(1),
+                      }}>
+                      <LinearGradient
+                        colors={[COLORS.lightWhite, COLORS.white_s]}
+                        className="rounded-xl p-1">
+                        <MaterialIcons
+                          name={'password'}
+                          size={heightPercentageToDP(3)}
+                          color={COLORS.darkGray}
+                        />
+                      </LinearGradient>
+                      <Text
+                        style={{
+                          marginStart: heightPercentageToDP(1),
+                          flex: 1,
+                          fontFamily: FONT.Montserrat_Regular,
+                          fontSize: heightPercentageToDP(2),
+                          color: COLORS.black,
+                        }}>
+                        Change Password
+                      </Text>
+
+                      <Ionicons
+                        name={'chevron-forward-outline'}
+                        size={heightPercentageToDP(3)}
+                        color={COLORS.darkGray}
+                      />
+                    </TouchableOpacity>
+                  )}
+
+                  {/** Update Profile container */}
+
                   <TouchableOpacity
-                    onPress={updateProfileHandler}
+                    onPress={() => navigation.navigate('UploadProfilePicture')}
                     style={{
-                      backgroundColor: COLORS.blue,
-                      padding: heightPercentageToDP(2),
-                      borderRadius: heightPercentageToDP(1),
+                      height: heightPercentageToDP(7),
+                      flexDirection: 'row',
+                      backgroundColor: COLORS.white_s,
                       alignItems: 'center',
+                      paddingHorizontal: heightPercentageToDP(2),
+                      marginTop: heightPercentageToDP(2),
+                      borderRadius: heightPercentageToDP(1),
                     }}>
+                    <LinearGradient
+                      colors={[COLORS.lightWhite, COLORS.white_s]}
+                      className="rounded-xl p-1">
+                      <MaterialCommunityIcons
+                        name={'account'}
+                        size={heightPercentageToDP(3)}
+                        color={COLORS.black}
+                      />
+                    </LinearGradient>
                     <Text
                       style={{
-                        color: COLORS.white,
+                        marginStart: heightPercentageToDP(1),
+                        flex: 1,
                         fontFamily: FONT.Montserrat_Regular,
+                        fontSize: heightPercentageToDP(2),
+                        color: COLORS.black,
                       }}>
-                      Submit
+                      Profile Picture
                     </Text>
+
+                    <Ionicons
+                      name={'chevron-forward-outline'}
+                      size={heightPercentageToDP(3)}
+                      color={COLORS.black}
+                    />
                   </TouchableOpacity>
-                )}
+
+                  {/** Change name container */}
+
+                  <View
+                    style={{
+                      height: heightPercentageToDP(7),
+                      flexDirection: 'row',
+                      backgroundColor: COLORS.white_s,
+                      alignItems: 'center',
+                      paddingHorizontal: heightPercentageToDP(2),
+                      marginTop: heightPercentageToDP(2),
+                      borderRadius: heightPercentageToDP(1),
+                    }}>
+                    <LinearGradient
+                      colors={[COLORS.lightWhite, COLORS.white_s]}
+                      className="rounded-xl p-1">
+                      <MaterialCommunityIcons
+                        name={'account'}
+                        size={heightPercentageToDP(3)}
+                        color={COLORS.black}
+                      />
+                    </LinearGradient>
+
+                    <TextInput
+                      style={{
+                        marginStart: heightPercentageToDP(1),
+                        flex: 1,
+                        fontFamily: FONT.Montserrat_Regular,
+                        fontSize: heightPercentageToDP(2),
+                        color: COLORS.darkGray,
+                      }}
+                      placeholder="Name"
+                      placeholderTextColor={COLORS.black}
+                      label="Name"
+                      value={name}
+                      onChangeText={text => setName(text)}
+                    />
+                  </View>
+
+                  {/** Bottom Submit Container */}
+
+                  <View
+                    style={{
+                      marginBottom: heightPercentageToDP(5),
+                      marginTop: heightPercentageToDP(2),
+                    }}>
+                    {showProgressBar ? (
+                      <Loading />
+                    ) : (
+                      <TouchableOpacity
+                        onPress={updateProfileHandler}
+                        style={{
+                          backgroundColor: COLORS.blue,
+                          padding: heightPercentageToDP(2),
+                          borderRadius: heightPercentageToDP(1),
+                          alignItems: 'center',
+                        }}>
+                        <Text
+                          style={{
+                            color: COLORS.white,
+                            fontFamily: FONT.Montserrat_Regular,
+                          }}>
+                          Submit
+                        </Text>
+                      </TouchableOpacity>
+                    )}
+                  </View>
+                </View>
               </View>
-            </View>
+            </ScrollView>
           </View>
-        </ScrollView>
+        </ImageBackground>
       </View>
     </SafeAreaView>
   );
