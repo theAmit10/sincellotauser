@@ -264,6 +264,68 @@ export const sincelotAdminApi = createApi({
       }),
     }),
 
+     // FOR GETTING ALL DEPOSIT
+     getAllDeposit: builder.query({
+      query: (accesstoken) => ({
+        url: "user/getalldeposit",
+        method: 'get',
+        headers: {
+          Authorization: `Bearer ${accesstoken}`,
+        },
+      }),
+    }),
+
+    // FOR GETTING ALL WITHDRAW
+    getAllWithdraw: builder.query({
+      query: (accesstoken) => ({
+        url: "user/getallwithdraw",
+        method: 'get',
+        headers: {
+          Authorization: `Bearer ${accesstoken}`,
+        },
+      }),
+    }),
+
+
+    // FOR CREATE A CURRENCY
+    createCurrency: builder.mutation({
+      query: ({accesstoken, body}) => ({
+        url: 'result/addcurrency',
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${accesstoken}`,
+          'Content-Type': 'multipart/form-data',
+        },
+        body,
+      }),
+    }),
+
+     // FOR DELETE A CURRENCY
+     deleteCurrency: builder.mutation({
+      query: ({ accesstoken, id }) => ({
+        url: `result/removecurrency/${id}`,
+        method: 'DELETE',
+        headers: {
+          Authorization: `Bearer ${accesstoken}`,
+        }
+      }),
+    }),
+
+
+     // FOR DELETE A CURRENCY
+     updateCurrency: builder.mutation({
+      query: ({ accesstoken, id, body }) => ({
+        url: `result/updatecurrency/${id}`,
+        method: 'PUT',
+        headers: {
+          Authorization: `Bearer ${accesstoken}`,
+          'Content-Type': 'application/json',
+        },
+        body
+      }),
+    }),
+
+
 
 
      
@@ -298,6 +360,11 @@ export const {
   useDeletePaypalAccountMutation,
   useDeleteSkrillAccountMutation,
   useDeleteCryptoAccountMutation,
+  useGetAllDepositQuery,
+  useGetAllWithdrawQuery,
+  useCreateCurrencyMutation,
+  useDeleteCurrencyMutation,
+  useUpdateCurrencyMutation,
 
   
 } = sincelotAdminApi ;

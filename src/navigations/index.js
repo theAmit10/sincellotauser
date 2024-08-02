@@ -68,6 +68,12 @@ import AllSkrillPaymentPayment from '../screens/payment/AllSkrillPaymentPayment'
 import PaypalDeposit from '../screens/payment/PaypalDeposit';
 import Skrill from '../screens/payment/Skrill';
 import CryptoDeposit from '../screens/payment/CryptoDeposit';
+import AllDeposit from '../screens/AllDeposit';
+import ShowingReceipt from '../components/helpercComponent/ShowingReceipt';
+import AllWithdraw from '../screens/AllWithdraw';
+import AllCountry from '../screens/AllCountry';
+import Createcountry from '../screens/Createcountry';
+import UpdateCountry from '../screens/UpdateCountry';
 
 
 
@@ -149,6 +155,12 @@ const Main = () => {
                 <Stack.Screen  name="PaypalDeposit" component={PaypalDeposit}/>
                 <Stack.Screen  name="Skrill" component={Skrill}/>
                 <Stack.Screen  name="CryptoDeposit" component={CryptoDeposit}/>
+                <Stack.Screen  name="AllDeposit" component={AllDeposit}/>
+                <Stack.Screen  name="ShowingReceipt" component={ShowingReceipt}/>
+                <Stack.Screen  name="AllWithdraw" component={AllWithdraw}/>
+                <Stack.Screen  name="AllCountry" component={AllCountry}/>
+                <Stack.Screen  name="Createcountry" component={Createcountry}/>
+                <Stack.Screen  name="UpdateCountry" component={UpdateCountry}/>
 
 
 

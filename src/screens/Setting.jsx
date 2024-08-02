@@ -488,6 +488,91 @@ const Setting = () => {
                   />
                 </TouchableOpacity>
 
+                {/** All Deposit */}
+                <TouchableOpacity
+                  onPress={() => navigation.navigate('AllDeposit')}
+                  style={{
+                    height: heightPercentageToDP(7),
+                    flexDirection: 'row',
+                    backgroundColor: COLORS.white_s,
+                    alignItems: 'center',
+                    paddingHorizontal: heightPercentageToDP(2),
+                    marginTop: heightPercentageToDP(2),
+                    borderRadius: heightPercentageToDP(1),
+                  }}>
+                  <LinearGradient
+                    colors={[COLORS.grayBg, COLORS.white_s]}
+                    className="rounded-xl p-1">
+                    <Image
+                      source={require('../../assets/image/deposit.png')}
+                      resizeMode="cover"
+                      style={{
+                        height: heightPercentageToDP(3),
+                        width: heightPercentageToDP(3),
+                      }}
+                    />
+                  </LinearGradient>
+                  <Text
+                    style={{
+                      marginStart: heightPercentageToDP(1),
+                      flex: 1,
+                      fontFamily: FONT.Montserrat_Regular,
+                      fontSize: heightPercentageToDP(2),
+                      color: COLORS.black,
+                    }}>
+                    All Deposit 
+                  </Text>
+
+                  <Ionicons
+                    name={'chevron-forward-outline'}
+                    size={heightPercentageToDP(3)}
+                    color={COLORS.darkGray}
+                  />
+                </TouchableOpacity>
+
+                {/** All Withdraw */}
+
+                <TouchableOpacity
+                  onPress={() => navigation.navigate('AllWithdraw')}
+                  style={{
+                    height: heightPercentageToDP(7),
+                    flexDirection: 'row',
+                    backgroundColor: COLORS.white_s,
+                    alignItems: 'center',
+                    paddingHorizontal: heightPercentageToDP(2),
+                    marginTop: heightPercentageToDP(2),
+                    borderRadius: heightPercentageToDP(1),
+                  }}>
+                  <LinearGradient
+                    colors={[COLORS.grayBg, COLORS.white_s]}
+                    className="rounded-xl p-1">
+                    <Image
+                      source={require('../../assets/image/withdraw.png')}
+                      resizeMode="cover"
+                      style={{
+                        height: heightPercentageToDP(3),
+                        width: heightPercentageToDP(3),
+                      }}
+                    />
+                  </LinearGradient>
+                  <Text
+                    style={{
+                      marginStart: heightPercentageToDP(1),
+                      flex: 1,
+                      fontFamily: FONT.Montserrat_Regular,
+                      fontSize: heightPercentageToDP(2),
+                      color: COLORS.black,
+                    }}>
+                    All Withdraw
+                  </Text>
+
+                  <Ionicons
+                    name={'chevron-forward-outline'}
+                    size={heightPercentageToDP(3)}
+                    color={COLORS.darkGray}
+                  />
+                </TouchableOpacity>
+
                 {/** Withdraw */}
 
                 <TouchableOpacity
@@ -534,7 +619,7 @@ const Setting = () => {
                 {/** Balance Transfer container */}
 
                 <TouchableOpacity
-                  onPress={() => navigation.navigate('BalanceTransfer')}
+                  onPress={() => navigation.navigate('AllCountry')}
                   style={{
                     height: heightPercentageToDP(7),
                     flexDirection: 'row',
@@ -561,7 +646,7 @@ const Setting = () => {
                       fontSize: heightPercentageToDP(2),
                       color: COLORS.black,
                     }}>
-                    Balance Transfer
+                    All Country
                   </Text>
 
                   <Ionicons

@@ -5,7 +5,7 @@ import { COLORS } from '../../../assets/constants'
 const Loading = ({props}) => {
   return (
     <View className="flex-1 flex justify-center items-center">
-      <ActivityIndicator color={COLORS.white_s} {...props}/>
+      <ActivityIndicator {...props}/>
     </View>
   )
 }
