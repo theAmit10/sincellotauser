@@ -74,6 +74,15 @@ import AllWithdraw from '../screens/AllWithdraw';
 import AllCountry from '../screens/AllCountry';
 import Createcountry from '../screens/Createcountry';
 import UpdateCountry from '../screens/UpdateCountry';
+import PlayArenaLocation from '../screens/PlayArenaLocation';
+import PlayArena from '../screens/PlayArena';
+import PlayArenaDate from '../screens/PlayArenaDate';
+import PlayArenaAdmin from '../screens/PlayArenaAdmin';
+import PlayArenaInsights from '../screens/PlayArenaInsights';
+import BalanceSheet from '../screens/BalanceSheet';
+import AllSubAdmin from '../screens/AllSubAdmin';
+import SelectCountry from '../components/helpercComponent/SelectCountry';
+import ModifySubadmin from '../screens/ModifySubadmin';
 
 
 
@@ -161,6 +170,17 @@ const Main = () => {
                 <Stack.Screen  name="AllCountry" component={AllCountry}/>
                 <Stack.Screen  name="Createcountry" component={Createcountry}/>
                 <Stack.Screen  name="UpdateCountry" component={UpdateCountry}/>
+
+                {/** FOR BETTING */}
+                <Stack.Screen  name="PlayArenaLocation" component={PlayArenaLocation}/>
+                <Stack.Screen  name="PlayArena" component={PlayArena}/>
+                <Stack.Screen  name="PlayArenaDate" component={PlayArenaDate}/>
+                <Stack.Screen  name="PlayArenaAdmin" component={PlayArenaAdmin}/>
+                <Stack.Screen  name="PlayArenaInsights" component={PlayArenaInsights}/>
+                <Stack.Screen  name="BalanceSheet" component={BalanceSheet}/>
+                <Stack.Screen  name="AllSubAdmin" component={AllSubAdmin}/>
+                <Stack.Screen  name="SelectCountry" component={SelectCountry}/>
+                <Stack.Screen  name="ModifySubadmin" component={ModifySubadmin}/>
 
 
 

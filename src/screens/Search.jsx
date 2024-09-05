@@ -3,6 +3,7 @@ import {
   ImageBackground,
   SafeAreaView,
   StyleSheet,
+  Switch,
   Text,
   TextInput,
   TouchableOpacity,
@@ -28,6 +29,8 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import UrlHelper from '../helper/UrlHelper';
 import axios from 'axios';
 import GradientTextWhite from '../components/helpercComponent/GradientTextWhite';
+import CustomAlertForDeposit from '../components/helpercComponent/CustomAlertForDeposit';
+import { useUpdateLocationAutomationMutation } from '../helper/Networkcall';
 
 const Search = () => {
   const navigation = useNavigation();
@@ -38,6 +41,8 @@ const Search = () => {
 
   // const [filteredData, setFilteredData] = useState(locations);
   const [filteredData, setFilteredData] = useState([]);
+
+  const [updateLocationAutomation, {isLoading, error}] = useUpdateLocationAutomationMutation();
 
   const handleSearch = text => {
     const filtered = locations.filter(item =>
@@ -98,6 +103,89 @@ const Search = () => {
       });
       console.log(error);
     }
+  };
+
+  // FOR AUTOMATION SWITCH
+  const [isEnabled, setIsEnabled] = useState(false);
+
+  // Toggle switch handler
+  const toggleSwitch = async item => {
+    showAlertAccepted(item)
+
+    callApiFunction(); // Call your API function here
+    
+  };
+
+  // Example API function to call
+  const callApiFunction = async (item) => {
+    console.log('working');
+    console.log('Iteme :: '+JSON.stringify(item));
+
+    let automation = item.automation;
+
+    if(automation === 'automatic')
+    {
+      automation = "manual"
+    }else{
+      automation = "automatic"
+    }
+
+    console.log("Automation :: "+automation)
+
+    try{
+
+      const formData = {
+        automation: automation
+      }
+
+      console.log('FORM DATA :: ' + JSON.stringify(formData));
+
+      const res = await updateLocationAutomation({
+        accesstoken: accesstoken,
+        id: item._id,
+        body: formData
+      }).unwrap();
+
+      console.log("Res :: "+res)
+      console.log("Res String :: "+JSON.stringify(res))
+
+      Toast.show({type: 'success', text1: 'Success', text2: res.message});
+      dispatch(getAllLocations(accesstoken));
+
+    }catch(error)
+    {
+      console.log(error)
+    }
+
+
+    // try {
+    //   // Replace with your API call
+    //   await axios.post('YOUR_API_ACTION_ENDPOINT_HERE', { automationStatus: isEnabled ? 'manual' : 'automatic' });
+    // } catch (error) {
+    //   console.error('Error calling API function:', error);
+    // }
+  };
+
+  const [alertVisibleAccepted, setAlertVisibleAccepted] = useState(false);
+  const [selectedItemId, setSelectedItemId] = useState('');
+
+  const showAlertAccepted = item => {
+    setAlertVisibleAccepted(true);
+    setSelectedItemId(item._id);
+    setSelectedItem(item);
+    setIsEnabled(previousState => !previousState);
+  };
+
+  const closeAlertAccepted = () => {
+    setAlertVisibleAccepted(false);
+  };
+
+  const handleYesAccepted = () => {
+    // Handle the Yes action here
+    setAlertVisibleAccepted(false);
+
+    callApiFunction(selectedItem)
+    console.log('Yes pressed');
   };
 
   return (
@@ -228,6 +316,14 @@ const Search = () => {
                             }}>
                             {item.lotlocation}
                           </Text>
+
+                          {/** FOR ACCEPTING */}
+                          <CustomAlertForDeposit
+                            visible={alertVisibleAccepted}
+                            onClose={closeAlertAccepted}
+                            onYes={handleYesAccepted}
+                          />
+
                           {/** Checking the user is admin or not */}
                           {user && user.role === 'admin' ? (
                             <View
@@ -237,6 +333,19 @@ const Search = () => {
                                 alignItems: 'center',
                                 gap: heightPercentageToDP(2),
                               }}>
+                              {/** automation switch */}
+
+                              <Switch
+                                thumbColor={
+                                  item.automation === 'automatic'
+                                    ? '#f5dd4b'
+                                    : '#f4f3f4'
+                                }
+                                ios_backgroundColor="#3e3e3e"
+                                onValueChange={() => toggleSwitch(item)}
+                                value={item.automation === 'automatic'}
+                              />
+
                               {/** Update Locatiion */}
 
                               <TouchableOpacity

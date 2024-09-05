@@ -334,7 +334,7 @@ const UpiDeposit = () => {
                         fontSize: heightPercentageToDP(2),
                         paddingStart: heightPercentageToDP(1),
                       }}>
-                      Receipt
+                      Qr code
                     </Text>
 
                     <LinearGradient

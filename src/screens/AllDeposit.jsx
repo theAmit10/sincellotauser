@@ -29,73 +29,49 @@ import Background from '../components/background/Background';
 import Loading from '../components/helpercComponent/Loading';
 import {COLORS, FONT} from '../../assets/constants';
 import GradientTextWhite from '../components/helpercComponent/GradientTextWhite';
-import {useGetAllDepositQuery} from '../helper/Networkcall';
-import { nanoid } from '@reduxjs/toolkit';
-import { HOVER } from 'nativewind/dist/utils/selector';
+import {
+  useGetAllDepositQuery,
+  useUpdateDepositPaymentStatusMutation,
+} from '../helper/Networkcall';
+import {nanoid} from '@reduxjs/toolkit';
+import {HOVER} from 'nativewind/dist/utils/selector';
+import CustomAlertForDeposit from '../components/helpercComponent/CustomAlertForDeposit';
+import Toast from 'react-native-toast-message';
+import CustomReceiptViewer from '../components/helpercComponent/CustomReceiptViewer';
+import NoDataFound from '../components/helpercComponent/NoDataFound';
 
-const historyapidatas = [
-  {
-    id: 1,
-    amount: '638383',
-    currency: 'INR',
-    date: 'Apr 19, 2024 05:36 PM',
-    status: 'success',
-    paymentmethod: 'UPI',
-    transactionid: '2938398398238',
-    type: 'deposit',
-  },
-  {
-    id: 2,
-    amount: '8383',
-    currency: 'INR',
-    date: 'Apr 09, 2024 05:36 PM',
-    status: 'pending',
-    paymentmethod: 'Bank',
-    transactionid: '2938398398238',
-    type: 'withdraw',
-  },
-  {
-    id: 3,
-    amount: '9638383',
-    currency: 'INR',
-    date: 'Apr 19, 2024 05:36 PM',
-    status: 'success',
-    paymentmethod: 'UPI',
-    transactionid: '2938398398238',
-    type: 'deposit',
-  },
-  {
-    id: 4,
-    amount: '238383',
-    currency: 'INR',
-    date: 'Apr 19, 2024 05:36 PM',
-    status: 'success',
-    paymentmethod: 'UPI',
-    transactionid: '2938398398238',
-    type: 'deposit',
-  },
-  {
-    id: 5,
-    amount: '138383',
-    currency: 'INR',
-    date: 'Apr 19, 2024 05:36 PM',
-    status: 'success',
-    paymentmethod: 'UPI',
-    transactionid: '2938398398238',
-    type: 'deposit',
-  },
-];
+export const multiplyStringNumbers = (str1, str2) => {
+  // Convert the strings to numbers
+  const num1 = Number(str1);
+  const num2 = Number(str2);
+
+  // Check if the conversion was successful
+  if (isNaN(num1) || isNaN(num2)) {
+    throw new Error('Both inputs must be valid numbers');
+  }
+
+  // Multiply the numbers and return the result
+  return num1 * num2;
+};
 
 const AllDeposit = () => {
   const {accesstoken, user} = useSelector(state => state.user);
   const [expandedItems, setExpandedItems] = useState({});
-  const navigation = useNavigation()
+  const [selectedItemId, setSelectedItemId] = useState('');
+  const [selectedItem, setSelectedItem] = useState(null);
+  const navigation = useNavigation();
 
   console.log('Accesstoken :: ' + accesstoken);
   console.log('User ID :: ' + user.userId);
 
   const {isLoading, data, isError, refetch} =
     useGetAllDepositQuery(accesstoken);
+
+  // FOR UPDATING PAYMENT STATUS
+  const [
+    updateDepositPaymentStatus,
+    {isLoading: updateStatusIsLoading, error: updateStatusError},
+  ] = useUpdateDepositPaymentStatusMutation();
 
   useFocusEffect(
     useCallback(() => {
@@ -105,7 +81,6 @@ const AllDeposit = () => {
   );
 
   console.log('IS loaging :: ', isLoading);
-
 
   const toggleItem = id => {
     setExpandedItems(prev => ({
@@ -140,41 +115,119 @@ const AllDeposit = () => {
 
   const acceptingData = async item => {
     console.log('Accepting Data');
-    // setSelectedItem(item._id);
 
-    // const res = await deletePaypalAccount({
-    //   accesstoken: accesstoken,
-    //   id: item._id,
-    // }).unwrap();
+    setSelectedItem(item._id);
 
-    // // allTheDepositData();
+    const body = {
+      transactionId: item._id,
+      paymentStatus: 'Completed',
+    };
 
-    // Toast.show({type: 'success', text1: 'Success', text2: res.message});
+    const res = await updateDepositPaymentStatus({
+      accesstoken: accesstoken,
+      body: body,
+    }).unwrap();
+
+    refetch();
+
+    if (!isLoading) {
+      console.log('USE running');
+      setFilteredData(data.deposits);
+    }
+
+    Toast.show({type: 'success', text1: 'Success', text2: res.message});
   };
 
   // FOR CANCELLING
 
   const cancellingData = async item => {
     console.log('Cancelling Data');
-    // setSelectedItem(item._id);
+    setSelectedItem(item._id);
 
-    // const res = await deletePaypalAccount({
-    //   accesstoken: accesstoken,
-    //   id: item._id,
-    // }).unwrap();
+    const body = {
+      transactionId: item._id,
+      paymentStatus: 'Cancelled',
+    };
 
-    // // allTheDepositData();
+    const res = await updateDepositPaymentStatus({
+      accesstoken: accesstoken,
+      body: body,
+    }).unwrap();
 
-    // Toast.show({type: 'success', text1: 'Success', text2: res.message});
+    refetch();
+
+    if (!isLoading) {
+      console.log('USE  running');
+      setFilteredData(data.deposits);
+    }
+
+    Toast.show({type: 'success', text1: 'Success', text2: res.message});
   };
 
   // FOR SHOWING RECEIPT
   const showingReceipt = async item => {
-    console.log("Showing receipt")
-    navigation.navigate("ShowingReceipt", {
-        item: item
-    })
-  }
+    console.log('Showing receipt');
+    navigation.navigate('ShowingReceipt', {
+      item: item,
+    });
+  };
+
+  const [alertVisibleAccepted, setAlertVisibleAccepted] = useState(false);
+  const [alertVisibleRejected, setAlertVisibleRejected] = useState(false);
+
+  const showAlertAccepted = item => {
+    setAlertVisibleAccepted(true);
+    setSelectedItemId(item._id);
+    setSelectedItem(item);
+  };
+
+  const closeAlertAccepted = () => {
+    setAlertVisibleAccepted(false);
+  };
+
+  const handleYesAccepted = () => {
+    // Handle the Yes action here
+    setAlertVisibleAccepted(false);
+    acceptingData(selectedItem);
+    console.log('Yes pressed');
+  };
+
+  const showAlertRejected = item => {
+    setAlertVisibleRejected(true);
+    setSelectedItemId(item._id);
+    setSelectedItem(item);
+  };
+
+  const closeAlertRejected = () => {
+    setAlertVisibleRejected(false);
+  };
+
+  const handleYesRejected = () => {
+    // Handle the Yes action here
+    setAlertVisibleRejected(false);
+    cancellingData(selectedItem);
+    console.log('Yes pressed');
+  };
+
+  //  FOR SHOWING RECEIPT
+
+  const [alertVisibleReceipt, setAlertVisibleReceipt] = useState(false);
+
+  const showAlertReceipt = item => {
+    setAlertVisibleReceipt(true);
+  };
+
+  const closeAlertReceipt = () => {
+    setAlertVisibleReceipt(false);
+  };
+
+  const handleYesReceipt = () => {
+    // Handle the Yes action here
+    setAlertVisibleReceipt(false);
+    console.log('Yes pressed');
+  };
+
+  
 
   return (
     <SafeAreaView style={{flex: 1}}>
@@ -253,6 +306,20 @@ const AllDeposit = () => {
                   />
                 </View>
 
+                {/** FOR ACCEPTING */}
+                <CustomAlertForDeposit
+                  visible={alertVisibleAccepted}
+                  onClose={closeAlertAccepted}
+                  onYes={handleYesAccepted}
+                />
+
+                {/** FOR REJECTING */}
+                <CustomAlertForDeposit
+                  visible={alertVisibleRejected}
+                  onClose={closeAlertRejected}
+                  onYes={handleYesRejected}
+                />
+
                 {isLoading ? (
                   <View
                     style={{
@@ -262,13 +329,14 @@ const AllDeposit = () => {
                     }}>
                     <Loading />
                   </View>
-                ) : historyapidatas.length === 0 ? (
+                ) : filteredData.length === 0 ? (
                   <View>
                     <NoDataFound data={'No History Found'} />
                   </View>
                 ) : (
                   <FlatList
                     data={filteredData}
+                    showsVerticalScrollIndicator={false}
                     renderItem={({item}) => (
                       <LinearGradient
                         colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
@@ -281,7 +349,6 @@ const AllDeposit = () => {
                             : heightPercentageToDP(10),
                           borderRadius: heightPercentageToDP(2),
                           marginTop: heightPercentageToDP(2),
-                          
                         }}>
                         <TouchableOpacity
                           onPress={() => toggleItem(item._id)}
@@ -290,7 +357,7 @@ const AllDeposit = () => {
                             borderTopLeftRadius: heightPercentageToDP(2),
                             borderTopEndRadius: heightPercentageToDP(2),
                             flexDirection: 'row',
-                            marginBottom: heightPercentageToDP(1)
+                            marginBottom: heightPercentageToDP(1),
                           }}>
                           <View
                             style={{
@@ -343,7 +410,6 @@ const AllDeposit = () => {
                             <View
                               style={{
                                 flex: 2,
-                               
                               }}>
                               <View
                                 style={{
@@ -368,7 +434,6 @@ const AllDeposit = () => {
                                   flex: 1,
                                   justifyContent: 'flex-start',
                                   alignItems: 'center',
-                                  
                                 }}>
                                 <Text
                                   style={{
@@ -376,60 +441,124 @@ const AllDeposit = () => {
                                     fontSize: heightPercentageToDP(1.8),
                                     color: COLORS.black,
                                   }}>
-                                  {item.amount}
+                                  {multiplyStringNumbers(
+                                    item.amount,
+                                    item.currency !== undefined
+                                      ? item.currency
+                                          .countrycurrencyvaluecomparedtoinr
+                                      : 1,
+                                  )}
                                 </Text>
                               </View>
                             </View>
                           </View>
 
+                          {/** Right View */}
                           <View style={{flex: 1, flexDirection: 'row'}}>
-                            <TouchableOpacity
-                              onPress={() => acceptingData(item)}
-                              style={{
-                                width: '40%',
-                                paddingHorizontal: 4,
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                              }}>
-                              <LinearGradient
-                                colors={[COLORS.lightWhite, COLORS.white_s]}
-                                style={styles.iconContainer}>
-                                <AntDesign
-                                  name={'check'}
-                                  size={heightPercentageToDP(2)}
-                                  color={COLORS.green}
-                                />
-                              </LinearGradient>
-                            </TouchableOpacity>
+                            {updateStatusIsLoading &&
+                            item._id === selectedItemId ? (
+                              <View
+                                style={{
+                                  flex: 1,
+                                  justifyContent: 'center',
+                                  alignItems: 'center',
+                                }}>
+                                <Loading />
+                              </View>
+                            ) : (
+                              <>
+                                {item.paymentStatus === 'Pending' && (
+                                  <TouchableOpacity
+                                    onPress={() => showAlertAccepted(item)}
+                                    style={{
+                                      width: '40%',
+                                      paddingHorizontal: 4,
+                                      justifyContent: 'center',
+                                      alignItems: 'center',
+                                    }}>
+                                    <LinearGradient
+                                      colors={[
+                                        COLORS.lightWhite,
+                                        COLORS.white_s,
+                                      ]}
+                                      style={styles.iconContainer}>
+                                      <AntDesign
+                                        name={'check'}
+                                        size={heightPercentageToDP(2)}
+                                        color={COLORS.green}
+                                      />
+                                    </LinearGradient>
+                                  </TouchableOpacity>
+                                )}
 
-                            <Text
-                              style={{
-                                fontFamily: FONT.Montserrat_Regular,
-                                color: COLORS.black,
-                                fontSize: heightPercentageToDP(1.2),
-                                textAlignVertical: 'center',
-                              }}>
-                              {item.paymentStatus}
-                            </Text>
+                                {/** PAYMENT STATUS TEXT */}
+                                {item.paymentStatus === 'Pending' ? (
+                                  <Text
+                                    style={{
+                                      fontFamily: FONT.Montserrat_Regular,
+                                      color: COLORS.black,
+                                      fontSize: heightPercentageToDP(1.2),
+                                      textAlignVertical: 'center',
+                                    }}>
+                                    {item.paymentStatus}
+                                  </Text>
+                                ) : item.paymentStatus === 'Completed' ? (
+                                  <Text
+                                    style={{
+                                      fontFamily: FONT.Montserrat_SemiBold,
+                                      color: COLORS.white_s,
+                                      fontSize: heightPercentageToDP(1.5),
+                                      textAlignVertical: 'center',
+                                      backgroundColor: COLORS.green,
+                                      flex: 1,
+                                      textAlign: 'center',
+                                      margin: heightPercentageToDP(2),
+                                      borderRadius: heightPercentageToDP(2),
+                                    }}>
+                                    {item.paymentStatus}
+                                  </Text>
+                                ) : (
+                                  <Text
+                                    style={{
+                                      fontFamily: FONT.Montserrat_SemiBold,
+                                      color: COLORS.white_s,
+                                      fontSize: heightPercentageToDP(1.5),
+                                      textAlignVertical: 'center',
+                                      backgroundColor: COLORS.red,
+                                      flex: 1,
+                                      textAlign: 'center',
+                                      margin: heightPercentageToDP(2),
+                                      borderRadius: heightPercentageToDP(2),
+                                    }}>
+                                    {item.paymentStatus}
+                                  </Text>
+                                )}
 
-                            <TouchableOpacity
-                              onPress={() => cancellingData(item)}
-                              style={{
-                                width: '40%',
-                                paddingHorizontal: 4,
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                              }}>
-                              <LinearGradient
-                                colors={[COLORS.lightWhite, COLORS.white_s]}
-                                style={styles.iconContainer}>
-                                <AntDesign
-                                  name={'close'}
-                                  size={heightPercentageToDP(2)}
-                                  color={COLORS.red}
-                                />
-                              </LinearGradient>
-                            </TouchableOpacity>
+                                {item.paymentStatus === 'Pending' && (
+                                  <TouchableOpacity
+                                    onPress={() => showAlertRejected(item)}
+                                    style={{
+                                      width: '40%',
+                                      paddingHorizontal: 4,
+                                      justifyContent: 'center',
+                                      alignItems: 'center',
+                                    }}>
+                                    <LinearGradient
+                                      colors={[
+                                        COLORS.lightWhite,
+                                        COLORS.white_s,
+                                      ]}
+                                      style={styles.iconContainer}>
+                                      <AntDesign
+                                        name={'close'}
+                                        size={heightPercentageToDP(2)}
+                                        color={COLORS.red}
+                                      />
+                                    </LinearGradient>
+                                  </TouchableOpacity>
+                                )}
+                              </>
+                            )}
                           </View>
                         </TouchableOpacity>
 
@@ -440,7 +569,6 @@ const AllDeposit = () => {
                                 height: 1,
                                 backgroundColor: COLORS.white_s,
                                 marginHorizontal: heightPercentageToDP(2),
-
                               }}
                             />
                             <View
@@ -454,8 +582,8 @@ const AllDeposit = () => {
                                 justifyContent: 'center',
                               }}>
                               <View style={styles.detailContainer}>
-                                <Text 
-                                 style={{...styles.detailLabel, width: '70%'}}>
+                                <Text
+                                  style={{...styles.detailLabel, width: '70%'}}>
                                   Payment Method
                                 </Text>
                                 <Text style={styles.detailValue}>
@@ -483,9 +611,17 @@ const AllDeposit = () => {
                               </View>
                             </View>
 
+                            {/** FOR SHOWING RECEIPT */}
+                            <CustomReceiptViewer
+                              visible={alertVisibleReceipt}
+                              onClose={closeAlertReceipt}
+                              onYes={handleYesReceipt}
+                              data={item}
+                              img={item.receipt}
+                            />
+
                             {/** BOTTOM DEPOSIT DETAILS CONTAINER  */}
 
-                             
                             <View
                               style={{
                                 flex: 1,
@@ -513,7 +649,7 @@ const AllDeposit = () => {
                                 </Text>
                               </View>
                               <TouchableOpacity
-                                onPress={() => showingReceipt(item)}
+                                onPress={() => showAlertReceipt()}
                                 style={styles.detailContainer}>
                                 <Text style={styles.detailLabel}>Receipt</Text>
                                 <Text
@@ -603,18 +739,68 @@ const styles = StyleSheet.create({
   detailContainer: {
     width: '33%',
     paddingStart: heightPercentageToDP(1),
-   
   },
   detailLabel: {
     fontFamily: FONT.Montserrat_Regular,
     color: COLORS.black,
     fontSize: heightPercentageToDP(1.5),
-
   },
   detailValue: {
     fontFamily: FONT.Montserrat_SemiBold,
     color: COLORS.black,
     fontSize: heightPercentageToDP(1.8),
-    
   },
 });
+
+// const historyapidatas = [
+//   {
+//     id: 1,
+//     amount: '638383',
+//     currency: 'INR',
+//     date: 'Apr 19, 2024 05:36 PM',
+//     status: 'success',
+//     paymentmethod: 'UPI',
+//     transactionid: '2938398398238',
+//     type: 'deposit',
+//   },
+//   {
+//     id: 2,
+//     amount: '8383',
+//     currency: 'INR',
+//     date: 'Apr 09, 2024 05:36 PM',
+//     status: 'pending',
+//     paymentmethod: 'Bank',
+//     transactionid: '2938398398238',
+//     type: 'withdraw',
+//   },
+//   {
+//     id: 3,
+//     amount: '9638383',
+//     currency: 'INR',
+//     date: 'Apr 19, 2024 05:36 PM',
+//     status: 'success',
+//     paymentmethod: 'UPI',
+//     transactionid: '2938398398238',
+//     type: 'deposit',
+//   },
+//   {
+//     id: 4,
+//     amount: '238383',
+//     currency: 'INR',
+//     date: 'Apr 19, 2024 05:36 PM',
+//     status: 'success',
+//     paymentmethod: 'UPI',
+//     transactionid: '2938398398238',
+//     type: 'deposit',
+//   },
+//   {
+//     id: 5,
+//     amount: '138383',
+//     currency: 'INR',
+//     date: 'Apr 19, 2024 05:36 PM',
+//     status: 'success',
+//     paymentmethod: 'UPI',
+//     transactionid: '2938398398238',
+//     type: 'deposit',
+//   },
+// ];

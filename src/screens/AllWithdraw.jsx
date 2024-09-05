@@ -32,11 +32,15 @@ import GradientTextWhite from '../components/helpercComponent/GradientTextWhite'
 import {
   useGetAllDepositQuery,
   useGetAllWithdrawQuery,
+  useUpdateDepositPaymentStatusMutation,
 } from '../helper/Networkcall';
 import {nanoid} from '@reduxjs/toolkit';
 import {HOVER} from 'nativewind/dist/utils/selector';
 import Clipboard from '@react-native-clipboard/clipboard';
 import Toast from 'react-native-toast-message';
+import CustomAlertForDeposit from '../components/helpercComponent/CustomAlertForDeposit';
+import { multiplyStringNumbers } from './AllDeposit';
+import NoDataFound from '../components/helpercComponent/NoDataFound';
 
 const historyapidatas = [
   {
@@ -94,6 +98,8 @@ const historyapidatas = [
 const AllWithdraw = () => {
   const {accesstoken, user} = useSelector(state => state.user);
   const [expandedItems, setExpandedItems] = useState({});
+  const [selectedItemId, setSelectedItemId] = useState('');
+  const [selectedItem, setSelectedItem] = useState(null);
   const navigation = useNavigation();
 
   console.log('Accesstoken :: ' + accesstoken);
@@ -108,6 +114,12 @@ const AllWithdraw = () => {
       refetch();
     }, [refetch]),
   );
+
+   // FOR UPDATING PAYMENT STATUS
+   const [
+    updateDepositPaymentStatus,
+    {isLoading: updateStatusIsLoading, error: updateStatusError},
+  ] = useUpdateDepositPaymentStatusMutation();
 
   console.log('IS loaging :: ', isLoading);
   console.log('Data :: ', data?.withdrawals?.length);
@@ -130,7 +142,7 @@ const AllWithdraw = () => {
       console.log('USE Effect running');
       setFilteredData(data.withdrawals);
     }
-  }, [isLoading]);
+  }, [isLoading,filteredData]);
 
   const handleSearch = text => {
     if (data) {
@@ -145,41 +157,55 @@ const AllWithdraw = () => {
 
   const acceptingData = async item => {
     console.log('Accepting Data');
-    // setSelectedItem(item._id);
 
-    // const res = await deletePaypalAccount({
-    //   accesstoken: accesstoken,
-    //   id: item._id,
-    // }).unwrap();
+    setSelectedItem(item._id);
 
-    // // allTheDepositData();
+    const body = {
+      transactionId: item._id,
+      paymentStatus: 'Completed',
+    };
 
-    // Toast.show({type: 'success', text1: 'Success', text2: res.message});
+    const res = await updateDepositPaymentStatus({
+      accesstoken: accesstoken,
+      body: body,
+    }).unwrap();
+
+    refetch();
+
+    if (!isLoading) {
+      console.log('USE running');
+      setFilteredData(data.deposits);
+    }
+
+    Toast.show({type: 'success', text1: 'Success', text2: res.message});
   };
 
   // FOR CANCELLING
 
   const cancellingData = async item => {
     console.log('Cancelling Data');
-    // setSelectedItem(item._id);
+    setSelectedItem(item._id);
 
-    // const res = await deletePaypalAccount({
-    //   accesstoken: accesstoken,
-    //   id: item._id,
-    // }).unwrap();
+    const body = {
+      transactionId: item._id,
+      paymentStatus: 'Cancelled',
+    };
 
-    // // allTheDepositData();
+    const res = await updateDepositPaymentStatus({
+      accesstoken: accesstoken,
+      body: body,
+    }).unwrap();
 
-    // Toast.show({type: 'success', text1: 'Success', text2: res.message});
+    refetch();
+
+    if (!isLoading) {
+      console.log('USE  running');
+      setFilteredData(data.deposits);
+    }
+
+    Toast.show({type: 'success', text1: 'Success', text2: res.message});
   };
 
-  // FOR SHOWING RECEIPT
-  const showingReceipt = async item => {
-    console.log('Showing receipt');
-    navigation.navigate('ShowingReceipt', {
-      item: item,
-    });
-  };
 
   const copyToClipboard = val => {
     Clipboard.setString(val);
@@ -189,6 +215,46 @@ const AllWithdraw = () => {
       text2: 'The text has been copied to your clipboard!',
     });
   };
+
+  const [alertVisibleAccepted, setAlertVisibleAccepted] = useState(false);
+  const [alertVisibleRejected, setAlertVisibleRejected] = useState(false);
+
+  const showAlertAccepted = item => {
+    setAlertVisibleAccepted(true);
+    setSelectedItemId(item._id);
+    setSelectedItem(item);
+  };
+
+  const closeAlertAccepted = () => {
+    setAlertVisibleAccepted(false);
+  };
+
+  const handleYesAccepted = () => {
+    // Handle the Yes action here
+    setAlertVisibleAccepted(false);
+    acceptingData(selectedItem);
+    console.log('Yes pressed');
+  };
+
+  const showAlertRejected = item => {
+    setAlertVisibleRejected(true);
+    setSelectedItemId(item._id);
+    setSelectedItem(item);
+  };
+
+  const closeAlertRejected = () => {
+    setAlertVisibleRejected(false);
+  };
+
+  const handleYesRejected = () => {
+    // Handle the Yes action here
+    setAlertVisibleRejected(false);
+    cancellingData(selectedItem);
+    console.log('Yes pressed');
+  };
+
+  
+ 
 
   return (
     <SafeAreaView style={{flex: 1}}>
@@ -267,6 +333,20 @@ const AllWithdraw = () => {
                   />
                 </View>
 
+                 {/** FOR ACCEPTING */}
+                 <CustomAlertForDeposit
+                  visible={alertVisibleAccepted}
+                  onClose={closeAlertAccepted}
+                  onYes={handleYesAccepted}
+                />
+
+                {/** FOR REJECTING */}
+                <CustomAlertForDeposit
+                  visible={alertVisibleRejected}
+                  onClose={closeAlertRejected}
+                  onYes={handleYesRejected}
+                />
+
                 {isLoading ? (
                   <View
                     style={{
@@ -276,12 +356,13 @@ const AllWithdraw = () => {
                     }}>
                     <Loading />
                   </View>
-                ) : historyapidatas.length === 0 ? (
+                ) : filteredData.length === 0 ? (
                   <View>
                     <NoDataFound data={'No History Found'} />
                   </View>
                 ) : (
                   <FlatList
+                  showsVerticalScrollIndicator={false}
                     data={filteredData}
                     renderItem={({item}) => (
                       <LinearGradient
@@ -388,13 +469,127 @@ const AllWithdraw = () => {
                                     fontSize: heightPercentageToDP(1.8),
                                     color: COLORS.black,
                                   }}>
-                                  {item.amount}
+                                   {multiplyStringNumbers(
+                                    item.amount,
+                                    item.currency !== undefined
+                                      ? item.currency
+                                          .countrycurrencyvaluecomparedtoinr
+                                      : 1,
+                                  )}
                                 </Text>
                               </View>
                             </View>
                           </View>
 
+                          {/** Right View */}
                           <View style={{flex: 1, flexDirection: 'row'}}>
+                            {updateStatusIsLoading &&
+                            item._id === selectedItemId ? (
+                              <View
+                                style={{
+                                  flex: 1,
+                                  justifyContent: 'center',
+                                  alignItems: 'center',
+                                }}>
+                                <Loading />
+                              </View>
+                            ) : (
+                              <>
+                                {item.paymentStatus === 'Pending' && (
+                                  <TouchableOpacity
+                                    onPress={() => showAlertAccepted(item)}
+                                    style={{
+                                      width: '40%',
+                                      paddingHorizontal: 4,
+                                      justifyContent: 'center',
+                                      alignItems: 'center',
+                                    }}>
+                                    <LinearGradient
+                                      colors={[
+                                        COLORS.lightWhite,
+                                        COLORS.white_s,
+                                      ]}
+                                      style={styles.iconContainer}>
+                                      <AntDesign
+                                        name={'check'}
+                                        size={heightPercentageToDP(2)}
+                                        color={COLORS.green}
+                                      />
+                                    </LinearGradient>
+                                  </TouchableOpacity>
+                                )}
+
+                                {/** PAYMENT STATUS TEXT */}
+                                {item.paymentStatus === 'Pending' ? (
+                                  <Text
+                                    style={{
+                                      fontFamily: FONT.Montserrat_Regular,
+                                      color: COLORS.black,
+                                      fontSize: heightPercentageToDP(1.2),
+                                      textAlignVertical: 'center',
+                                    }}>
+                                    {item.paymentStatus}
+                                  </Text>
+                                ) : item.paymentStatus === 'Completed' ? (
+                                  <Text
+                                    style={{
+                                      fontFamily: FONT.Montserrat_SemiBold,
+                                      color: COLORS.white_s,
+                                      fontSize: heightPercentageToDP(1.5),
+                                      textAlignVertical: 'center',
+                                      backgroundColor: COLORS.green,
+                                      flex: 1,
+                                      textAlign: 'center',
+                                      margin: heightPercentageToDP(2),
+                                      borderRadius: heightPercentageToDP(2),
+                                    }}>
+                                    {item.paymentStatus}
+                                  </Text>
+                                ) : (
+                                  <Text
+                                    style={{
+                                      fontFamily: FONT.Montserrat_SemiBold,
+                                      color: COLORS.white_s,
+                                      fontSize: heightPercentageToDP(1.5),
+                                      textAlignVertical: 'center',
+                                      backgroundColor: COLORS.red,
+                                      flex: 1,
+                                      textAlign: 'center',
+                                      margin: heightPercentageToDP(2),
+                                      borderRadius: heightPercentageToDP(2),
+                                    }}>
+                                    {item.paymentStatus}
+                                  </Text>
+                                )}
+
+                                {item.paymentStatus === 'Pending' && (
+                                  <TouchableOpacity
+                                    onPress={() => showAlertRejected(item)}
+                                    style={{
+                                      width: '40%',
+                                      paddingHorizontal: 4,
+                                      justifyContent: 'center',
+                                      alignItems: 'center',
+                                    }}>
+                                    <LinearGradient
+                                      colors={[
+                                        COLORS.lightWhite,
+                                        COLORS.white_s,
+                                      ]}
+                                      style={styles.iconContainer}>
+                                      <AntDesign
+                                        name={'close'}
+                                        size={heightPercentageToDP(2)}
+                                        color={COLORS.red}
+                                      />
+                                    </LinearGradient>
+                                  </TouchableOpacity>
+                                )}
+                              </>
+                            )}
+                          </View>
+
+                          {/* <View style={{flex: 1, flexDirection: 'row'}}>
                             <TouchableOpacity
                               onPress={() => acceptingData(item)}
                               style={{
@@ -442,7 +637,7 @@ const AllWithdraw = () => {
                                 />
                               </LinearGradient>
                             </TouchableOpacity>
-                          </View>
+                          </View> */}
                         </TouchableOpacity>
 
                         {expandedItems[item._id] && (
@@ -1298,46 +1493,7 @@ const AllWithdraw = () => {
                               </TouchableOpacity>
                             </View>
 
-{/*                             
-                            <View
-                              style={{
-                                flex: 1,
-                                borderBottomLeftRadius: heightPercentageToDP(2),
-                                borderBottomEndRadius: heightPercentageToDP(2),
-                                flexDirection: 'row',
-                                padding: heightPercentageToDP(1),
-                                alignItems: 'center',
-                              }}>
-                              <View
-                                style={{
-                                  ...styles.detailContainer,
-                                  width: '70%',
-                                  paddingBottom: heightPercentageToDP(1),
-                                }}>
-                                <Text style={styles.detailLabel}>Remark</Text>
-                                <Text
-                                  style={{
-                                    ...styles.detailValue,
-                                    paddingEnd: heightPercentageToDP(1),
-                                    fontSize: heightPercentageToDP(1.5),
-                                  }}
-                                  numberOfLines={5}>
-                                  {item.remark === '' ? 'NA' : item.remark}
-                                </Text>
-                              </View>
-                              <TouchableOpacity
-                                onPress={() => showingReceipt(item)}
-                                style={styles.detailContainer}>
-                                <Text style={styles.detailLabel}>Receipt</Text>
-                                <Text
-                                  style={{
-                                    ...styles.detailValue,
-                                    paddingEnd: heightPercentageToDP(1),
-                                  }}>
-                                  Show Receipt
-                                </Text>
-                              </TouchableOpacity>
-                            </View> */}
+
                           </>
                         )}
                       </LinearGradient>

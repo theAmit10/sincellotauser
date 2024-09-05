@@ -1,5 +1,6 @@
 import {
   ImageBackground,
+  KeyboardAvoidingView,
   SafeAreaView,
   ScrollView,
   StyleSheet,
@@ -34,14 +35,14 @@ import axios from 'axios';
 import AdminAuthLoginBackground from '../components/login/AdminAuthLoginBackground';
 import GradientTextWhite from '../components/helpercComponent/GradientTextWhite';
 
-const Register = () => {
+const Register = ({route}) => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false);
-
+  const [selectedCountry, setSelectedCountry] = useState('Select Country');
   const [firstNameVal, setFirstName] = useState('');
   const [secondNameVal, setSecondName] = useState('');
   const [profileImage, setProfileImage] = useState('');
@@ -135,7 +136,14 @@ const Register = () => {
         type: 'error',
         text1: 'Password and Confirm Password Not Matched',
       });
-    } else {
+    } 
+    else if (!selectedCountry === 'Select Country') {
+      Toast.show({
+        type: 'error',
+        text1: 'Please select your country',
+      });
+    }
+    else {
       // const myform = new FormData();
 
       // myform.append('name', name);
@@ -161,6 +169,7 @@ const Register = () => {
             email,
             password,
             role: selectedRole,
+            country: route.params?.country._id,
           },
           {
             headers: {
@@ -184,342 +193,397 @@ const Register = () => {
           text1: 'Something went wrong',
         });
         console.log(error);
-        console.log(error.response.data.message);
         console.log(error.response);
+        console.log(error.response.data.message);
+        
       }
     }
   };
 
+  useEffect(() => {
+    if (route.params?.country) {
+      setSelectedCountry(route.params.country.countryname);
+      console.log('Country :: ' + JSON.stringify(route.params?.country));
+    }
+  }, [route.params?.country]);
+
   return (
     <SafeAreaView style={{flex: 1}}>
-      <AdminAuthLoginBackground />
-
-      <View style={{flex: 1, justifyContent: 'flex-end'}}>
-        <ImageBackground
-          source={require('../../assets/image/tlwbg.jpg')}
-          style={{
-            width: '100%',
-            height: heightPercentageToDP(80),
-          }}
-          imageStyle={{
-            borderTopLeftRadius: heightPercentageToDP(5),
-            borderTopRightRadius: heightPercentageToDP(5),
-          }}>
-          {/** Login Cointainer */}
-
-          <View
+      <KeyboardAvoidingView
+        style={{flex: 1}}
+        behavior="height"
+        keyboardVerticalOffset={-60}>
+        <AdminAuthLoginBackground />
+        <View style={{flex: 1, justifyContent: 'flex-end'}}>
+          <ImageBackground
+            source={require('../../assets/image/tlwbg.jpg')}
             style={{
+              width: '100%',
               height: heightPercentageToDP(80),
-              width: widthPercentageToDP(100),
-
+            }}
+            imageStyle={{
               borderTopLeftRadius: heightPercentageToDP(5),
               borderTopRightRadius: heightPercentageToDP(5),
             }}>
-            {/** Top Style View */}
+            {/** Login Cointainer */}
+
             <View
               style={{
-                height: heightPercentageToDP(5),
+                height: heightPercentageToDP(80),
                 width: widthPercentageToDP(100),
-                justifyContent: 'center',
-                alignItems: 'center',
+
+                borderTopLeftRadius: heightPercentageToDP(5),
+                borderTopRightRadius: heightPercentageToDP(5),
               }}>
+              {/** Top Style View */}
               <View
                 style={{
-                  width: widthPercentageToDP(20),
-                  height: heightPercentageToDP(0.8),
-                  backgroundColor: COLORS.grayBg,
-                  borderRadius: heightPercentageToDP(2),
-                }}></View>
-            </View>
-
-            {/** Login Main Container */}
-            <View
-              style={{
-                flex: 1,
-                margin: heightPercentageToDP(2),
-              }}>
-              <GradientTextWhite style={styles.textStyle}>Register Now</GradientTextWhite>
-
-              <ScrollView showsVerticalScrollIndicator={false}>
+                  height: heightPercentageToDP(5),
+                  width: widthPercentageToDP(100),
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}>
                 <View
                   style={{
-                    marginTop: heightPercentageToDP(3),
-                    paddingVertical: heightPercentageToDP(2),
-                    gap: heightPercentageToDP(2),
-                  }}>
-                  {/** Name container */}
-                  
-                  <View
-                    style={{
-                      height: heightPercentageToDP(7),
-                      flexDirection: 'row',
-                      backgroundColor: COLORS.white_s,
-                      alignItems: 'center',
-                      paddingHorizontal: heightPercentageToDP(2),
-                      borderRadius: heightPercentageToDP(1),
-                    }}>
-                    <Entypo
-                      name={'user'}
-                      size={heightPercentageToDP(3)}
-                      color={COLORS.darkGray}
-                    />
-                    <TextInput
-                      style={{
-                        marginStart: heightPercentageToDP(1),
-                        flex: 1,
-                        fontFamily: FONT.SF_PRO_REGULAR,
-                        color: COLORS.black,
-                      }}
-                      placeholder="Name"
-                      placeholderTextColor={COLORS.black}
-                      label="Name"
-                      value={name}
-                      onChangeText={text => setName(text)}
-                    />
-                  </View>
+                    width: widthPercentageToDP(20),
+                    height: heightPercentageToDP(0.8),
+                    backgroundColor: COLORS.grayBg,
+                    borderRadius: heightPercentageToDP(2),
+                  }}></View>
+              </View>
 
-                  {/** Email container */}
-                  <View
-                    style={{
-                      height: heightPercentageToDP(7),
-                      flexDirection: 'row',
-                      backgroundColor: COLORS.white_s,
-                      alignItems: 'center',
-                      paddingHorizontal: heightPercentageToDP(2),
-                      borderRadius: heightPercentageToDP(1),
-                    }}>
-                    <Fontisto
-                      name={'email'}
-                      size={heightPercentageToDP(3)}
-                      color={COLORS.darkGray}
-                    />
-                    <TextInput
-                      style={{
-                        marginStart: heightPercentageToDP(1),
-                        flex: 1,
-                        fontFamily: FONT.SF_PRO_REGULAR,
-                        color: COLORS.black,
-                      }}
-                      placeholder="Email"
-                      placeholderTextColor={COLORS.black}
-                      label="Email"
-                      value={email}
-                      onChangeText={text => setEmail(text)}
-                    />
-                  </View>
+              {/** Login Main Container */}
+              <View
+                style={{
+                  flex: 1,
+                  margin: heightPercentageToDP(2),
+                }}>
+                <GradientTextWhite style={styles.textStyle}>
+                  Register Now
+                </GradientTextWhite>
 
-                  {/** Password container */}
+                <ScrollView showsVerticalScrollIndicator={false}>
                   <View
                     style={{
-                      height: heightPercentageToDP(7),
-                      flexDirection: 'row',
-                      backgroundColor: COLORS.white_s,
-                      alignItems: 'center',
-                      paddingHorizontal: heightPercentageToDP(2),
-                      borderRadius: heightPercentageToDP(1),
-                    }}>
-                    <Entypo
-                      name={'lock'}
-                      size={heightPercentageToDP(3)}
-                      color={COLORS.darkGray}
-                    />
-                    <TextInput
-                      style={{
-                        marginStart: heightPercentageToDP(1),
-                        flex: 1,
-                        fontFamily: FONT.SF_PRO_REGULAR,
-                        color: COLORS.black,
-                      }}
-                      placeholder="Password"
-                      value={password}
-                      placeholderTextColor={COLORS.black}
-                      onChangeText={text => setPassword(text)}
-                      secureTextEntry={!passwordVisible}
-                    />
-                    <Entypo
-                      onPress={togglePasswordVisibility}
-                      name={passwordVisible ? 'eye' : 'eye-with-line'}
-                      size={heightPercentageToDP(3)}
-                      color={COLORS.darkGray}
-                    />
-                  </View>
-
-                  {/** Confirm Password container */}
-                  <View
-                    style={{
-                      height: heightPercentageToDP(7),
-                      flexDirection: 'row',
-                      backgroundColor: COLORS.white_s,
-                      alignItems: 'center',
-                      paddingHorizontal: heightPercentageToDP(2),
-                      borderRadius: heightPercentageToDP(1),
-                    }}>
-                    <Entypo
-                      name={'lock'}
-                      size={heightPercentageToDP(3)}
-                      color={COLORS.darkGray}
-                    />
-                    <TextInput
-                      style={{
-                        marginStart: heightPercentageToDP(1),
-                        flex: 1,
-                        fontFamily: FONT.SF_PRO_REGULAR,
-                        color: COLORS.black,
-                      }}
-                      placeholder="Confirm Password"
-                      value={confirmPassword}
-                      placeholderTextColor={COLORS.black}
-                      onChangeText={text => setConfirmPassword(text)}
-                      secureTextEntry={!confirmPasswordVisible}
-                    />
-                    <Entypo
-                      onPress={togglePasswordVisibilityConfirmPassword}
-                      name={passwordVisible ? 'eye' : 'eye-with-line'}
-                      size={heightPercentageToDP(3)}
-                      color={COLORS.darkGray}
-                    />
-                  </View>
-
-                  <View
-                    style={{
-                      height: heightPercentageToDP(7),
-                      borderRadius: heightPercentageToDP(1),
-                      flexDirection: 'row',
-                      justifyContent: 'space-between',
+                      marginTop: heightPercentageToDP(3),
+                      paddingVertical: heightPercentageToDP(2),
                       gap: heightPercentageToDP(2),
                     }}>
-                    <TouchableOpacity
-                      onPress={() => setSelectedRole('admin')}
-                      style={{
-                        flex: 1,
-                        backgroundColor: COLORS.white_s,
-                        paddingHorizontal: heightPercentageToDP(1),
-                        borderRadius: heightPercentageToDP(1),
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        borderColor:
-                          selectedRole === 'admin'
-                            ? COLORS.green
-                            : COLORS.grayBg,
-                        borderWidth: 2,
-                      }}>
-                      <Text
-                        style={{
-                          color: COLORS.black,
-                          fontFamily: FONT.Montserrat_Bold,
-                          fontSize: heightPercentageToDP(2),
-                        }}>
-                        Admin
-                      </Text>
-                    </TouchableOpacity>
+                    {/** Name container */}
 
-                    <TouchableOpacity
-                      onPress={() => setSelectedRole('subadmin')}
+                    <View
                       style={{
-                        flex: 1,
+                        height: heightPercentageToDP(7),
+                        flexDirection: 'row',
                         backgroundColor: COLORS.white_s,
-                        paddingHorizontal: heightPercentageToDP(1),
-                        borderRadius: heightPercentageToDP(1),
-                        justifyContent: 'center',
                         alignItems: 'center',
-                        borderColor:
-                          selectedRole === 'subadmin'
-                            ? COLORS.green
-                            : COLORS.grayBg,
-                        borderWidth: 2,
+                        paddingHorizontal: heightPercentageToDP(2),
+                        borderRadius: heightPercentageToDP(1),
                       }}>
-                      <Text
+                      <Entypo
+                        name={'user'}
+                        size={heightPercentageToDP(3)}
+                        color={COLORS.darkGray}
+                      />
+                      <TextInput
                         style={{
+                          marginStart: heightPercentageToDP(1),
+                          flex: 1,
+                          fontFamily: FONT.SF_PRO_REGULAR,
                           color: COLORS.black,
-                          fontFamily: FONT.Montserrat_Bold,
-                          fontSize: heightPercentageToDP(2),
-                        }}>
-                        Sub Admin
-                      </Text>
-                    </TouchableOpacity>
-                  </View>
+                        }}
+                        placeholder="Name"
+                        placeholderTextColor={COLORS.black}
+                        label="Name"
+                        value={name}
+                        onChangeText={text => setName(text)}
+                      />
+                    </View>
 
+                    {/** Email container */}
+                    <View
+                      style={{
+                        height: heightPercentageToDP(7),
+                        flexDirection: 'row',
+                        backgroundColor: COLORS.white_s,
+                        alignItems: 'center',
+                        paddingHorizontal: heightPercentageToDP(2),
+                        borderRadius: heightPercentageToDP(1),
+                      }}>
+                      <Fontisto
+                        name={'email'}
+                        size={heightPercentageToDP(3)}
+                        color={COLORS.darkGray}
+                      />
+                      <TextInput
+                        style={{
+                          marginStart: heightPercentageToDP(1),
+                          flex: 1,
+                          fontFamily: FONT.SF_PRO_REGULAR,
+                          color: COLORS.black,
+                        }}
+                        placeholder="Email"
+                        placeholderTextColor={COLORS.black}
+                        label="Email"
+                        value={email}
+                        onChangeText={text => setEmail(text)}
+                      />
+                    </View>
+
+                    {/** Password container */}
+                    <View
+                      style={{
+                        height: heightPercentageToDP(7),
+                        flexDirection: 'row',
+                        backgroundColor: COLORS.white_s,
+                        alignItems: 'center',
+                        paddingHorizontal: heightPercentageToDP(2),
+                        borderRadius: heightPercentageToDP(1),
+                      }}>
+                      <Entypo
+                        name={'lock'}
+                        size={heightPercentageToDP(3)}
+                        color={COLORS.darkGray}
+                      />
+                      <TextInput
+                        style={{
+                          marginStart: heightPercentageToDP(1),
+                          flex: 1,
+                          fontFamily: FONT.SF_PRO_REGULAR,
+                          color: COLORS.black,
+                        }}
+                        placeholder="Password"
+                        value={password}
+                        placeholderTextColor={COLORS.black}
+                        onChangeText={text => setPassword(text)}
+                        secureTextEntry={!passwordVisible}
+                      />
+                      <Entypo
+                        onPress={togglePasswordVisibility}
+                        name={passwordVisible ? 'eye' : 'eye-with-line'}
+                        size={heightPercentageToDP(3)}
+                        color={COLORS.darkGray}
+                      />
+                    </View>
+
+                    {/** Confirm Password container */}
+                    <View
+                      style={{
+                        height: heightPercentageToDP(7),
+                        flexDirection: 'row',
+                        backgroundColor: COLORS.white_s,
+                        alignItems: 'center',
+                        paddingHorizontal: heightPercentageToDP(2),
+                        borderRadius: heightPercentageToDP(1),
+                      }}>
+                      <Entypo
+                        name={'lock'}
+                        size={heightPercentageToDP(3)}
+                        color={COLORS.darkGray}
+                      />
+                      <TextInput
+                        style={{
+                          marginStart: heightPercentageToDP(1),
+                          flex: 1,
+                          fontFamily: FONT.SF_PRO_REGULAR,
+                          color: COLORS.black,
+                        }}
+                        placeholder="Confirm Password"
+                        value={confirmPassword}
+                        placeholderTextColor={COLORS.black}
+                        onChangeText={text => setConfirmPassword(text)}
+                        secureTextEntry={!confirmPasswordVisible}
+                      />
+                      <Entypo
+                        onPress={togglePasswordVisibilityConfirmPassword}
+                        name={passwordVisible ? 'eye' : 'eye-with-line'}
+                        size={heightPercentageToDP(3)}
+                        color={COLORS.darkGray}
+                      />
+                    </View>
+
+                       {/** Country container */}
                   <TouchableOpacity
-                    onPress={GoogleSingUp}
+                    onPress={() =>
+                      navigation.navigate('SelectCountry', {
+                        fromScreen: 'Register',
+                        signupwith: 'emailtype',
+                      })
+                    }
                     style={{
-                      padding: heightPercentageToDP(2),
-                      borderRadius: heightPercentageToDP(1),
-                      alignItems: 'center',
-                      backgroundColor: COLORS.white_s,
+                      height: heightPercentageToDP(7),
                       flexDirection: 'row',
-                      justifyContent: 'center',
-                      gap: heightPercentageToDP(2),
+                      backgroundColor: COLORS.white_s,
+                      alignItems: 'center',
+                      paddingHorizontal: heightPercentageToDP(2),
+                      borderRadius: heightPercentageToDP(1),
+                      marginBottom: heightPercentageToDP(2),
                     }}>
+                    <Entypo
+                      name={'location'}
+                      size={heightPercentageToDP(3)}
+                      color={COLORS.darkGray}
+                    />
                     <Text
                       style={{
+                        marginStart: heightPercentageToDP(1),
+                        flex: 1,
+                        fontFamily: FONT.SF_PRO_REGULAR,
                         color: COLORS.black,
-                        fontFamily: FONT.Montserrat_Regular,
                       }}>
-                      Sign up with Google
+                      {selectedCountry}
                     </Text>
-                    <Fontisto
-                      name={'google'}
+                    <Entypo
+                      name={'chevron-with-circle-down'}
                       size={heightPercentageToDP(3)}
                       color={COLORS.darkGray}
                     />
                   </TouchableOpacity>
 
-                  {showProgressBar ? (
-                    <View style={{padding: heightPercentageToDP(2)}}>
-                      <Loading />
-                    </View>
-                  ) : (
-                    <TouchableOpacity
-                      onPress={submitHandler}
+                    <View
                       style={{
-                        backgroundColor: COLORS.blue,
+                        height: heightPercentageToDP(7),
+                        borderRadius: heightPercentageToDP(1),
+                        flexDirection: 'row',
+                        justifyContent: 'space-between',
+                        gap: heightPercentageToDP(2),
+                      }}>
+                      <TouchableOpacity
+                        onPress={() => setSelectedRole('admin')}
+                        style={{
+                          flex: 1,
+                          backgroundColor: COLORS.white_s,
+                          paddingHorizontal: heightPercentageToDP(1),
+                          borderRadius: heightPercentageToDP(1),
+                          justifyContent: 'center',
+                          alignItems: 'center',
+                          borderColor:
+                            selectedRole === 'admin'
+                              ? COLORS.green
+                              : COLORS.grayBg,
+                          borderWidth: 2,
+                        }}>
+                        <Text
+                          style={{
+                            color: COLORS.black,
+                            fontFamily: FONT.Montserrat_Bold,
+                            fontSize: heightPercentageToDP(2),
+                          }}>
+                          Admin
+                        </Text>
+                      </TouchableOpacity>
+
+                      <TouchableOpacity
+                        onPress={() => setSelectedRole('subadmin')}
+                        style={{
+                          flex: 1,
+                          backgroundColor: COLORS.white_s,
+                          paddingHorizontal: heightPercentageToDP(1),
+                          borderRadius: heightPercentageToDP(1),
+                          justifyContent: 'center',
+                          alignItems: 'center',
+                          borderColor:
+                            selectedRole === 'subadmin'
+                              ? COLORS.green
+                              : COLORS.grayBg,
+                          borderWidth: 2,
+                        }}>
+                        <Text
+                          style={{
+                            color: COLORS.black,
+                            fontFamily: FONT.Montserrat_Bold,
+                            fontSize: heightPercentageToDP(2),
+                          }}>
+                          Sub Admin
+                        </Text>
+                      </TouchableOpacity>
+                    </View>
+
+                    <TouchableOpacity
+                      onPress={GoogleSingUp}
+                      style={{
                         padding: heightPercentageToDP(2),
                         borderRadius: heightPercentageToDP(1),
+                        alignItems: 'center',
+                        backgroundColor: COLORS.white_s,
+                        flexDirection: 'row',
+                        justifyContent: 'center',
+                        gap: heightPercentageToDP(2),
+                      }}>
+                      <Text
+                        style={{
+                          color: COLORS.black,
+                          fontFamily: FONT.Montserrat_Regular,
+                        }}>
+                        Sign up with Google
+                      </Text>
+                      <Fontisto
+                        name={'google'}
+                        size={heightPercentageToDP(3)}
+                        color={COLORS.darkGray}
+                      />
+                    </TouchableOpacity>
+
+                    {showProgressBar ? (
+                      <View style={{padding: heightPercentageToDP(2)}}>
+                        <Loading />
+                      </View>
+                    ) : (
+                      <TouchableOpacity
+                        onPress={submitHandler}
+                        style={{
+                          backgroundColor: COLORS.blue,
+                          padding: heightPercentageToDP(2),
+                          borderRadius: heightPercentageToDP(1),
+                          alignItems: 'center',
+                        }}>
+                        <Text
+                          style={{
+                            color: COLORS.white,
+                            fontFamily: FONT.Montserrat_Regular,
+                          }}>
+                          Submit
+                        </Text>
+                      </TouchableOpacity>
+                    )}
+
+                    <View
+                      style={{
+                        padding: heightPercentageToDP(2),
+                        borderRadius: heightPercentageToDP(1),
+                        flexDirection: 'row',
+                        justifyContent: 'center',
                         alignItems: 'center',
                       }}>
                       <Text
                         style={{
-                          color: COLORS.white,
+                          color: COLORS.gray2,
                           fontFamily: FONT.Montserrat_Regular,
                         }}>
-                        Submit
+                        Already have account?
                       </Text>
-                    </TouchableOpacity>
-                  )}
-
-                  <View
-                    style={{
-                      padding: heightPercentageToDP(2),
-                      borderRadius: heightPercentageToDP(1),
-                      flexDirection: 'row',
-                      justifyContent: 'center',
-                      alignItems: 'center',
-                    }}>
-                    <Text
-                      style={{
-                        color: COLORS.gray2,
-                        fontFamily: FONT.Montserrat_Regular,
-                      }}>
-                      Already have account?
-                    </Text>
-                    <TouchableOpacity
-                      onPress={() => navigation.navigate('Login')}
-                      style={{justifyContent: 'center', alignItems: 'center'}}>
-                      <Text
+                      <TouchableOpacity
+                        onPress={() => navigation.navigate('Login')}
                         style={{
-                          color: COLORS.blue,
+                          justifyContent: 'center',
+                          alignItems: 'center',
                         }}>
-                        {' '}
-                        Sign In
-                      </Text>
-                    </TouchableOpacity>
+                        <Text
+                          style={{
+                            color: COLORS.blue,
+                          }}>
+                          {' '}
+                          Sign In
+                        </Text>
+                      </TouchableOpacity>
+                    </View>
                   </View>
-                </View>
-              </ScrollView>
+                </ScrollView>
+              </View>
             </View>
-          </View>
-        </ImageBackground>
-      </View>
+          </ImageBackground>
+        </View>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 };

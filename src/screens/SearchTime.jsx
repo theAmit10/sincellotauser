@@ -63,7 +63,6 @@ const SearchTime = ({route}) => {
     );
     setFilteredData(filtered);
   };
-
   const focused = useIsFocused();
 
   useEffect(() => {
@@ -73,16 +72,6 @@ const SearchTime = ({route}) => {
   useEffect(() => {
     setFilteredData(times); // Update filteredData whenever locations change
   }, [times]);
-
-  // console.log('times :: ' + times);
-  // console.log('Filter length :: ' + filteredData.length);
-
-  const submitHandler = () => {
-    Toast.show({
-      type: 'success',
-      text1: 'Searching',
-    });
-  };
 
   const [selectedItem, setSelectedItem] = useState('');
   const [showProgressBar, setProgressBar] = useState(false);

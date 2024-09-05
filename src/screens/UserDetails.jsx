@@ -188,7 +188,7 @@ const UpdateProfile = ({route}) => {
                           ...styles.textStyle,
                           width: widthPercentageToDP(60),
                         }}>
-                        ₹ {singleuser?.walletOne?.balance}
+                        {singleuser?.walletOne?.balance}
                       </GradientText>
                     </View>
                   </View>
@@ -282,7 +282,7 @@ const UpdateProfile = ({route}) => {
                           ...styles.textStyle,
                           width: widthPercentageToDP(60),
                         }}>
-                        ₹ {singleuser?.walletTwo?.balance}
+                        {singleuser?.walletTwo?.balance}
                       </GradientText>
                     </View>
                   </View>

@@ -28,6 +28,7 @@ import GradientTextWhite from '../components/helpercComponent/GradientTextWhite'
 const CreateLocation = () => {
   const [enterData, setEnterData] = useState('');
   const [rangeData, setRangeData] = useState('');
+  const [maximumReturn, setmaximumReturn] = useState('');
   const {accesstoken} = useSelector(state => state.user);
   const {loading, location} = useSelector(state => state.location);
 
@@ -42,6 +43,14 @@ const CreateLocation = () => {
     });
   }, [loading, dispatch]);
 
+  // FUNCTION TO ADD THE MAXIMUM NUMBER
+  const removeLastCharacter = (input) => {
+    if (input && input.length > 0) {
+      return input.slice(0, -1);
+    }
+    return input;
+  };
+
   const submitHandler = () => {
     console.log('Working on login ');
     if (!enterData) {
@@ -54,12 +63,20 @@ const CreateLocation = () => {
         type: 'error',
         text1: 'Please Enter Maximum Range for this location',
       });
+    } else if (!maximumReturn) {
+      Toast.show({
+        type: 'error',
+        text1: 'Please Enter Maximum Return for this location',
+      });
     } else {
       Toast.show({
         type: 'success',
         text1: 'Processing ',
       });
-      dispatch(createLocation(accesstoken, enterData, rangeData));
+
+      const maximumNumber = removeLastCharacter(maximumReturn);
+
+      dispatch(createLocation(accesstoken, enterData, rangeData,maximumNumber,maximumReturn ));
     }
   };
 
@@ -189,11 +206,53 @@ const CreateLocation = () => {
                     color: COLORS.black,
                     fontSize: heightPercentageToDP(2.5),
                   }}
-                  placeholder="Enter Maximum Range"
+                  placeholder="For example:  2 - 2x"
                   label="maximum range"
                   placeholderTextColor={COLORS.darkGray}
                   value={rangeData}
                   onChangeText={text => setRangeData(text)}
+                />
+              </View>
+
+              {/** FOR MAXIMUM RETURN */}
+              <GradientText
+                style={{
+                  fontFamily: FONT.Montserrat_Regular,
+                  fontSize: heightPercentageToDP(2.5),
+                  color: COLORS.black,
+                  marginBottom: heightPercentageToDP(1),
+                  marginTop: heightPercentageToDP(2),
+                }}>
+                Maximum Return
+              </GradientText>
+
+              <View
+                style={{
+                  height: heightPercentageToDP(7),
+                  flexDirection: 'row',
+                  backgroundColor: COLORS.white_s,
+                  alignItems: 'center',
+                  paddingHorizontal: heightPercentageToDP(2),
+                  borderRadius: heightPercentageToDP(1),
+                }}>
+                <Entypo
+                  name={'area-graph'}
+                  size={heightPercentageToDP(3)}
+                  color={COLORS.darkGray}
+                />
+                <TextInput
+                  style={{
+                    marginStart: heightPercentageToDP(1),
+                    flex: 1,
+                    fontFamily: FONT.Montserrat_Regular,
+                    color: COLORS.black,
+                    fontSize: heightPercentageToDP(2.5),
+                  }}
+                  placeholder="For example:  2x"
+                  label="maximum range"
+                  placeholderTextColor={COLORS.darkGray}
+                  value={maximumReturn}
+                  onChangeText={text => setmaximumReturn(text)}
                 />
               </View>
             </View>

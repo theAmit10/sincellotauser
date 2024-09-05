@@ -173,7 +173,7 @@ const EditUserWallet = ({route}) => {
                 Current Balance
               </GradientTextWhite>
               <GradientText style={styles.textStyle}>
-                ₹ {data.balance}
+                {data.balance}
               </GradientText>
 
               {/** Change name container */}

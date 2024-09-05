@@ -90,6 +90,7 @@ const CREATE_BANK_API = server + 'result/addbankpayment';
 const CREATE_PAYPAL_API = server + 'result/addpaypalpayment';
 const CREATE_SKRILL_API = server + 'result/addskrillpayment';
 const CREATE_CRYPTO_API = server + 'result/addcryptopayment';
+const UPDATE_SUBADMIN_ROLE_API = server + 'user/updaterole';
 
 
 
@@ -157,4 +158,5 @@ const CREATE_CRYPTO_API = server + 'result/addcryptopayment';
   CREATE_PAYPAL_API,
   CREATE_SKRILL_API,
   CREATE_CRYPTO_API,
+  UPDATE_SUBADMIN_ROLE_API
 };

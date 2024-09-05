@@ -291,7 +291,7 @@ const AllCountry = () => {
                           fontFamily: FONT.Montserrat_Regular,
                           color: COLORS.black,
                         }}>
-                        Currency Symbol
+                        Currency Name
                       </Text>
                       <Text
                         style={{

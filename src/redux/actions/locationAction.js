@@ -66,7 +66,7 @@ export const getLocationDetails = (accesstoken, id) => async dispatch => {
 };
 
 // Creating Locations
-export const createLocation = (accesstoken, lotlocation,maximumRange) => async dispatch => {
+export const createLocation = (accesstoken, lotlocation,maximumRange,maximumNumber,maximumReturn) => async dispatch => {
   try {
     dispatch({
       type: 'createLocationRequest',
@@ -77,6 +77,8 @@ export const createLocation = (accesstoken, lotlocation,maximumRange) => async d
       {
         lotlocation: lotlocation,
         maximumRange: maximumRange,
+        maximumNumber: maximumNumber,
+        maximumReturn: maximumReturn,
       },
       {
         headers: {

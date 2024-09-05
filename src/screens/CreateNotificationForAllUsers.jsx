@@ -31,15 +31,12 @@ import GradientTextWhite from '../components/helpercComponent/GradientTextWhite'
 const CreateNotificationForAllUsers = () => {
   const [enterData, setEnterData] = useState('');
   const {accesstoken} = useSelector(state => state.user);
-  const {loading, location} = useSelector(state => state.location);
+
   const [titleValue, setTitle] = useState('');
   const [discriptionValue, setDescription] = useState('');
-
   const dispatch = useDispatch();
   const navigation = useNavigation();
-
   const [showProgressBar, setProgressBar] = useState(false);
-
   const updateProfileHandler = async () => {
     if (!titleValue) {
       Toast.show({

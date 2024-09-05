@@ -31,6 +31,7 @@ import ImageResizer from '@bam.tech/react-native-image-resizer';
 import axios from 'axios';
 import UrlHelper from '../../helper/UrlHelper';
 import {useCreateDepositMutation, useDeleteCryptoAccountMutation} from '../../helper/Networkcall';
+import { serverName } from '../../redux/store';
 
 const upiapidata = [
   {name: 'Wasu', upiid: '9876543210@ybl', id: '1'},
@@ -180,7 +181,7 @@ const AllCryptoDepositPayment = () => {
                         start={{x: 0, y: 0}} // start from left
                         end={{x: 1, y: 0}} // end at right
                         style={{
-                          height: heightPercentageToDP(24),
+                         
                           borderRadius: heightPercentageToDP(2),
                           marginHorizontal: heightPercentageToDP(2),
                           marginVertical: heightPercentageToDP(1),
@@ -218,7 +219,7 @@ const AllCryptoDepositPayment = () => {
                               />
                             </View>
                             <GradientTextWhite style={styles.textStyleContent}>
-                              Paypal
+                              Crypto
                             </GradientTextWhite>
                             <GradientTextWhite style={styles.textStyleContent}>
                               {item.paymentId}
@@ -337,6 +338,43 @@ const AllCryptoDepositPayment = () => {
                                 />
                               </LinearGradient>
                             </TouchableOpacity>
+                          </View>
+                        </View>
+
+                         {/** QR code */}
+                         <View
+                          style={{
+                            flex: 2,
+                            gap: heightPercentageToDP(2),
+                            margin: heightPercentageToDP(2),
+                          }}>
+                          <View
+                            style={{
+                              backgroundColor: COLORS.white_s,
+                              padding: heightPercentageToDP(1),
+                              borderRadius: heightPercentageToDP(1),
+                              justifyContent: 'center',
+                              alignItems: "center"
+                            }}>
+                            {item.qrcode ? (
+                              <Image
+                              source={{uri: `${serverName}/uploads/cryptoqrcode/${item.qrcode}`}}
+                                resizeMode="cover"
+                                style={{
+                                  height: 150,
+                                  width: 150,
+                                }}
+                              />
+                            ) : (
+                              <Image
+                                source={require('../../../assets/image/crypto.png')}
+                                resizeMode="cover"
+                                style={{
+                                  height: 80,
+                                  width: 80,
+                                }}
+                              />
+                            )}
                           </View>
                         </View>
                       </LinearGradient>

@@ -73,57 +73,41 @@ const Payment = () => {
               <GradientTextWhite style={styles.textStyle}>
                 Payment Deposit
               </GradientTextWhite>
-              <ScrollView contentContainerStyle={{paddingBottom: heightPercentageToDP(2)}}
-              showsVerticalScrollIndicator={false}
-              >
-                
-                {/** UPI */}
-                <TouchableOpacity onPress={() => navigation.navigate('AllUpiDepositPayment')}>
+              <ScrollView
+                contentContainerStyle={{paddingBottom: heightPercentageToDP(2)}}
+                showsVerticalScrollIndicator={false}>
+                {/** Crypto */}
+                <TouchableOpacity
+                  onPress={() =>
+                    navigation.navigate('AllCryptoDepositPayment')
+                  }>
                   <LinearGradient
                     colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
-                    style={styles.paymentOption}
-                    start={{ x: 0, y: 0 }} // start from left
-                    end={{ x: 1, y: 0 }}   // end at right
-                    >
-                    <View style={styles.iconContainer}>
-                      <Image
-                        source={require('../../../assets/image/upi.png')}
-                        resizeMode="cover"
-                        style={styles.icon}
-                      />
-                    </View>
-                    <GradientTextWhite style={styles.textStyleContent}>
-                      UPI
-                    </GradientTextWhite>
-                  </LinearGradient>
-                </TouchableOpacity>
-
-                {/** BANK */}
-                <TouchableOpacity onPress={() => navigation.navigate('AllBankDepositPayment')}>
-                  <LinearGradient
-                    colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
-                    start={{ x: 0, y: 0 }} // start from left
-                    end={{ x: 1, y: 0 }}   // end at right
+                    start={{x: 0, y: 0}} // start from left
+                    end={{x: 1, y: 0}} // end at right
                     style={styles.paymentOption}>
                     <View style={styles.iconContainer}>
                       <Image
-                        source={require('../../../assets/image/bank.png')}
+                        source={require('../../../assets/image/crypto.png')}
                         resizeMode="cover"
                         style={styles.icon}
                       />
                     </View>
                     <GradientTextWhite style={styles.textStyleContent}>
-                      Bank
+                      Crypto
                     </GradientTextWhite>
                   </LinearGradient>
                 </TouchableOpacity>
 
                 {/** Paypal */}
-                <TouchableOpacity onPress={() => navigation.navigate('AllPaypalDepositPayment')}>
+                <TouchableOpacity
+                  onPress={() =>
+                    navigation.navigate('AllPaypalDepositPayment')
+                  }>
                   <LinearGradient
                     colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
-                    start={{ x: 0, y: 0 }} // start from left
-                    end={{ x: 1, y: 0 }}   // end at right
+                    start={{x: 0, y: 0}} // start from left
+                    end={{x: 1, y: 0}} // end at right
                     style={styles.paymentOption}>
                     <View style={styles.iconContainer}>
                       <Image
@@ -139,11 +123,14 @@ const Payment = () => {
                 </TouchableOpacity>
 
                 {/** Skrill */}
-                <TouchableOpacity onPress={() => navigation.navigate('AllSkrillPaymentPayment')}>
+                <TouchableOpacity
+                  onPress={() =>
+                    navigation.navigate('AllSkrillPaymentPayment')
+                  }>
                   <LinearGradient
                     colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
-                    start={{ x: 0, y: 0 }} // start from left
-                    end={{ x: 1, y: 0 }}   // end at right
+                    start={{x: 0, y: 0}} // start from left
+                    end={{x: 1, y: 0}} // end at right
                     style={styles.paymentOption}>
                     <View style={styles.iconContainer}>
                       <Image
@@ -158,22 +145,45 @@ const Payment = () => {
                   </LinearGradient>
                 </TouchableOpacity>
 
-                {/** Crypto */}
-                <TouchableOpacity onPress={() => navigation.navigate('AllCryptoDepositPayment')}>
+                {/** BANK */}
+                <TouchableOpacity
+                  onPress={() => navigation.navigate('AllBankDepositPayment')}>
                   <LinearGradient
                     colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
-                    start={{ x: 0, y: 0 }} // start from left
-                    end={{ x: 1, y: 0 }}   // end at right
+                    start={{x: 0, y: 0}} // start from left
+                    end={{x: 1, y: 0}} // end at right
                     style={styles.paymentOption}>
                     <View style={styles.iconContainer}>
                       <Image
-                        source={require('../../../assets/image/crypto.png')}
+                        source={require('../../../assets/image/bank.png')}
                         resizeMode="cover"
                         style={styles.icon}
                       />
                     </View>
                     <GradientTextWhite style={styles.textStyleContent}>
-                      Crypto
+                      Bank
+                    </GradientTextWhite>
+                  </LinearGradient>
+                </TouchableOpacity>
+
+                {/** UPI */}
+                <TouchableOpacity
+                  onPress={() => navigation.navigate('AllUpiDepositPayment')}>
+                  <LinearGradient
+                    colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
+                    style={styles.paymentOption}
+                    start={{x: 0, y: 0}} // start from left
+                    end={{x: 1, y: 0}} // end at right
+                  >
+                    <View style={styles.iconContainer}>
+                      <Image
+                        source={require('../../../assets/image/upi.png')}
+                        resizeMode="cover"
+                        style={styles.icon}
+                      />
+                    </View>
+                    <GradientTextWhite style={styles.textStyleContent}>
+                      UPI
                     </GradientTextWhite>
                   </LinearGradient>
                 </TouchableOpacity>

@@ -1,4 +1,5 @@
 import {
+  ImageBackground,
   SafeAreaView,
   ScrollView,
   StyleSheet,
@@ -24,13 +25,15 @@ import Loading from '../components/helpercComponent/Loading';
 import UrlHelper from '../helper/UrlHelper';
 import axios from 'axios';
 import DateTimePicker from '@react-native-community/datetimepicker';
+import GradientTextWhite from '../components/helpercComponent/GradientTextWhite';
+import { getTimeAccordingLocation } from '../redux/actions/timeAction';
 
 const UpdateResult = ({route}) => {
   const {locationdata, timedata, datedata, resultdata} = route.params;
 
   console.log(JSON.stringify(locationdata));
   const [enterData, setEnterData] = useState(resultdata.resultNumber);
-  const [nextResultData, setNextResultData] = useState(resultdata.nextresulttime);
+  const [nextResultData, setNextResultData] = useState("");
   const [loading, setLoading] = useState(false);
 
   const dispatch = useDispatch();
@@ -68,7 +71,7 @@ const UpdateResult = ({route}) => {
     return `${paddedHours}:${paddedMinutes} ${ampm}`;
   };
 
-  const checkForSameTime = (selectedTime) => {
+  const checkForSameTime = selectedTime => {
     const currentTime = formatTime(new Date());
     if (selectedTime === currentTime) {
       Toast.show({
@@ -102,8 +105,7 @@ const UpdateResult = ({route}) => {
         text1: 'Error',
         text2: 'Next result time and current time cannot be the same',
       });
-    } 
-    else {
+    } else {
       Toast.show({
         type: 'success',
         text1: 'Processing ',
@@ -155,204 +157,269 @@ const UpdateResult = ({route}) => {
     }
   };
 
+
+  const {times, loading: loadingAllTime} = useSelector(state => state.time);
+
+  useEffect(() => {
+    dispatch(getTimeAccordingLocation(accesstoken, locationdata._id));
+  }, [dispatch]);
+
+  // const getNextResultTime = (times, currentTime) => {
+  //   const timeList = times.map(time => time.lottime);
+  //   const index = timeList.indexOf(currentTime);
+
+  //   if (index === -1) {
+  //     return timeList[0];
+  //   }
+
+  //   if (index === timeList.length - 1) {
+  //     return timeList[0];
+  //   }
+
+  //   return timeList[index + 1];
+  // };
+  function getNextResultTime(times, curtime) {
+    // Sort times based on the lottime to ensure they are in order
+    const sortedTimes = [...times].sort((a, b) => {
+      return new Date(`1970-01-01T${a.lottime}Z`) - new Date(`1970-01-01T${b.lottime}Z`);
+    });
+  
+    // Find the index of the current time in the sorted times array
+    const curIndex = sortedTimes.findIndex(time => time.lottime === curtime);
+  
+    // If curtime is not found, or if there's only one time in the list
+    if (curIndex === -1 || sortedTimes.length === 1) {
+      return sortedTimes[0]?.lottime || curtime;
+    }
+  
+    // Check if curtime is the last item in the list
+    if (curIndex === sortedTimes.length - 1) {
+      return sortedTimes[0].lottime; // Return the first time in the list
+    }
+  
+    // Return the next time after curtime
+    return sortedTimes[curIndex + 1].lottime;
+  }
+
+  useEffect(() => {
+    console.log('Getting all the times');
+    if (times) {
+      console.log('times', getNextResultTime(times, timedata.lottime));
+      setNextResultData(getNextResultTime(times, timedata.lottime));
+    }
+  }, [loadingAllTime]);
+
   return (
     <SafeAreaView style={{flex: 1}}>
       <Background />
 
-      <View
-        style={{
-          margin: heightPercentageToDP(2),
-          backgroundColor: 'transparent',
-        }}>
-        <GradientText style={styles.textStyle}>Update</GradientText>
+      <View style={{flex: 1, justifyContent: 'flex-end'}}>
         <View
           style={{
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            flexDirection: 'row',
+            margin: heightPercentageToDP(2),
+            backgroundColor: 'transparent',
           }}>
-          <GradientText style={styles.textStyle}>Result</GradientText>
-          <GradientText
+          <GradientText style={styles.textStyle}>Update</GradientText>
+          <View
             style={{
-              fontSize: heightPercentageToDP(2),
-              fontFamily: FONT.Montserrat_Bold,
-              marginEnd: heightPercentageToDP(2),
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              flexDirection: 'row',
             }}>
-            {locationdata?.maximumRange}
-          </GradientText>
+            <GradientText style={styles.textStyle}>Result</GradientText>
+            <GradientText
+              style={{
+                fontSize: heightPercentageToDP(2),
+                fontFamily: FONT.Montserrat_Bold,
+                marginEnd: heightPercentageToDP(2),
+              }}>
+              {locationdata?.maximumRange}
+            </GradientText>
+          </View>
         </View>
-      </View>
-
-      {/** Login Cointainer */}
-
-      <View
-        style={{
-          height: heightPercentageToDP(65),
-          width: widthPercentageToDP(100),
-          backgroundColor: COLORS.white_s,
-          borderTopLeftRadius: heightPercentageToDP(5),
-          borderTopRightRadius: heightPercentageToDP(5),
-        }}>
-        {/** Top Style View */}
-        <View
+        <ImageBackground
+          source={require('../../assets/image/tlwbg.jpg')}
           style={{
-            height: heightPercentageToDP(5),
-            width: widthPercentageToDP(100),
-            justifyContent: 'center',
-            alignItems: 'center',
+            width: '100%',
+            height: heightPercentageToDP(65),
+          }}
+          imageStyle={{
+            borderTopLeftRadius: heightPercentageToDP(5),
+            borderTopRightRadius: heightPercentageToDP(5),
           }}>
           <View
             style={{
-              width: widthPercentageToDP(20),
-              height: heightPercentageToDP(0.8),
-              backgroundColor: COLORS.grayBg,
-              borderRadius: heightPercentageToDP(2),
-            }}></View>
-        </View>
-
-        <ScrollView>
-          {/** Result Main Container */}
-
-          <View style={{padding: heightPercentageToDP(2)}}>
-            <GradientText
-              style={{
-                fontFamily: FONT.Montserrat_Regular,
-                fontSize: heightPercentageToDP(2.5),
-                color: COLORS.black,
-                marginBottom: heightPercentageToDP(1),
-              }}>
-              Current Result
-            </GradientText>
-            <GradientText style={styles.textStyle}>
-              {resultdata.resultNumber}
-            </GradientText>
-
-            {/** NExt Result */}
-
-            <GradientText
-              style={{
-                fontFamily: FONT.Montserrat_Regular,
-                fontSize: heightPercentageToDP(2.5),
-                color: COLORS.black,
-                marginTop: heightPercentageToDP(1),
-              }}>
-              Current Next Result Time
-            </GradientText>
-            <GradientText style={styles.textStyle}>
-              {resultdata.nextresulttime}
-            </GradientText>
-
+              height: heightPercentageToDP(65),
+              width: widthPercentageToDP(100),
+              borderTopLeftRadius: heightPercentageToDP(5),
+              borderTopRightRadius: heightPercentageToDP(5),
+            }}>
+            {/** Top Style View */}
             <View
               style={{
-                height: heightPercentageToDP(7),
-                flexDirection: 'row',
-                backgroundColor: COLORS.grayHalfBg,
+                height: heightPercentageToDP(5),
+                width: widthPercentageToDP(100),
+                justifyContent: 'center',
                 alignItems: 'center',
-                paddingHorizontal: heightPercentageToDP(2),
-                borderRadius: heightPercentageToDP(1),
-                marginTop: heightPercentageToDP(5),
               }}>
-              <Entypo
-                name={'price-ribbon'}
-                size={heightPercentageToDP(3)}
-                color={COLORS.darkGray}
-              />
-              <TextInput
+              <View
                 style={{
-                  marginStart: heightPercentageToDP(1),
-                  flex: 1,
-                  fontFamily: FONT.Montserrat_Regular,
-                  fontSize: heightPercentageToDP(2.5),
-                  color: COLORS.black,
-                }}
-                placeholder="Enter New Result"
-                placeholderTextColor={COLORS.black}
-                label="result"
-                value={enterData}
-                onChangeText={text => setEnterData(text)}
-              />
+                  width: widthPercentageToDP(20),
+                  height: heightPercentageToDP(0.8),
+                  backgroundColor: COLORS.grayBg,
+                  borderRadius: heightPercentageToDP(2),
+                }}></View>
             </View>
 
-            {/** Next Result Data */}
+            <ScrollView>
+              {/** Result Main Container */}
 
-            <GradientText
-              style={{
-                fontFamily: FONT.Montserrat_Regular,
-                fontSize: heightPercentageToDP(3),
-                color: COLORS.black,
-                marginTop: heightPercentageToDP(3),
-              }}>
-              Next Result
-            </GradientText>
+              <View style={{padding: heightPercentageToDP(2)}}>
+                <GradientTextWhite
+                  style={{
+                    fontFamily: FONT.Montserrat_Regular,
+                    fontSize: heightPercentageToDP(2.5),
+                    color: COLORS.black,
+                    marginBottom: heightPercentageToDP(1),
+                  }}>
+                  Current Result
+                </GradientTextWhite>
+                <GradientTextWhite style={styles.textStyle}>
+                  {resultdata.resultNumber}
+                </GradientTextWhite>
 
-            <View
-              style={{
-                height: heightPercentageToDP(7),
-                flexDirection: 'row',
-                backgroundColor: COLORS.grayHalfBg,
-                alignItems: 'center',
-                paddingHorizontal: heightPercentageToDP(2),
-                borderRadius: heightPercentageToDP(1),
-                marginTop: heightPercentageToDP(1),
-              }}>
-              <Entypo
-                name={'clock'}
-                size={heightPercentageToDP(3)}
-                color={COLORS.darkGray}
-              />
-              <TextInput
-                style={{
-                  marginStart: heightPercentageToDP(1),
-                  flex: 1,
-                  fontFamily: FONT.Montserrat_Regular,
-                  fontSize: heightPercentageToDP(2.5),
-                  color: COLORS.black,
-                }}
-                placeholder="Enter Next Result Time"
-                placeholderTextColor={COLORS.black}
-                label="result"
-                value={nextResultData}
-                onChangeText={text => setNextResultData(text)}
-              />
-            </View>
+                {/** NExt Result */}
+
+                <GradientTextWhite
+                  style={{
+                    fontFamily: FONT.Montserrat_Regular,
+                    fontSize: heightPercentageToDP(2.5),
+                    color: COLORS.black,
+                    marginTop: heightPercentageToDP(1),
+                  }}>
+                  Current Next Result Time
+                </GradientTextWhite>
+                <GradientText style={styles.textStyle}>
+                  {resultdata.nextresulttime}
+                </GradientText>
+
+                <View
+                  style={{
+                    height: heightPercentageToDP(7),
+                    flexDirection: 'row',
+                    backgroundColor: COLORS.grayHalfBg,
+                    alignItems: 'center',
+                    paddingHorizontal: heightPercentageToDP(2),
+                    borderRadius: heightPercentageToDP(1),
+                    marginTop: heightPercentageToDP(5),
+                  }}>
+                  <Entypo
+                    name={'price-ribbon'}
+                    size={heightPercentageToDP(3)}
+                    color={COLORS.darkGray}
+                  />
+                  <TextInput
+                    style={{
+                      marginStart: heightPercentageToDP(1),
+                      flex: 1,
+                      fontFamily: FONT.Montserrat_Regular,
+                      fontSize: heightPercentageToDP(2.5),
+                      color: COLORS.black,
+                    }}
+                    placeholder="Enter New Result"
+                    placeholderTextColor={COLORS.black}
+                    label="result"
+                    value={enterData}
+                    onChangeText={text => setEnterData(text)}
+                  />
+                </View>
+
+                {/** Next Result Data */}
+
+                <GradientText
+                  style={{
+                    fontFamily: FONT.Montserrat_Regular,
+                    fontSize: heightPercentageToDP(3),
+                    color: COLORS.black,
+                    marginTop: heightPercentageToDP(3),
+                  }}>
+                  Next Result
+                </GradientText>
+
+                <View
+                  style={{
+                    height: heightPercentageToDP(7),
+                    flexDirection: 'row',
+                    backgroundColor: COLORS.grayHalfBg,
+                    alignItems: 'center',
+                    paddingHorizontal: heightPercentageToDP(2),
+                    borderRadius: heightPercentageToDP(1),
+                    marginTop: heightPercentageToDP(1),
+                  }}>
+                  <Entypo
+                    name={'clock'}
+                    size={heightPercentageToDP(3)}
+                    color={COLORS.darkGray}
+                  />
+                  <TextInput
+                    style={{
+                      marginStart: heightPercentageToDP(1),
+                      flex: 1,
+                      fontFamily: FONT.Montserrat_Regular,
+                      fontSize: heightPercentageToDP(2.5),
+                      color: COLORS.black,
+                    }}
+                    placeholder="Enter Next Result Time"
+                    placeholderTextColor={COLORS.black}
+                    label="result"
+                    value={nextResultData}
+                    onChangeText={text => setNextResultData(text)}
+                  />
+                </View>
+              </View>
+              {/** Submit container */}
+
+              {loading ? (
+                <View
+                  style={{
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    flex: 1,
+                  }}>
+                  <Loading />
+                </View>
+              ) : (
+                <View
+                  style={{
+                    justifyContent: 'flex-end',
+                    flex: 1,
+                    alignItems: 'flex-end',
+                    paddingVertical: heightPercentageToDP(4),
+                    paddingHorizontal: heightPercentageToDP(2),
+                  }}>
+                  <TouchableOpacity
+                    onPress={submitHandler}
+                    className="rounded-full"
+                    style={{
+                      height: heightPercentageToDP(7),
+                      width: heightPercentageToDP(7),
+                      flexDirection: 'row',
+                      backgroundColor: COLORS.blue,
+                      alignItems: 'center',
+                      paddingHorizontal: heightPercentageToDP(2),
+                      borderRadius: heightPercentageToDP(1),
+                    }}>
+                    <Ionicons
+                      name={'send'}
+                      size={heightPercentageToDP(3)}
+                      color={COLORS.white}
+                    />
+                  </TouchableOpacity>
+                </View>
+              )}
+            </ScrollView>
           </View>
-          {/** Submit container */}
-
-          {loading ? (
-            <View
-              style={{justifyContent: 'center', alignItems: 'center', flex: 1}}>
-              <Loading />
-            </View>
-          ) : (
-            <View
-              style={{
-                justifyContent: 'flex-end',
-                flex: 1,
-                alignItems: 'flex-end',
-                paddingVertical: heightPercentageToDP(4),
-                paddingHorizontal: heightPercentageToDP(2),
-              }}>
-              <TouchableOpacity
-                onPress={submitHandler}
-                className="rounded-full"
-                style={{
-                  height: heightPercentageToDP(7),
-                  width: heightPercentageToDP(7),
-                  flexDirection: 'row',
-                  backgroundColor: COLORS.blue,
-                  alignItems: 'center',
-                  paddingHorizontal: heightPercentageToDP(2),
-                  borderRadius: heightPercentageToDP(1),
-                }}>
-                <Ionicons
-                  name={'send'}
-                  size={heightPercentageToDP(3)}
-                  color={COLORS.white}
-                />
-              </TouchableOpacity>
-            </View>
-          )}
-        </ScrollView>
+        </ImageBackground>
       </View>
     </SafeAreaView>
   );

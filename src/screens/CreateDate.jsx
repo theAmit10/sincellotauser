@@ -25,6 +25,7 @@ import Loading from '../components/helpercComponent/Loading';
 import axios from 'axios';
 import UrlHelper from '../helper/UrlHelper';
 import DateTimePicker from '@react-native-community/datetimepicker';
+import { useCreatePlayzoneMutation } from '../helper/Networkcall';
 
 const CreateDate = ({route}) => {
   const [enterData, setEnterData] = useState('');
@@ -32,28 +33,16 @@ const CreateDate = ({route}) => {
   const {timedata, locationdata} = route.params;
   const dispatch = useDispatch();
 
-  // const {loading, message, error} = useSelector(state => state.date);
   const {accesstoken} = useSelector(state => state.user);
-
   const [loading, setLoading] = useState(false);
-
   const [fromDate, setFromDate] = useState(new Date());
   const [showFrom, setShowFrom] = useState(false);
 
-  // const onChangeFrom = (event, selectedDate) => {
-  //   const currentDate = selectedDate || fromDate;
-  //   // Define options for formatting the date
-  //   const options = { day: '2-digit', month: 'numeric',year: 'numeric'};
+  console.log("Location data :: "+locationdata.maximumNumber)
 
-  //   // Format the date using toLocaleDateString
-  //   const formattedDate = currentDate.toLocaleDateString('en-US', options);
-  //   // setShow(Platform.OS === 'ios');
-  //   setShowFrom(Platform.OS === 'ios');
-  //   setFromDate(currentDate);
-  //   console.log(currentDate)
-  //   console.log(formattedDate)
-  //   setEnterData(currentDate)
-  // };
+  // FOR CREATING PLAYZONE
+  const [createPlayzone, {isLoading, error}] =
+    useCreatePlayzoneMutation();
 
   const onChangeFrom = (event, selectedDate) => {
     const currentDate = selectedDate || fromDate;
@@ -106,6 +95,27 @@ const CreateDate = ({route}) => {
     }
   };
 
+  const createPlaynumbersArray = (numStr) => {
+    const num = parseInt(numStr, 10);
+    const resultArray = [];
+  
+    for (let i = 1; i <= num; i++) {
+      resultArray.push({
+        playnumber: i,
+        numbercount: 0,
+        amount: 0,
+        distributiveamount: 0,
+        users: [],
+      });
+    }
+  
+    return resultArray;
+  };
+
+  // Example usage:
+  const array = createPlaynumbersArray("10");
+  console.log(array);
+
   const createDateForLocation = async (accesstoken, lottime, lotdate) => {
     try {
       setLoading(true);
@@ -124,6 +134,39 @@ const CreateDate = ({route}) => {
       );
 
       console.log('Data :: ' + data.message);
+
+      // Now Create Playzone
+      try {
+        const body = {
+          playnumbers: createPlaynumbersArray(locationdata.maximumNumber),
+          lotdate: data.lotdate._id,
+          lottime: timedata._id,
+          lotlocation: locationdata._id
+        };
+  
+        console.log('JSON BODY :: ', JSON.stringify(body));
+  
+        const res = await createPlayzone({
+          accesstoken: accesstoken,
+          body: body,
+        }).unwrap();
+  
+      } catch (error) {
+        console.log('Error Creating playzone:', error);
+        if (error.response) {
+          Toast.show({ type: 'error', text1: error.response.data });
+        } else if (error.request) {
+          Toast.show({
+            type: 'error',
+            text1: 'Request was made, but no response was received',
+          });
+        } else {
+          Toast.show({ type: 'error', text1: error.message });
+        }
+      }
+
+
+
       Toast.show({
         type: 'success',
         text1: data.message,

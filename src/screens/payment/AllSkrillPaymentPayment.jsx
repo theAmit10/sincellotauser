@@ -214,7 +214,7 @@ const AllSkrillPaymentPayment = () => {
                               />
                             </View>
                             <GradientTextWhite style={styles.textStyleContent}>
-                              Paypal
+                              Skrill
                             </GradientTextWhite>
                             <GradientTextWhite style={styles.textStyleContent}>
                               {item.paymentId}

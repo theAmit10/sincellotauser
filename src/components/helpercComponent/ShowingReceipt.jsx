@@ -85,7 +85,7 @@ const ShowingReceipt = ({route}) => {
                   }}>
                   <Image
                     source={{
-                      uri: `${serverName}/uploads/deposit/${item?.receipt}`,
+                      uri: `${serverName}/uploads/deposit/${item.receipt}`,
                     }}
                     resizeMode="cover"
                     style={{

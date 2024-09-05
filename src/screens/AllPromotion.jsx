@@ -48,12 +48,6 @@ const AllPromotion = () => {
     dispatch(loadAllPromotion(accesstoken));
   }, [dispatch, focused]);
 
-  const submitHandler = () => {
-    Toast.show({
-      type: 'success',
-      text1: 'Searching',
-    });
-  };
 
   const [selectedItem, setSelectedItem] = useState('');
   const [showProgressBar, setProgressBar] = useState(false);

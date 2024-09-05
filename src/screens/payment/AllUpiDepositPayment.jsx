@@ -31,7 +31,8 @@ import DocumentPicker from 'react-native-document-picker';
 import ImageResizer from '@bam.tech/react-native-image-resizer';
 import axios from 'axios';
 import UrlHelper from '../../helper/UrlHelper';
-import { useDeleteUpiAccountMutation } from '../../helper/Networkcall';
+import {useDeleteUpiAccountMutation} from '../../helper/Networkcall';
+import { serverName } from '../../redux/store';
 // import {useCreateDepositMutation} from '../../helper/Networkcall';
 
 const upiapidata = [
@@ -48,8 +49,6 @@ const AllUpiDepositPayment = () => {
   const {accesstoken, user} = useSelector(state => state.user);
 
   const [seletedItem, setSelectedItem] = useState('');
-  
-
 
   const copyToClipboard = val => {
     Clipboard.setString(val);
@@ -65,13 +64,7 @@ const AllUpiDepositPayment = () => {
     setUpiVisible(false);
   };
 
-
-
-
-
-  useEffect(() => {
-    allTheDepositData();
-  }, [isFocused, loadingAllData, allDepositdata]);
+ 
 
   const [loadingAllData, setLoadingAllData] = useState(false);
   const [allDepositdata, setAllDepositData] = useState([]);
@@ -80,6 +73,10 @@ const AllUpiDepositPayment = () => {
     deleteUpiAccount,
     {isLoading: deleteIsLoading, isError: deleteIsError},
   ] = useDeleteUpiAccountMutation();
+
+  useEffect(() => {
+    allTheDepositData();
+  }, [isFocused, loadingAllData, allDepositdata]);
 
   const allTheDepositData = async () => {
     try {
@@ -104,23 +101,21 @@ const AllUpiDepositPayment = () => {
     }
   };
 
- 
+  // FOR DELETING DATA
 
- // FOR DELETING DATA
+  const deletingData = async item => {
+    console.log('Deleting Data');
+    setSelectedItem(item._id);
 
- const deletingData = async item => {
-  console.log('Deleting Data');
-  setSelectedItem(item._id);
+    const res = await deleteUpiAccount({
+      accesstoken: accesstoken,
+      id: item._id,
+    }).unwrap();
 
-  const res = await deleteUpiAccount({
-    accesstoken: accesstoken,
-    id: item._id,
-  }).unwrap();
+    allTheDepositData();
 
-  allTheDepositData();
-
-  Toast.show({type: 'success', text1: 'Success', text2: res.message});
-};
+    Toast.show({type: 'success', text1: 'Success', text2: res.message});
+  };
 
   return (
     <View style={{flex: 1}}>
@@ -167,10 +162,11 @@ const AllUpiDepositPayment = () => {
 
             {/** FOR UPI ID DEPOSIT OPTION */}
             {loadingAllData ? (
-              <View style={{
-                flex: 1,
-              }}>
-                <Loading key={'No account found'} />
+              <View
+                style={{
+                  flex: 1,
+                }}>
+                <Loading key={'No account found'} color={COLORS.white_s} />
               </View>
             ) : (
               <ScrollView showsVerticalScrollIndicator={false}>
@@ -184,7 +180,6 @@ const AllUpiDepositPayment = () => {
                         start={{x: 0, y: 0}} // start from left
                         end={{x: 1, y: 0}} // end at right
                         style={{
-                          height: heightPercentageToDP(20),
                           borderRadius: heightPercentageToDP(2),
                           marginHorizontal: heightPercentageToDP(2),
                           marginVertical: heightPercentageToDP(1),
@@ -235,8 +230,6 @@ const AllUpiDepositPayment = () => {
                               flexDirection: 'row',
                               gap: heightPercentageToDP(2),
                             }}>
-                           
-
                             {/** DELETE BUTTON */}
                             {deleteIsLoading ? (
                               seletedItem === item._id ? (
@@ -343,6 +336,43 @@ const AllUpiDepositPayment = () => {
                             </TouchableOpacity>
                           </View>
                         </View>
+
+                        {/** QR code */}
+                        <View
+                          style={{
+                            flex: 2,
+                            gap: heightPercentageToDP(2),
+                            margin: heightPercentageToDP(2),
+                          }}>
+                          <View
+                            style={{
+                              backgroundColor: COLORS.white_s,
+                              padding: heightPercentageToDP(1),
+                              borderRadius: heightPercentageToDP(1),
+                              justifyContent: 'center',
+                              alignItems: "center"
+                            }}>
+                            {item.qrcode ? (
+                              <Image
+                              source={{uri: `${serverName}/uploads/upiqrcode/${item.qrcode}`}}
+                                resizeMode="cover"
+                                style={{
+                                  height: 150,
+                                  width: 150,
+                                }}
+                              />
+                            ) : (
+                              <Image
+                                source={require('../../../assets/image/upi.png')}
+                                resizeMode="cover"
+                                style={{
+                                  height: 80,
+                                  width: 80,
+                                }}
+                              />
+                            )}
+                          </View>
+                        </View>
                       </LinearGradient>
                     </TouchableOpacity>
                   ))}
@@ -355,9 +385,7 @@ const AllUpiDepositPayment = () => {
                 marginBottom: heightPercentageToDP(5),
                 marginTop: heightPercentageToDP(2),
               }}>
-              {false ? (
-                <Loading />
-              ) : (
+              {!loadingAllData && (
                 <TouchableOpacity
                   onPress={() => navigation.navigate('UpiDeposit')}
                   style={{

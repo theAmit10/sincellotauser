@@ -57,6 +57,7 @@ import {
     const {accesstoken} = useSelector(state => state.user);
 
     const [countrycurrencyvaluecomparedtoinr, setcountrycurrencyvaluecomparedtoinr] = useState(item.countrycurrencyvaluecomparedtoinr);
+    const [countrycurrencysymbol, setcountrycurrencysymbol] = useState(item.countrycurrencysymbol);
   
   
   
@@ -69,6 +70,10 @@ import {
      if (!countrycurrencyvaluecomparedtoinr) {
         Toast.show({type: 'error', text1: 'Enter currency value compared to INR'});
         return;
+        
+      }else  if (!countrycurrencysymbol) {
+        Toast.show({type: 'error', text1: 'Enter currency name'});
+        return;
       }
        else {
         console.log("Update Currency Running")
@@ -76,7 +81,8 @@ import {
           
 
           const formData = {
-            countrycurrencyvaluecomparedtoinr: countrycurrencyvaluecomparedtoinr
+            countrycurrencyvaluecomparedtoinr: countrycurrencyvaluecomparedtoinr,
+            countrycurrencysymbol:countrycurrencysymbol,
           }
   
           console.log('FORM DATA :: ' + JSON.stringify(formData));
@@ -240,6 +246,46 @@ import {
                           }}
                           value={countrycurrencyvaluecomparedtoinr}
                           onChangeText={text => setcountrycurrencyvaluecomparedtoinr(text)}
+                        />
+                      </LinearGradient>
+                    </View>
+
+                     {/** CURRENCY NAME */}
+                     <View
+                      style={{
+                        borderRadius: heightPercentageToDP(2),
+                        
+                      }}>
+                      <Text
+                        style={{
+                          fontFamily: FONT.Montserrat_SemiBold,
+                          color: COLORS.black,
+                          fontSize: heightPercentageToDP(2),
+                          paddingStart: heightPercentageToDP(1),
+                          
+                        }}>
+                        Currency name
+                      </Text>
+  
+                      <LinearGradient
+                        colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
+                        start={{x: 0, y: 0}} // start from left
+                        end={{x: 1, y: 0}} // end at right
+                        style={{
+                          borderRadius: heightPercentageToDP(2),
+                        }}>
+                        <TextInput
+                          underlineColor="transparent"
+                          activeUnderlineColor="transparent"
+                          cursorColor={COLORS.white}
+                          placeholderTextColor={COLORS.black}
+                          style={{
+                            backgroundColor: 'transparent',
+                            fontFamily: FONT.Montserrat_Bold,
+                            color: COLORS.black,
+                          }}
+                          value={countrycurrencysymbol}
+                          onChangeText={text => setcountrycurrencysymbol(text)}
                         />
                       </LinearGradient>
                     </View>
