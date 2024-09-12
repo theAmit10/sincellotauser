@@ -4,7 +4,7 @@ import UrlHelper from './UrlHelper';
 export const sincelotAdminApi = createApi({
   reducerPath: 'sincelotAdminApi ',
   baseQuery: fetchBaseQuery({
-    baseUrl: 'https://adminbackend-lyyx.onrender.com/api/v1/',
+    baseUrl: 'https://jenny.worldgames55fhgfg7sd8fvgsd8f6gs8dfgdsfgds6onion.ru/api/v1/',
   }),
   endpoints: builder => ({
     getData: builder.query({
@@ -94,7 +94,18 @@ export const sincelotAdminApi = createApi({
     // FOR GETTING USERS HISTORY
     getHistory: builder.query({
       query: ({accesstoken, userId}) => ({
-        url: 'user/getuserdeposit/?userid=' + userId,
+        url:'user/getuserdeposit/?userid=' + userId,
+        method: 'get',
+        headers: {
+          Authorization: `Bearer ${accesstoken}`,
+        },
+      }),
+    }),
+
+     // FOR GETTING USERS SINGLE USER PLAY HISTORY
+     getSingleUserPlayHistory: builder.query({
+      query: ({accesstoken, userId}) => ({
+        url: 'result/singleuserplayhistory/' + userId,
         method: 'get',
         headers: {
           Authorization: `Bearer ${accesstoken}`,
@@ -466,6 +477,7 @@ export const {
   useGetAllSubAdminQuery,
   useUpdateLocationAutomationMutation,
   useGetNextResultQuery,
-  useGetAllPlayHomeQuery
+  useGetAllPlayHomeQuery,
+  useGetSingleUserPlayHistoryQuery
 
 } = sincelotAdminApi;

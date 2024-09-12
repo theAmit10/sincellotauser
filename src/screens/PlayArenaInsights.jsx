@@ -363,30 +363,80 @@ const PlayArenaInsights = ({route}) => {
   console.log(getPlaynumberOfLargestAmount(playinsightdata)); // Output will be the playnumber of the largest amount in the playnumbers array
 
   // LOWEST BET AMOUNT ON A SPECIFIC NUMBER
-  const getLowestAmount = data => {
-    if (!data.playzone || !Array.isArray(data.playzone.playnumbers)) {
-      return null;
-    }
+  // const getLowestAmount = data => {
+  //   if (!data.playzone || !Array.isArray(data.playzone.playnumbers)) {
+  //     return null;
+  //   }
 
-    return data.playzone.playnumbers.reduce((minAmount, playnumber) => {
-      return playnumber.amount < minAmount ? playnumber.amount : minAmount;
-    }, Infinity);
-  };
+  //   return data.playzone.playnumbers.reduce((minAmount, playnumber) => {
+  //     return playnumber.amount < minAmount ? playnumber.amount : minAmount;
+  //   }, Infinity);
+  // };
+  function getLowestAmount(playinsightdata) {
+    // Extract playnumbers array
+    const playnumbers = playinsightdata.playzone.playnumbers;
+  
+    // Find the minimum amount in the playnumbers list
+    const minAmount = Math.min(...playnumbers.map(p => p.amount));
+  
+    // Get all playnumbers with the minimum amount
+    const minAmountPlaynumbers = playnumbers.filter(p => p.amount === minAmount);
+  
+    // If there's more than one playnumber with the minimum amount, select one randomly
+    if (minAmountPlaynumbers.length > 1) {
+      const randomIndex = Math.floor(Math.random() * minAmountPlaynumbers.length);
+      return minAmountPlaynumbers[randomIndex].amount;
+    }
+  
+    // Otherwise, return the amount of the single minimum amount
+    return minAmountPlaynumbers[0].amount;
+  }
+  
+  // Usage example:
+  const lowestAmount = getLowestAmount(playinsightdata);
+  console.log(lowestAmount);
+  
 
   console.log(getLowestAmount(playinsightdata)); // Output will be the lowest amount in the playnumbers array
 
   // PLAYNUMBER ON WHICH LOWEST BET PLAYED
-  const getPlaynumberOfLowestAmount = data => {
-    if (!data.playzone || !Array.isArray(data.playzone.playnumbers)) {
-      return null;
-    }
+  // const getPlaynumberOfLowestAmount = data => {
+  //   if (!data.playzone || !Array.isArray(data.playzone.playnumbers)) {
+  //     return null;
+  //   }
 
-    return data.playzone.playnumbers.reduce((minPlaynumber, playnumber) => {
-      return playnumber.amount < minPlaynumber.amount
-        ? playnumber
-        : minPlaynumber;
-    }, data.playzone.playnumbers[0]).playnumber;
-  };
+  //   return data.playzone.playnumbers.reduce((minPlaynumber, playnumber) => {
+  //     return playnumber.amount < minPlaynumber.amount
+  //       ? playnumber
+  //       : minPlaynumber;
+  //   }, data.playzone.playnumbers[0]).playnumber;
+  // };
+
+  function getPlaynumberOfLowestAmount(playinsightdata) {
+    // Extract playnumbers array
+    const playnumbers = playinsightdata.playzone.playnumbers;
+  
+    // Find the minimum amount in the playnumbers list
+    const minAmount = Math.min(...playnumbers.map(p => p.amount));
+  
+    // Get all playnumbers with the minimum amount
+    const minAmountPlaynumbers = playnumbers.filter(p => p.amount === minAmount);
+  
+    // If there's more than one playnumber with the minimum amount, select one randomly
+    if (minAmountPlaynumbers.length > 1) {
+      const randomIndex = Math.floor(Math.random() * minAmountPlaynumbers.length);
+      return minAmountPlaynumbers[randomIndex].playnumber;
+    }
+  
+    // Otherwise, return the playnumber of the single minimum amount
+    return minAmountPlaynumbers[0].playnumber;
+  }
+  
+  // Usage example:
+  const playnumber = getPlaynumberOfLowestAmount(playinsightdata);
+  console.log(playnumber);
+  console.log("getPlaynumberOfLowestAmount ::  ",playnumber);
+  
 
   console.log(getPlaynumberOfLowestAmount(playinsightdata)); // Output will be the playnumber of the lowest amount in the playnumbers array
 

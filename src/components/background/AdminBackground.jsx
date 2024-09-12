@@ -118,7 +118,7 @@ const AdminBackground = () => {
               />
             ) : user?.avatar ? (
               <Image
-                source={{uri: `${serverName}uploads/${user?.avatar?.url}`}}
+                source={{uri: `${serverName}/uploads/${user?.avatar?.url}`}}
                 resizeMode="cover"
                 style={{
                   height: heightPercentageToDP(15),

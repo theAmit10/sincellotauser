@@ -83,6 +83,8 @@ import BalanceSheet from '../screens/BalanceSheet';
 import AllSubAdmin from '../screens/AllSubAdmin';
 import SelectCountry from '../components/helpercComponent/SelectCountry';
 import ModifySubadmin from '../screens/ModifySubadmin';
+import PlayHistory from '../screens/payment/PlayHistory';
+import History from '../screens/payment/History';
 
 
 
@@ -181,6 +183,8 @@ const Main = () => {
                 <Stack.Screen  name="AllSubAdmin" component={AllSubAdmin}/>
                 <Stack.Screen  name="SelectCountry" component={SelectCountry}/>
                 <Stack.Screen  name="ModifySubadmin" component={ModifySubadmin}/>
+                <Stack.Screen  name="PlayHistory" component={PlayHistory}/>
+                <Stack.Screen  name="History" component={History}/>
 
 
 

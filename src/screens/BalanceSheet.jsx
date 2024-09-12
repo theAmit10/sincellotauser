@@ -26,18 +26,15 @@ import LinearGradient from 'react-native-linear-gradient';
 import Background from '../components/background/Background';
 import {COLORS, FONT} from '../../assets/constants';
 import GradientTextWhite from '../components/helpercComponent/GradientTextWhite';
-import {
-  useGetAllBalanceQuery,
-} from '../helper/Networkcall';
+import {useGetAllBalanceQuery} from '../helper/Networkcall';
 import Loading from '../components/helpercComponent/Loading';
 import NoDataFound from '../components/helpercComponent/NoDataFound';
 import moment from 'moment';
 
 const BalanceSheet = () => {
- 
   const {accesstoken} = useSelector(state => state.user);
   const {data, isLoading, error, refetch} = useGetAllBalanceQuery(accesstoken);
-  
+
   console.log('Balancesheet ::' + JSON.stringify(data));
 
   // useFocusEffect(
@@ -46,8 +43,6 @@ const BalanceSheet = () => {
   //     refetch();
   //   }, [refetch]),
   // );
-
- 
 
   const formatDateTime = dateTimeString => {
     return moment(dateTimeString).format('MMMM DD, YYYY hh:mm A');
@@ -99,10 +94,9 @@ const BalanceSheet = () => {
             <View
               style={{
                 margin: heightPercentageToDP(2),
-               
               }}>
               <GradientTextWhite style={styles.textStyle}>
-                Balance Sheet
+                Transaction History
               </GradientTextWhite>
             </View>
 
@@ -136,7 +130,7 @@ const BalanceSheet = () => {
                       borderRadius: heightPercentageToDP(2),
                       marginHorizontal: heightPercentageToDP(2),
                       padding: heightPercentageToDP(1),
-                      marginBottom: heightPercentageToDP(1)
+                      marginBottom: heightPercentageToDP(1),
                     }}>
                     <View
                       style={{
@@ -160,7 +154,8 @@ const BalanceSheet = () => {
                           textAlign: 'right',
                           paddingRight: heightPercentageToDP(1),
                         }}>
-                        {item?.paymentProcessType === 'Credit' ? "+" : "-"} {item?.amount} INR
+                        {item?.paymentProcessType === 'Credit' ? '+' : '-'}{' '}
+                        {item?.amount}
                       </Text>
                     </View>
                     <View
@@ -185,9 +180,63 @@ const BalanceSheet = () => {
                           textAlign: 'right',
                           paddingRight: heightPercentageToDP(1),
                         }}>
-                        {item?.activityType === "Bet" ? ("Game Wallet") : ("Withdrawal wallet")}
+                        {item?.activityType === 'Bet'
+                          ? 'Game Wallet'
+                          : 'Withdrawal wallet'}
                       </Text>
                     </View>
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                      }}>
+                      <Text
+                        style={{
+                          marginStart: heightPercentageToDP(1),
+                          flex: 1,
+                          fontFamily: FONT.Montserrat_Regular,
+                          color: COLORS.black,
+                        }}>
+                        ActivityType
+                      </Text>
+                      <Text
+                        style={{
+                          marginStart: heightPercentageToDP(1),
+                          flex: 1,
+                          fontFamily: FONT.Montserrat_SemiBold,
+                          color: COLORS.black,
+                          textAlign: 'right',
+                          paddingRight: heightPercentageToDP(1),
+                        }}>
+                        {item.activityType}
+                      </Text>
+                    </View>
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                      }}>
+                      <Text
+                        style={{
+                          marginStart: heightPercentageToDP(1),
+                          flex: 1,
+                          fontFamily: FONT.Montserrat_Regular,
+                          color: COLORS.black,
+                        }}>
+                        User ID
+                      </Text>
+                      <Text
+                        style={{
+                          marginStart: heightPercentageToDP(1),
+                          flex: 1,
+                          fontFamily: FONT.Montserrat_SemiBold,
+                          color: COLORS.black,
+                          textAlign: 'right',
+                          paddingRight: heightPercentageToDP(1),
+                        }}>
+                        {item.userId}
+                      </Text>
+                    </View>
+                    
+                   
 
                     <View
                       style={{
@@ -241,7 +290,7 @@ const BalanceSheet = () => {
                             fontFamily: FONT.Montserrat_Regular,
                             fontSize: heightPercentageToDP(1.8),
                           }}>
-                          {item?.withdrawalbalance} INR
+                          {item?.withdrawalbalance}
                         </Text>
                       </View>
                       <View
@@ -264,7 +313,7 @@ const BalanceSheet = () => {
                             fontFamily: FONT.Montserrat_Regular,
                             fontSize: heightPercentageToDP(1.8),
                           }}>
-                          {item?.gamebalance} INR
+                          {item?.gamebalance}
                         </Text>
                       </View>
                     </View>
@@ -291,7 +340,7 @@ const BalanceSheet = () => {
                           textAlign: 'right',
                           paddingRight: heightPercentageToDP(1),
                         }}>
-                        {item?.totalbalance} INR
+                        {item?.totalbalance}
                       </Text>
                     </View>
                   </LinearGradient>

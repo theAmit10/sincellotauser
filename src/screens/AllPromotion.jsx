@@ -160,7 +160,7 @@ const AllPromotion = () => {
                           }}>
                           <Image
                             source={{
-                              uri: `${serverName}uploads/promotion/${item.url}`,
+                              uri: `${serverName}/uploads/promotion/${item.url}`,
                             }}
                             resizeMode="cover"
                             style={{

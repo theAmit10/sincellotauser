@@ -736,7 +736,7 @@ const PlayArenaAdmin = ({route}) => {
                                       fontSize: heightPercentageToDP(1.8),
                                       color: COLORS.black,
                                     }}>
-                                    {useritem?.amount} INR
+                                    {useritem?.convertedAmount ? useritem?.convertedAmount : useritem?.amount}
                                   </Text>
                                 </View>
                               </View>

@@ -39,7 +39,7 @@ import {HOVER} from 'nativewind/dist/utils/selector';
 import Clipboard from '@react-native-clipboard/clipboard';
 import Toast from 'react-native-toast-message';
 import CustomAlertForDeposit from '../components/helpercComponent/CustomAlertForDeposit';
-import { multiplyStringNumbers } from './AllDeposit';
+import {multiplyStringNumbers} from './AllDeposit';
 import NoDataFound from '../components/helpercComponent/NoDataFound';
 
 const historyapidatas = [
@@ -115,8 +115,8 @@ const AllWithdraw = () => {
     }, [refetch]),
   );
 
-   // FOR UPDATING PAYMENT STATUS
-   const [
+  // FOR UPDATING PAYMENT STATUS
+  const [
     updateDepositPaymentStatus,
     {isLoading: updateStatusIsLoading, error: updateStatusError},
   ] = useUpdateDepositPaymentStatusMutation();
@@ -142,7 +142,7 @@ const AllWithdraw = () => {
       console.log('USE Effect running');
       setFilteredData(data.withdrawals);
     }
-  }, [isLoading,filteredData]);
+  }, [isLoading, filteredData]);
 
   const handleSearch = text => {
     if (data) {
@@ -206,7 +206,6 @@ const AllWithdraw = () => {
     Toast.show({type: 'success', text1: 'Success', text2: res.message});
   };
 
-
   const copyToClipboard = val => {
     Clipboard.setString(val);
     Toast.show({
@@ -252,9 +251,6 @@ const AllWithdraw = () => {
     cancellingData(selectedItem);
     console.log('Yes pressed');
   };
-
-  
- 
 
   return (
     <SafeAreaView style={{flex: 1}}>
@@ -333,8 +329,8 @@ const AllWithdraw = () => {
                   />
                 </View>
 
-                 {/** FOR ACCEPTING */}
-                 <CustomAlertForDeposit
+                {/** FOR ACCEPTING */}
+                <CustomAlertForDeposit
                   visible={alertVisibleAccepted}
                   onClose={closeAlertAccepted}
                   onYes={handleYesAccepted}
@@ -362,7 +358,7 @@ const AllWithdraw = () => {
                   </View>
                 ) : (
                   <FlatList
-                  showsVerticalScrollIndicator={false}
+                    showsVerticalScrollIndicator={false}
                     data={filteredData}
                     renderItem={({item}) => (
                       <LinearGradient
@@ -469,13 +465,15 @@ const AllWithdraw = () => {
                                     fontSize: heightPercentageToDP(1.8),
                                     color: COLORS.black,
                                   }}>
-                                   {multiplyStringNumbers(
-                                    item.amount,
-                                    item.currency !== undefined
-                                      ? item.currency
-                                          .countrycurrencyvaluecomparedtoinr
-                                      : 1,
-                                  )}
+                                  {item.convertedAmount
+                                    ? item.convertedAmount
+                                    : multiplyStringNumbers(
+                                        item.amount,
+                                        item.currency !== undefined
+                                          ? item.currency
+                                              .countrycurrencyvaluecomparedtoinr
+                                          : 1,
+                                      )}
                                 </Text>
                               </View>
                             </View>
@@ -1492,8 +1490,6 @@ const AllWithdraw = () => {
                                 </LinearGradient>
                               </TouchableOpacity>
                             </View>
-
-
                           </>
                         )}
                       </LinearGradient>

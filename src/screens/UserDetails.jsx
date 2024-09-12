@@ -486,6 +486,186 @@ const UpdateProfile = ({route}) => {
                     />
                   </View>
                 </TouchableOpacity>
+
+                  {/** PLAY HISTORY */}
+                  <TouchableOpacity
+                  onPress={() =>
+                    navigation.navigate('PlayHistory', {
+                      userdata: singleuser,
+                    })
+                  }
+                  style={{
+                    height: heightPercentageToDP(20),
+                    flexDirection: 'row',
+                    backgroundColor: COLORS.grayBg,
+                    alignItems: 'center',
+                    paddingHorizontal: heightPercentageToDP(2),
+                    borderRadius: heightPercentageToDP(1),
+                    margin: heightPercentageToDP(2),
+                  }}>
+                  <View
+                    style={{
+                      padding: heightPercentageToDP(2),
+                    }}>
+                    <Text
+                      style={{
+                        marginStart: heightPercentageToDP(1),
+                        flex: 1,
+                        fontFamily: FONT.Montserrat_Regular,
+                        color: COLORS.darkGray,
+                        width: widthPercentageToDP(25),
+                        marginStart: heightPercentageToDP(-1),
+                        textAlignVertical: 'bottom',
+                      }}></Text>
+                    <Text
+                      style={{
+                        marginStart: heightPercentageToDP(1),
+                        flex: 1,
+                        fontFamily: FONT.Montserrat_Regular,
+                        color: COLORS.darkGray,
+                        fontSize: heightPercentageToDP(2),
+                        marginStart: heightPercentageToDP(-1),
+                      }}>
+                      User's play history
+                    </Text>
+
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        justifyContent: 'flex-start',
+                        gap: heightPercentageToDP(1),
+                        marginStart: heightPercentageToDP(-1),
+                      }}>
+                      <View
+                        style={{
+                          backgroundColor: COLORS.white_s,
+                          padding: heightPercentageToDP(1),
+                          borderRadius: heightPercentageToDP(1),
+                          justifyContent: 'center',
+                        }}>
+                        <Entypo
+                          name={'user'}
+                          size={heightPercentageToDP(4)}
+                          color={COLORS.darkGray}
+                        />
+                      </View>
+                      <GradientText
+                        style={{
+                          ...styles.textStyle,
+                          width: widthPercentageToDP(60),
+                        }}>
+                        Play History
+                      </GradientText>
+                    </View>
+                  </View>
+
+                  <View
+                    style={{
+                      flex: 1,
+                      backgroundColor: COLORS.white,
+                      position: 'absolute',
+                      right: heightPercentageToDP(2),
+                      borderRadius: heightPercentageToDP(1),
+                      padding: heightPercentageToDP(1),
+                      top: heightPercentageToDP(2),
+                    }}>
+                    <MaterialCommunityIcons
+                      name={'play-circle-outline'}
+                      size={heightPercentageToDP(4)}
+                      color={COLORS.darkGray}
+                    />
+                  </View>
+                </TouchableOpacity>
+
+                  {/** HISTORY */}
+                  <TouchableOpacity
+                  onPress={() =>
+                    navigation.navigate('History', {
+                      userdata: singleuser,
+                    })
+                  }
+                  style={{
+                    height: heightPercentageToDP(20),
+                    flexDirection: 'row',
+                    backgroundColor: COLORS.grayBg,
+                    alignItems: 'center',
+                    paddingHorizontal: heightPercentageToDP(2),
+                    borderRadius: heightPercentageToDP(1),
+                    margin: heightPercentageToDP(2),
+                  }}>
+                  <View
+                    style={{
+                      padding: heightPercentageToDP(2),
+                    }}>
+                    <Text
+                      style={{
+                        marginStart: heightPercentageToDP(1),
+                        flex: 1,
+                        fontFamily: FONT.Montserrat_Regular,
+                        color: COLORS.darkGray,
+                        width: widthPercentageToDP(25),
+                        marginStart: heightPercentageToDP(-1),
+                        textAlignVertical: 'bottom',
+                      }}></Text>
+                    <Text
+                      style={{
+                        marginStart: heightPercentageToDP(1),
+                        flex: 1,
+                        fontFamily: FONT.Montserrat_Regular,
+                        color: COLORS.darkGray,
+                        fontSize: heightPercentageToDP(2),
+                        marginStart: heightPercentageToDP(-1),
+                      }}>
+                      User's transaction history
+                    </Text>
+
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        justifyContent: 'flex-start',
+                        gap: heightPercentageToDP(1),
+                        marginStart: heightPercentageToDP(-1),
+                      }}>
+                      <View
+                        style={{
+                          backgroundColor: COLORS.white_s,
+                          padding: heightPercentageToDP(1),
+                          borderRadius: heightPercentageToDP(1),
+                          justifyContent: 'center',
+                        }}>
+                        <Entypo
+                          name={'user'}
+                          size={heightPercentageToDP(4)}
+                          color={COLORS.darkGray}
+                        />
+                      </View>
+                      <GradientText
+                        style={{
+                          ...styles.textStyle,
+                          width: widthPercentageToDP(60),
+                        }}>
+                        History
+                      </GradientText>
+                    </View>
+                  </View>
+
+                  <View
+                    style={{
+                      flex: 1,
+                      backgroundColor: COLORS.white,
+                      position: 'absolute',
+                      right: heightPercentageToDP(2),
+                      borderRadius: heightPercentageToDP(1),
+                      padding: heightPercentageToDP(1),
+                      top: heightPercentageToDP(2),
+                    }}>
+                    <MaterialCommunityIcons
+                      name={'history'}
+                      size={heightPercentageToDP(4)}
+                      color={COLORS.darkGray}
+                    />
+                  </View>
+                </TouchableOpacity>
               </ScrollView>
             )}
           </View>

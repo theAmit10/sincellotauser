@@ -766,7 +766,7 @@ const Setting = () => {
                       fontSize: heightPercentageToDP(2),
                       color: COLORS.black,
                     }}>
-                    Balance sheet
+                    Transaction History
                   </Text>
 
                   <Ionicons

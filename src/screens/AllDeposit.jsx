@@ -227,8 +227,6 @@ const AllDeposit = () => {
     console.log('Yes pressed');
   };
 
-  
-
   return (
     <SafeAreaView style={{flex: 1}}>
       <KeyboardAvoidingView
@@ -441,13 +439,15 @@ const AllDeposit = () => {
                                     fontSize: heightPercentageToDP(1.8),
                                     color: COLORS.black,
                                   }}>
-                                  {multiplyStringNumbers(
-                                    item.amount,
-                                    item.currency !== undefined
-                                      ? item.currency
-                                          .countrycurrencyvaluecomparedtoinr
-                                      : 1,
-                                  )}
+                                  {item.convertedAmount
+                                    ? item.convertedAmount
+                                    : multiplyStringNumbers(
+                                        item.amount,
+                                        item.currency !== undefined
+                                          ? item.currency
+                                              .countrycurrencyvaluecomparedtoinr
+                                          : 1,
+                                      )}
                                 </Text>
                               </View>
                             </View>
