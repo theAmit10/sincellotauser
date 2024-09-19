@@ -1,4 +1,4 @@
-import {ImageBackground, TouchableOpacity, View} from 'react-native';
+import {ImageBackground, SafeAreaView, TouchableOpacity, View} from 'react-native';
 import React from 'react';
 import {
   heightPercentageToDP,
@@ -11,7 +11,7 @@ import {useNavigation} from '@react-navigation/native';
 const Background = () => {
   const navigation = useNavigation();
   return (
-    <View
+    <SafeAreaView
       style={{
         flex: 1,
         backgroundColor: COLORS.grayBg,
@@ -105,7 +105,7 @@ const Background = () => {
             }}></View>
         </View>
       </ImageBackground>
-    </View>
+    </SafeAreaView>
   );
 };
 

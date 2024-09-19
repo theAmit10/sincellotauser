@@ -1,6 +1,5 @@
 import {
   FlatList,
-  Image,
   ImageBackground,
   StyleSheet,
   Text,
@@ -19,23 +18,17 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {useNavigation, useFocusEffect} from '@react-navigation/native';
-import {useDispatch, useSelector} from 'react-redux';
+import {useSelector} from 'react-redux';
 import LinearGradient from 'react-native-linear-gradient';
-
-import {useGetHistoryQuery} from '../../helper/Networkcall';
-
 import moment from 'moment';
 import Background from '../components/background/Background';
 import Loading from '../components/helpercComponent/Loading';
 import {COLORS, FONT} from '../../assets/constants';
 import GradientTextWhite from '../components/helpercComponent/GradientTextWhite';
 import {
-  useGetAllDepositQuery,
   useGetAllWithdrawQuery,
   useUpdateDepositPaymentStatusMutation,
 } from '../helper/Networkcall';
-import {nanoid} from '@reduxjs/toolkit';
-import {HOVER} from 'nativewind/dist/utils/selector';
 import Clipboard from '@react-native-clipboard/clipboard';
 import Toast from 'react-native-toast-message';
 import CustomAlertForDeposit from '../components/helpercComponent/CustomAlertForDeposit';
@@ -138,11 +131,11 @@ const AllWithdraw = () => {
   const [filteredData, setFilteredData] = useState([]);
 
   useEffect(() => {
-    if (!isLoading) {
+    if (!isLoading && data) {
       console.log('USE Effect running');
       setFilteredData(data.withdrawals);
     }
-  }, [isLoading, filteredData]);
+  }, [isLoading]);
 
   const handleSearch = text => {
     if (data) {
@@ -265,7 +258,10 @@ const AllWithdraw = () => {
             source={require('../../assets/image/tlwbg.jpg')}
             style={{
               width: '100%',
-              height: heightPercentageToDP(85),
+              height:
+              Platform.OS === 'android'
+                ? heightPercentageToDP(85)
+                : heightPercentageToDP(80),
             }}
             imageStyle={{
               borderTopLeftRadius: heightPercentageToDP(5),
@@ -273,7 +269,10 @@ const AllWithdraw = () => {
             }}>
             <View
               style={{
-                height: heightPercentageToDP(85),
+                height:
+                Platform.OS === 'android'
+                  ? heightPercentageToDP(85)
+                  : heightPercentageToDP(80),
                 width: widthPercentageToDP(100),
                 borderTopLeftRadius: heightPercentageToDP(5),
                 borderTopRightRadius: heightPercentageToDP(5),
@@ -525,39 +524,52 @@ const AllWithdraw = () => {
                                       color: COLORS.black,
                                       fontSize: heightPercentageToDP(1.2),
                                       textAlignVertical: 'center',
+                                      alignSelf: 'center',
                                     }}>
                                     {item.paymentStatus}
                                   </Text>
                                 ) : item.paymentStatus === 'Completed' ? (
-                                  <Text
+                                  <View
                                     style={{
-                                      fontFamily: FONT.Montserrat_SemiBold,
-                                      color: COLORS.white_s,
-                                      fontSize: heightPercentageToDP(1.5),
-                                      textAlignVertical: 'center',
                                       backgroundColor: COLORS.green,
-                                      flex: 1,
-                                      textAlign: 'center',
+                                      borderRadius: heightPercentageToDP(1),
                                       margin: heightPercentageToDP(2),
-                                      borderRadius: heightPercentageToDP(2),
+                                      alignSelf: 'center',
+                                      padding: heightPercentageToDP(1),
+                                      flex: 1, // Ensure the view takes up space if necessary
                                     }}>
-                                    {item.paymentStatus}
-                                  </Text>
+                                    <Text
+                                      style={{
+                                        fontFamily: FONT.Montserrat_SemiBold,
+                                        color: COLORS.white_s,
+                                        fontSize: heightPercentageToDP(1.5),
+                                        textAlignVertical: 'center',
+                                        textAlign: 'center',
+                                      }}>
+                                      {item.paymentStatus}
+                                    </Text>
+                                  </View>
                                 ) : (
-                                  <Text
+                                  <View
                                     style={{
-                                      fontFamily: FONT.Montserrat_SemiBold,
-                                      color: COLORS.white_s,
-                                      fontSize: heightPercentageToDP(1.5),
-                                      textAlignVertical: 'center',
-                                      backgroundColor: COLORS.red,
                                       flex: 1,
-                                      textAlign: 'center',
-                                      margin: heightPercentageToDP(2),
+                                      backgroundColor: COLORS.red,
                                       borderRadius: heightPercentageToDP(2),
+                                      margin: heightPercentageToDP(2),
+                                      alignSelf: 'center',
+                                      padding: heightPercentageToDP(1),
                                     }}>
-                                    {item.paymentStatus}
-                                  </Text>
+                                    <Text
+                                      style={{
+                                        fontFamily: FONT.Montserrat_SemiBold,
+                                        color: COLORS.white_s,
+                                        fontSize: heightPercentageToDP(1.5),
+                                        textAlignVertical: 'center',
+                                        textAlign: 'center',
+                                      }}>
+                                      {item.paymentStatus}
+                                    </Text>
+                                  </View>
                                 )}
 
                                 {item.paymentStatus === 'Pending' && (
@@ -653,7 +665,6 @@ const AllWithdraw = () => {
                             <View
                               style={{
                                 flex: 1,
-
                                 borderBottomLeftRadius: heightPercentageToDP(2),
                                 borderBottomEndRadius: heightPercentageToDP(2),
                                 flexDirection: 'row',
@@ -686,7 +697,7 @@ const AllWithdraw = () => {
                               <View
                                 style={{
                                   ...styles.detailContainer,
-                                  width: '10%',
+                                 
                                   justifyContent: 'flex-end',
                                   alignItems: 'flex-end',
                                 }}>
@@ -756,7 +767,7 @@ const AllWithdraw = () => {
                                   <View
                                     style={{
                                       ...styles.detailContainer,
-                                      width: '10%',
+                                  
                                       justifyContent: 'flex-end',
                                       alignItems: 'flex-end',
                                     }}>
@@ -828,7 +839,7 @@ const AllWithdraw = () => {
                                   <View
                                     style={{
                                       ...styles.detailContainer,
-                                      width: '10%',
+                                     
                                       justifyContent: 'flex-end',
                                       alignItems: 'flex-end',
                                     }}>
@@ -891,7 +902,6 @@ const AllWithdraw = () => {
                                   <View
                                     style={{
                                       flex: 1,
-
                                       justifyContent: 'flex-start',
                                       alignItems: 'flex-start',
                                     }}>
@@ -903,7 +913,7 @@ const AllWithdraw = () => {
                                   <View
                                     style={{
                                       ...styles.detailContainer,
-                                      width: '10%',
+                                     
                                       justifyContent: 'flex-end',
                                       alignItems: 'flex-end',
                                     }}>
@@ -978,7 +988,7 @@ const AllWithdraw = () => {
                                   <View
                                     style={{
                                       ...styles.detailContainer,
-                                      width: '10%',
+                                      
                                       justifyContent: 'flex-end',
                                       alignItems: 'flex-end',
                                     }}>
@@ -1053,7 +1063,7 @@ const AllWithdraw = () => {
                                   <View
                                     style={{
                                       ...styles.detailContainer,
-                                      width: '10%',
+                                      
                                       justifyContent: 'flex-end',
                                       alignItems: 'flex-end',
                                     }}>
@@ -1123,7 +1133,7 @@ const AllWithdraw = () => {
                                   <View
                                     style={{
                                       ...styles.detailContainer,
-                                      width: '10%',
+                                     
                                       justifyContent: 'flex-end',
                                       alignItems: 'flex-end',
                                     }}>
@@ -1193,7 +1203,7 @@ const AllWithdraw = () => {
                                   <View
                                     style={{
                                       ...styles.detailContainer,
-                                      width: '10%',
+                                    
                                       justifyContent: 'flex-end',
                                       alignItems: 'flex-end',
                                     }}>
@@ -1263,7 +1273,7 @@ const AllWithdraw = () => {
                                   <View
                                     style={{
                                       ...styles.detailContainer,
-                                      width: '10%',
+                                    
                                       justifyContent: 'flex-end',
                                       alignItems: 'flex-end',
                                     }}>
@@ -1338,7 +1348,7 @@ const AllWithdraw = () => {
                                   <View
                                     style={{
                                       ...styles.detailContainer,
-                                      width: '10%',
+                                  
                                       justifyContent: 'flex-end',
                                       alignItems: 'flex-end',
                                     }}>
@@ -1407,7 +1417,7 @@ const AllWithdraw = () => {
                                   <View
                                     style={{
                                       ...styles.detailContainer,
-                                      width: '10%',
+                                 
                                       justifyContent: 'flex-end',
                                       alignItems: 'flex-end',
                                     }}>

@@ -1,388 +1,389 @@
 import {
-    FlatList,
-    Image,
-    ImageBackground,
-    KeyboardAvoidingView,
-    SafeAreaView,
-    ScrollView,
-    StyleSheet,
-    Text,
-    TouchableOpacity,
-    View,
-  } from 'react-native';
-  import React, {useEffect, useState} from 'react';
-  import {
-    heightPercentageToDP,
-    widthPercentageToDP,
-  } from 'react-native-responsive-screen';
-  import mime from 'mime';
-  import AntDesign from 'react-native-vector-icons/AntDesign';
-  import Toast from 'react-native-toast-message';
-  import {useIsFocused, useNavigation} from '@react-navigation/native';
-  import {useDispatch, useSelector} from 'react-redux';
-  import LinearGradient from 'react-native-linear-gradient';
-  import Background from '../components/background/Background';
-  import {COLORS, FONT} from '../../assets/constants';
-  import GradientTextWhite from '../components/helpercComponent/GradientTextWhite';
-  import Clipboard from '@react-native-clipboard/clipboard';
-  import Loading from '../components/helpercComponent/Loading';
-  import {TextInput} from 'react-native-paper';
-  import DocumentPicker from 'react-native-document-picker';
-  import ImageResizer from '@bam.tech/react-native-image-resizer';
-  import axios from 'axios';
-  import UrlHelper from '../helper/UrlHelper';
-  import {
-    useCreateCurrencyMutation,
-    useCreateUPIAccountMutation,
-    useGetAllLocationWithTimeQuery,
-    useUpdateCurrencyMutation,
-  } from '../helper/Networkcall';
-  
-  const upiapidata = [
-    {name: 'Wasu', upiid: '9876543210@ybl', id: '1'},
-    {name: 'Aman', upiid: '8876543210@ybl', id: '2'},
-    {name: 'Zasu', upiid: '7876543210@ybl', id: '3'},
-    {name: 'Masu', upiid: '1876543210@ybl', id: '4'},
-    {name: 'Kasu', upiid: '2876543210@ybl', id: '5'},
-  ];
-  
-  const UpdateCountry = ({route}) => {
+  FlatList,
+  Image,
+  ImageBackground,
+  KeyboardAvoidingView,
+  Platform,
+  SafeAreaView,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {
+  heightPercentageToDP,
+  widthPercentageToDP,
+} from 'react-native-responsive-screen';
+import mime from 'mime';
+import AntDesign from 'react-native-vector-icons/AntDesign';
+import Toast from 'react-native-toast-message';
+import {useIsFocused, useNavigation} from '@react-navigation/native';
+import {useDispatch, useSelector} from 'react-redux';
+import LinearGradient from 'react-native-linear-gradient';
+import Background from '../components/background/Background';
+import {COLORS, FONT} from '../../assets/constants';
+import GradientTextWhite from '../components/helpercComponent/GradientTextWhite';
+import Clipboard from '@react-native-clipboard/clipboard';
+import Loading from '../components/helpercComponent/Loading';
+import {TextInput} from 'react-native-paper';
+import DocumentPicker from 'react-native-document-picker';
+import ImageResizer from '@bam.tech/react-native-image-resizer';
+import axios from 'axios';
+import UrlHelper from '../helper/UrlHelper';
+import {
+  useCreateCurrencyMutation,
+  useCreateUPIAccountMutation,
+  useGetAllLocationWithTimeQuery,
+  useUpdateCurrencyMutation,
+} from '../helper/Networkcall';
 
-    const {item} = route.params;
+const upiapidata = [
+  {name: 'Wasu', upiid: '9876543210@ybl', id: '1'},
+  {name: 'Aman', upiid: '8876543210@ybl', id: '2'},
+  {name: 'Zasu', upiid: '7876543210@ybl', id: '3'},
+  {name: 'Masu', upiid: '1876543210@ybl', id: '4'},
+  {name: 'Kasu', upiid: '2876543210@ybl', id: '5'},
+];
 
-    console.log("item :: "+item)
+const UpdateCountry = ({route}) => {
+  const {item} = route.params;
 
-    const navigation = useNavigation();
-    const isFocused = useIsFocused();
-    const {accesstoken} = useSelector(state => state.user);
+  console.log('item :: ' + item);
 
-    const [countrycurrencyvaluecomparedtoinr, setcountrycurrencyvaluecomparedtoinr] = useState(item.countrycurrencyvaluecomparedtoinr);
-    const [countrycurrencysymbol, setcountrycurrencysymbol] = useState(item.countrycurrencysymbol);
-  
-  
-  
-  
-    const [updateCurrency, {isLoading, error}] = useUpdateCurrencyMutation();
-  
-   
-  
-    const submitDeposit = async () => {
-     if (!countrycurrencyvaluecomparedtoinr) {
-        Toast.show({type: 'error', text1: 'Enter currency value compared to INR'});
-        return;
-        
-      }else  if (!countrycurrencysymbol) {
-        Toast.show({type: 'error', text1: 'Enter currency name'});
-        return;
-      }
-       else {
-        console.log("Update Currency Running")
-        try {
-          
+  const navigation = useNavigation();
+  const isFocused = useIsFocused();
+  const {accesstoken} = useSelector(state => state.user);
 
-          const formData = {
-            countrycurrencyvaluecomparedtoinr: countrycurrencyvaluecomparedtoinr,
-            countrycurrencysymbol:countrycurrencysymbol,
-          }
-  
-          console.log('FORM DATA :: ' + JSON.stringify(formData));
-  
-          const res = await updateCurrency({
-            accesstoken: accesstoken,
-            id: item._id,
-            body: formData
-          }).unwrap();
+  const [
+    countrycurrencyvaluecomparedtoinr,
+    setcountrycurrencyvaluecomparedtoinr,
+  ] = useState(item.countrycurrencyvaluecomparedtoinr);
+  const [countrycurrencysymbol, setcountrycurrencysymbol] = useState(
+    item.countrycurrencysymbol,
+  );
 
-          console.log("Res :: "+res)
-          console.log("Res String :: "+JSON.stringify(res))
-  
-          Toast.show({type: 'success', text1: 'Success', text2: res.message});
-          navigation.goBack();
-        } catch (error) {
-          console.log('Error during deposit:', error);
-          if (error.response) {
-            Toast.show({type: 'error', text1: error.response.data});
-          } else if (error.request) {
-            Toast.show({
-              type: 'error',
-              text1: 'Request was made, but no response was received',
-            });
-          } else {
-            Toast.show({type: 'error', text1: error.message});
-          }
+  const [updateCurrency, {isLoading, error}] = useUpdateCurrencyMutation();
+
+  const submitDeposit = async () => {
+    if (!countrycurrencyvaluecomparedtoinr) {
+      Toast.show({
+        type: 'error',
+        text1: 'Enter currency value compared to INR',
+      });
+      return;
+    } else if (!countrycurrencysymbol) {
+      Toast.show({type: 'error', text1: 'Enter currency name'});
+      return;
+    } else {
+      console.log('Update Currency Running');
+      try {
+        const formData = {
+          countrycurrencyvaluecomparedtoinr: countrycurrencyvaluecomparedtoinr,
+          countrycurrencysymbol: countrycurrencysymbol,
+        };
+
+        console.log('FORM DATA :: ' + JSON.stringify(formData));
+
+        const res = await updateCurrency({
+          accesstoken: accesstoken,
+          id: item._id,
+          body: formData,
+        }).unwrap();
+
+        console.log('Res :: ' + res);
+        console.log('Res String :: ' + JSON.stringify(res));
+
+        Toast.show({type: 'success', text1: 'Success', text2: res.message});
+        navigation.goBack();
+      } catch (error) {
+        console.log('Error during deposit:', error);
+        if (error.response) {
+          Toast.show({type: 'error', text1: error.response.data});
+        } else if (error.request) {
+          Toast.show({
+            type: 'error',
+            text1: 'Request was made, but no response was received',
+          });
+        } else {
+          Toast.show({type: 'error', text1: error.message});
         }
       }
-    };
-  
-    useEffect(() => {
-      allTheDepositData();
-    }, [isFocused, loadingAllData, allDepositdata]);
-  
-    const [loadingAllData, setLoadingAllData] = useState(false);
-    const [allDepositdata, setAllDepositData] = useState([]);
-  
-    const allTheDepositData = async () => {
-      try {
-        setLoadingAllData(true);
-        const {data} = await axios.get(UrlHelper.ALL_UPI_API, {
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${accesstoken}`,
-          },
-        });
-  
-        console.log('datat :: ' + JSON.stringify(data));
-        setAllDepositData(data.payments);
-        setLoadingAllData(false);
-      } catch (error) {
-        setLoadingAllData(false);
-        Toast.show({
-          type: 'error',
-          text1: 'Something went wrong',
-        });
-        console.log(error);
-      }
-    };
-  
-    return (
-      <SafeAreaView style={{flex: 1}}>
-        <KeyboardAvoidingView
-          style={{flex: 1}}
-          behavior="height"
-          keyboardVerticalOffset={-60}>
-          <Background />
-          <View style={{flex: 1, justifyContent: 'flex-end'}}>
-            <ImageBackground
-              source={require('../../assets/image/tlwbg.jpg')}
+    }
+  };
+
+  useEffect(() => {
+    allTheDepositData();
+  }, [isFocused, loadingAllData, allDepositdata]);
+
+  const [loadingAllData, setLoadingAllData] = useState(false);
+  const [allDepositdata, setAllDepositData] = useState([]);
+
+  const allTheDepositData = async () => {
+    try {
+      setLoadingAllData(true);
+      const {data} = await axios.get(UrlHelper.ALL_UPI_API, {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${accesstoken}`,
+        },
+      });
+
+      console.log('datat :: ' + JSON.stringify(data));
+      setAllDepositData(data.payments);
+      setLoadingAllData(false);
+    } catch (error) {
+      setLoadingAllData(false);
+      Toast.show({
+        type: 'error',
+        text1: 'Something went wrong',
+      });
+      console.log(error);
+    }
+  };
+
+  return (
+    <SafeAreaView style={{flex: 1}}>
+      <KeyboardAvoidingView
+        style={{flex: 1}}
+        behavior="height"
+        keyboardVerticalOffset={-60}>
+        <Background />
+        <View style={{flex: 1, justifyContent: 'flex-end'}}>
+          <ImageBackground
+            source={require('../../assets/image/tlwbg.jpg')}
+            style={{
+              width: '100%',
+              height:
+                Platform.OS === 'android'
+                  ? heightPercentageToDP(85)
+                  : heightPercentageToDP(80),
+            }}
+            imageStyle={{
+              borderTopLeftRadius: heightPercentageToDP(5),
+              borderTopRightRadius: heightPercentageToDP(5),
+            }}>
+            <View
               style={{
-                width: '100%',
-                height: heightPercentageToDP(85),
-              }}
-              imageStyle={{
+                height:
+                  Platform.OS === 'android'
+                    ? heightPercentageToDP(85)
+                    : heightPercentageToDP(80),
+                width: widthPercentageToDP(100),
                 borderTopLeftRadius: heightPercentageToDP(5),
                 borderTopRightRadius: heightPercentageToDP(5),
               }}>
               <View
                 style={{
-                  height: heightPercentageToDP(85),
+                  height: heightPercentageToDP(5),
                   width: widthPercentageToDP(100),
-                  borderTopLeftRadius: heightPercentageToDP(5),
-                  borderTopRightRadius: heightPercentageToDP(5),
+                  justifyContent: 'center',
+                  alignItems: 'center',
                 }}>
                 <View
                   style={{
-                    height: heightPercentageToDP(5),
-                    width: widthPercentageToDP(100),
-                    justifyContent: 'center',
-                    alignItems: 'center',
+                    width: widthPercentageToDP(20),
+                    height: heightPercentageToDP(0.8),
+                    backgroundColor: COLORS.grayBg,
+                    borderRadius: heightPercentageToDP(2),
+                  }}
+                />
+              </View>
+              <View style={{margin: heightPercentageToDP(2)}}>
+                <GradientTextWhite style={styles.textStyle}>
+                  Update country
+                </GradientTextWhite>
+                <GradientTextWhite
+                  style={{
+                    ...styles.textStyletwo,
+                    marginTop: heightPercentageToDP(4),
                   }}>
-                  <View
-                    style={{
-                      width: widthPercentageToDP(20),
-                      height: heightPercentageToDP(0.8),
-                      backgroundColor: COLORS.grayBg,
-                      borderRadius: heightPercentageToDP(2),
-                    }}
-                  />
-                </View>
-                <View style={{margin: heightPercentageToDP(2)}}>
-                  <GradientTextWhite style={styles.textStyle}>
-                    Update country
-                  </GradientTextWhite>
-                  <GradientTextWhite style={{...styles.textStyletwo,marginTop: heightPercentageToDP(4)}}>
-                    {item.countryname}
-                  </GradientTextWhite>
-                  <GradientTextWhite style={styles.textStyletwo}>
-                    {item.countrycurrencysymbol}
-                  </GradientTextWhite>
-                </View>
-  
-                {/** FOR UPI DEPOSIT FORM */}
-  
-                <ScrollView
-                  showsVerticalScrollIndicator={false}
-                  automaticallyAdjustKeyboardInsets>
-                  <View
-                    style={{
-                      padding: heightPercentageToDP(2),
-                    }}>
-                   
-  
-                    
+                  {item.countryname}
+                </GradientTextWhite>
+                <GradientTextWhite style={styles.textStyletwo}>
+                  {item.countrycurrencysymbol}
+                </GradientTextWhite>
+              </View>
 
-                     {/** country val */}
-                     <View
-                      style={{
-                        borderRadius: heightPercentageToDP(2),
-                        
-                      }}>
-                      <Text
-                        style={{
-                          fontFamily: FONT.Montserrat_SemiBold,
-                          color: COLORS.black,
-                          fontSize: heightPercentageToDP(2),
-                          paddingStart: heightPercentageToDP(1),
-                          
-                        }}>
-                        Currency value
-                      </Text>
-  
-                      <LinearGradient
-                        colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
-                        start={{x: 0, y: 0}} // start from left
-                        end={{x: 1, y: 0}} // end at right
-                        style={{
-                          borderRadius: heightPercentageToDP(2),
-                        }}>
-                        <TextInput
-                          underlineColor="transparent"
-                          activeUnderlineColor="transparent"
-                          cursorColor={COLORS.white}
-                          placeholderTextColor={COLORS.black}
-                          style={{
-                            backgroundColor: 'transparent',
-                            fontFamily: FONT.Montserrat_Bold,
-                            color: COLORS.black,
-                          }}
-                          value={countrycurrencyvaluecomparedtoinr}
-                          onChangeText={text => setcountrycurrencyvaluecomparedtoinr(text)}
-                        />
-                      </LinearGradient>
-                    </View>
+              {/** FOR UPI DEPOSIT FORM */}
 
-                     {/** CURRENCY NAME */}
-                     <View
-                      style={{
-                        borderRadius: heightPercentageToDP(2),
-                        
-                      }}>
-                      <Text
-                        style={{
-                          fontFamily: FONT.Montserrat_SemiBold,
-                          color: COLORS.black,
-                          fontSize: heightPercentageToDP(2),
-                          paddingStart: heightPercentageToDP(1),
-                          
-                        }}>
-                        Currency name
-                      </Text>
-  
-                      <LinearGradient
-                        colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
-                        start={{x: 0, y: 0}} // start from left
-                        end={{x: 1, y: 0}} // end at right
-                        style={{
-                          borderRadius: heightPercentageToDP(2),
-                        }}>
-                        <TextInput
-                          underlineColor="transparent"
-                          activeUnderlineColor="transparent"
-                          cursorColor={COLORS.white}
-                          placeholderTextColor={COLORS.black}
-                          style={{
-                            backgroundColor: 'transparent',
-                            fontFamily: FONT.Montserrat_Bold,
-                            color: COLORS.black,
-                          }}
-                          value={countrycurrencysymbol}
-                          onChangeText={text => setcountrycurrencysymbol(text)}
-                        />
-                      </LinearGradient>
-                    </View>
-                  </View>
-                </ScrollView>
-  
+              <ScrollView
+                showsVerticalScrollIndicator={false}
+                automaticallyAdjustKeyboardInsets>
                 <View
                   style={{
-                    marginBottom: heightPercentageToDP(5),
-                    margin: heightPercentageToDP(2),
+                    padding: heightPercentageToDP(2),
                   }}>
-                  {isLoading ? (
-                    <Loading />
-                  ) : (
-                    <TouchableOpacity
-                      onPress={submitDeposit}
+                  {/** country val */}
+                  <View
+                    style={{
+                      borderRadius: heightPercentageToDP(2),
+                    }}>
+                    <Text
                       style={{
-                        backgroundColor: COLORS.blue,
-                        padding: heightPercentageToDP(2),
-                        borderRadius: heightPercentageToDP(1),
-                        alignItems: 'center',
-                        
+                        fontFamily: FONT.Montserrat_SemiBold,
+                        color: COLORS.black,
+                        fontSize: heightPercentageToDP(2),
+                        paddingStart: heightPercentageToDP(1),
                       }}>
-                      <Text
+                      Currency value
+                    </Text>
+
+                    <LinearGradient
+                      colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
+                      start={{x: 0, y: 0}} // start from left
+                      end={{x: 1, y: 0}} // end at right
+                      style={{
+                        borderRadius: heightPercentageToDP(2),
+                      }}>
+                      <TextInput
+                        underlineColor="transparent"
+                        activeUnderlineColor="transparent"
+                        cursorColor={COLORS.white}
+                        placeholderTextColor={COLORS.black}
                         style={{
-                          color: COLORS.white,
-                          fontFamily: FONT.Montserrat_Regular,
-                        }}>
-                        Submit
-                      </Text>
-                    </TouchableOpacity>
-                  )}
+                          backgroundColor: 'transparent',
+                          fontFamily: FONT.Montserrat_Bold,
+                          color: COLORS.black,
+                        }}
+                        value={countrycurrencyvaluecomparedtoinr}
+                        onChangeText={text =>
+                          setcountrycurrencyvaluecomparedtoinr(text)
+                        }
+                      />
+                    </LinearGradient>
+                  </View>
+
+                  {/** CURRENCY NAME */}
+                  <View
+                    style={{
+                      borderRadius: heightPercentageToDP(2),
+                    }}>
+                    <Text
+                      style={{
+                        fontFamily: FONT.Montserrat_SemiBold,
+                        color: COLORS.black,
+                        fontSize: heightPercentageToDP(2),
+                        paddingStart: heightPercentageToDP(1),
+                      }}>
+                      Currency name
+                    </Text>
+
+                    <LinearGradient
+                      colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
+                      start={{x: 0, y: 0}} // start from left
+                      end={{x: 1, y: 0}} // end at right
+                      style={{
+                        borderRadius: heightPercentageToDP(2),
+                      }}>
+                      <TextInput
+                        underlineColor="transparent"
+                        activeUnderlineColor="transparent"
+                        cursorColor={COLORS.white}
+                        placeholderTextColor={COLORS.black}
+                        style={{
+                          backgroundColor: 'transparent',
+                          fontFamily: FONT.Montserrat_Bold,
+                          color: COLORS.black,
+                        }}
+                        value={countrycurrencysymbol}
+                        onChangeText={text => setcountrycurrencysymbol(text)}
+                      />
+                    </LinearGradient>
+                  </View>
                 </View>
+              </ScrollView>
+
+              <View
+                style={{
+                  marginBottom: heightPercentageToDP(5),
+                  margin: heightPercentageToDP(2),
+                }}>
+                {isLoading ? (
+                  <Loading />
+                ) : (
+                  <TouchableOpacity
+                    onPress={submitDeposit}
+                    style={{
+                      backgroundColor: COLORS.blue,
+                      padding: heightPercentageToDP(2),
+                      borderRadius: heightPercentageToDP(1),
+                      alignItems: 'center',
+                    }}>
+                    <Text
+                      style={{
+                        color: COLORS.white,
+                        fontFamily: FONT.Montserrat_Regular,
+                      }}>
+                      Submit
+                    </Text>
+                  </TouchableOpacity>
+                )}
               </View>
-            </ImageBackground>
-          </View>
-        </KeyboardAvoidingView>
-      </SafeAreaView>
-    );
-  };
-  
-  export default UpdateCountry;
-  
-  const styles = StyleSheet.create({
-    textStyle: {
-      fontSize: heightPercentageToDP(4),
-      fontFamily: FONT.Montserrat_Bold,
-      color: COLORS.black,
-    },
-    textStyletwo: {
-      fontSize: heightPercentageToDP(4),
-      fontFamily: FONT.Montserrat_Regular,
-      color: COLORS.black,
-    },
-    textStyleContent: {
-      fontSize: heightPercentageToDP(3),
-      fontFamily: FONT.Montserrat_Bold,
-      color: COLORS.black,
-    },
-    copycontent: {
-      fontSize: heightPercentageToDP(2),
-      color: COLORS.black,
-      fontFamily: FONT.Montserrat_Regular,
-    },
-    copytitle: {
-      fontSize: heightPercentageToDP(2),
-      color: COLORS.black,
-      fontFamily: FONT.Montserrat_SemiBold,
-    },
-    inputContainer: {
-      marginTop: heightPercentageToDP(3),
-      paddingVertical: heightPercentageToDP(2),
-      gap: heightPercentageToDP(2),
-    },
-    input: {
-      height: heightPercentageToDP(7),
-      flexDirection: 'row',
-      backgroundColor: COLORS.white_s,
-      alignItems: 'center',
-      paddingHorizontal: heightPercentageToDP(2),
-      borderRadius: heightPercentageToDP(1),
-    },
-    textInput: {
-      marginStart: heightPercentageToDP(1),
-      flex: 1,
-      fontFamily: FONT.SF_PRO_REGULAR,
-      color: COLORS.black,
-    },
-    subtitle: {
-      fontFamily: FONT.Montserrat_SemiBold,
-      fontSize: heightPercentageToDP(1.5),
-      margin: 5,
-    },
-    userNameInput: {
-      fontFamily: FONT.Montserrat_Regular,
-      fontSize: heightPercentageToDP(2),
-      borderWidth: 1,
-    },
-  });
-  
+            </View>
+          </ImageBackground>
+        </View>
+      </KeyboardAvoidingView>
+    </SafeAreaView>
+  );
+};
+
+export default UpdateCountry;
+
+const styles = StyleSheet.create({
+  textStyle: {
+    fontSize: heightPercentageToDP(4),
+    fontFamily: FONT.Montserrat_Bold,
+    color: COLORS.black,
+  },
+  textStyletwo: {
+    fontSize: heightPercentageToDP(4),
+    fontFamily: FONT.Montserrat_Regular,
+    color: COLORS.black,
+  },
+  textStyleContent: {
+    fontSize: heightPercentageToDP(3),
+    fontFamily: FONT.Montserrat_Bold,
+    color: COLORS.black,
+  },
+  copycontent: {
+    fontSize: heightPercentageToDP(2),
+    color: COLORS.black,
+    fontFamily: FONT.Montserrat_Regular,
+  },
+  copytitle: {
+    fontSize: heightPercentageToDP(2),
+    color: COLORS.black,
+    fontFamily: FONT.Montserrat_SemiBold,
+  },
+  inputContainer: {
+    marginTop: heightPercentageToDP(3),
+    paddingVertical: heightPercentageToDP(2),
+    gap: heightPercentageToDP(2),
+  },
+  input: {
+    height: heightPercentageToDP(7),
+    flexDirection: 'row',
+    backgroundColor: COLORS.white_s,
+    alignItems: 'center',
+    paddingHorizontal: heightPercentageToDP(2),
+    borderRadius: heightPercentageToDP(1),
+  },
+  textInput: {
+    marginStart: heightPercentageToDP(1),
+    flex: 1,
+    fontFamily: FONT.SF_PRO_REGULAR,
+    color: COLORS.black,
+  },
+  subtitle: {
+    fontFamily: FONT.Montserrat_SemiBold,
+    fontSize: heightPercentageToDP(1.5),
+    margin: 5,
+  },
+  userNameInput: {
+    fontFamily: FONT.Montserrat_Regular,
+    fontSize: heightPercentageToDP(2),
+    borderWidth: 1,
+  },
+});

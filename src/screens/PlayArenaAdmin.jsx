@@ -2,6 +2,8 @@ import {
   Button,
   FlatList,
   ImageBackground,
+  Platform,
+  SafeAreaView,
   StyleSheet,
   Text,
   TextInput,
@@ -13,9 +15,7 @@ import {
   heightPercentageToDP,
   widthPercentageToDP,
 } from 'react-native-responsive-screen';
-import AntDesign from 'react-native-vector-icons/AntDesign';
-import Fontisto from 'react-native-vector-icons/Fontisto';
-import Toast from 'react-native-toast-message';
+
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {
   useFocusEffect,
@@ -285,7 +285,7 @@ const PlayArenaAdmin = ({route}) => {
   };
 
   return (
-    <View style={{flex: 1}}>
+    <SafeAreaView style={{flex: 1}}>
       <Background />
 
       {/** Main Cointainer */}
@@ -295,7 +295,10 @@ const PlayArenaAdmin = ({route}) => {
           source={require('../../assets/image/tlwbg.jpg')}
           style={{
             width: '100%',
-            height: heightPercentageToDP(85),
+            height:
+            Platform.OS === 'android'
+              ? heightPercentageToDP(85)
+              : heightPercentageToDP(80),
           }}
           imageStyle={{
             borderTopLeftRadius: heightPercentageToDP(5),
@@ -303,7 +306,10 @@ const PlayArenaAdmin = ({route}) => {
           }}>
           <View
             style={{
-              height: heightPercentageToDP(85),
+              height:
+              Platform.OS === 'android'
+                ? heightPercentageToDP(85)
+                : heightPercentageToDP(80),
               width: widthPercentageToDP(100),
 
               borderTopLeftRadius: heightPercentageToDP(5),
@@ -762,7 +768,7 @@ const PlayArenaAdmin = ({route}) => {
           </View>
         </ImageBackground>
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 
@@ -770,7 +776,7 @@ export default PlayArenaAdmin;
 
 const styles = StyleSheet.create({
   textStyle: {
-    fontSize: heightPercentageToDP(2),
+    fontSize: heightPercentageToDP(1.5),
     fontFamily: FONT.Montserrat_SemiBold,
     color: COLORS.black,
   },

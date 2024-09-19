@@ -9,7 +9,6 @@ import {
   View,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
-import LoginBackground from '../components/login/LoginBackground';
 import {
   heightPercentageToDP,
   widthPercentageToDP,
@@ -17,7 +16,6 @@ import {
 import {COLORS, FONT} from '../../assets/constants';
 import GradientText from '../components/helpercComponent/GradientText';
 import Fontisto from 'react-native-vector-icons/Fontisto';
-import Entypo from 'react-native-vector-icons/Entypo';
 import Toast from 'react-native-toast-message';
 import {useIsFocused, useNavigation} from '@react-navigation/native';
 import Background from '../components/background/Background';
@@ -122,7 +120,10 @@ const SearchDate = ({route}) => {
           source={require('../../assets/image/tlwbg.jpg')}
           style={{
             width: '100%',
-            height: heightPercentageToDP(85),
+            height:
+            Platform.OS === 'android'
+              ? heightPercentageToDP(85)
+              : heightPercentageToDP(80),
           }}
           imageStyle={{
             borderTopLeftRadius: heightPercentageToDP(5),
@@ -132,7 +133,10 @@ const SearchDate = ({route}) => {
 
           <View
             style={{
-              height: heightPercentageToDP(85),
+              height:
+              Platform.OS === 'android'
+                ? heightPercentageToDP(85)
+                : heightPercentageToDP(80),
               width: widthPercentageToDP(100),
 
               borderTopLeftRadius: heightPercentageToDP(5),

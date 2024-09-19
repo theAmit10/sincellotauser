@@ -396,7 +396,7 @@ const Register = ({route}) => {
                       />
                       <Entypo
                         onPress={togglePasswordVisibilityConfirmPassword}
-                        name={passwordVisible ? 'eye' : 'eye-with-line'}
+                        name={confirmPasswordVisible ? 'eye' : 'eye-with-line'}
                         size={heightPercentageToDP(3)}
                         color={COLORS.darkGray}
                       />

@@ -63,6 +63,7 @@ const CreateNotification = ({route}) => {
             title: titleValue,
             description: discriptionValue,
             devicetoken: userdata?.devicetoken,
+            userId: userdata._id
           },
           {
             headers: {

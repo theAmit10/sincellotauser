@@ -1,6 +1,4 @@
 import {
-  FlatList,
-  Image,
   ImageBackground,
   KeyboardAvoidingView,
   SafeAreaView,
@@ -15,7 +13,7 @@ import {
   heightPercentageToDP,
   widthPercentageToDP,
 } from 'react-native-responsive-screen';
-import mime from 'mime';
+
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Toast from 'react-native-toast-message';
 import {useIsFocused, useNavigation} from '@react-navigation/native';
@@ -24,17 +22,12 @@ import LinearGradient from 'react-native-linear-gradient';
 import Background from '../../components/background/Background';
 import {COLORS, FONT} from '../../../assets/constants';
 import GradientTextWhite from '../../components/helpercComponent/GradientTextWhite';
-import Clipboard from '@react-native-clipboard/clipboard';
 import Loading from '../../components/helpercComponent/Loading';
 import {TextInput} from 'react-native-paper';
 import DocumentPicker from 'react-native-document-picker';
-import ImageResizer from '@bam.tech/react-native-image-resizer';
 import axios from 'axios';
 import UrlHelper from '../../helper/UrlHelper';
-import {
-  useCreateCryptoAccountMutation,
-  useCreateDepositMutation,
-} from '../../helper/Networkcall';
+import {useCreateCryptoAccountMutation} from '../../helper/Networkcall';
 
 const upiapidata = [
   {name: 'Wasu', upiid: '9876543210@ybl', id: '1'},
@@ -184,7 +177,10 @@ const CryptoDeposit = () => {
             source={require('../../../assets/image/tlwbg.jpg')}
             style={{
               width: '100%',
-              height: heightPercentageToDP(85),
+              height:
+                Platform.OS === 'android'
+                  ? heightPercentageToDP(85)
+                  : heightPercentageToDP(80),
             }}
             imageStyle={{
               borderTopLeftRadius: heightPercentageToDP(5),
@@ -192,7 +188,10 @@ const CryptoDeposit = () => {
             }}>
             <View
               style={{
-                height: heightPercentageToDP(85),
+                height:
+                  Platform.OS === 'android'
+                    ? heightPercentageToDP(85)
+                    : heightPercentageToDP(80),
                 width: widthPercentageToDP(100),
                 borderTopLeftRadius: heightPercentageToDP(5),
                 borderTopRightRadius: heightPercentageToDP(5),
@@ -333,24 +332,25 @@ const CryptoDeposit = () => {
                       style={{
                         borderRadius: heightPercentageToDP(2),
                         flexDirection: 'row',
+                        alignItems: 'center', // Ensures vertical alignment of items
+                        padding: heightPercentageToDP(0.5), // Adjust padding for spacing
                       }}>
                       <Text
                         style={{
                           backgroundColor: 'transparent',
                           fontFamily: FONT.HELVETICA_REGULAR,
                           color: COLORS.black,
-                          height: heightPercentageToDP(7),
-                          textAlignVertical: 'center',
-                          paddingStart: heightPercentageToDP(2),
                           fontSize: heightPercentageToDP(2),
+                          textAlign: 'left',
+                          paddingStart: heightPercentageToDP(2), // Padding for spacing on the left
+                          flex: 1, // Let the text take available space
                         }}>
                         {imageFileName}
                       </Text>
                       <View
                         style={{
-                          flex: 1,
                           justifyContent: 'center',
-                          alignItems: 'flex-end',
+                          alignItems: 'center',
                           paddingEnd: heightPercentageToDP(2),
                         }}>
                         <LinearGradient

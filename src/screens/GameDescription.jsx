@@ -9,13 +9,11 @@ import {
   View,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
-
 import {
   heightPercentageToDP,
   widthPercentageToDP,
 } from 'react-native-responsive-screen';
 import {COLORS, FONT} from '../../assets/constants';
-import GradientText from '../components/helpercComponent/GradientText';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import Toast from 'react-native-toast-message';
 import {useIsFocused, useNavigation} from '@react-navigation/native';
@@ -69,7 +67,10 @@ const GameDescription = () => {
           source={require('../../assets/image/tlwbg.jpg')}
           style={{
             width: '100%',
-            height: heightPercentageToDP(85),
+            height:
+            Platform.OS === 'android'
+              ? heightPercentageToDP(85)
+              : heightPercentageToDP(80),
           }}
           imageStyle={{
             borderTopLeftRadius: heightPercentageToDP(5),
@@ -79,7 +80,10 @@ const GameDescription = () => {
 
           <View
             style={{
-              height: heightPercentageToDP(85),
+              height:
+                  Platform.OS === 'android'
+                    ? heightPercentageToDP(85)
+                    : heightPercentageToDP(80),
               width: widthPercentageToDP(100),
 
               borderTopLeftRadius: heightPercentageToDP(5),

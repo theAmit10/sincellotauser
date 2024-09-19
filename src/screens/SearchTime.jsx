@@ -21,7 +21,6 @@ import {useIsFocused, useNavigation} from '@react-navigation/native';
 import Background from '../components/background/Background';
 import Loading from '../components/helpercComponent/Loading';
 import {useDispatch, useSelector} from 'react-redux';
-import {getAllDate} from '../redux/actions/dateAction';
 import {getTimeAccordingLocation} from '../redux/actions/timeAction';
 import NoDataFound from '../components/helpercComponent/NoDataFound';
 import LinearGradient from 'react-native-linear-gradient';
@@ -117,7 +116,10 @@ const SearchTime = ({route}) => {
           source={require('../../assets/image/tlwbg.jpg')}
           style={{
             width: '100%',
-            height: heightPercentageToDP(85),
+            height:
+                  Platform.OS === 'android'
+                    ? heightPercentageToDP(85)
+                    : heightPercentageToDP(80),
           }}
           imageStyle={{
             borderTopLeftRadius: heightPercentageToDP(5),
@@ -127,7 +129,10 @@ const SearchTime = ({route}) => {
 
           <View
             style={{
-              height: heightPercentageToDP(85),
+              height:
+                  Platform.OS === 'android'
+                    ? heightPercentageToDP(85)
+                    : heightPercentageToDP(80),
               width: widthPercentageToDP(100),
               borderTopLeftRadius: heightPercentageToDP(5),
               borderTopRightRadius: heightPercentageToDP(5),

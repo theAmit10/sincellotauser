@@ -1,6 +1,8 @@
 import {
   FlatList,
   ImageBackground,
+  Platform,
+  SafeAreaView,
   ScrollView,
   StyleSheet,
   Text,
@@ -14,19 +16,14 @@ import {
   widthPercentageToDP,
 } from 'react-native-responsive-screen';
 import {COLORS, FONT} from '../../assets/constants';
-import GradientText from '../components/helpercComponent/GradientText';
 import Fontisto from 'react-native-vector-icons/Fontisto';
-import Toast from 'react-native-toast-message';
-import {useIsFocused, useNavigation} from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 import Background from '../components/background/Background';
 import Loading from '../components/helpercComponent/Loading';
-import {useDispatch, useSelector} from 'react-redux';
-import {getAllLocations} from '../redux/actions/locationAction';
+import {useSelector} from 'react-redux';
 import GradientTextWhite from '../components/helpercComponent/GradientTextWhite';
 import LinearGradient from 'react-native-linear-gradient';
-import {getTimeAccordingLocation} from '../redux/actions/timeAction';
 import {useGetAllLocationWithTimeQuery} from '../helper/Networkcall';
-import NoDataFound from '../components/helpercComponent/NoDataFound';
 
 const datatypefilter = [
   {id: 'all', val: 'All'},
@@ -355,14 +352,17 @@ const PlayArenaLocation = () => {
   };
 
   return (
-    <View style={{flex: 1}}>
+    <SafeAreaView style={{flex: 1}}>
       <Background />
       <View style={{flex: 1, justifyContent: 'flex-end'}}>
         <ImageBackground
           source={require('../../assets/image/tlwbg.jpg')}
           style={{
             width: '100%',
-            height: heightPercentageToDP(85),
+            height:
+            Platform.OS === 'android'
+              ? heightPercentageToDP(85)
+              : heightPercentageToDP(80),
           }}
           imageStyle={{
             borderTopLeftRadius: heightPercentageToDP(5),
@@ -370,7 +370,10 @@ const PlayArenaLocation = () => {
           }}>
           <View
             style={{
-              height: heightPercentageToDP(85),
+              height:
+              Platform.OS === 'android'
+                ? heightPercentageToDP(85)
+                : heightPercentageToDP(80),
               width: widthPercentageToDP(100),
               borderTopLeftRadius: heightPercentageToDP(5),
               borderTopRightRadius: heightPercentageToDP(5),
@@ -430,13 +433,54 @@ const PlayArenaLocation = () => {
                 />
               </View>
 
-              <View
+              {/* <View
                 style={{
                   height: heightPercentageToDP(7),
                   flexDirection: 'row',
                   backgroundColor: COLORS.white_s,
                   alignItems: 'center',
                   justifyContent: 'center',
+                  borderRadius: heightPercentageToDP(3),
+                  marginTop: heightPercentageToDP(2),
+                  overflow: 'scroll',
+                }}>
+                {alldatafiler.map(item => (
+                  <TouchableOpacity
+                    onPress={() => settingFilterData(item)}
+                    key={item._id}
+                    style={{
+                      backgroundColor: COLORS.grayHalfBg,
+                      padding: heightPercentageToDP(1),
+                      margin: heightPercentageToDP(0.2),
+                      borderRadius: heightPercentageToDP(1),
+                      borderColor:
+                        selectedFilter == item._id
+                          ? COLORS.green
+                          : COLORS.grayHalfBg,
+                      borderWidth: 1,
+                    }}>
+                    <Text
+                      style={{
+                        fontFamily: FONT.Montserrat_Regular,
+                        fontSize: heightPercentageToDP(1.5),
+                        color: COLORS.black,
+                        paddingHorizontal: heightPercentageToDP(0.5),
+                      }}>
+                      {item.maximumReturn}
+                    </Text>
+                  </TouchableOpacity>
+                ))}
+              </View> */}
+              <ScrollView
+                horizontal
+                showsHorizontalScrollIndicator={false}
+                contentContainerStyle={{
+                  alignItems: 'center',
+                  paddingHorizontal: heightPercentageToDP(1)
+                }}
+                style={{
+                  height: heightPercentageToDP(7),
+                  backgroundColor: COLORS.white_s,
                   borderRadius: heightPercentageToDP(3),
                   marginTop: heightPercentageToDP(2),
                 }}>
@@ -466,7 +510,7 @@ const PlayArenaLocation = () => {
                     </Text>
                   </TouchableOpacity>
                 ))}
-              </View>
+              </ScrollView>
             </View>
 
             <View style={{flex: 2}}>
@@ -486,7 +530,7 @@ const PlayArenaLocation = () => {
           </View>
         </ImageBackground>
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 

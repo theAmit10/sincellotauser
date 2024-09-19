@@ -119,12 +119,12 @@ const AdminDashboard = () => {
   };
 
   return (
-    <View style={{flex: 1}}>
+    <SafeAreaView style={{flex: 1}}>
       <AdminBackground />
 
       {/** Main Cointainer */}
 
-      <View style={{flex: 1, justifyContent: 'flex-end', zIndex: 2}}>
+      <SafeAreaView style={{flex: 1, justifyContent: 'flex-end', zIndex: 2}}>
         <ImageBackground
           source={require('../../assets/image/tlwbg.jpg')}
           style={{
@@ -891,8 +891,8 @@ const AdminDashboard = () => {
             )}
           </View>
         </ImageBackground>
-      </View>
-    </View>
+      </SafeAreaView>
+    </SafeAreaView>
   );
 };
 

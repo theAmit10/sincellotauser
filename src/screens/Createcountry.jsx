@@ -3,6 +3,7 @@ import {
   Image,
   ImageBackground,
   KeyboardAvoidingView,
+  Platform,
   SafeAreaView,
   ScrollView,
   StyleSheet,
@@ -408,7 +409,10 @@ const Createcountry = () => {
             source={require('../../assets/image/tlwbg.jpg')}
             style={{
               width: '100%',
-              height: heightPercentageToDP(85),
+              height:
+              Platform.OS === 'android'
+                ? heightPercentageToDP(85)
+                : heightPercentageToDP(80),
             }}
             imageStyle={{
               borderTopLeftRadius: heightPercentageToDP(5),
@@ -416,7 +420,10 @@ const Createcountry = () => {
             }}>
             <View
               style={{
-                height: heightPercentageToDP(85),
+                height:
+                Platform.OS === 'android'
+                  ? heightPercentageToDP(85)
+                  : heightPercentageToDP(80),
                 width: widthPercentageToDP(100),
                 borderTopLeftRadius: heightPercentageToDP(5),
                 borderTopRightRadius: heightPercentageToDP(5),
@@ -627,43 +634,44 @@ const Createcountry = () => {
                       </Text>
 
                       <LinearGradient
-                        colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
-                        start={{x: 0, y: 0}} // start from left
-                        end={{x: 1, y: 0}} // end at right
+                      colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
+                      start={{x: 0, y: 0}} // start from left
+                      end={{x: 1, y: 0}} // end at right
+                      style={{
+                        borderRadius: heightPercentageToDP(2),
+                        flexDirection: 'row',
+                        alignItems: 'center', // Ensures vertical alignment of items
+                        padding: heightPercentageToDP(0.5), // Adjust padding for spacing
+                      }}>
+                      <Text
                         style={{
-                          borderRadius: heightPercentageToDP(2),
-                          flexDirection: 'row',
+                          backgroundColor: 'transparent',
+                          fontFamily: FONT.HELVETICA_REGULAR,
+                          color: COLORS.black,
+                          fontSize: heightPercentageToDP(2),
+                          textAlign: 'left',
+                          paddingStart: heightPercentageToDP(2), // Padding for spacing on the left
+                          flex: 1, // Let the text take available space
                         }}>
-                        <Text
-                          style={{
-                            backgroundColor: 'transparent',
-                            fontFamily: FONT.HELVETICA_REGULAR,
-                            color: COLORS.black,
-                            height: heightPercentageToDP(7),
-                            textAlignVertical: 'center',
-                            paddingStart: heightPercentageToDP(2),
-                            fontSize: heightPercentageToDP(2),
-                          }}>
-                          {imageFileName}
-                        </Text>
-                        <View
-                          style={{
-                            flex: 1,
-                            justifyContent: 'center',
-                            alignItems: 'flex-end',
-                            paddingEnd: heightPercentageToDP(2),
-                          }}>
-                          <LinearGradient
-                            colors={[COLORS.grayBg, COLORS.white_s]}
-                            style={{borderRadius: 20, padding: 10}}>
-                            <AntDesign
-                              name={'upload'}
-                              size={heightPercentageToDP(3)}
-                              color={COLORS.darkGray}
-                            />
-                          </LinearGradient>
-                        </View>
-                      </LinearGradient>
+                        {imageFileName}
+                      </Text>
+                      <View
+                        style={{
+                          justifyContent: 'center',
+                          alignItems: 'center',
+                          paddingEnd: heightPercentageToDP(2),
+                        }}>
+                        <LinearGradient
+                          colors={[COLORS.grayBg, COLORS.white_s]}
+                          style={{borderRadius: 20, padding: 10}}>
+                          <AntDesign
+                            name={'upload'}
+                            size={heightPercentageToDP(3)}
+                            color={COLORS.darkGray}
+                          />
+                        </LinearGradient>
+                      </View>
+                    </LinearGradient>
                     </TouchableOpacity>
 
                     {/** country val */}

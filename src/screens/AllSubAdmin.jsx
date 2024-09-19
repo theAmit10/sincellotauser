@@ -2,6 +2,7 @@ import {
   FlatList,
   Image,
   ImageBackground,
+  Platform,
   SafeAreaView,
   StyleSheet,
   Text,
@@ -17,7 +18,11 @@ import {
 import {COLORS, FONT} from '../../assets/constants';
 import GradientText from '../components/helpercComponent/GradientText';
 import Fontisto from 'react-native-vector-icons/Fontisto';
-import {useFocusEffect, useIsFocused, useNavigation} from '@react-navigation/native';
+import {
+  useFocusEffect,
+  useIsFocused,
+  useNavigation,
+} from '@react-navigation/native';
 import Background from '../components/background/Background';
 import Loading from '../components/helpercComponent/Loading';
 import {useDispatch, useSelector} from 'react-redux';
@@ -67,9 +72,6 @@ const AllSubAdmin = () => {
     setFilteredData(allusers?.users); // Update filteredData whenever locations change
   }, [allusers]);
 
-
-
-
   return (
     <SafeAreaView style={{flex: 1}}>
       <Background />
@@ -79,7 +81,10 @@ const AllSubAdmin = () => {
           source={require('../../assets/image/tlwbg.jpg')}
           style={{
             width: '100%',
-            height: heightPercentageToDP(85),
+            height:
+              Platform.OS === 'android'
+                ? heightPercentageToDP(85)
+                : heightPercentageToDP(80),
           }}
           imageStyle={{
             borderTopLeftRadius: heightPercentageToDP(5),
@@ -89,7 +94,10 @@ const AllSubAdmin = () => {
 
           <View
             style={{
-              height: heightPercentageToDP(85),
+              height:
+                Platform.OS === 'android'
+                  ? heightPercentageToDP(85)
+                  : heightPercentageToDP(80),
               width: widthPercentageToDP(100),
               borderTopLeftRadius: heightPercentageToDP(5),
               borderTopRightRadius: heightPercentageToDP(5),

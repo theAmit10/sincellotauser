@@ -1,6 +1,8 @@
 import {
   FlatList,
   ImageBackground,
+  Platform,
+  SafeAreaView,
   ScrollView,
   StyleSheet,
   Text,
@@ -606,7 +608,7 @@ const PlayArenaInsights = ({route}) => {
   };
 
   return (
-    <View style={{flex: 1}}>
+    <SafeAreaView style={{flex: 1}}>
       <Background />
 
       {/** Main Container */}
@@ -615,7 +617,10 @@ const PlayArenaInsights = ({route}) => {
           source={require('../../assets/image/tlwbg.jpg')}
           style={{
             width: '100%',
-            height: heightPercentageToDP(85),
+            height:
+            Platform.OS === 'android'
+              ? heightPercentageToDP(85)
+              : heightPercentageToDP(80),
           }}
           imageStyle={{
             borderTopLeftRadius: heightPercentageToDP(5),
@@ -695,6 +700,7 @@ const PlayArenaInsights = ({route}) => {
                           textAlignVertical: 'center',
                           paddingStart: heightPercentageToDP(1),
                           textAlign: 'center',
+                          alignSelf: 'center'
                         }}>
                         {getTotalUsers(playinsightdata)}
                       </Text>
@@ -954,6 +960,7 @@ const PlayArenaInsights = ({route}) => {
                               fontFamily: FONT.Montserrat_Bold,
                               color: COLORS.black,
                               textAlign: 'center',
+                              minHeight: heightPercentageToDP(7)
                             }}
                             value={resultnumber}
                             onChangeText={text => setresultnumber(text)}
@@ -1197,7 +1204,7 @@ const PlayArenaInsights = ({route}) => {
           </View>
         </ImageBackground>
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 

@@ -1,8 +1,8 @@
 import {
-  FlatList,
-  Image,
+ 
   ImageBackground,
   KeyboardAvoidingView,
+  Platform,
   SafeAreaView,
   ScrollView,
   StyleSheet,
@@ -15,24 +15,20 @@ import {
   heightPercentageToDP,
   widthPercentageToDP,
 } from 'react-native-responsive-screen';
-import AntDesign from 'react-native-vector-icons/AntDesign';
+
 import Toast from 'react-native-toast-message';
 import {useIsFocused, useNavigation} from '@react-navigation/native';
-import {useDispatch, useSelector} from 'react-redux';
+import { useSelector} from 'react-redux';
 import LinearGradient from 'react-native-linear-gradient';
 import Background from '../../components/background/Background';
 import {COLORS, FONT} from '../../../assets/constants';
 import GradientTextWhite from '../../components/helpercComponent/GradientTextWhite';
-import Clipboard from '@react-native-clipboard/clipboard';
 import Loading from '../../components/helpercComponent/Loading';
 import {TextInput} from 'react-native-paper';
-import DocumentPicker from 'react-native-document-picker';
-import ImageResizer from '@bam.tech/react-native-image-resizer';
 import axios from 'axios';
 import UrlHelper from '../../helper/UrlHelper';
 import {
   useCreateBankAccountMutation,
-  useCreateDepositMutation,
 } from '../../helper/Networkcall';
 
 const upiapidata = [
@@ -234,7 +230,10 @@ const BankDeposit = () => {
             source={require('../../../assets/image/tlwbg.jpg')}
             style={{
               width: '100%',
-              height: heightPercentageToDP(85),
+              height:
+              Platform.OS === 'android'
+                ? heightPercentageToDP(85)
+                : heightPercentageToDP(80),
             }}
             imageStyle={{
               borderTopLeftRadius: heightPercentageToDP(5),
@@ -242,7 +241,10 @@ const BankDeposit = () => {
             }}>
             <View
               style={{
-                height: heightPercentageToDP(85),
+                height:
+                Platform.OS === 'android'
+                  ? heightPercentageToDP(85)
+                  : heightPercentageToDP(80),
                 width: widthPercentageToDP(100),
                 borderTopLeftRadius: heightPercentageToDP(5),
                 borderTopRightRadius: heightPercentageToDP(5),

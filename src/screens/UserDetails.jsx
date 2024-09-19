@@ -1,5 +1,6 @@
 import {
   ImageBackground,
+  SafeAreaView,
   ScrollView,
   StyleSheet,
   Text,
@@ -67,7 +68,7 @@ const UpdateProfile = ({route}) => {
   };
 
   return (
-    <View style={{flex: 1}}>
+    <SafeAreaView style={{flex: 1}}>
       <UserProfileBackground userdata={userdata} />
 
       {/** Profile Cointainer */}
@@ -671,7 +672,7 @@ const UpdateProfile = ({route}) => {
           </View>
         </ImageBackground>
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 

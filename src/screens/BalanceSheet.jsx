@@ -1,27 +1,18 @@
 import {
   FlatList,
-  Image,
   ImageBackground,
+  Platform,
+  SafeAreaView,
   StyleSheet,
   Text,
-  TextInput,
-  TouchableOpacity,
   View,
 } from 'react-native';
-import React, {useCallback, useEffect, useState} from 'react';
+import React from 'react';
 import {
   heightPercentageToDP,
   widthPercentageToDP,
 } from 'react-native-responsive-screen';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import Toast from 'react-native-toast-message';
-import {
-  useFocusEffect,
-  useIsFocused,
-  useNavigation,
-} from '@react-navigation/native';
-import {useDispatch, useSelector} from 'react-redux';
+import {useSelector} from 'react-redux';
 import LinearGradient from 'react-native-linear-gradient';
 import Background from '../components/background/Background';
 import {COLORS, FONT} from '../../assets/constants';
@@ -35,7 +26,7 @@ const BalanceSheet = () => {
   const {accesstoken} = useSelector(state => state.user);
   const {data, isLoading, error, refetch} = useGetAllBalanceQuery(accesstoken);
 
-  console.log('Balancesheet ::' + JSON.stringify(data));
+  // console.log('Balancesheet ::' + JSON.stringify(data));
 
   // useFocusEffect(
   //   useCallback(() => {
@@ -49,7 +40,7 @@ const BalanceSheet = () => {
   };
 
   return (
-    <View style={{flex: 1}}>
+    <SafeAreaView style={{flex: 1}}>
       <Background />
 
       {/** Main Cointainer */}
@@ -59,7 +50,10 @@ const BalanceSheet = () => {
           source={require('../../assets/image/tlwbg.jpg')}
           style={{
             width: '100%',
-            height: heightPercentageToDP(85),
+            height:
+            Platform.OS === 'android'
+              ? heightPercentageToDP(85)
+              : heightPercentageToDP(80),
           }}
           imageStyle={{
             borderTopLeftRadius: heightPercentageToDP(5),
@@ -67,7 +61,10 @@ const BalanceSheet = () => {
           }}>
           <View
             style={{
-              height: heightPercentageToDP(85),
+              height:
+              Platform.OS === 'android'
+                ? heightPercentageToDP(85)
+                : heightPercentageToDP(80),
               width: widthPercentageToDP(100),
               borderTopLeftRadius: heightPercentageToDP(5),
               borderTopRightRadius: heightPercentageToDP(5),
@@ -360,7 +357,7 @@ const BalanceSheet = () => {
           </View>
         </ImageBackground>
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 

@@ -1,7 +1,8 @@
 import {
-  FlatList,
   Image,
   ImageBackground,
+  Platform,
+  SafeAreaView,
   ScrollView,
   StyleSheet,
   Text,
@@ -17,16 +18,13 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Toast from 'react-native-toast-message';
 import {useIsFocused, useNavigation} from '@react-navigation/native';
-import {useDispatch, useSelector} from 'react-redux';
+import { useSelector} from 'react-redux';
 import LinearGradient from 'react-native-linear-gradient';
 import Background from '../../components/background/Background';
 import {COLORS, FONT} from '../../../assets/constants';
 import GradientTextWhite from '../../components/helpercComponent/GradientTextWhite';
 import Clipboard from '@react-native-clipboard/clipboard';
 import Loading from '../../components/helpercComponent/Loading';
-import {TextInput} from 'react-native-paper';
-import DocumentPicker from 'react-native-document-picker';
-import ImageResizer from '@bam.tech/react-native-image-resizer';
 import axios from 'axios';
 import UrlHelper from '../../helper/UrlHelper';
 import {useDeleteBankAccountMutation} from '../../helper/Networkcall';
@@ -150,14 +148,17 @@ const AllBankDepositPayment = () => {
 
  
   return (
-    <View style={{flex: 1}}>
+    <SafeAreaView style={{flex: 1}}>
       <Background />
       <View style={{flex: 1, justifyContent: 'flex-end'}}>
         <ImageBackground
           source={require('../../../assets/image/tlwbg.jpg')}
           style={{
             width: '100%',
-            height: heightPercentageToDP(85),
+            height:
+            Platform.OS === 'android'
+              ? heightPercentageToDP(85)
+              : heightPercentageToDP(80),
           }}
           imageStyle={{
             borderTopLeftRadius: heightPercentageToDP(5),
@@ -165,7 +166,10 @@ const AllBankDepositPayment = () => {
           }}>
           <View
             style={{
-              height: heightPercentageToDP(85),
+              height:
+              Platform.OS === 'android'
+                ? heightPercentageToDP(85)
+                : heightPercentageToDP(80),
               width: widthPercentageToDP(100),
               borderTopLeftRadius: heightPercentageToDP(5),
               borderTopRightRadius: heightPercentageToDP(5),
@@ -207,7 +211,7 @@ const AllBankDepositPayment = () => {
                   allDepositdata.map(item => (
                     <TouchableOpacity
                       key={item._id}
-                      onPress={() => settingUpiId(item)}>
+                     >
                       <LinearGradient
                         colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
                         start={{x: 0, y: 0}} // start from left
@@ -451,7 +455,7 @@ const AllBankDepositPayment = () => {
           </View>
         </ImageBackground>
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 
