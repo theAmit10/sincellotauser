@@ -37,6 +37,7 @@ const PaypalDeposit = () => {
   const {accesstoken, user} = useSelector(state => state.user);
 
   const [emailaddress, setemailaddress] = useState('');
+  const [paymentnote, setpaymentnote] = useState('');
 
   const [createSkrillAccount, {isLoading, error}] =
     useCreatePaypalAccountMutation();
@@ -45,10 +46,15 @@ const PaypalDeposit = () => {
     if (!emailaddress) {
       Toast.show({type: 'error', text1: 'Enter email address'});
       return;
+    }
+    if (!paymentnote) {
+      Toast.show({type: 'error', text1: 'Enter payment note'});
+      return;
     } else {
       try {
         const body = {
           emailaddress,
+          paymentnote,
         };
 
         console.log('JSON BODY :: ', JSON.stringify(body));
@@ -208,6 +214,48 @@ const PaypalDeposit = () => {
                       />
                     </LinearGradient>
                   </View>
+
+                  {/** NOTE */}
+                  <View
+                    style={{
+                      borderRadius: heightPercentageToDP(2),
+                      padding: heightPercentageToDP(1),
+                    }}>
+                    <Text
+                      style={{
+                        fontFamily: FONT.Montserrat_SemiBold,
+                        color: COLORS.black,
+                        fontSize: heightPercentageToDP(2),
+                        paddingStart: heightPercentageToDP(1),
+                      }}>
+                      Note
+                    </Text>
+
+                    <LinearGradient
+                      colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
+                      start={{x: 0, y: 0}} // start from left
+                      end={{x: 1, y: 0}} // end at right
+                      style={{
+                        borderRadius: heightPercentageToDP(2),
+                      }}>
+                      <TextInput
+                        underlineColor="transparent"
+                        activeUnderlineColor="transparent"
+                        cursorColor={COLORS.white}
+                        placeholderTextColor={COLORS.black}
+                        style={{
+                          backgroundColor: 'transparent',
+                          fontFamily: FONT.Montserrat_Bold,
+                          color: COLORS.black,
+                        }}
+                        textColor={COLORS.black}
+                        fontFamily={FONT.Montserrat_Bold}
+                        value={paymentnote}
+                        onChangeText={text => setpaymentnote(text)}
+                      />
+                    </LinearGradient>
+                  </View>
+                  
                 </View>
               </ScrollView>
               <View

@@ -18,7 +18,7 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Toast from 'react-native-toast-message';
 import {useIsFocused, useNavigation} from '@react-navigation/native';
-import { useSelector} from 'react-redux';
+import {useSelector} from 'react-redux';
 import LinearGradient from 'react-native-linear-gradient';
 import Background from '../../components/background/Background';
 import {COLORS, FONT} from '../../../assets/constants';
@@ -72,10 +72,6 @@ const AllBankDepositPayment = () => {
 
   const {accesstoken, user} = useSelector(state => state.user);
 
-  const toggleUpiOptionView = () => {
-    setUpiVisible(!upiVisible);
-  };
-
   const copyToClipboard = val => {
     Clipboard.setString(val);
     Toast.show({
@@ -83,11 +79,6 @@ const AllBankDepositPayment = () => {
       text1: 'Text Copied',
       text2: 'The text has been copied to your clipboard!',
     });
-  };
-
-  const settingUpiId = item => {
-    setSelectedUpiId(item);
-    setUpiVisible(false);
   };
 
   // TO GET ALL THE ADMIN BANK
@@ -146,7 +137,6 @@ const AllBankDepositPayment = () => {
     Toast.show({type: 'success', text1: 'Success', text2: res.message});
   };
 
- 
   return (
     <SafeAreaView style={{flex: 1}}>
       <Background />
@@ -156,9 +146,9 @@ const AllBankDepositPayment = () => {
           style={{
             width: '100%',
             height:
-            Platform.OS === 'android'
-              ? heightPercentageToDP(85)
-              : heightPercentageToDP(80),
+              Platform.OS === 'android'
+                ? heightPercentageToDP(85)
+                : heightPercentageToDP(80),
           }}
           imageStyle={{
             borderTopLeftRadius: heightPercentageToDP(5),
@@ -167,9 +157,9 @@ const AllBankDepositPayment = () => {
           <View
             style={{
               height:
-              Platform.OS === 'android'
-                ? heightPercentageToDP(85)
-                : heightPercentageToDP(80),
+                Platform.OS === 'android'
+                  ? heightPercentageToDP(85)
+                  : heightPercentageToDP(80),
               width: widthPercentageToDP(100),
               borderTopLeftRadius: heightPercentageToDP(5),
               borderTopRightRadius: heightPercentageToDP(5),
@@ -209,15 +199,12 @@ const AllBankDepositPayment = () => {
               <ScrollView showsVerticalScrollIndicator={false}>
                 {allDepositdata.length !== 0 &&
                   allDepositdata.map(item => (
-                    <TouchableOpacity
-                      key={item._id}
-                     >
+                    <TouchableOpacity key={item._id}>
                       <LinearGradient
                         colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
                         start={{x: 0, y: 0}} // start from left
                         end={{x: 1, y: 0}} // end at right
                         style={{
-                          height: heightPercentageToDP(34),
                           borderRadius: heightPercentageToDP(2),
                           marginHorizontal: heightPercentageToDP(2),
                           marginVertical: heightPercentageToDP(1),
@@ -322,7 +309,10 @@ const AllBankDepositPayment = () => {
                               Account Holder Name
                             </Text>
                             <Text style={styles.copytitle}>Account No.</Text>
-                            <Text style={styles.copytitle}>IFSC Code</Text>
+                            <Text style={styles.copytitle}>Swift Code</Text>
+                            <Text style={styles.copytitle}>
+                              Routing / IFSC Code
+                            </Text>
                           </View>
                           <View
                             style={{
@@ -341,15 +331,19 @@ const AllBankDepositPayment = () => {
                               {item.accountnumber}
                             </Text>
                             <Text style={styles.copycontent} numberOfLines={1}>
+                              {item.swiftcode}
+                            </Text>
+                            <Text style={styles.copycontent} numberOfLines={1}>
                               {item.ifsccode}
                             </Text>
                           </View>
                           <View
                             style={{
+                              height: '100%',
+                              width: '10%',
                               justifyContent: 'space-between',
-                              alignItems: 'center',
-                              height: heightPercentageToDP(24),
-                              marginEnd: heightPercentageToDP(1),
+                              alignItems: 'flex-end',
+                              
                             }}>
                             <TouchableOpacity
                               onPress={() => copyToClipboard(item.bankname)}>
@@ -406,6 +400,24 @@ const AllBankDepositPayment = () => {
                                 />
                               </LinearGradient>
                             </TouchableOpacity>
+
+                            <TouchableOpacity
+                              onPress={() => copyToClipboard(item.swiftcode)}>
+                              <LinearGradient
+                                colors={[COLORS.lightWhite, COLORS.white_s]}
+                                style={{
+                                  padding: heightPercentageToDP(0.5),
+                                  borderRadius: heightPercentageToDP(1),
+                                  justifyContent: 'center',
+                                  alignItems: 'center',
+                                }}>
+                                <AntDesign
+                                  name={'copy1'}
+                                  size={heightPercentageToDP(2.5)}
+                                  color={COLORS.darkGray}
+                                />
+                              </LinearGradient>
+                            </TouchableOpacity>
                             <TouchableOpacity
                               onPress={() => copyToClipboard(item.ifsccode)}>
                               <LinearGradient
@@ -423,6 +435,40 @@ const AllBankDepositPayment = () => {
                                 />
                               </LinearGradient>
                             </TouchableOpacity>
+                          </View>
+                        </View>
+                        <View
+                          style={{
+                            flexDirection: 'row',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            flex: 1,
+                            paddingBottom: heightPercentageToDP(2),
+                          }}>
+                          <View
+                            style={{
+                              flex: 0.75,
+                              display: 'flex',
+                              justifyContent: 'flex-start',
+                              alignItems: 'flex-start',
+                            }}>
+                            <Text
+                              style={{
+                                ...styles.copytitle,
+                                paddingLeft: heightPercentageToDP(1),
+                                textAlignVertical: 'center',
+                              }}
+                              numberOfLines={2}>
+                              {item.paymentnote ? 'Note' : ''}
+                            </Text>
+                          </View>
+                          <View
+                            style={{
+                              flex: 2,
+                            }}>
+                            <Text style={styles.copycontent}>
+                              {item.paymentnote}
+                            </Text>
                           </View>
                         </View>
                       </LinearGradient>

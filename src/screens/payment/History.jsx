@@ -24,6 +24,7 @@ import Loading from '../../components/helpercComponent/Loading';
 import {useGetHistoryQuery} from '../../helper/Networkcall';
 import NoDataFound from '../../components/helpercComponent/NoDataFound';
 import moment from 'moment';
+import CustomReceiptViewerUser from '../../components/helpercComponent/CustomReceiptViewerUser';
 
 const History = ({route}) => {
   const {accesstoken, user} = useSelector(state => state.user);
@@ -61,6 +62,22 @@ const History = ({route}) => {
 
   const formatDateTime = dateTimeString => {
     return moment(dateTimeString).format('MMMM DD, YYYY hh:mm A');
+  };
+
+  const [alertVisibleReceipt, setAlertVisibleReceipt] = useState(false);
+
+  const showAlertReceipt = item => {
+    setAlertVisibleReceipt(true);
+  };
+
+  const closeAlertReceipt = () => {
+    setAlertVisibleReceipt(false);
+  };
+
+  const handleYesReceipt = () => {
+    // Handle the Yes action here
+    setAlertVisibleReceipt(false);
+    console.log('Yes pressed');
   };
 
   return (
@@ -104,7 +121,7 @@ const History = ({route}) => {
 
             <View style={{margin: heightPercentageToDP(2)}}>
               <GradientTextWhite style={styles.textStyle}>
-                History
+              Transaction History
               </GradientTextWhite>
 
               {isLoading ? (
@@ -122,170 +139,238 @@ const History = ({route}) => {
                 </View>
               ) : (
                 <FlatList
-                  data={historyapidatas?.transactions}
-                  renderItem={({item}) => (
-                    <LinearGradient
-                      colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
-                      start={{x: 0, y: 0}} // start from left
-                      end={{x: 1, y: 0}} // end at right
+                data={historyapidatas?.transactions}
+                renderItem={({item}) => (
+                  <LinearGradient
+                    colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
+                    start={{x: 0, y: 0}} // start from left
+                    end={{x: 1, y: 0}} // end at right
+                    style={{
+                      justifyContent: 'flex-start',
+
+                      borderRadius: heightPercentageToDP(2),
+                      marginTop: heightPercentageToDP(2),
+                    }}>
+                    <TouchableOpacity
+                      onPress={() => toggleItem(item._id)}
                       style={{
-                        justifyContent: 'flex-start',
-                        height: expandedItems[item._id]
-                          ? heightPercentageToDP(20)
-                          : heightPercentageToDP(10),
-                        borderRadius: heightPercentageToDP(2),
-                        marginTop: heightPercentageToDP(2),
+                        flex: 1,
+                        borderTopLeftRadius: heightPercentageToDP(2),
+                        borderTopEndRadius: heightPercentageToDP(2),
+                        flexDirection: 'row',
                       }}>
-                      <TouchableOpacity
-                        onPress={() => toggleItem(item._id)}
+                      <View
                         style={{
-                          flex: 1,
+                          width: widthPercentageToDP(68),
+                          flexDirection: 'row',
                           borderTopLeftRadius: heightPercentageToDP(2),
                           borderTopEndRadius: heightPercentageToDP(2),
-                          flexDirection: 'row',
                         }}>
                         <View
                           style={{
-                            width: widthPercentageToDP(68),
-                            flexDirection: 'row',
-                            borderTopLeftRadius: heightPercentageToDP(2),
-                            borderTopEndRadius: heightPercentageToDP(2),
+                            backgroundColor: COLORS.white_s,
+                            padding: heightPercentageToDP(1.5),
+                            borderRadius: heightPercentageToDP(1),
+                            marginVertical: heightPercentageToDP(2),
+                            marginHorizontal: heightPercentageToDP(1),
                           }}>
-                          <View
+                          <Image
+                            source={
+                              item.transactionType === 'Deposit'
+                                ? require('../../../assets/image/deposit.png')
+                                : require('../../../assets/image/withdraw.png')
+                            }
+                            resizeMode="cover"
                             style={{
-                              backgroundColor: COLORS.white_s,
-                              padding: heightPercentageToDP(1.5),
-                              borderRadius: heightPercentageToDP(1),
-                              marginVertical: heightPercentageToDP(2),
-                              marginHorizontal: heightPercentageToDP(1),
-                            }}>
-                            <Image
-                              source={
-                                item.transactionType === 'Deposit'
-                                  ? require('../../../assets/image/deposit.png')
-                                  : require('../../../assets/image/withdraw.png')
-                              }
-                              resizeMode="cover"
-                              style={{
-                                height: 25,
-                                width: 25,
-                              }}
-                            />
-                          </View>
-
-                          <View style={{flex: 1}}>
-                            <View
-                              style={{
-                                flexDirection: 'row',
-                                flex: 1,
-                                justifyContent: 'flex-start',
-                                alignItems: 'center',
-                              }}>
-                              <Text
-                                style={{
-                                  fontFamily: FONT.Montserrat_Regular,
-                                  fontSize: heightPercentageToDP(1.6),
-                                  color: COLORS.black,
-                                }}>
-                                Amount
-                              </Text>
-                              <Text
-                                style={{
-                                  fontFamily: FONT.Montserrat_Bold,
-                                  fontSize: heightPercentageToDP(2),
-                                  color: COLORS.black,
-                                  width: '70%',
-                                }}
-                                numberOfLines={2}>
-                                : {item.amount} {user.country.countrycurrencysymbol}
-                              </Text>
-                            </View>
-
-                            <View
-                              style={{
-                                flexDirection: 'row',
-                                flex: 1,
-                                justifyContent: 'flex-start',
-                                alignItems: 'center',
-                              }}>
-                              <Text
-                                style={{
-                                  fontFamily: FONT.Montserrat_Regular,
-                                  fontSize: heightPercentageToDP(1.8),
-                                  color: COLORS.black,
-                                }}>
-                                {formatDateTime(item.createdAt)}
-                              </Text>
-                            </View>
-                          </View>
+                              height: 25,
+                              width: 25,
+                            }}
+                          />
                         </View>
 
-                        <View style={{flex: 1, flexDirection: 'row'}}>
+                        <View style={{flex: 1}}>
                           <View
                             style={{
-                              width: '60%',
-                              paddingHorizontal: 4,
-                              justifyContent: 'center',
+                              flexDirection: 'row',
+                              flex: 1,
+                              justifyContent: 'flex-start',
                               alignItems: 'center',
                             }}>
-                            <LinearGradient
-                              colors={[COLORS.lightWhite, COLORS.white_s]}
-                              style={styles.iconContainer}>
-                              <AntDesign
-                                name={
-                                  item.paymentStatus === 'Completed'
-                                    ? 'check'
-                                    : 'clockcircleo'
-                                }
-                                size={heightPercentageToDP(2)}
-                                color={COLORS.darkGray}
-                              />
-                            </LinearGradient>
                             <Text
                               style={{
                                 fontFamily: FONT.Montserrat_Regular,
+                                fontSize: heightPercentageToDP(1.6),
                                 color: COLORS.black,
-                                fontSize: heightPercentageToDP(1.2),
                               }}>
-                              {item.paymentStatus}
+                              {`Amount : \u00A0`}
+                            </Text>
+                            <Text
+                              style={{
+                                fontFamily: FONT.Montserrat_Bold,
+                                fontSize: heightPercentageToDP(2),
+                                color: COLORS.black,
+                                width: '70%',
+                              }}
+                              numberOfLines={2}>
+                              {item.amount}{' '}
+                              {user.country.countrycurrencysymbol}
                             </Text>
                           </View>
 
-                          <TouchableOpacity
-                            onPress={() => toggleItem(item._id)}
-                            style={{
-                              width: '40%',
-                              paddingHorizontal: 4,
-                              justifyContent: 'center',
-                              alignItems: 'center',
-                              marginEnd: heightPercentageToDP(2),
-                            }}>
-                            <LinearGradient
-                              colors={[COLORS.lightWhite, COLORS.white_s]}
-                              style={styles.expandIconContainer}>
-                              <Ionicons
-                                name={
-                                  expandedItems[item._id]
-                                    ? 'remove-outline'
-                                    : 'add-outline'
-                                }
-                                size={heightPercentageToDP(2)}
-                                color={COLORS.darkGray}
-                              />
-                            </LinearGradient>
-                          </TouchableOpacity>
-                        </View>
-                      </TouchableOpacity>
-
-                      {expandedItems[item._id] && (
-                        <>
                           <View
                             style={{
-                              height: 1,
-                              backgroundColor: COLORS.white_s,
-                              marginHorizontal: heightPercentageToDP(2),
-                            }}
-                          />
+                              flexDirection: 'row',
+                              flex: 1,
+                              justifyContent: 'flex-start',
+                              alignItems: 'center',
+                            }}>
+                            <Text
+                              style={{
+                                fontFamily: FONT.Montserrat_Regular,
+                                fontSize: heightPercentageToDP(1.8),
+                                color: COLORS.black,
+                              }}>
+                              {formatDateTime(item.createdAt)}
+                            </Text>
+                          </View>
+                        </View>
+                      </View>
+
+                      <View style={{flex: 1, flexDirection: 'row'}}>
+                        <View
+                          style={{
+                            width: '60%',
+                            paddingHorizontal: 4,
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                          }}>
+                          <LinearGradient
+                            colors={[COLORS.lightWhite, COLORS.white_s]}
+                            style={styles.iconContainer}>
+                            <AntDesign
+                              name={
+                                item.paymentStatus === 'Completed'
+                                  ? 'check'
+                                  : 'clockcircleo'
+                              }
+                              size={heightPercentageToDP(2)}
+                              color={COLORS.darkGray}
+                            />
+                          </LinearGradient>
+                          <Text
+                            style={{
+                              fontFamily: FONT.Montserrat_Regular,
+                              color: COLORS.black,
+                              fontSize: heightPercentageToDP(1.1),
+                            }}>
+                            {item.paymentStatus}
+                          </Text>
+                        </View>
+
+                        <TouchableOpacity
+                          onPress={() => toggleItem(item._id)}
+                          style={{
+                            width: '40%',
+                            paddingHorizontal: 4,
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            marginEnd: heightPercentageToDP(2),
+                          }}>
+                          <LinearGradient
+                            colors={[COLORS.lightWhite, COLORS.white_s]}
+                            style={styles.expandIconContainer}>
+                            <Ionicons
+                              name={
+                                expandedItems[item._id]
+                                  ? 'remove-outline'
+                                  : 'add-outline'
+                              }
+                              size={heightPercentageToDP(2)}
+                              color={COLORS.darkGray}
+                            />
+                          </LinearGradient>
+                        </TouchableOpacity>
+                      </View>
+                    </TouchableOpacity>
+
+                    {expandedItems[item._id] && (
+                      <>
+                        <View
+                          style={{
+                            height: 1,
+                            backgroundColor: COLORS.white_s,
+                            marginHorizontal: heightPercentageToDP(2),
+                            display: 'flex',
+                            flexDirection: 'column',
+                          }}
+                        />
+                        <View
+                          style={{
+                            flex: 1,
+                            borderBottomLeftRadius: heightPercentageToDP(2),
+                            borderBottomEndRadius: heightPercentageToDP(2),
+                            flexDirection: 'row',
+                            padding: heightPercentageToDP(1),
+                          }}>
+                          <View style={styles.detailContainer}>
+                            <Text style={styles.detailLabel}>
+                              Payment Method
+                            </Text>
+                            <Text style={styles.detailValue}>
+                              {item.paymentType}
+                            </Text>
+                          </View>
+                          <View style={styles.detailContainer}>
+                            <Text style={styles.detailLabel}>
+                              {item.transactionType === 'Deposit'
+                                ? 'Transaction ID'
+                                : ''}
+                            </Text>
+                            <Text style={styles.detailValue}>
+                              {item.transactionId}
+                            </Text>
+                          </View>
+                        </View>
+                        {item.paymentupdatereceipt && (
+                          <>
+                            <View
+                              style={{
+                                flex: 1,
+                                borderBottomLeftRadius:
+                                  heightPercentageToDP(2),
+                                borderBottomEndRadius:
+                                  heightPercentageToDP(2),
+                                flexDirection: 'row',
+                                padding: heightPercentageToDP(1),
+                              }}>
+                              <TouchableOpacity
+                               onPress={() => showAlertReceipt()}
+                                style={{
+                                  ...styles.detailContainer,
+                                  width: '90%',
+                                }}>
+                                <Text style={styles.detailLabel}>
+                                  Receipt
+                                </Text>
+                                <Text style={styles.detailValue}>
+                                  {item.paymentupdatereceipt
+                                    ? 'Show Receipt'
+                                    : ''}
+                                </Text>
+                              </TouchableOpacity>
+                            </View>
+
+                            <CustomReceiptViewerUser
+                              visible={alertVisibleReceipt}
+                              onClose={closeAlertReceipt}
+                              onYes={handleYesReceipt}
+                              data={item}
+                              img={item.paymentupdatereceipt}
+                            />
+                          </>
+                        )}
+
+                        {item.paymentUpdateNote && (
                           <View
                             style={{
                               flex: 1,
@@ -294,40 +379,33 @@ const History = ({route}) => {
                               flexDirection: 'row',
                               padding: heightPercentageToDP(1),
                             }}>
-                            <View style={styles.detailContainer}>
-                              <Text style={styles.detailLabel}>
-                                Payment Method
-                              </Text>
+                            <View
+                              style={{
+                                ...styles.detailContainer,
+                                width: '90%',
+                              }}>
+                              <Text style={styles.detailLabel}>Note</Text>
                               <Text style={styles.detailValue}>
-                                {item.paymentType}
-                              </Text>
-                            </View>
-                            <View style={styles.detailContainer}>
-                              <Text style={styles.detailLabel}>
-                                {item.transactionType === 'Deposit'
-                                  ? 'Transaction ID'
-                                  : ''}
-                              </Text>
-                              <Text style={styles.detailValue}>
-                                {item.transactionId}
+                                {item.paymentUpdateNote}
                               </Text>
                             </View>
                           </View>
-                        </>
-                      )}
-                    </LinearGradient>
-                  )}
-                  keyExtractor={item => item._id.toString()}
-                  initialNumToRender={10}
-                  maxToRenderPerBatch={10}
-                  windowSize={10}
-                  ListFooterComponent={() => (
-                    <View
-                      style={{
-                        height: heightPercentageToDP(20),
-                      }}></View>
-                  )}
-                />
+                        )}
+                      </>
+                    )}
+                  </LinearGradient>
+                )}
+                keyExtractor={item => item._id.toString()}
+                initialNumToRender={10}
+                maxToRenderPerBatch={10}
+                windowSize={10}
+                ListFooterComponent={() => (
+                  <View
+                    style={{
+                      height: heightPercentageToDP(20),
+                    }}></View>
+                )}
+              />
               )}
             </View>
           </View>

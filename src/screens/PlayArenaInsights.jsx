@@ -300,12 +300,25 @@ const PlayArenaInsights = ({route}) => {
       JSON.stringify(playinsightdata.playzone.playnumbers.length),
   );
 
-  useFocusEffect(
-    useCallback(() => {
-      // Refetch the data when the screen is focused
-      refetch();
-    }, [refetch]),
-  );
+  // useFocusEffect(
+  //   useCallback(() => {
+  //     // Refetch the data when the screen is focused
+  //     refetch();
+  //   }, [refetch]),
+  // );
+
+  const focused = useIsFocused();
+
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      console.log("Refetching data...");
+      refetch(); // Trigger a refetch every 6 seconds
+    }, 8000);
+
+    // Cleanup the interval when the component unmounts
+    return () => clearInterval(intervalId);
+  }, [focused, refetch]);
 
   // TOTAL NUMBER OF BET
   const getTotalUsers = data => {
@@ -321,7 +334,7 @@ const PlayArenaInsights = ({route}) => {
     }, 0);
   };
 
-  console.log(getTotalUsers(playinsightdata)); // Output: 12
+  // console.log(getTotalUsers(playinsightdata)); // Output: 12
 
   // TOTAL AMOUNT ON BET
   const getTotalAmount = data => {
@@ -334,7 +347,7 @@ const PlayArenaInsights = ({route}) => {
     }, 0);
   };
 
-  console.log(getTotalAmount(playinsightdata)); // Output: 8280
+  // console.log(getTotalAmount(playinsightdata)); // Output: 8280
 
   // MOST BET AMOUNT ON A SPECIFIC NUMBER
   const getLargestAmount = data => {
@@ -347,7 +360,7 @@ const PlayArenaInsights = ({route}) => {
     }, 0);
   };
 
-  console.log(getLargestAmount(playinsightdata)); // Output will be the largest amount in the playnumbers array
+  // console.log(getLargestAmount(playinsightdata)); // Output will be the largest amount in the playnumbers array
 
   // PLAYNUMBER ON WHICH MOST BET PLAYED
   const getPlaynumberOfLargestAmount = data => {
@@ -362,7 +375,7 @@ const PlayArenaInsights = ({route}) => {
     }, {}).playnumber;
   };
 
-  console.log(getPlaynumberOfLargestAmount(playinsightdata)); // Output will be the playnumber of the largest amount in the playnumbers array
+  // console.log(getPlaynumberOfLargestAmount(playinsightdata)); // Output will be the playnumber of the largest amount in the playnumbers array
 
   // LOWEST BET AMOUNT ON A SPECIFIC NUMBER
   // const getLowestAmount = data => {
@@ -395,11 +408,11 @@ const PlayArenaInsights = ({route}) => {
   }
   
   // Usage example:
-  const lowestAmount = getLowestAmount(playinsightdata);
-  console.log(lowestAmount);
+  // const lowestAmount = getLowestAmount(playinsightdata);
+  // console.log(lowestAmount);
   
 
-  console.log(getLowestAmount(playinsightdata)); // Output will be the lowest amount in the playnumbers array
+  // console.log(getLowestAmount(playinsightdata)); // Output will be the lowest amount in the playnumbers array
 
   // PLAYNUMBER ON WHICH LOWEST BET PLAYED
   // const getPlaynumberOfLowestAmount = data => {
@@ -435,18 +448,18 @@ const PlayArenaInsights = ({route}) => {
   }
   
   // Usage example:
-  const playnumber = getPlaynumberOfLowestAmount(playinsightdata);
-  console.log(playnumber);
-  console.log("getPlaynumberOfLowestAmount ::  ",playnumber);
+  // const playnumber = getPlaynumberOfLowestAmount(playinsightdata);
+  // console.log(playnumber);
+  // console.log("getPlaynumberOfLowestAmount ::  ",playnumber);
   
 
-  console.log(getPlaynumberOfLowestAmount(playinsightdata)); // Output will be the playnumber of the lowest amount in the playnumbers array
+  // console.log(getPlaynumberOfLowestAmount(playinsightdata)); // Output will be the playnumber of the lowest amount in the playnumbers array
 
   const {loadingResult, results} = useSelector(state => state.result);
   const [filteredData, setFilteredData] = useState([]);
   const [showProgressBar, setProgressBar] = useState(false);
 
-  const focused = useIsFocused();
+
 
   useEffect(() => {
     dispatch(

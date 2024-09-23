@@ -27,8 +27,8 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import UrlHelper from '../helper/UrlHelper';
 import axios from 'axios';
 import GradientTextWhite from '../components/helpercComponent/GradientTextWhite';
-import CustomAlertForDeposit from '../components/helpercComponent/CustomAlertForDeposit';
 import { useUpdateLocationAutomationMutation } from '../helper/Networkcall';
+import CustomAlertForSearch from '../components/helpercComponent/CustomAlertForSearch';
 
 const Search = () => {
   const navigation = useNavigation();
@@ -322,7 +322,7 @@ const Search = () => {
                           </Text>
 
                           {/** FOR ACCEPTING */}
-                          <CustomAlertForDeposit
+                          <CustomAlertForSearch
                             visible={alertVisibleAccepted}
                             onClose={closeAlertAccepted}
                             onYes={handleYesAccepted}

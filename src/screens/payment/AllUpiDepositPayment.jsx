@@ -19,7 +19,7 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Toast from 'react-native-toast-message';
 import {useIsFocused, useNavigation} from '@react-navigation/native';
-import { useSelector} from 'react-redux';
+import {useSelector} from 'react-redux';
 import LinearGradient from 'react-native-linear-gradient';
 import Background from '../../components/background/Background';
 import {COLORS, FONT} from '../../../assets/constants';
@@ -29,8 +29,7 @@ import Loading from '../../components/helpercComponent/Loading';
 import axios from 'axios';
 import UrlHelper from '../../helper/UrlHelper';
 import {useDeleteUpiAccountMutation} from '../../helper/Networkcall';
-import { serverName } from '../../redux/store';
-
+import {serverName} from '../../redux/store';
 
 const upiapidata = [
   {name: 'Wasu', upiid: '9876543210@ybl', id: '1'},
@@ -56,13 +55,6 @@ const AllUpiDepositPayment = () => {
     });
   };
 
-  const settingUpiId = item => {
-    setSelectedUpiId(item);
-    setUpiVisible(false);
-  };
-
- 
-
   const [loadingAllData, setLoadingAllData] = useState(false);
   const [allDepositdata, setAllDepositData] = useState([]);
 
@@ -73,7 +65,34 @@ const AllUpiDepositPayment = () => {
 
   useEffect(() => {
     allTheDepositData();
-  }, [isFocused, loadingAllData, allDepositdata]);
+  }, [isFocused]);
+
+  useEffect(() => {
+    console.log(loadingAllData);
+  }, [loadingAllData]);
+
+  // const allTheDepositData = async () => {
+  //   try {
+  //     setLoadingAllData(true);
+  //     const {data} = await axios.get(UrlHelper.ALL_UPI_API, {
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //         Authorization: `Bearer ${accesstoken}`,
+  //       },
+  //     });
+
+  //     console.log('datat :: ' + JSON.stringify(data));
+  //     setAllDepositData(data.payments);
+  //     setLoadingAllData(false);
+  //   } catch (error) {
+  //     setLoadingAllData(false);
+  //     Toast.show({
+  //       type: 'error',
+  //       text1: 'Something went wrong',
+  //     });
+  //     console.log(error);
+  //   }
+  // };
 
   const allTheDepositData = async () => {
     try {
@@ -95,6 +114,8 @@ const AllUpiDepositPayment = () => {
         text1: 'Something went wrong',
       });
       console.log(error);
+    } finally {
+      setLoadingAllData(false);
     }
   };
 
@@ -123,9 +144,9 @@ const AllUpiDepositPayment = () => {
           style={{
             width: '100%',
             height:
-            Platform.OS === 'android'
-              ? heightPercentageToDP(85)
-              : heightPercentageToDP(80),
+              Platform.OS === 'android'
+                ? heightPercentageToDP(85)
+                : heightPercentageToDP(80),
           }}
           imageStyle={{
             borderTopLeftRadius: heightPercentageToDP(5),
@@ -134,9 +155,9 @@ const AllUpiDepositPayment = () => {
           <View
             style={{
               height:
-              Platform.OS === 'android'
-                ? heightPercentageToDP(85)
-                : heightPercentageToDP(80),
+                Platform.OS === 'android'
+                  ? heightPercentageToDP(85)
+                  : heightPercentageToDP(80),
               width: widthPercentageToDP(100),
               borderTopLeftRadius: heightPercentageToDP(5),
               borderTopRightRadius: heightPercentageToDP(5),
@@ -175,9 +196,7 @@ const AllUpiDepositPayment = () => {
               <ScrollView showsVerticalScrollIndicator={false}>
                 {allDepositdata.length !== 0 &&
                   allDepositdata.map(item => (
-                    <TouchableOpacity
-                      key={item._id}
-                      >
+                    <TouchableOpacity key={item._id}>
                       <LinearGradient
                         colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
                         start={{x: 0, y: 0}} // start from left
@@ -300,7 +319,13 @@ const AllUpiDepositPayment = () => {
                               {item.upiid}
                             </Text>
                           </View>
-                          <View style={{gap: heightPercentageToDP(0.5)}}>
+                          <View
+                            style={{
+                              height: '100%',
+                              width: '10%',
+                              justifyContent: 'space-between',
+                              alignItems: 'flex-end',
+                            }}>
                             <TouchableOpacity
                               onPress={() =>
                                 copyToClipboard(item.upiholdername)
@@ -353,11 +378,13 @@ const AllUpiDepositPayment = () => {
                               padding: heightPercentageToDP(1),
                               borderRadius: heightPercentageToDP(1),
                               justifyContent: 'center',
-                              alignItems: "center"
+                              alignItems: 'center',
                             }}>
                             {item.qrcode ? (
                               <Image
-                              source={{uri: `${serverName}/uploads/upiqrcode/${item.qrcode}`}}
+                                source={{
+                                  uri: `${serverName}/uploads/upiqrcode/${item.qrcode}`,
+                                }}
                                 resizeMode="cover"
                                 style={{
                                   height: 150,
@@ -374,6 +401,42 @@ const AllUpiDepositPayment = () => {
                                 }}
                               />
                             )}
+                          </View>
+                        </View>
+
+                        <View
+                          style={{
+                            flexDirection: 'row',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            flex: 1,
+                            paddingBottom: heightPercentageToDP(2),
+                          }}>
+                          <View
+                            style={{
+                              flex: 0.75,
+                              display: 'flex',
+                              justifyContent: 'flex-start',
+                              alignItems: 'flex-start',
+                            }}>
+                            <Text
+                              style={{
+                                ...styles.copytitle,
+                                paddingLeft: heightPercentageToDP(1),
+                                textAlignVertical: 'center',
+                              }}
+                              numberOfLines={2}>
+                              {item.paymentnote ? 'Note' : ''}
+                            </Text>
+                          </View>
+                          <View
+                            style={{
+                              flex: 2,
+                              paddingEnd: heightPercentageToDP(1),
+                            }}>
+                            <Text style={styles.copycontent}>
+                              {item.paymentnote}
+                            </Text>
                           </View>
                         </View>
                       </LinearGradient>

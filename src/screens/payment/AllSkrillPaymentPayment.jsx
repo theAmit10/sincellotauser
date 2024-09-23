@@ -179,7 +179,6 @@ const AllSkrillPaymentPayment = () => {
                         start={{x: 0, y: 0}} // start from left
                         end={{x: 1, y: 0}} // end at right
                         style={{
-                          height: heightPercentageToDP(20),
                           borderRadius: heightPercentageToDP(2),
                           marginHorizontal: heightPercentageToDP(2),
                           marginVertical: heightPercentageToDP(1),
@@ -313,6 +312,38 @@ const AllSkrillPaymentPayment = () => {
                                 />
                               </LinearGradient>
                             </TouchableOpacity>
+                          </View>
+                        </View>
+                        <View
+                          style={{
+                            flexDirection: 'row',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            flex: 1,
+                            paddingBottom: heightPercentageToDP(2),
+                         
+                          }}>
+                          <View
+                            style={{
+                              flex: 1,
+                              display: 'flex',
+                              justifyContent: 'flex-start',
+                              alignItems: 'flex-start',
+                            }}>
+                            <Text style={{
+                              ...styles.copytitle,
+                              paddingLeft: heightPercentageToDP(2)
+                            }} numberOfLines={2} >
+                              {item.paymentnote ? 'Note' : ''}
+                            </Text>
+                          </View>
+                          <View
+                            style={{
+                              flex: 2,
+                            }}>
+                            <Text style={styles.copycontent}>
+                              {item.paymentnote} 
+                            </Text>
                           </View>
                         </View>
                       </LinearGradient>

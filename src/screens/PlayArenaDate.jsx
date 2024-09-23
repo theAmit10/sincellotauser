@@ -1,6 +1,7 @@
 import {
   FlatList,
   ImageBackground,
+  KeyboardAvoidingView,
   Platform,
   SafeAreaView,
   StyleSheet,
@@ -32,17 +33,11 @@ import UrlHelper from '../helper/UrlHelper';
 import axios from 'axios';
 import GradientTextWhite from '../components/helpercComponent/GradientTextWhite';
 import {useDeletePlayzoneMutation} from '../helper/Networkcall';
+import moment from 'moment';
 
 const PlayArenaDate = ({route}) => {
   const navigation = useNavigation();
-
   const {timedata, locationdata} = route.params;
-
-  console.log('time id :: ' + timedata._id);
-
-  const [searchData, setSearchData] = useState('');
-  const [showLoading, setLoading] = useState(false);
-
   const dispatch = useDispatch();
 
   const {accesstoken} = useSelector(state => state.user);
@@ -52,12 +47,7 @@ const PlayArenaDate = ({route}) => {
   // FOR DELETING PLAYZONE
   const [deletePlayzone, {isLoading, error}] = useDeletePlayzoneMutation();
 
-  const handleSearch = text => {
-    const filtered = dates.filter(item =>
-      item.lotdate.toLowerCase().includes(text.toLowerCase()),
-    );
-    setFilteredData(filtered);
-  };
+ 
 
   const focused = useIsFocused();
 
@@ -71,16 +61,54 @@ const PlayArenaDate = ({route}) => {
     );
   }, [dispatch, focused]);
 
+  // useEffect(() => {
+  //   setFilteredData(dates); // Update filteredData whenever locations change
+  // }, [dates]);
+
+  // const handleSearch = text => {
+  //   const filtered = dates.filter(item =>
+  //     item.lotdate.toLowerCase().includes(text.toLowerCase()),
+  //   );
+  //   setFilteredData(filtered);
+  // };
+
+
+  const handleSearch = (text) => {
+    // Get current date
+    const currentDate = moment().startOf("day");
+    // Get the next date
+    const nextDate = currentDate.clone().add(1, "days");
+
+    if (dates) {
+      const filtered = dates.filter((item) => {
+        const itemDate = moment(item.lotdate, "DD-MM-YYYY"); // Parse lotdate with correct format
+
+        // Exclude if the item.lotdate matches the next day
+        return (
+          !itemDate.isSame(nextDate, "day") &&
+          item.lotdate.toLowerCase().includes(text.toLowerCase())
+        );
+      });
+      setFilteredData(filtered);
+    }
+  };
+
   useEffect(() => {
-    setFilteredData(dates); // Update filteredData whenever locations change
+    if (dates) {
+      const currentDate = moment().startOf("day");
+      const nextDate = currentDate.clone().add(1, "days");
+
+      // Filter out items where the lotdate is the next day
+      const filtered = dates.filter((item) => {
+        const itemDate = moment(item.lotdate, "DD-MM-YYYY"); // Adjust format as needed
+        return !itemDate.isSame(nextDate, "day");
+      });
+
+      setFilteredData(filtered); // Update filteredData whenever dates change
+    }
   }, [dates]);
 
-  const submitHandler = () => {
-    Toast.show({
-      type: 'success',
-      text1: 'Searching',
-    });
-  };
+ 
 
   const [selectedItem, setSelectedItem] = useState('');
   const [showProgressBar, setProgressBar] = useState(false);
@@ -131,8 +159,11 @@ const PlayArenaDate = ({route}) => {
 
   return (
     <SafeAreaView style={{flex: 1}}>
+      <KeyboardAvoidingView
+        style={{flex: 1}}
+        behavior="height"
+        keyboardVerticalOffset={-60}>
       <Background />
-
       <View style={{flex: 1, justifyContent: 'flex-end'}}>
         <ImageBackground
           source={require('../../assets/image/tlwbg.jpg')}
@@ -421,6 +452,7 @@ const PlayArenaDate = ({route}) => {
           </View>
         </ImageBackground>
       </View>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 };

@@ -23,9 +23,11 @@ import Background from '../../components/background/Background';
 import {COLORS, FONT} from '../../../assets/constants';
 import GradientTextWhite from '../../components/helpercComponent/GradientTextWhite';
 import Loading from '../../components/helpercComponent/Loading';
-import {useGetPlayHistoryQuery, useGetSingleUserPlayHistoryQuery} from '../../helper/Networkcall';
+import {
+  useGetPlayHistoryQuery,
+  useGetSingleUserPlayHistoryQuery,
+} from '../../helper/Networkcall';
 import NoDataFound from '../../components/helpercComponent/NoDataFound';
-import {getTimeAccordingToTimezone} from '../SearchTime';
 
 const historyapidata = [
   {
@@ -88,7 +90,10 @@ const PlayHistory = ({route}) => {
     error,
     isLoading,
     refetch,
-  } = useGetSingleUserPlayHistoryQuery({accesstoken : accesstoken, userId : userdata.userId })
+  } = useGetSingleUserPlayHistoryQuery({
+    accesstoken: accesstoken,
+    userId: userdata.userId,
+  });
 
   console.log(JSON.stringify(historyapidatas?.playbets));
 
@@ -142,9 +147,9 @@ const PlayHistory = ({route}) => {
           style={{
             width: '100%',
             height:
-            Platform.OS === 'android'
-              ? heightPercentageToDP(85)
-              : heightPercentageToDP(80),
+              Platform.OS === 'android'
+                ? heightPercentageToDP(85)
+                : heightPercentageToDP(80),
           }}
           imageStyle={{
             borderTopLeftRadius: heightPercentageToDP(5),
@@ -153,9 +158,9 @@ const PlayHistory = ({route}) => {
           <View
             style={{
               height:
-              Platform.OS === 'android'
-                ? heightPercentageToDP(85)
-                : heightPercentageToDP(80),
+                Platform.OS === 'android'
+                  ? heightPercentageToDP(85)
+                  : heightPercentageToDP(80),
               width: widthPercentageToDP(100),
               borderTopLeftRadius: heightPercentageToDP(5),
               borderTopRightRadius: heightPercentageToDP(5),
@@ -252,7 +257,7 @@ const PlayHistory = ({route}) => {
                                   fontSize: heightPercentageToDP(1.6),
                                   color: COLORS.black,
                                 }}>
-                                Amount
+                                {`Amount \u00A0`}
                               </Text>
                               <Text
                                 style={{
@@ -341,18 +346,15 @@ const PlayHistory = ({route}) => {
                               <Text
                                 numberOfLines={1}
                                 style={styles.detailLabel}>
-                                {getTimeAccordingToTimezone(
-                                  item.lottime.lottime,
-                                  user?.country?.timezone,
-                                )}
+                                {item?.lottime?.lottime}
                               </Text>
                             </View>
                             <View style={styles.detailContainer}>
-                              <Text style={styles.detailValue}>Numbers</Text>
+                              <Text style={styles.detailValue}>Total bets</Text>
                               <Text
                                 numberOfLines={3}
                                 style={styles.detailLabel}>
-                                {getPlaynumbersString(item.playnumbers)}
+                                {item.playnumbers.length}
                               </Text>
                             </View>
                           </View>
@@ -372,9 +374,7 @@ const PlayHistory = ({route}) => {
                               <Text style={styles.detailValue}>Amount</Text>
                             </View>
                             <View style={styles.detailContainer}>
-                              <Text style={styles.detailValue}>
-                                Win Amt.
-                              </Text>
+                              <Text style={styles.detailValue}>Win Amt.</Text>
                             </View>
                           </View>
                           {item.playnumbers.map((pitem, pindex) => (

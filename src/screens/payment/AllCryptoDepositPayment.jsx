@@ -27,8 +27,8 @@ import Clipboard from '@react-native-clipboard/clipboard';
 import Loading from '../../components/helpercComponent/Loading';
 import axios from 'axios';
 import UrlHelper from '../../helper/UrlHelper';
-import { useDeleteCryptoAccountMutation} from '../../helper/Networkcall';
-import { serverName } from '../../redux/store';
+import {useDeleteCryptoAccountMutation} from '../../helper/Networkcall';
+import {serverName} from '../../redux/store';
 
 const upiapidata = [
   {name: 'Wasu', upiid: '9876543210@ybl', id: '1'},
@@ -43,8 +43,7 @@ const AllCryptoDepositPayment = () => {
   const dispatch = useDispatch();
   const isFocused = useIsFocused();
   const {accesstoken, user} = useSelector(state => state.user);
- 
- 
+
   const copyToClipboard = val => {
     Clipboard.setString(val);
     Toast.show({
@@ -66,8 +65,6 @@ const AllCryptoDepositPayment = () => {
     {isLoading: deleteIsLoading, isError: deleteIsError},
   ] = useDeleteCryptoAccountMutation();
 
- 
- 
   useEffect(() => {
     allTheDepositData();
   }, [isFocused, loadingAllData, allDepositdata]);
@@ -98,9 +95,9 @@ const AllCryptoDepositPayment = () => {
     }
   };
 
-   // FOR DELETING DATA
+  // FOR DELETING DATA
 
-   const deletingData = async item => {
+  const deletingData = async item => {
     console.log('Deleting Data');
     setSelectedItem(item._id);
 
@@ -123,9 +120,9 @@ const AllCryptoDepositPayment = () => {
           style={{
             width: '100%',
             height:
-            Platform.OS === 'android'
-              ? heightPercentageToDP(85)
-              : heightPercentageToDP(80),
+              Platform.OS === 'android'
+                ? heightPercentageToDP(85)
+                : heightPercentageToDP(80),
           }}
           imageStyle={{
             borderTopLeftRadius: heightPercentageToDP(5),
@@ -134,9 +131,9 @@ const AllCryptoDepositPayment = () => {
           <View
             style={{
               height:
-                  Platform.OS === 'android'
-                    ? heightPercentageToDP(85)
-                    : heightPercentageToDP(80),
+                Platform.OS === 'android'
+                  ? heightPercentageToDP(85)
+                  : heightPercentageToDP(80),
               width: widthPercentageToDP(100),
               borderTopLeftRadius: heightPercentageToDP(5),
               borderTopRightRadius: heightPercentageToDP(5),
@@ -176,15 +173,12 @@ const AllCryptoDepositPayment = () => {
               <ScrollView showsVerticalScrollIndicator={false}>
                 {allDepositdata.length !== 0 &&
                   allDepositdata.map(item => (
-                    <TouchableOpacity
-                      key={item._id}
-                     >
+                    <TouchableOpacity key={item._id}>
                       <LinearGradient
                         colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
                         start={{x: 0, y: 0}} // start from left
                         end={{x: 1, y: 0}} // end at right
                         style={{
-                         
                           borderRadius: heightPercentageToDP(2),
                           marginHorizontal: heightPercentageToDP(2),
                           marginVertical: heightPercentageToDP(1),
@@ -344,8 +338,8 @@ const AllCryptoDepositPayment = () => {
                           </View>
                         </View>
 
-                         {/** QR code */}
-                         <View
+                        {/** QR code */}
+                        <View
                           style={{
                             flex: 2,
                             gap: heightPercentageToDP(2),
@@ -357,11 +351,13 @@ const AllCryptoDepositPayment = () => {
                               padding: heightPercentageToDP(1),
                               borderRadius: heightPercentageToDP(1),
                               justifyContent: 'center',
-                              alignItems: "center"
+                              alignItems: 'center',
                             }}>
                             {item.qrcode ? (
                               <Image
-                              source={{uri: `${serverName}/uploads/cryptoqrcode/${item.qrcode}`}}
+                                source={{
+                                  uri: `${serverName}/uploads/cryptoqrcode/${item.qrcode}`,
+                                }}
                                 resizeMode="cover"
                                 style={{
                                   height: 150,
@@ -380,6 +376,39 @@ const AllCryptoDepositPayment = () => {
                             )}
                           </View>
                         </View>
+
+                        <View
+                          style={{
+                            flexDirection: 'row',
+                            gap: heightPercentageToDP(1),
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            flex: 1,
+                            paddingHorizontal: heightPercentageToDP(2),
+                            borderRadius: heightPercentageToDP(2),
+                            paddingBottom: heightPercentageToDP(2),
+                          }}>
+                          <View
+                            style={{
+                              flex: 1,
+                              gap: heightPercentageToDP(2),
+                              justifyContent: 'space-between',
+                            }}>
+                            <Text style={styles.copytitle} numberOfLines={2}>
+                              {item.paymentnote ? 'Note' : ''}
+                            </Text>
+                          </View>
+                          <View
+                            style={{
+                              flex: 2,
+                              gap: heightPercentageToDP(2),
+                            }}>
+                            <Text style={styles.copycontent}>
+                              {item.paymentnote}
+                            </Text>
+                          </View>
+                        </View>
+                        
                       </LinearGradient>
                     </TouchableOpacity>
                   ))}

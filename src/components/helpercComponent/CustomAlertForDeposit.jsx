@@ -1,5 +1,5 @@
 // CustomAlert.js
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   Modal,
   View,
@@ -8,17 +8,67 @@ import {
   StyleSheet,
   Touchable,
   TouchableOpacity,
+  TextInput,
 } from 'react-native';
 import {
   heightPercentageToDP,
   widthPercentageToDP,
 } from 'react-native-responsive-screen';
 import {COLORS, FONT} from '../../../assets/constants';
-import {HOVER} from 'nativewind/dist/utils/selector';
 import LinearGradient from 'react-native-linear-gradient';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import AntDesign from 'react-native-vector-icons/AntDesign';
+import DocumentPicker from 'react-native-document-picker';
 
-const CustomAlertForDeposit = ({visible, onClose, onYes}) => {
+const CustomAlertForDeposit = ({
+  visible,
+  onClose,
+  onYes,
+  defaultAmount,
+  usercountry,
+}) => {
+  const [paymentUpdateNote, setPaymentUpdateNote] = useState('');
+  const [imageSource, setImageSource] = useState(null);
+  const [amount, setAmount] = useState(defaultAmount);
+  const [imageFileName, setImageFileName] = useState('Choose a file');
+  const [mineImage, setMineImage] = useState(null);
+
+  const selectDoc = async () => {
+    try {
+      const doc = await DocumentPicker.pick({
+        type: [DocumentPicker.types.images],
+        allowMultiSelection: true,
+      });
+
+      if (doc) {
+        console.log(doc);
+        setMineImage(doc);
+        setImageSource(doc);
+        setImageFileName(doc[0].name);
+      }
+    } catch (err) {
+      if (DocumentPicker.isCancel(err))
+        console.log('User cancelled the upload', err);
+      else console.log(err);
+    }
+  };
+
+  const handleConfirm = () => {
+    // Call the onConfirm callback with the paymentUpdateNote, imageSource, and amount
+    onYes({paymentUpdateNote, imageSource, amount});
+  };
+
+  const handleReject = () => {
+    onClose();
+  };
+
+  // Set default amount whenever the modal opens or defaultAmount changes
+  useEffect(() => {
+    setAmount(defaultAmount);
+  }, [defaultAmount]);
+
+  if (!visible) return null;
+
   return (
     <Modal
       transparent={true}
@@ -47,7 +97,196 @@ const CustomAlertForDeposit = ({visible, onClose, onYes}) => {
               />
             </LinearGradient>
           </View>
-          <Text style={styles.alertText}>Are you sure?</Text>
+          <Text style={{...styles.alertText, fontFamily: FONT.Montserrat_Bold}}>
+            Are you sure?
+          </Text>
+          <Text
+            numberOfLines={1}
+            style={{
+              color: COLORS.black,
+              backgroundColor: COLORS.grayHalfBg,
+              padding: heightPercentageToDP(2),
+              fontFamily: FONT.Montserrat_SemiBold,
+              fontSize: heightPercentageToDP(2),
+              borderRadius: heightPercentageToDP(2),
+              width: widthPercentageToDP(90),
+              textAlign: 'center',
+              marginBottom: heightPercentageToDP(2),
+            }}>
+            Country : {usercountry.countryname}
+          </Text>
+          <Text
+            numberOfLines={1}
+            style={{
+              color: COLORS.black,
+              backgroundColor: COLORS.grayHalfBg,
+              padding: heightPercentageToDP(2),
+              fontFamily: FONT.Montserrat_SemiBold,
+              fontSize: heightPercentageToDP(2),
+              borderRadius: heightPercentageToDP(2),
+              width: widthPercentageToDP(90),
+              textAlign: 'center',
+              marginBottom: heightPercentageToDP(2),
+            }}>
+            Currency name : {usercountry.countrycurrencysymbol}
+          </Text>
+
+          <Text
+            numberOfLines={1}
+            style={{
+              color: COLORS.black,
+              backgroundColor: COLORS.grayHalfBg,
+              padding: heightPercentageToDP(2),
+              fontFamily: FONT.Montserrat_SemiBold,
+              fontSize: heightPercentageToDP(2),
+              borderRadius: heightPercentageToDP(2),
+              width: widthPercentageToDP(90),
+              textAlign: 'center',
+            }}>
+            Currency value : {usercountry.countrycurrencyvaluecomparedtoinr}
+          </Text>
+          {/** AMOUNT */}
+          <View
+            style={{
+              borderRadius: heightPercentageToDP(2),
+              padding: heightPercentageToDP(1),
+            }}>
+            <Text
+              style={{
+                fontFamily: FONT.Montserrat_SemiBold,
+                color: COLORS.black,
+                fontSize: heightPercentageToDP(2),
+                paddingStart: heightPercentageToDP(1),
+              }}>
+              Amount
+            </Text>
+
+            <LinearGradient
+              colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
+              start={{x: 0, y: 0}} // start from left
+              end={{x: 1, y: 0}} // end at right
+              style={{
+                borderRadius: heightPercentageToDP(2),
+                width: widthPercentageToDP(90),
+              }}>
+              <TextInput
+                underlineColor="transparent"
+                activeUnderlineColor="transparent"
+                cursorColor={COLORS.white}
+                placeholderTextColor={COLORS.black}
+                style={{
+                  backgroundColor: 'transparent',
+                  fontFamily: FONT.Montserrat_Bold,
+                  color: COLORS.black,
+                  textAlign: 'center'
+                }}
+                textColor={COLORS.black}
+                fontFamily={FONT.Montserrat_Bold}
+                value={amount?.toString()}
+                onChangeText={text => setAmount(text)}
+              />
+            </LinearGradient>
+          </View>
+          {/** NOTE */}
+          <View
+            style={{
+              borderRadius: heightPercentageToDP(2),
+              padding: heightPercentageToDP(1),
+            }}>
+            <Text
+              style={{
+                fontFamily: FONT.Montserrat_SemiBold,
+                color: COLORS.black,
+                fontSize: heightPercentageToDP(2),
+                paddingStart: heightPercentageToDP(1),
+              }}>
+              Note
+            </Text>
+
+            <LinearGradient
+              colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
+              start={{x: 0, y: 0}} // start from left
+              end={{x: 1, y: 0}} // end at right
+              style={{
+                borderRadius: heightPercentageToDP(2),
+                width: widthPercentageToDP(90),
+              }}>
+              <TextInput
+                underlineColor="transparent"
+                activeUnderlineColor="transparent"
+                cursorColor={COLORS.white}
+                placeholderTextColor={COLORS.black}
+                style={{
+                  backgroundColor: 'transparent',
+                  fontFamily: FONT.Montserrat_Bold,
+                  color: COLORS.black,
+                }}
+                textColor={COLORS.black}
+                fontFamily={FONT.Montserrat_Bold}
+                value={paymentUpdateNote}
+                onChangeText={text => setPaymentUpdateNote(text)}
+              />
+            </LinearGradient>
+          </View>
+          {/** RECEIPT */}
+          <TouchableOpacity
+            onPress={selectDoc}
+            style={{
+              borderRadius: heightPercentageToDP(2),
+
+              padding: heightPercentageToDP(1),
+            }}>
+            <Text
+              style={{
+                fontFamily: FONT.Montserrat_SemiBold,
+                color: COLORS.black,
+                fontSize: heightPercentageToDP(2),
+                paddingStart: heightPercentageToDP(1),
+              }}>
+              Receipt
+            </Text>
+
+            <LinearGradient
+              colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
+              start={{x: 0, y: 0}} // start from left
+              end={{x: 1, y: 0}} // end at right
+              style={{
+                borderRadius: heightPercentageToDP(2),
+                flexDirection: 'row',
+                alignItems: 'center', // Ensures vertical alignment of items
+                padding: heightPercentageToDP(0.5), // Adjust padding for spacing
+                width: widthPercentageToDP(90),
+              }}>
+              <Text
+                style={{
+                  backgroundColor: 'transparent',
+                  fontFamily: FONT.HELVETICA_REGULAR,
+                  color: COLORS.black,
+                  fontSize: heightPercentageToDP(2),
+                  textAlign: 'left',
+                  paddingStart: heightPercentageToDP(2), // Padding for spacing on the left
+                  flex: 1, // Let the text take available space
+                }}>
+                {imageFileName}
+              </Text>
+              <View
+                style={{
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  paddingEnd: heightPercentageToDP(2),
+                }}>
+                <LinearGradient
+                  colors={[COLORS.grayBg, COLORS.white_s]}
+                  style={{borderRadius: 20, padding: 10}}>
+                  <AntDesign
+                    name={'upload'}
+                    size={heightPercentageToDP(3)}
+                    color={COLORS.darkGray}
+                  />
+                </LinearGradient>
+              </View>
+            </LinearGradient>
+          </TouchableOpacity>
           <View style={styles.buttonContainer}>
             <View
               style={{
@@ -57,7 +296,7 @@ const CustomAlertForDeposit = ({visible, onClose, onYes}) => {
                 flexDirection: 'row',
               }}>
               <TouchableOpacity
-                onPress={onYes}
+                onPress={handleConfirm}
                 style={{
                   flex: 1,
                   backgroundColor: COLORS.green,
@@ -88,7 +327,7 @@ const CustomAlertForDeposit = ({visible, onClose, onYes}) => {
                   alignItems: 'center',
                   borderBottomRightRadius: heightPercentageToDP(2),
                 }}
-                onPress={onClose}>
+                onPress={handleReject}>
                 <Text
                   style={{
                     fontFamily: FONT.Montserrat_Regular,
@@ -114,8 +353,8 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
   },
   alertBox: {
-    width: heightPercentageToDP(30),
-    height: heightPercentageToDP(20),
+    width: widthPercentageToDP(95),
+    minHeight: heightPercentageToDP(80),
     backgroundColor: 'white',
     borderRadius: heightPercentageToDP(2),
     justifyContent: 'center',

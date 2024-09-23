@@ -41,7 +41,7 @@ import UserProfileBackground from '../components/background/UserProfileBackgroun
 const UpdateProfile = ({route}) => {
   const navigation = useNavigation();
 
-  const {userdata} = route.params;
+  const {userdata, fromscreen} = route.params;
 
   const {singleuser, accesstoken, loadingSingleUser} = useSelector(
     state => state.user,
@@ -55,8 +55,12 @@ const UpdateProfile = ({route}) => {
   const isFocused = useIsFocused();
 
   useEffect(() => {
-    dispatch(loadSingleUser(accesstoken, userdata._id));
-  }, [dispatch, isFocused]);
+    if (fromscreen) {
+      dispatch(loadSingleUser(accesstoken, userdata.userId));
+    } else {
+      dispatch(loadSingleUser(accesstoken, userdata._id));
+    }
+  }, [dispatch, isFocused, userdata]);
 
   const copyToClipboard = val => {
     Clipboard.setString(val);
@@ -69,609 +73,630 @@ const UpdateProfile = ({route}) => {
 
   return (
     <SafeAreaView style={{flex: 1}}>
-      <UserProfileBackground userdata={userdata} />
-
-      {/** Profile Cointainer */}
-
-      <View style={{flex: 1, justifyContent: 'flex-end'}}>
-        <ImageBackground
-          source={require('../../assets/image/tlwbg.jpg')}
+      {loadingSingleUser ? (
+        <View
           style={{
-            width: '100%',
-            height: heightPercentageToDP(60),
-          }}
-          imageStyle={{
-            borderTopLeftRadius: heightPercentageToDP(5),
-            borderTopRightRadius: heightPercentageToDP(5),
+            flex: 1,
+            justifyContent: 'flex-end',
           }}>
-          <View
+          <ImageBackground
+            source={require('../../assets/image/tlwbg.jpg')}
             style={{
-              height: heightPercentageToDP(60),
-              width: widthPercentageToDP(100),
-              borderTopLeftRadius: heightPercentageToDP(5),
-              borderTopRightRadius: heightPercentageToDP(5),
-              elevation: heightPercentageToDP(3),
+              width: '100%',
+              height: heightPercentageToDP(100),
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
             }}>
-            {/** Top Style View */}
-            <View
+            <Loading />
+          </ImageBackground>
+        </View>
+      ) : (
+        <>
+          <UserProfileBackground userdata={singleuser} />
+          <View style={{flex: 1, justifyContent: 'flex-end'}}>
+            <ImageBackground
+              source={require('../../assets/image/tlwbg.jpg')}
               style={{
-                height: heightPercentageToDP(5),
-                width: widthPercentageToDP(100),
-                justifyContent: 'center',
-                alignItems: 'center',
+                width: '100%',
+                height: heightPercentageToDP(60),
+              }}
+              imageStyle={{
+                borderTopLeftRadius: heightPercentageToDP(5),
+                borderTopRightRadius: heightPercentageToDP(5),
               }}>
               <View
                 style={{
-                  width: widthPercentageToDP(20),
-                  height: heightPercentageToDP(0.8),
-                  backgroundColor: COLORS.grayBg,
-                  borderRadius: heightPercentageToDP(2),
-                }}></View>
-            </View>
-
-            {loadingSingleUser ? (
-              <View
-                style={{
-                  flex: 1,
-                  justifyContent: 'center',
-                  alignItems: 'center',
+                  height: heightPercentageToDP(60),
+                  width: widthPercentageToDP(100),
+                  borderTopLeftRadius: heightPercentageToDP(5),
+                  borderTopRightRadius: heightPercentageToDP(5),
+                  elevation: heightPercentageToDP(3),
                 }}>
-                <Loading />
+                {/** Top Style View */}
+                <View
+                  style={{
+                    height: heightPercentageToDP(5),
+                    width: widthPercentageToDP(100),
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                  }}>
+                  <View
+                    style={{
+                      width: widthPercentageToDP(20),
+                      height: heightPercentageToDP(0.8),
+                      backgroundColor: COLORS.grayBg,
+                      borderRadius: heightPercentageToDP(2),
+                    }}></View>
+                </View>
+
+                {loadingSingleUser ? (
+                  <View
+                    style={{
+                      flex: 1,
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                    }}>
+                    <Loading />
+                  </View>
+                ) : (
+                  <ScrollView showsVerticalScrollIndicator={false}>
+                    <TouchableOpacity
+                      onPress={() =>
+                        navigation.navigate('EditUserWallet', {
+                          data: singleuser.walletOne,
+                          forwallet: 'one',
+                        })
+                      }
+                      style={{
+                        height: heightPercentageToDP(25),
+                        flexDirection: 'row',
+                        backgroundColor: COLORS.grayBg,
+                        alignItems: 'center',
+                        paddingHorizontal: heightPercentageToDP(2),
+                        borderRadius: heightPercentageToDP(1),
+                        margin: heightPercentageToDP(2),
+                      }}>
+                      <View
+                        style={{
+                          padding: heightPercentageToDP(2),
+                        }}>
+                        <Text
+                          style={{
+                            marginStart: heightPercentageToDP(1),
+                            flex: 1,
+                            fontFamily: FONT.Montserrat_Regular,
+                            color: COLORS.darkGray,
+                            width: widthPercentageToDP(25),
+                            marginStart: heightPercentageToDP(-1),
+                            textAlignVertical: 'bottom',
+                          }}>
+                          Total Balance
+                        </Text>
+                        <Text
+                          style={{
+                            marginStart: heightPercentageToDP(1),
+                            flex: 1,
+                            fontFamily: FONT.Montserrat_SemiBold,
+                            color: COLORS.darkGray,
+                            fontSize: heightPercentageToDP(3),
+                            marginStart: heightPercentageToDP(-1),
+                          }}>
+                          {singleuser.walletOne?.walletName}
+                        </Text>
+
+                        <View
+                          style={{
+                            flexDirection: 'row',
+                            justifyContent: 'flex-end',
+                            gap: heightPercentageToDP(1),
+                            marginStart: heightPercentageToDP(-1),
+                          }}>
+                          <View
+                            style={{
+                              backgroundColor: COLORS.white_s,
+                              padding: heightPercentageToDP(1),
+                              borderRadius: heightPercentageToDP(1),
+                              justifyContent: 'center',
+                            }}>
+                            <Ionicons
+                              name={'wallet'}
+                              size={heightPercentageToDP(4)}
+                              color={COLORS.darkGray}
+                            />
+                          </View>
+                          <GradientText
+                            style={{
+                              ...styles.textStyle,
+                              width: widthPercentageToDP(60),
+                            }}>
+                            {singleuser?.walletOne?.balance}
+                          </GradientText>
+                        </View>
+                      </View>
+
+                      <View
+                        style={{
+                          flex: 1,
+                          backgroundColor: COLORS.white,
+                          position: 'absolute',
+                          right: heightPercentageToDP(2),
+                          borderRadius: heightPercentageToDP(1),
+                          padding: heightPercentageToDP(1),
+                          top: heightPercentageToDP(2),
+                        }}>
+                        <MaterialCommunityIcons
+                          name={'circle-edit-outline'}
+                          size={heightPercentageToDP(4)}
+                          color={COLORS.darkGray}
+                        />
+                      </View>
+                    </TouchableOpacity>
+
+                    {/** Wallet Two */}
+
+                    <TouchableOpacity
+                      onPress={() =>
+                        navigation.navigate('EditUserWallet', {
+                          data: singleuser.walletTwo,
+                          forwallet: 'two',
+                        })
+                      }
+                      style={{
+                        height: heightPercentageToDP(25),
+                        flexDirection: 'row',
+                        backgroundColor: COLORS.grayBg,
+                        alignItems: 'center',
+                        paddingHorizontal: heightPercentageToDP(2),
+                        borderRadius: heightPercentageToDP(1),
+                        margin: heightPercentageToDP(2),
+                      }}>
+                      <View
+                        style={{
+                          padding: heightPercentageToDP(2),
+                        }}>
+                        <Text
+                          style={{
+                            marginStart: heightPercentageToDP(1),
+                            flex: 1,
+                            fontFamily: FONT.Montserrat_Regular,
+                            color: COLORS.darkGray,
+                            width: widthPercentageToDP(25),
+                            marginStart: heightPercentageToDP(-1),
+                            textAlignVertical: 'bottom',
+                          }}>
+                          Total Balance
+                        </Text>
+                        <Text
+                          style={{
+                            marginStart: heightPercentageToDP(1),
+                            flex: 1,
+                            fontFamily: FONT.Montserrat_SemiBold,
+                            color: COLORS.darkGray,
+                            fontSize: heightPercentageToDP(3),
+                            marginStart: heightPercentageToDP(-1),
+                          }}>
+                          {singleuser.walletTwo?.walletName}
+                        </Text>
+
+                        <View
+                          style={{
+                            flexDirection: 'row',
+                            justifyContent: 'flex-start',
+                            gap: heightPercentageToDP(1),
+                            marginStart: heightPercentageToDP(-1),
+                          }}>
+                          <View
+                            style={{
+                              backgroundColor: COLORS.white_s,
+                              padding: heightPercentageToDP(1),
+                              borderRadius: heightPercentageToDP(1),
+                              justifyContent: 'center',
+                            }}>
+                            <Ionicons
+                              name={'wallet'}
+                              size={heightPercentageToDP(4)}
+                              color={COLORS.darkGray}
+                            />
+                          </View>
+                          <GradientText
+                            style={{
+                              ...styles.textStyle,
+                              width: widthPercentageToDP(60),
+                            }}>
+                            {singleuser?.walletTwo?.balance}
+                          </GradientText>
+                        </View>
+                      </View>
+
+                      <View
+                        style={{
+                          flex: 1,
+                          backgroundColor: COLORS.white,
+                          position: 'absolute',
+                          right: heightPercentageToDP(2),
+                          borderRadius: heightPercentageToDP(1),
+                          padding: heightPercentageToDP(1),
+                          top: heightPercentageToDP(2),
+                        }}>
+                        <MaterialCommunityIcons
+                          name={'circle-edit-outline'}
+                          size={heightPercentageToDP(4)}
+                          color={COLORS.darkGray}
+                        />
+                      </View>
+                    </TouchableOpacity>
+
+                    {/** User Id  */}
+                    <TouchableOpacity
+                      onPress={() =>
+                        navigation.navigate('ChangeUserId', {
+                          userdata: singleuser,
+                        })
+                      }
+                      style={{
+                        height: heightPercentageToDP(20),
+                        flexDirection: 'row',
+                        backgroundColor: COLORS.grayBg,
+                        alignItems: 'center',
+                        paddingHorizontal: heightPercentageToDP(2),
+                        borderRadius: heightPercentageToDP(1),
+                        margin: heightPercentageToDP(2),
+                      }}>
+                      <View
+                        style={{
+                          padding: heightPercentageToDP(2),
+                        }}>
+                        <Text
+                          style={{
+                            marginStart: heightPercentageToDP(1),
+                            flex: 1,
+                            fontFamily: FONT.Montserrat_Regular,
+                            color: COLORS.darkGray,
+                            width: widthPercentageToDP(25),
+                            marginStart: heightPercentageToDP(-1),
+                            textAlignVertical: 'bottom',
+                          }}></Text>
+                        <Text
+                          style={{
+                            marginStart: heightPercentageToDP(1),
+                            flex: 1,
+                            fontFamily: FONT.Montserrat_Regular,
+                            color: COLORS.darkGray,
+                            fontSize: heightPercentageToDP(2),
+                            marginStart: heightPercentageToDP(-1),
+                          }}>
+                          Change User Id
+                        </Text>
+
+                        <View
+                          style={{
+                            flexDirection: 'row',
+                            justifyContent: 'flex-start',
+                            gap: heightPercentageToDP(1),
+                            marginStart: heightPercentageToDP(-1),
+                          }}>
+                          <View
+                            style={{
+                              backgroundColor: COLORS.white_s,
+                              padding: heightPercentageToDP(1),
+                              borderRadius: heightPercentageToDP(1),
+                              justifyContent: 'center',
+                            }}>
+                            <Entypo
+                              name={'user'}
+                              size={heightPercentageToDP(4)}
+                              color={COLORS.darkGray}
+                            />
+                          </View>
+                          <GradientText
+                            style={{
+                              ...styles.textStyle,
+                              width: widthPercentageToDP(60),
+                            }}>
+                            User Id
+                          </GradientText>
+                        </View>
+                      </View>
+
+                      <View
+                        style={{
+                          flex: 1,
+                          backgroundColor: COLORS.white,
+                          position: 'absolute',
+                          right: heightPercentageToDP(2),
+                          borderRadius: heightPercentageToDP(1),
+                          padding: heightPercentageToDP(1),
+                          top: heightPercentageToDP(2),
+                        }}>
+                        <MaterialCommunityIcons
+                          name={'circle-edit-outline'}
+                          size={heightPercentageToDP(4)}
+                          color={COLORS.darkGray}
+                        />
+                      </View>
+                    </TouchableOpacity>
+
+                    {/** Single User */}
+                    <TouchableOpacity
+                      onPress={() =>
+                        // Toast.show({
+                        //   type: 'info',
+                        //   text1: 'Comming soon'
+                        // })
+                        navigation.navigate('CreateNotification', {
+                          userdata: singleuser,
+                        })
+                      }
+                      style={{
+                        height: heightPercentageToDP(20),
+                        flexDirection: 'row',
+                        backgroundColor: COLORS.grayBg,
+                        alignItems: 'center',
+                        paddingHorizontal: heightPercentageToDP(2),
+                        borderRadius: heightPercentageToDP(1),
+                        margin: heightPercentageToDP(2),
+                      }}>
+                      <View
+                        style={{
+                          padding: heightPercentageToDP(2),
+                        }}>
+                        <Text
+                          style={{
+                            marginStart: heightPercentageToDP(1),
+                            flex: 1,
+                            fontFamily: FONT.Montserrat_Regular,
+                            color: COLORS.darkGray,
+                            width: widthPercentageToDP(25),
+                            marginStart: heightPercentageToDP(-1),
+                            textAlignVertical: 'bottom',
+                          }}></Text>
+                        <Text
+                          style={{
+                            marginStart: heightPercentageToDP(1),
+                            flex: 1,
+                            fontFamily: FONT.Montserrat_Regular,
+                            color: COLORS.darkGray,
+                            fontSize: heightPercentageToDP(2),
+                            marginStart: heightPercentageToDP(-1),
+                          }}>
+                          Push Notification
+                        </Text>
+
+                        <View
+                          style={{
+                            flexDirection: 'row',
+                            justifyContent: 'flex-start',
+                            gap: heightPercentageToDP(1),
+                            marginStart: heightPercentageToDP(-1),
+                          }}>
+                          <View
+                            style={{
+                              backgroundColor: COLORS.white_s,
+                              padding: heightPercentageToDP(1),
+                              borderRadius: heightPercentageToDP(1),
+                              justifyContent: 'center',
+                            }}>
+                            <Entypo
+                              name={'user'}
+                              size={heightPercentageToDP(4)}
+                              color={COLORS.darkGray}
+                            />
+                          </View>
+                          <GradientText
+                            style={{
+                              ...styles.textStyle,
+                              width: widthPercentageToDP(60),
+                            }}>
+                            Notification
+                          </GradientText>
+                        </View>
+                      </View>
+
+                      <View
+                        style={{
+                          flex: 1,
+                          backgroundColor: COLORS.white,
+                          position: 'absolute',
+                          right: heightPercentageToDP(2),
+                          borderRadius: heightPercentageToDP(1),
+                          padding: heightPercentageToDP(1),
+                          top: heightPercentageToDP(2),
+                        }}>
+                        <Ionicons
+                          name={'notifications'}
+                          size={heightPercentageToDP(4)}
+                          color={COLORS.darkGray}
+                        />
+                      </View>
+                    </TouchableOpacity>
+
+                    {/** PLAY HISTORY */}
+                    <TouchableOpacity
+                      onPress={() =>
+                        navigation.navigate('PlayHistory', {
+                          userdata: singleuser,
+                        })
+                      }
+                      style={{
+                        height: heightPercentageToDP(20),
+                        flexDirection: 'row',
+                        backgroundColor: COLORS.grayBg,
+                        alignItems: 'center',
+                        paddingHorizontal: heightPercentageToDP(2),
+                        borderRadius: heightPercentageToDP(1),
+                        margin: heightPercentageToDP(2),
+                      }}>
+                      <View
+                        style={{
+                          padding: heightPercentageToDP(2),
+                        }}>
+                        <Text
+                          style={{
+                            marginStart: heightPercentageToDP(1),
+                            flex: 1,
+                            fontFamily: FONT.Montserrat_Regular,
+                            color: COLORS.darkGray,
+                            width: widthPercentageToDP(25),
+                            marginStart: heightPercentageToDP(-1),
+                            textAlignVertical: 'bottom',
+                          }}></Text>
+                        <Text
+                          style={{
+                            marginStart: heightPercentageToDP(1),
+                            flex: 1,
+                            fontFamily: FONT.Montserrat_Regular,
+                            color: COLORS.darkGray,
+                            fontSize: heightPercentageToDP(2),
+                            marginStart: heightPercentageToDP(-1),
+                          }}>
+                          User's play history
+                        </Text>
+
+                        <View
+                          style={{
+                            flexDirection: 'row',
+                            justifyContent: 'flex-start',
+                            gap: heightPercentageToDP(1),
+                            marginStart: heightPercentageToDP(-1),
+                          }}>
+                          <View
+                            style={{
+                              backgroundColor: COLORS.white_s,
+                              padding: heightPercentageToDP(1),
+                              borderRadius: heightPercentageToDP(1),
+                              justifyContent: 'center',
+                            }}>
+                            <Entypo
+                              name={'user'}
+                              size={heightPercentageToDP(4)}
+                              color={COLORS.darkGray}
+                            />
+                          </View>
+                          <GradientText
+                            style={{
+                              ...styles.textStyle,
+                              width: widthPercentageToDP(60),
+                            }}>
+                            Play History
+                          </GradientText>
+                        </View>
+                      </View>
+
+                      <View
+                        style={{
+                          flex: 1,
+                          backgroundColor: COLORS.white,
+                          position: 'absolute',
+                          right: heightPercentageToDP(2),
+                          borderRadius: heightPercentageToDP(1),
+                          padding: heightPercentageToDP(1),
+                          top: heightPercentageToDP(2),
+                        }}>
+                        <MaterialCommunityIcons
+                          name={'play-circle-outline'}
+                          size={heightPercentageToDP(4)}
+                          color={COLORS.darkGray}
+                        />
+                      </View>
+                    </TouchableOpacity>
+
+                    {/** HISTORY */}
+                    <TouchableOpacity
+                      onPress={() =>
+                        navigation.navigate('History', {
+                          userdata: singleuser,
+                        })
+                      }
+                      style={{
+                        height: heightPercentageToDP(20),
+                        flexDirection: 'row',
+                        backgroundColor: COLORS.grayBg,
+                        alignItems: 'center',
+                        paddingHorizontal: heightPercentageToDP(2),
+                        borderRadius: heightPercentageToDP(1),
+                        margin: heightPercentageToDP(2),
+                      }}>
+                      <View
+                        style={{
+                          padding: heightPercentageToDP(2),
+                        }}>
+                        <Text
+                          style={{
+                            marginStart: heightPercentageToDP(1),
+                            flex: 1,
+                            fontFamily: FONT.Montserrat_Regular,
+                            color: COLORS.darkGray,
+                            width: widthPercentageToDP(25),
+                            marginStart: heightPercentageToDP(-1),
+                            textAlignVertical: 'bottom',
+                          }}></Text>
+                        <Text
+                          style={{
+                            marginStart: heightPercentageToDP(1),
+                            flex: 1,
+                            fontFamily: FONT.Montserrat_Regular,
+                            color: COLORS.darkGray,
+                            fontSize: heightPercentageToDP(2),
+                            marginStart: heightPercentageToDP(-1),
+                          }}>
+                          User's transaction history
+                        </Text>
+
+                        <View
+                          style={{
+                            flexDirection: 'row',
+                            justifyContent: 'flex-start',
+                            gap: heightPercentageToDP(1),
+                            marginStart: heightPercentageToDP(-1),
+                          }}>
+                          <View
+                            style={{
+                              backgroundColor: COLORS.white_s,
+                              padding: heightPercentageToDP(1),
+                              borderRadius: heightPercentageToDP(1),
+                              justifyContent: 'center',
+                            }}>
+                            <Entypo
+                              name={'user'}
+                              size={heightPercentageToDP(4)}
+                              color={COLORS.darkGray}
+                            />
+                          </View>
+                          <GradientText
+                            style={{
+                              ...styles.textStyle,
+                              width: widthPercentageToDP(60),
+                            }}>
+                            Transaction History
+                          </GradientText>
+                        </View>
+                      </View>
+
+                      <View
+                        style={{
+                          flex: 1,
+                          backgroundColor: COLORS.white,
+                          position: 'absolute',
+                          right: heightPercentageToDP(2),
+                          borderRadius: heightPercentageToDP(1),
+                          padding: heightPercentageToDP(1),
+                          top: heightPercentageToDP(2),
+                        }}>
+                        <MaterialCommunityIcons
+                          name={'history'}
+                          size={heightPercentageToDP(4)}
+                          color={COLORS.darkGray}
+                        />
+                      </View>
+                    </TouchableOpacity>
+                  </ScrollView>
+                )}
               </View>
-            ) : (
-              <ScrollView showsVerticalScrollIndicator={false}>
-                <TouchableOpacity
-                  onPress={() =>
-                    navigation.navigate('EditUserWallet', {
-                      data: userdata.walletOne,
-                      forwallet: 'one',
-                    })
-                  }
-                  style={{
-                    height: heightPercentageToDP(25),
-                    flexDirection: 'row',
-                    backgroundColor: COLORS.grayBg,
-                    alignItems: 'center',
-                    paddingHorizontal: heightPercentageToDP(2),
-                    borderRadius: heightPercentageToDP(1),
-                    margin: heightPercentageToDP(2),
-                  }}>
-                  <View
-                    style={{
-                      padding: heightPercentageToDP(2),
-                    }}>
-                    <Text
-                      style={{
-                        marginStart: heightPercentageToDP(1),
-                        flex: 1,
-                        fontFamily: FONT.Montserrat_Regular,
-                        color: COLORS.darkGray,
-                        width: widthPercentageToDP(25),
-                        marginStart: heightPercentageToDP(-1),
-                        textAlignVertical: 'bottom',
-                      }}>
-                      Total Balance
-                    </Text>
-                    <Text
-                      style={{
-                        marginStart: heightPercentageToDP(1),
-                        flex: 1,
-                        fontFamily: FONT.Montserrat_SemiBold,
-                        color: COLORS.darkGray,
-                        fontSize: heightPercentageToDP(3),
-                        marginStart: heightPercentageToDP(-1),
-                      }}>
-                      {userdata.walletOne?.walletName}
-                    </Text>
-
-                    <View
-                      style={{
-                        flexDirection: 'row',
-                        justifyContent: 'flex-end',
-                        gap: heightPercentageToDP(1),
-                        marginStart: heightPercentageToDP(-1),
-                      }}>
-                      <View
-                        style={{
-                          backgroundColor: COLORS.white_s,
-                          padding: heightPercentageToDP(1),
-                          borderRadius: heightPercentageToDP(1),
-                          justifyContent: 'center',
-                        }}>
-                        <Ionicons
-                          name={'wallet'}
-                          size={heightPercentageToDP(4)}
-                          color={COLORS.darkGray}
-                        />
-                      </View>
-                      <GradientText
-                        style={{
-                          ...styles.textStyle,
-                          width: widthPercentageToDP(60),
-                        }}>
-                        {singleuser?.walletOne?.balance}
-                      </GradientText>
-                    </View>
-                  </View>
-
-                  <View
-                    style={{
-                      flex: 1,
-                      backgroundColor: COLORS.white,
-                      position: 'absolute',
-                      right: heightPercentageToDP(2),
-                      borderRadius: heightPercentageToDP(1),
-                      padding: heightPercentageToDP(1),
-                      top: heightPercentageToDP(2),
-                    }}>
-                    <MaterialCommunityIcons
-                      name={'circle-edit-outline'}
-                      size={heightPercentageToDP(4)}
-                      color={COLORS.darkGray}
-                    />
-                  </View>
-                </TouchableOpacity>
-
-                {/** Wallet Two */}
-
-                <TouchableOpacity
-                  onPress={() =>
-                    navigation.navigate('EditUserWallet', {
-                      data: userdata.walletTwo,
-                      forwallet: 'two',
-                    })
-                  }
-                  style={{
-                    height: heightPercentageToDP(25),
-                    flexDirection: 'row',
-                    backgroundColor: COLORS.grayBg,
-                    alignItems: 'center',
-                    paddingHorizontal: heightPercentageToDP(2),
-                    borderRadius: heightPercentageToDP(1),
-                    margin: heightPercentageToDP(2),
-                  }}>
-                  <View
-                    style={{
-                      padding: heightPercentageToDP(2),
-                    }}>
-                    <Text
-                      style={{
-                        marginStart: heightPercentageToDP(1),
-                        flex: 1,
-                        fontFamily: FONT.Montserrat_Regular,
-                        color: COLORS.darkGray,
-                        width: widthPercentageToDP(25),
-                        marginStart: heightPercentageToDP(-1),
-                        textAlignVertical: 'bottom',
-                      }}>
-                      Total Balance
-                    </Text>
-                    <Text
-                      style={{
-                        marginStart: heightPercentageToDP(1),
-                        flex: 1,
-                        fontFamily: FONT.Montserrat_SemiBold,
-                        color: COLORS.darkGray,
-                        fontSize: heightPercentageToDP(3),
-                        marginStart: heightPercentageToDP(-1),
-                      }}>
-                      {userdata.walletTwo?.walletName}
-                    </Text>
-
-                    <View
-                      style={{
-                        flexDirection: 'row',
-                        justifyContent: 'flex-start',
-                        gap: heightPercentageToDP(1),
-                        marginStart: heightPercentageToDP(-1),
-                      }}>
-                      <View
-                        style={{
-                          backgroundColor: COLORS.white_s,
-                          padding: heightPercentageToDP(1),
-                          borderRadius: heightPercentageToDP(1),
-                          justifyContent: 'center',
-                        }}>
-                        <Ionicons
-                          name={'wallet'}
-                          size={heightPercentageToDP(4)}
-                          color={COLORS.darkGray}
-                        />
-                      </View>
-                      <GradientText
-                        style={{
-                          ...styles.textStyle,
-                          width: widthPercentageToDP(60),
-                        }}>
-                        {singleuser?.walletTwo?.balance}
-                      </GradientText>
-                    </View>
-                  </View>
-
-                  <View
-                    style={{
-                      flex: 1,
-                      backgroundColor: COLORS.white,
-                      position: 'absolute',
-                      right: heightPercentageToDP(2),
-                      borderRadius: heightPercentageToDP(1),
-                      padding: heightPercentageToDP(1),
-                      top: heightPercentageToDP(2),
-                    }}>
-                    <MaterialCommunityIcons
-                      name={'circle-edit-outline'}
-                      size={heightPercentageToDP(4)}
-                      color={COLORS.darkGray}
-                    />
-                  </View>
-                </TouchableOpacity>
-
-                {/** User Id  */}
-                <TouchableOpacity
-                  onPress={() =>
-                    navigation.navigate('ChangeUserId', {userdata: singleuser})
-                  }
-                  style={{
-                    height: heightPercentageToDP(20),
-                    flexDirection: 'row',
-                    backgroundColor: COLORS.grayBg,
-                    alignItems: 'center',
-                    paddingHorizontal: heightPercentageToDP(2),
-                    borderRadius: heightPercentageToDP(1),
-                    margin: heightPercentageToDP(2),
-                  }}>
-                  <View
-                    style={{
-                      padding: heightPercentageToDP(2),
-                    }}>
-                    <Text
-                      style={{
-                        marginStart: heightPercentageToDP(1),
-                        flex: 1,
-                        fontFamily: FONT.Montserrat_Regular,
-                        color: COLORS.darkGray,
-                        width: widthPercentageToDP(25),
-                        marginStart: heightPercentageToDP(-1),
-                        textAlignVertical: 'bottom',
-                      }}></Text>
-                    <Text
-                      style={{
-                        marginStart: heightPercentageToDP(1),
-                        flex: 1,
-                        fontFamily: FONT.Montserrat_Regular,
-                        color: COLORS.darkGray,
-                        fontSize: heightPercentageToDP(2),
-                        marginStart: heightPercentageToDP(-1),
-                      }}>
-                      Change User Id
-                    </Text>
-
-                    <View
-                      style={{
-                        flexDirection: 'row',
-                        justifyContent: 'flex-start',
-                        gap: heightPercentageToDP(1),
-                        marginStart: heightPercentageToDP(-1),
-                      }}>
-                      <View
-                        style={{
-                          backgroundColor: COLORS.white_s,
-                          padding: heightPercentageToDP(1),
-                          borderRadius: heightPercentageToDP(1),
-                          justifyContent: 'center',
-                        }}>
-                        <Entypo
-                          name={'user'}
-                          size={heightPercentageToDP(4)}
-                          color={COLORS.darkGray}
-                        />
-                      </View>
-                      <GradientText
-                        style={{
-                          ...styles.textStyle,
-                          width: widthPercentageToDP(60),
-                        }}>
-                        User Id
-                      </GradientText>
-                    </View>
-                  </View>
-
-                  <View
-                    style={{
-                      flex: 1,
-                      backgroundColor: COLORS.white,
-                      position: 'absolute',
-                      right: heightPercentageToDP(2),
-                      borderRadius: heightPercentageToDP(1),
-                      padding: heightPercentageToDP(1),
-                      top: heightPercentageToDP(2),
-                    }}>
-                    <MaterialCommunityIcons
-                      name={'circle-edit-outline'}
-                      size={heightPercentageToDP(4)}
-                      color={COLORS.darkGray}
-                    />
-                  </View>
-                </TouchableOpacity>
-
-                {/** Single User */}
-                <TouchableOpacity
-                  onPress={() =>
-                    // Toast.show({
-                    //   type: 'info',
-                    //   text1: 'Comming soon'
-                    // })
-                    navigation.navigate('CreateNotification', {
-                      userdata: singleuser,
-                    })
-                  }
-                  style={{
-                    height: heightPercentageToDP(20),
-                    flexDirection: 'row',
-                    backgroundColor: COLORS.grayBg,
-                    alignItems: 'center',
-                    paddingHorizontal: heightPercentageToDP(2),
-                    borderRadius: heightPercentageToDP(1),
-                    margin: heightPercentageToDP(2),
-                  }}>
-                  <View
-                    style={{
-                      padding: heightPercentageToDP(2),
-                    }}>
-                    <Text
-                      style={{
-                        marginStart: heightPercentageToDP(1),
-                        flex: 1,
-                        fontFamily: FONT.Montserrat_Regular,
-                        color: COLORS.darkGray,
-                        width: widthPercentageToDP(25),
-                        marginStart: heightPercentageToDP(-1),
-                        textAlignVertical: 'bottom',
-                      }}></Text>
-                    <Text
-                      style={{
-                        marginStart: heightPercentageToDP(1),
-                        flex: 1,
-                        fontFamily: FONT.Montserrat_Regular,
-                        color: COLORS.darkGray,
-                        fontSize: heightPercentageToDP(2),
-                        marginStart: heightPercentageToDP(-1),
-                      }}>
-                      Push Notification
-                    </Text>
-
-                    <View
-                      style={{
-                        flexDirection: 'row',
-                        justifyContent: 'flex-start',
-                        gap: heightPercentageToDP(1),
-                        marginStart: heightPercentageToDP(-1),
-                      }}>
-                      <View
-                        style={{
-                          backgroundColor: COLORS.white_s,
-                          padding: heightPercentageToDP(1),
-                          borderRadius: heightPercentageToDP(1),
-                          justifyContent: 'center',
-                        }}>
-                        <Entypo
-                          name={'user'}
-                          size={heightPercentageToDP(4)}
-                          color={COLORS.darkGray}
-                        />
-                      </View>
-                      <GradientText
-                        style={{
-                          ...styles.textStyle,
-                          width: widthPercentageToDP(60),
-                        }}>
-                        Notification
-                      </GradientText>
-                    </View>
-                  </View>
-
-                  <View
-                    style={{
-                      flex: 1,
-                      backgroundColor: COLORS.white,
-                      position: 'absolute',
-                      right: heightPercentageToDP(2),
-                      borderRadius: heightPercentageToDP(1),
-                      padding: heightPercentageToDP(1),
-                      top: heightPercentageToDP(2),
-                    }}>
-                    <Ionicons
-                      name={'notifications'}
-                      size={heightPercentageToDP(4)}
-                      color={COLORS.darkGray}
-                    />
-                  </View>
-                </TouchableOpacity>
-
-                  {/** PLAY HISTORY */}
-                  <TouchableOpacity
-                  onPress={() =>
-                    navigation.navigate('PlayHistory', {
-                      userdata: singleuser,
-                    })
-                  }
-                  style={{
-                    height: heightPercentageToDP(20),
-                    flexDirection: 'row',
-                    backgroundColor: COLORS.grayBg,
-                    alignItems: 'center',
-                    paddingHorizontal: heightPercentageToDP(2),
-                    borderRadius: heightPercentageToDP(1),
-                    margin: heightPercentageToDP(2),
-                  }}>
-                  <View
-                    style={{
-                      padding: heightPercentageToDP(2),
-                    }}>
-                    <Text
-                      style={{
-                        marginStart: heightPercentageToDP(1),
-                        flex: 1,
-                        fontFamily: FONT.Montserrat_Regular,
-                        color: COLORS.darkGray,
-                        width: widthPercentageToDP(25),
-                        marginStart: heightPercentageToDP(-1),
-                        textAlignVertical: 'bottom',
-                      }}></Text>
-                    <Text
-                      style={{
-                        marginStart: heightPercentageToDP(1),
-                        flex: 1,
-                        fontFamily: FONT.Montserrat_Regular,
-                        color: COLORS.darkGray,
-                        fontSize: heightPercentageToDP(2),
-                        marginStart: heightPercentageToDP(-1),
-                      }}>
-                      User's play history
-                    </Text>
-
-                    <View
-                      style={{
-                        flexDirection: 'row',
-                        justifyContent: 'flex-start',
-                        gap: heightPercentageToDP(1),
-                        marginStart: heightPercentageToDP(-1),
-                      }}>
-                      <View
-                        style={{
-                          backgroundColor: COLORS.white_s,
-                          padding: heightPercentageToDP(1),
-                          borderRadius: heightPercentageToDP(1),
-                          justifyContent: 'center',
-                        }}>
-                        <Entypo
-                          name={'user'}
-                          size={heightPercentageToDP(4)}
-                          color={COLORS.darkGray}
-                        />
-                      </View>
-                      <GradientText
-                        style={{
-                          ...styles.textStyle,
-                          width: widthPercentageToDP(60),
-                        }}>
-                        Play History
-                      </GradientText>
-                    </View>
-                  </View>
-
-                  <View
-                    style={{
-                      flex: 1,
-                      backgroundColor: COLORS.white,
-                      position: 'absolute',
-                      right: heightPercentageToDP(2),
-                      borderRadius: heightPercentageToDP(1),
-                      padding: heightPercentageToDP(1),
-                      top: heightPercentageToDP(2),
-                    }}>
-                    <MaterialCommunityIcons
-                      name={'play-circle-outline'}
-                      size={heightPercentageToDP(4)}
-                      color={COLORS.darkGray}
-                    />
-                  </View>
-                </TouchableOpacity>
-
-                  {/** HISTORY */}
-                  <TouchableOpacity
-                  onPress={() =>
-                    navigation.navigate('History', {
-                      userdata: singleuser,
-                    })
-                  }
-                  style={{
-                    height: heightPercentageToDP(20),
-                    flexDirection: 'row',
-                    backgroundColor: COLORS.grayBg,
-                    alignItems: 'center',
-                    paddingHorizontal: heightPercentageToDP(2),
-                    borderRadius: heightPercentageToDP(1),
-                    margin: heightPercentageToDP(2),
-                  }}>
-                  <View
-                    style={{
-                      padding: heightPercentageToDP(2),
-                    }}>
-                    <Text
-                      style={{
-                        marginStart: heightPercentageToDP(1),
-                        flex: 1,
-                        fontFamily: FONT.Montserrat_Regular,
-                        color: COLORS.darkGray,
-                        width: widthPercentageToDP(25),
-                        marginStart: heightPercentageToDP(-1),
-                        textAlignVertical: 'bottom',
-                      }}></Text>
-                    <Text
-                      style={{
-                        marginStart: heightPercentageToDP(1),
-                        flex: 1,
-                        fontFamily: FONT.Montserrat_Regular,
-                        color: COLORS.darkGray,
-                        fontSize: heightPercentageToDP(2),
-                        marginStart: heightPercentageToDP(-1),
-                      }}>
-                      User's transaction history
-                    </Text>
-
-                    <View
-                      style={{
-                        flexDirection: 'row',
-                        justifyContent: 'flex-start',
-                        gap: heightPercentageToDP(1),
-                        marginStart: heightPercentageToDP(-1),
-                      }}>
-                      <View
-                        style={{
-                          backgroundColor: COLORS.white_s,
-                          padding: heightPercentageToDP(1),
-                          borderRadius: heightPercentageToDP(1),
-                          justifyContent: 'center',
-                        }}>
-                        <Entypo
-                          name={'user'}
-                          size={heightPercentageToDP(4)}
-                          color={COLORS.darkGray}
-                        />
-                      </View>
-                      <GradientText
-                        style={{
-                          ...styles.textStyle,
-                          width: widthPercentageToDP(60),
-                        }}>
-                        History
-                      </GradientText>
-                    </View>
-                  </View>
-
-                  <View
-                    style={{
-                      flex: 1,
-                      backgroundColor: COLORS.white,
-                      position: 'absolute',
-                      right: heightPercentageToDP(2),
-                      borderRadius: heightPercentageToDP(1),
-                      padding: heightPercentageToDP(1),
-                      top: heightPercentageToDP(2),
-                    }}>
-                    <MaterialCommunityIcons
-                      name={'history'}
-                      size={heightPercentageToDP(4)}
-                      color={COLORS.darkGray}
-                    />
-                  </View>
-                </TouchableOpacity>
-              </ScrollView>
-            )}
+            </ImageBackground>
           </View>
-        </ImageBackground>
-      </View>
+        </>
+      )}
     </SafeAreaView>
   );
 };

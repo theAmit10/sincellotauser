@@ -1,5 +1,4 @@
 import {
- 
   ImageBackground,
   KeyboardAvoidingView,
   Platform,
@@ -18,7 +17,7 @@ import {
 
 import Toast from 'react-native-toast-message';
 import {useIsFocused, useNavigation} from '@react-navigation/native';
-import { useSelector} from 'react-redux';
+import {useSelector} from 'react-redux';
 import LinearGradient from 'react-native-linear-gradient';
 import Background from '../../components/background/Background';
 import {COLORS, FONT} from '../../../assets/constants';
@@ -27,9 +26,7 @@ import Loading from '../../components/helpercComponent/Loading';
 import {TextInput} from 'react-native-paper';
 import axios from 'axios';
 import UrlHelper from '../../helper/UrlHelper';
-import {
-  useCreateBankAccountMutation,
-} from '../../helper/Networkcall';
+import {useCreateBankAccountMutation} from '../../helper/Networkcall';
 
 const upiapidata = [
   {
@@ -78,6 +75,8 @@ const BankDeposit = () => {
   const [accountholdername, setaccountholdername] = useState('');
   const [ifsccode, setifsccode] = useState('');
   const [accountnumber, setaccountnumber] = useState('');
+  const [swiftcode, setswiftcode] = useState('');
+  const [paymentnote, setpaymentnote] = useState('');
 
   // TO GET ALL THE ADMIN BANK
   const isFocused = useIsFocused();
@@ -164,22 +163,29 @@ const BankDeposit = () => {
   //   }
   // };
 
-
   const submitDeposit = async () => {
     if (!bankname) {
-      Toast.show({ type: 'error', text1: 'Enter bank name' });
+      Toast.show({type: 'error', text1: 'Enter bank name'});
       return;
     }
     if (!accountholdername) {
-      Toast.show({ type: 'error', text1: 'Enter account holder name' });
+      Toast.show({type: 'error', text1: 'Enter account holder name'});
       return;
     }
     if (!ifsccode) {
-      Toast.show({ type: 'error', text1: 'Add ifsc code' });
+      Toast.show({type: 'error', text1: 'Add ifsc code'});
       return;
     }
     if (!accountnumber) {
-      Toast.show({ type: 'error', text1: 'Add account number' });
+      Toast.show({type: 'error', text1: 'Add account number'});
+      return;
+    }
+    if (!swiftcode) {
+      Toast.show({type: 'error', text1: 'Add swift code'});
+      return;
+    }
+    if (!paymentnote) {
+      Toast.show({type: 'error', text1: 'Add payemnt code'});
       return;
     } else {
       try {
@@ -187,36 +193,35 @@ const BankDeposit = () => {
           bankname,
           accountholdername,
           ifsccode,
-          accountnumber
+          accountnumber,
+          swiftcode,
+          paymentnote
         };
-  
+
         console.log('JSON BODY :: ', JSON.stringify(body));
-  
+
         const res = await createBankAccount({
           accesstoken: accesstoken,
           body: body,
         }).unwrap();
-  
-        Toast.show({ type: 'success', text1: 'Success', text2: res.message });
+
+        Toast.show({type: 'success', text1: 'Success', text2: res.message});
         navigation.goBack();
       } catch (error) {
         console.log('Error during deposit:', error);
         if (error.response) {
-          Toast.show({ type: 'error', text1: error.response.data });
+          Toast.show({type: 'error', text1: error.response.data});
         } else if (error.request) {
           Toast.show({
             type: 'error',
             text1: 'Request was made, but no response was received',
           });
         } else {
-          Toast.show({ type: 'error', text1: error.message });
+          Toast.show({type: 'error', text1: error.message});
         }
       }
     }
   };
-
-
-  
 
   return (
     <SafeAreaView style={{flex: 1}}>
@@ -231,9 +236,9 @@ const BankDeposit = () => {
             style={{
               width: '100%',
               height:
-              Platform.OS === 'android'
-                ? heightPercentageToDP(85)
-                : heightPercentageToDP(80),
+                Platform.OS === 'android'
+                  ? heightPercentageToDP(85)
+                  : heightPercentageToDP(80),
             }}
             imageStyle={{
               borderTopLeftRadius: heightPercentageToDP(5),
@@ -242,9 +247,9 @@ const BankDeposit = () => {
             <View
               style={{
                 height:
-                Platform.OS === 'android'
-                  ? heightPercentageToDP(85)
-                  : heightPercentageToDP(80),
+                  Platform.OS === 'android'
+                    ? heightPercentageToDP(85)
+                    : heightPercentageToDP(80),
                 width: widthPercentageToDP(100),
                 borderTopLeftRadius: heightPercentageToDP(5),
                 borderTopRightRadius: heightPercentageToDP(5),
@@ -277,7 +282,8 @@ const BankDeposit = () => {
                 <View
                   style={{
                     height: heightPercentageToDP(70),
-                    padding: heightPercentageToDP(2),
+                    padding: heightPercentageToDP(1),
+                    marginBottom: heightPercentageToDP(5)
                   }}>
                   {/** BANK NAME */}
                   <View
@@ -433,6 +439,83 @@ const BankDeposit = () => {
                         }}
                         value={accountnumber}
                         onChangeText={text => setaccountnumber(text)}
+                      />
+                    </LinearGradient>
+                  </View>
+
+                  {/** SWIFT CODE */}
+                  <View
+                    style={{
+                      borderRadius: heightPercentageToDP(2),
+                      padding: heightPercentageToDP(1),
+                    }}>
+                    <Text
+                      style={{
+                        fontFamily: FONT.Montserrat_SemiBold,
+                        color: COLORS.black,
+                        fontSize: heightPercentageToDP(2),
+                        paddingStart: heightPercentageToDP(1),
+                      }}>
+                      Swift code
+                    </Text>
+
+                    <LinearGradient
+                      colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
+                      start={{x: 0, y: 0}} // start from left
+                      end={{x: 1, y: 0}} // end at right
+                      style={{
+                        borderRadius: heightPercentageToDP(2),
+                      }}>
+                      <TextInput
+                        underlineColor="transparent"
+                        activeUnderlineColor="transparent"
+                        cursorColor={COLORS.white}
+                        placeholderTextColor={COLORS.black}
+                        style={{
+                          backgroundColor: 'transparent',
+                          fontFamily: FONT.Montserrat_Bold,
+                          color: COLORS.black,
+                        }}
+                        value={swiftcode}
+                        onChangeText={text => setswiftcode(text)}
+                      />
+                    </LinearGradient>
+                  </View>
+                  {/** PAYMENT CODE */}
+                  <View
+                    style={{
+                      borderRadius: heightPercentageToDP(2),
+                      padding: heightPercentageToDP(1),
+                    }}>
+                    <Text
+                      style={{
+                        fontFamily: FONT.Montserrat_SemiBold,
+                        color: COLORS.black,
+                        fontSize: heightPercentageToDP(2),
+                        paddingStart: heightPercentageToDP(1),
+                      }}>
+                      Note
+                    </Text>
+
+                    <LinearGradient
+                      colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
+                      start={{x: 0, y: 0}} // start from left
+                      end={{x: 1, y: 0}} // end at right
+                      style={{
+                        borderRadius: heightPercentageToDP(2),
+                      }}>
+                      <TextInput
+                        underlineColor="transparent"
+                        activeUnderlineColor="transparent"
+                        cursorColor={COLORS.white}
+                        placeholderTextColor={COLORS.black}
+                        style={{
+                          backgroundColor: 'transparent',
+                          fontFamily: FONT.Montserrat_Bold,
+                          color: COLORS.black,
+                        }}
+                        value={paymentnote}
+                        onChangeText={text => setpaymentnote(text)}
                       />
                     </LinearGradient>
                   </View>

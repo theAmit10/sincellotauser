@@ -78,7 +78,7 @@ export const getDateDetails = (accesstoken,id) => async dispatch => {
       });
 
       // Reverse the order of the lotdates array
-    const reversedLotDates = data.lotdates.reverse();
+    const reversedLotDates = data.lotdates;
 
     dispatch({
       type: 'getAllDateSuccess',

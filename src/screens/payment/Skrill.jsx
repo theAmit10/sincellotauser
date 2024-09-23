@@ -18,7 +18,7 @@ import {
 } from 'react-native-responsive-screen';
 import Toast from 'react-native-toast-message';
 import {useIsFocused, useNavigation} from '@react-navigation/native';
-import { useSelector} from 'react-redux';
+import {useSelector} from 'react-redux';
 import LinearGradient from 'react-native-linear-gradient';
 import Background from '../../components/background/Background';
 import {COLORS, FONT} from '../../../assets/constants';
@@ -27,9 +27,7 @@ import Loading from '../../components/helpercComponent/Loading';
 import {TextInput} from 'react-native-paper';
 import axios from 'axios';
 import UrlHelper from '../../helper/UrlHelper';
-import {
-  useCreateSkrillAccountMutation,
-} from '../../helper/Networkcall';
+import {useCreateSkrillAccountMutation} from '../../helper/Networkcall';
 
 const upiapidata = [
   {name: 'Wasu', upiid: '9876543210@ybl', id: '1'},
@@ -45,6 +43,7 @@ const Skrill = () => {
   const {accesstoken, user} = useSelector(state => state.user);
 
   const [address, setaddress] = useState('');
+  const [paymentnote, setpaymentnote] = useState('');
 
   const [createSkrillAccount, {isLoading, error}] =
     useCreateSkrillAccountMutation();
@@ -53,10 +52,15 @@ const Skrill = () => {
     if (!address) {
       Toast.show({type: 'error', text1: 'Enter address'});
       return;
+    }
+    if (!paymentnote) {
+      Toast.show({type: 'error', text1: 'Enter payment note'});
+      return;
     } else {
       try {
         const body = {
           address,
+          paymentnote,
         };
 
         console.log('JSON BODY :: ', JSON.stringify(body));
@@ -127,9 +131,9 @@ const Skrill = () => {
             style={{
               width: '100%',
               height:
-              Platform.OS === 'android'
-                ? heightPercentageToDP(85)
-                : heightPercentageToDP(80),
+                Platform.OS === 'android'
+                  ? heightPercentageToDP(85)
+                  : heightPercentageToDP(80),
             }}
             imageStyle={{
               borderTopLeftRadius: heightPercentageToDP(5),
@@ -138,9 +142,9 @@ const Skrill = () => {
             <View
               style={{
                 height:
-                Platform.OS === 'android'
-                  ? heightPercentageToDP(85)
-                  : heightPercentageToDP(80),
+                  Platform.OS === 'android'
+                    ? heightPercentageToDP(85)
+                    : heightPercentageToDP(80),
                 width: widthPercentageToDP(100),
                 borderTopLeftRadius: heightPercentageToDP(5),
                 borderTopRightRadius: heightPercentageToDP(5),
@@ -212,6 +216,46 @@ const Skrill = () => {
                         fontFamily={FONT.Montserrat_Bold}
                         value={address}
                         onChangeText={text => setaddress(text)}
+                      />
+                    </LinearGradient>
+                  </View>
+
+                  <View
+                    style={{
+                      borderRadius: heightPercentageToDP(2),
+                      padding: heightPercentageToDP(1),
+                    }}>
+                    <Text
+                      style={{
+                        fontFamily: FONT.Montserrat_SemiBold,
+                        color: COLORS.black,
+                        fontSize: heightPercentageToDP(2),
+                        paddingStart: heightPercentageToDP(1),
+                      }}>
+                      Note
+                    </Text>
+
+                    <LinearGradient
+                      colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
+                      start={{x: 0, y: 0}} // start from left
+                      end={{x: 1, y: 0}} // end at right
+                      style={{
+                        borderRadius: heightPercentageToDP(2),
+                      }}>
+                      <TextInput
+                        underlineColor="transparent"
+                        activeUnderlineColor="transparent"
+                        cursorColor={COLORS.white}
+                        placeholderTextColor={COLORS.black}
+                        style={{
+                          backgroundColor: 'transparent',
+                          fontFamily: FONT.Montserrat_Bold,
+                          color: COLORS.black,
+                        }}
+                        textColor={COLORS.black}
+                        fontFamily={FONT.Montserrat_Bold}
+                        value={paymentnote}
+                        onChangeText={text => setpaymentnote(text)}
                       />
                     </LinearGradient>
                   </View>

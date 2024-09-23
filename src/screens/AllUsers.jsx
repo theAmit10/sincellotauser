@@ -2,6 +2,7 @@ import {
   FlatList,
   Image,
   ImageBackground,
+  KeyboardAvoidingView,
   Platform,
   SafeAreaView,
   StyleSheet,
@@ -55,6 +56,12 @@ const AllUsers = () => {
 
   return (
     <SafeAreaView style={{flex: 1}}>
+      <KeyboardAvoidingView
+        style={{flex: 1}}
+        behavior="height"
+        keyboardVerticalOffset={-60}>
+
+  
       <Background />
 
       <View style={{flex: 1, justifyContent: 'flex-end'}}>
@@ -248,6 +255,7 @@ const AllUsers = () => {
           </View>
         </ImageBackground>
       </View>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 };

@@ -19,7 +19,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Toast from 'react-native-toast-message';
 import {useIsFocused, useNavigation} from '@react-navigation/native';
-import { useSelector} from 'react-redux';
+import {useSelector} from 'react-redux';
 import LinearGradient from 'react-native-linear-gradient';
 import Background from '../../components/background/Background';
 import {COLORS, FONT} from '../../../assets/constants';
@@ -28,19 +28,13 @@ import Clipboard from '@react-native-clipboard/clipboard';
 import Loading from '../../components/helpercComponent/Loading';
 import axios from 'axios';
 import UrlHelper from '../../helper/UrlHelper';
-import {
-  useDeletePaypalAccountMutation,
-} from '../../helper/Networkcall';
-
-
+import {useDeletePaypalAccountMutation} from '../../helper/Networkcall';
 
 const AllPaypalDepositPayment = () => {
   const navigation = useNavigation();
 
   const isFocused = useIsFocused();
   const {accesstoken, user} = useSelector(state => state.user);
-
- 
 
   const copyToClipboard = val => {
     Clipboard.setString(val);
@@ -118,9 +112,9 @@ const AllPaypalDepositPayment = () => {
           style={{
             width: '100%',
             height:
-            Platform.OS === 'android'
-              ? heightPercentageToDP(85)
-              : heightPercentageToDP(80),
+              Platform.OS === 'android'
+                ? heightPercentageToDP(85)
+                : heightPercentageToDP(80),
           }}
           imageStyle={{
             borderTopLeftRadius: heightPercentageToDP(5),
@@ -129,9 +123,9 @@ const AllPaypalDepositPayment = () => {
           <View
             style={{
               height:
-                  Platform.OS === 'android'
-                    ? heightPercentageToDP(85)
-                    : heightPercentageToDP(80),
+                Platform.OS === 'android'
+                  ? heightPercentageToDP(85)
+                  : heightPercentageToDP(80),
               width: widthPercentageToDP(100),
               borderTopLeftRadius: heightPercentageToDP(5),
               borderTopRightRadius: heightPercentageToDP(5),
@@ -171,15 +165,13 @@ const AllPaypalDepositPayment = () => {
               <ScrollView showsVerticalScrollIndicator={false}>
                 {allDepositdata.length !== 0 &&
                   allDepositdata.map(item => (
-                    <TouchableOpacity
-                      key={item._id}
-                      >
+                    <TouchableOpacity key={item._id}>
                       <LinearGradient
                         colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
                         start={{x: 0, y: 0}} // start from left
                         end={{x: 1, y: 0}} // end at right
                         style={{
-                          height: heightPercentageToDP(20),
+                       
                           borderRadius: heightPercentageToDP(2),
                           marginHorizontal: heightPercentageToDP(2),
                           marginVertical: heightPercentageToDP(1),
@@ -315,6 +307,38 @@ const AllPaypalDepositPayment = () => {
                                 />
                               </LinearGradient>
                             </TouchableOpacity>
+                          </View>
+                        </View>
+                        <View
+                          style={{
+                            flexDirection: 'row',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            flex: 1,
+                            paddingBottom: heightPercentageToDP(2),
+                         
+                          }}>
+                          <View
+                            style={{
+                              flex: 1,
+                              display: 'flex',
+                              justifyContent: 'flex-start',
+                              alignItems: 'flex-start',
+                            }}>
+                            <Text style={{
+                              ...styles.copytitle,
+                              paddingLeft: heightPercentageToDP(2)
+                            }} numberOfLines={2} >
+                              {item.paymentnote ? 'Note' : ''}
+                            </Text>
+                          </View>
+                          <View
+                            style={{
+                              flex: 2,
+                            }}>
+                            <Text style={styles.copycontent}>
+                              {item.paymentnote} 
+                            </Text>
                           </View>
                         </View>
                       </LinearGradient>

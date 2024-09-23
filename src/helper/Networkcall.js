@@ -373,7 +373,7 @@ export const sincelotAdminApi = createApi({
         method: 'PUT',
         headers: {
           Authorization: `Bearer ${accesstoken}`,
-          'Content-Type': 'application/json',
+          'Content-Type': 'multipart/form-data',
         },
         body,
       }),

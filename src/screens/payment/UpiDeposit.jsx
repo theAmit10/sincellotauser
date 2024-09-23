@@ -54,6 +54,7 @@ const UpiDeposit = () => {
 
   const [upiholdername, setupiholdername] = useState('');
   const [upiid, setupiid] = useState('');
+  const [paymentnote, setpaymentnote] = useState('');
 
   const toggleUpiOptionView = () => {
     setUpiVisible(!upiVisible);
@@ -111,15 +112,20 @@ const UpiDeposit = () => {
       Toast.show({type: 'error', text1: 'Enter UPI ID'});
       return;
     }
+    if (!paymentnote) {
+      Toast.show({type: 'error', text1: 'Enter payment note'});
+      return;
+    }
     if (!imageSource) {
       Toast.show({type: 'error', text1: 'Add QR code'});
       return;
     } else {
-      console.log("Create UPI Running")
+      console.log('Create UPI Running');
       try {
         const formData = new FormData();
         formData.append('upiholdername', upiholdername);
         formData.append('upiid', upiid);
+        formData.append('paymentnote', paymentnote);
         formData.append('qrcode', {
           uri: mineImage[0].uri,
           name: mineImage[0].name,
@@ -376,6 +382,44 @@ const UpiDeposit = () => {
                       </View>
                     </LinearGradient>
                   </TouchableOpacity>
+
+                  <View
+                    style={{
+                      borderRadius: heightPercentageToDP(2),
+                      padding: heightPercentageToDP(1),
+                    }}>
+                    <Text
+                      style={{
+                        fontFamily: FONT.Montserrat_SemiBold,
+                        color: COLORS.black,
+                        fontSize: heightPercentageToDP(2),
+                        paddingStart: heightPercentageToDP(1),
+                      }}>
+                      Note
+                    </Text>
+
+                    <LinearGradient
+                      colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
+                      start={{x: 0, y: 0}} // start from left
+                      end={{x: 1, y: 0}} // end at right
+                      style={{
+                        borderRadius: heightPercentageToDP(2),
+                      }}>
+                      <TextInput
+                        underlineColor="transparent"
+                        activeUnderlineColor="transparent"
+                        cursorColor={COLORS.white}
+                        placeholderTextColor={COLORS.black}
+                        style={{
+                          backgroundColor: 'transparent',
+                          fontFamily: FONT.Montserrat_Bold,
+                          color: COLORS.black,
+                        }}
+                        value={paymentnote}
+                        onChangeText={text => setpaymentnote(text)}
+                      />
+                    </LinearGradient>
+                  </View>
                 </View>
               </ScrollView>
 
@@ -394,7 +438,6 @@ const UpiDeposit = () => {
                       padding: heightPercentageToDP(2),
                       borderRadius: heightPercentageToDP(1),
                       alignItems: 'center',
-                      
                     }}>
                     <Text
                       style={{

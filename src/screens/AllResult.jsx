@@ -197,7 +197,7 @@ const AllResult = () => {
                               fontSize: heightPercentageToDP(2),
                               color: COLORS.black,
                             }}>
-                            {item.lotlocation.lotlocation}
+                            {item?.lotlocation?.lotlocation}
                           </Text>
                         </LinearGradient>
                         <View
@@ -213,7 +213,7 @@ const AllResult = () => {
                               fontSize: heightPercentageToDP(5),
                               color: COLORS.darkGray,
                             }}>
-                            {item.resultNumber}
+                            {item?.resultNumber}
                           </Text>
                         </View>
                         <View
@@ -230,7 +230,7 @@ const AllResult = () => {
                               fontSize: heightPercentageToDP(2),
                               color: COLORS.black,
                             }}>
-                            {item.lotdate.lotdate}
+                            {item?.lotdate?.lotdate}
                           </Text>
                           <Text
                             style={{

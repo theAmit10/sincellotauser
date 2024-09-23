@@ -225,6 +225,7 @@ const PlayArenaAdmin = ({route}) => {
 
   const {accesstoken, user} = useSelector(state => state.user);
   const [expandedItems, setExpandedItems] = useState({});
+  const focused = useIsFocused();
 
   const {isLoading, data, isError, refetch, error, endpointName, originalArgs} =
     useGetSinglePlayQuery({
@@ -234,12 +235,31 @@ const PlayArenaAdmin = ({route}) => {
       lotdate: datedata._id,
     });
 
-  useFocusEffect(
-    useCallback(() => {
-      // Refetch the data when the screen is focused
-      refetch();
-    }, [refetch]),
-  );
+  // useEffect(() => {
+  //   refetch();
+  // }, [focused]);
+
+    // Refetch data every 6 seconds
+    useEffect(() => {
+      const intervalId = setInterval(() => {
+        console.log("Refetching data...");
+        refetch(); // Trigger a refetch every 6 seconds
+      }, 6000);
+  
+      // Cleanup the interval when the component unmounts
+      return () => clearInterval(intervalId);
+    }, [focused, refetch]);
+  
+    // Update filtered data after refetch
+    useEffect(() => {
+      if (!isLoading && data) {
+        console.log('Data refetched: ', data);
+        setFilteredData(data?.playzone?.playnumbers || []);
+      }
+    }, [isLoading, data]);
+  
+
+ 
 
   console.log('IS loaging :: ', isLoading);
 
@@ -253,12 +273,20 @@ const PlayArenaAdmin = ({route}) => {
   const [filteredData, setFilteredData] = useState([]);
   const [showSorting, setShowSorting] = useState(false);
 
-  useEffect(() => {
-    if (!isLoading) {
-      console.log('USE Effect running');
-      setFilteredData(data?.playzone?.playnumbers);
-    }
-  }, [isLoading]);
+  // useEffect(() => {
+  //   if (!isLoading) {
+  //     console.log('USE Effect running');
+  //     setFilteredData(data?.playzone?.playnumbers);
+  //   }
+  // }, [isLoading]);
+
+  // useEffect(() => {
+  //   if (!isLoading && data) {
+  //     console.log('USE Effect running');
+  //     setFilteredData(data?.playzone?.playnumbers || []);
+  //   }
+  // }, [isLoading, data]);
+
 
   const sortByAmount = (order = 'asc') => {
     const sortedData = [...filteredData].sort((a, b) => {
@@ -296,9 +324,9 @@ const PlayArenaAdmin = ({route}) => {
           style={{
             width: '100%',
             height:
-            Platform.OS === 'android'
-              ? heightPercentageToDP(85)
-              : heightPercentageToDP(80),
+              Platform.OS === 'android'
+                ? heightPercentageToDP(85)
+                : heightPercentageToDP(80),
           }}
           imageStyle={{
             borderTopLeftRadius: heightPercentageToDP(5),
@@ -307,9 +335,9 @@ const PlayArenaAdmin = ({route}) => {
           <View
             style={{
               height:
-              Platform.OS === 'android'
-                ? heightPercentageToDP(85)
-                : heightPercentageToDP(80),
+                Platform.OS === 'android'
+                  ? heightPercentageToDP(85)
+                  : heightPercentageToDP(80),
               width: widthPercentageToDP(100),
 
               borderTopLeftRadius: heightPercentageToDP(5),
@@ -742,7 +770,9 @@ const PlayArenaAdmin = ({route}) => {
                                       fontSize: heightPercentageToDP(1.8),
                                       color: COLORS.black,
                                     }}>
-                                    {useritem?.convertedAmount ? useritem?.convertedAmount : useritem?.amount}
+                                    {useritem?.convertedAmount
+                                      ? useritem?.convertedAmount
+                                      : useritem?.amount}
                                   </Text>
                                 </View>
                               </View>
