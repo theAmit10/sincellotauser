@@ -28,9 +28,12 @@ import Fontisto from 'react-native-vector-icons/Fontisto';
 import LinearGradient from 'react-native-linear-gradient';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import GradientTextWhite from '../components/helpercComponent/GradientTextWhite';
+import {useSelector} from 'react-redux';
 
 const Setting = () => {
   const navigation = useNavigation();
+
+  const {accesstoken, user} = useSelector(state => state.user);
 
   // Function to clear AsyncStorage data when the user logs out
   const clearAsyncStorage = async () => {
@@ -62,14 +65,6 @@ const Setting = () => {
     setTimeout(() => {
       clearAsyncStorage();
     }, 1000);
-  };
-
-  const submitHandler = () => {
-    console.log('Working on login ');
-    Toast.show({
-      type: 'success',
-      text1: 'Processing',
-    });
   };
 
   return (
@@ -131,450 +126,872 @@ const Setting = () => {
               </GradientTextWhite>
 
               <ScrollView showsVerticalScrollIndicator={false}>
-                
                 {/** All Deposit */}
-                <TouchableOpacity
-                  onPress={() => navigation.navigate('AllDeposit')}
-                  style={{
-                    height: heightPercentageToDP(7),
-                    flexDirection: 'row',
-                    backgroundColor: COLORS.white_s,
-                    alignItems: 'center',
-                    paddingHorizontal: heightPercentageToDP(2),
-                    marginTop: heightPercentageToDP(2),
-                    borderRadius: heightPercentageToDP(1),
-                  }}>
-                  <LinearGradient
-                    colors={[COLORS.grayBg, COLORS.white_s]}
-                    className="rounded-xl p-1">
-                    <Image
-                      source={require('../../assets/image/deposit.png')}
-                      resizeMode="cover"
-                      style={{
-                        height: heightPercentageToDP(3),
-                        width: heightPercentageToDP(3),
-                      }}
-                    />
-                  </LinearGradient>
-                  <Text
+                {user && user.role === 'admin' ? (
+                  <TouchableOpacity
+                    onPress={() => navigation.navigate('AllDeposit')}
                     style={{
-                      marginStart: heightPercentageToDP(1),
-                      flex: 1,
-                      fontFamily: FONT.Montserrat_Regular,
-                      fontSize: heightPercentageToDP(2),
-                      color: COLORS.black,
+                      height: heightPercentageToDP(7),
+                      flexDirection: 'row',
+                      backgroundColor: COLORS.white_s,
+                      alignItems: 'center',
+                      paddingHorizontal: heightPercentageToDP(2),
+                      marginTop: heightPercentageToDP(2),
+                      borderRadius: heightPercentageToDP(1),
                     }}>
-                    All Deposit
-                  </Text>
-
-                  <Ionicons
-                    name={'chevron-forward-outline'}
-                    size={heightPercentageToDP(3)}
-                    color={COLORS.darkGray}
-                  />
-                </TouchableOpacity>
-
-                {/** All Withdraw */}
-
-                <TouchableOpacity
-                  onPress={() => navigation.navigate('AllWithdraw')}
-                  style={{
-                    height: heightPercentageToDP(7),
-                    flexDirection: 'row',
-                    backgroundColor: COLORS.white_s,
-                    alignItems: 'center',
-                    paddingHorizontal: heightPercentageToDP(2),
-                    marginTop: heightPercentageToDP(2),
-                    borderRadius: heightPercentageToDP(1),
-                  }}>
-                  <LinearGradient
-                    colors={[COLORS.grayBg, COLORS.white_s]}
-                    className="rounded-xl p-1">
-                    <Image
-                      source={require('../../assets/image/withdraw.png')}
-                      resizeMode="cover"
+                    <LinearGradient
+                      colors={[COLORS.grayBg, COLORS.white_s]}
+                      className="rounded-xl p-1">
+                      <Image
+                        source={require('../../assets/image/deposit.png')}
+                        resizeMode="cover"
+                        style={{
+                          height: heightPercentageToDP(3),
+                          width: heightPercentageToDP(3),
+                        }}
+                      />
+                    </LinearGradient>
+                    <Text
                       style={{
-                        height: heightPercentageToDP(3),
-                        width: heightPercentageToDP(3),
-                      }}
-                    />
-                  </LinearGradient>
-                  <Text
-                    style={{
-                      marginStart: heightPercentageToDP(1),
-                      flex: 1,
-                      fontFamily: FONT.Montserrat_Regular,
-                      fontSize: heightPercentageToDP(2),
-                      color: COLORS.black,
-                    }}>
-                    All Withdraw
-                  </Text>
+                        marginStart: heightPercentageToDP(1),
+                        flex: 1,
+                        fontFamily: FONT.Montserrat_Regular,
+                        fontSize: heightPercentageToDP(2),
+                        color: COLORS.black,
+                      }}>
+                      All Deposit
+                    </Text>
 
-                  <Ionicons
-                    name={'chevron-forward-outline'}
-                    size={heightPercentageToDP(3)}
-                    color={COLORS.darkGray}
-                  />
-                </TouchableOpacity>
-
-                {/** Wallet container */}
-                <TouchableOpacity
-                  onPress={() => navigation.navigate('AllWallet')}
-                  style={{
-                    height: heightPercentageToDP(7),
-                    flexDirection: 'row',
-                    backgroundColor: COLORS.white_s,
-                    alignItems: 'center',
-                    paddingHorizontal: heightPercentageToDP(2),
-                    marginTop: heightPercentageToDP(2),
-                    borderRadius: heightPercentageToDP(1),
-                  }}>
-                  <LinearGradient
-                    colors={[COLORS.lightWhite, COLORS.white_s]}
-                    className="rounded-xl p-1">
                     <Ionicons
-                      name={'wallet'}
+                      name={'chevron-forward-outline'}
                       size={heightPercentageToDP(3)}
                       color={COLORS.darkGray}
                     />
-                  </LinearGradient>
-                  <Text
+                  </TouchableOpacity>
+                ) : user &&
+                  user.role === 'subadmin' &&
+                  user.subadminfeature.deposits ? (
+                  <TouchableOpacity
+                    onPress={() => navigation.navigate('AllDeposit')}
                     style={{
-                      marginStart: heightPercentageToDP(1),
-                      flex: 1,
-                      fontFamily: FONT.Montserrat_Regular,
-                      fontSize: heightPercentageToDP(2),
-                      color: COLORS.black,
+                      height: heightPercentageToDP(7),
+                      flexDirection: 'row',
+                      backgroundColor: COLORS.white_s,
+                      alignItems: 'center',
+                      paddingHorizontal: heightPercentageToDP(2),
+                      marginTop: heightPercentageToDP(2),
+                      borderRadius: heightPercentageToDP(1),
                     }}>
-                    Wallet Modification
-                  </Text>
+                    <LinearGradient
+                      colors={[COLORS.grayBg, COLORS.white_s]}
+                      className="rounded-xl p-1">
+                      <Image
+                        source={require('../../assets/image/deposit.png')}
+                        resizeMode="cover"
+                        style={{
+                          height: heightPercentageToDP(3),
+                          width: heightPercentageToDP(3),
+                        }}
+                      />
+                    </LinearGradient>
+                    <Text
+                      style={{
+                        marginStart: heightPercentageToDP(1),
+                        flex: 1,
+                        fontFamily: FONT.Montserrat_Regular,
+                        fontSize: heightPercentageToDP(2),
+                        color: COLORS.black,
+                      }}>
+                      All Deposit
+                    </Text>
 
-                  <Ionicons
-                    name={'chevron-forward-outline'}
-                    size={heightPercentageToDP(3)}
-                    color={COLORS.darkGray}
-                  />
-                </TouchableOpacity>
-
-                {/** Add  Game Setting */}
-                <TouchableOpacity
-                  onPress={() => navigation.navigate('GameDescription')}
-                  style={{
-                    height: heightPercentageToDP(7),
-                    flexDirection: 'row',
-                    backgroundColor: COLORS.white_s,
-                    alignItems: 'center',
-                    paddingHorizontal: heightPercentageToDP(2),
-                    marginTop: heightPercentageToDP(2),
-                    borderRadius: heightPercentageToDP(1),
-                  }}>
-                  <LinearGradient
-                    colors={[COLORS.lightWhite, COLORS.white_s]}
-                    className="rounded-xl p-1">
-                    <MaterialCommunityIcons
-                      name={'gamepad-variant-outline'}
+                    <Ionicons
+                      name={'chevron-forward-outline'}
                       size={heightPercentageToDP(3)}
                       color={COLORS.darkGray}
                     />
-                  </LinearGradient>
-                  <Text
+                  </TouchableOpacity>
+                ) : null}
+                {/** All Withdraw */}
+                {user && user.role === 'admin' ? (
+                  <TouchableOpacity
+                    onPress={() => navigation.navigate('AllWithdraw')}
                     style={{
-                      marginStart: heightPercentageToDP(1),
-                      flex: 1,
-                      fontFamily: FONT.Montserrat_Regular,
-                      fontSize: heightPercentageToDP(2),
-                      color: COLORS.black,
+                      height: heightPercentageToDP(7),
+                      flexDirection: 'row',
+                      backgroundColor: COLORS.white_s,
+                      alignItems: 'center',
+                      paddingHorizontal: heightPercentageToDP(2),
+                      marginTop: heightPercentageToDP(2),
+                      borderRadius: heightPercentageToDP(1),
                     }}>
-                    Game Description
-                  </Text>
+                    <LinearGradient
+                      colors={[COLORS.grayBg, COLORS.white_s]}
+                      className="rounded-xl p-1">
+                      <Image
+                        source={require('../../assets/image/withdraw.png')}
+                        resizeMode="cover"
+                        style={{
+                          height: heightPercentageToDP(3),
+                          width: heightPercentageToDP(3),
+                        }}
+                      />
+                    </LinearGradient>
+                    <Text
+                      style={{
+                        marginStart: heightPercentageToDP(1),
+                        flex: 1,
+                        fontFamily: FONT.Montserrat_Regular,
+                        fontSize: heightPercentageToDP(2),
+                        color: COLORS.black,
+                      }}>
+                      All Withdraw
+                    </Text>
 
-                  <Ionicons
-                    name={'chevron-forward-outline'}
-                    size={heightPercentageToDP(3)}
-                    color={COLORS.darkGray}
-                  />
-                </TouchableOpacity>
+                    <Ionicons
+                      name={'chevron-forward-outline'}
+                      size={heightPercentageToDP(3)}
+                      color={COLORS.darkGray}
+                    />
+                  </TouchableOpacity>
+                ) : user &&
+                  user.role === 'subadmin' &&
+                  user.subadminfeature.withdraws ? (
+                  <TouchableOpacity
+                    onPress={() => navigation.navigate('AllWithdraw')}
+                    style={{
+                      height: heightPercentageToDP(7),
+                      flexDirection: 'row',
+                      backgroundColor: COLORS.white_s,
+                      alignItems: 'center',
+                      paddingHorizontal: heightPercentageToDP(2),
+                      marginTop: heightPercentageToDP(2),
+                      borderRadius: heightPercentageToDP(1),
+                    }}>
+                    <LinearGradient
+                      colors={[COLORS.grayBg, COLORS.white_s]}
+                      className="rounded-xl p-1">
+                      <Image
+                        source={require('../../assets/image/withdraw.png')}
+                        resizeMode="cover"
+                        style={{
+                          height: heightPercentageToDP(3),
+                          width: heightPercentageToDP(3),
+                        }}
+                      />
+                    </LinearGradient>
+                    <Text
+                      style={{
+                        marginStart: heightPercentageToDP(1),
+                        flex: 1,
+                        fontFamily: FONT.Montserrat_Regular,
+                        fontSize: heightPercentageToDP(2),
+                        color: COLORS.black,
+                      }}>
+                      All Withdraw
+                    </Text>
 
+                    <Ionicons
+                      name={'chevron-forward-outline'}
+                      size={heightPercentageToDP(3)}
+                      color={COLORS.darkGray}
+                    />
+                  </TouchableOpacity>
+                ) : null}
+                {/** Wallet container */}
+                {user && user.role === 'admin' ? (
+                  <TouchableOpacity
+                    onPress={() => navigation.navigate('AllWallet')}
+                    style={{
+                      height: heightPercentageToDP(7),
+                      flexDirection: 'row',
+                      backgroundColor: COLORS.white_s,
+                      alignItems: 'center',
+                      paddingHorizontal: heightPercentageToDP(2),
+                      marginTop: heightPercentageToDP(2),
+                      borderRadius: heightPercentageToDP(1),
+                    }}>
+                    <LinearGradient
+                      colors={[COLORS.lightWhite, COLORS.white_s]}
+                      className="rounded-xl p-1">
+                      <Ionicons
+                        name={'wallet'}
+                        size={heightPercentageToDP(3)}
+                        color={COLORS.darkGray}
+                      />
+                    </LinearGradient>
+                    <Text
+                      style={{
+                        marginStart: heightPercentageToDP(1),
+                        flex: 1,
+                        fontFamily: FONT.Montserrat_Regular,
+                        fontSize: heightPercentageToDP(2),
+                        color: COLORS.black,
+                      }}>
+                      Wallet Modification
+                    </Text>
+
+                    <Ionicons
+                      name={'chevron-forward-outline'}
+                      size={heightPercentageToDP(3)}
+                      color={COLORS.darkGray}
+                    />
+                  </TouchableOpacity>
+                ) : user &&
+                  user.role === 'subadmin' &&
+                  user.subadminfeature.wallet ? (
+                  <TouchableOpacity
+                    onPress={() => navigation.navigate('AllWallet')}
+                    style={{
+                      height: heightPercentageToDP(7),
+                      flexDirection: 'row',
+                      backgroundColor: COLORS.white_s,
+                      alignItems: 'center',
+                      paddingHorizontal: heightPercentageToDP(2),
+                      marginTop: heightPercentageToDP(2),
+                      borderRadius: heightPercentageToDP(1),
+                    }}>
+                    <LinearGradient
+                      colors={[COLORS.lightWhite, COLORS.white_s]}
+                      className="rounded-xl p-1">
+                      <Ionicons
+                        name={'wallet'}
+                        size={heightPercentageToDP(3)}
+                        color={COLORS.darkGray}
+                      />
+                    </LinearGradient>
+                    <Text
+                      style={{
+                        marginStart: heightPercentageToDP(1),
+                        flex: 1,
+                        fontFamily: FONT.Montserrat_Regular,
+                        fontSize: heightPercentageToDP(2),
+                        color: COLORS.black,
+                      }}>
+                      Wallet Modification
+                    </Text>
+
+                    <Ionicons
+                      name={'chevron-forward-outline'}
+                      size={heightPercentageToDP(3)}
+                      color={COLORS.darkGray}
+                    />
+                  </TouchableOpacity>
+                ) : null}
+                {/** Add  Game DESCTIPTION */}
+                {user && user.role === 'admin' ? (
+                  <TouchableOpacity
+                    onPress={() => navigation.navigate('GameDescription')}
+                    style={{
+                      height: heightPercentageToDP(7),
+                      flexDirection: 'row',
+                      backgroundColor: COLORS.white_s,
+                      alignItems: 'center',
+                      paddingHorizontal: heightPercentageToDP(2),
+                      marginTop: heightPercentageToDP(2),
+                      borderRadius: heightPercentageToDP(1),
+                    }}>
+                    <LinearGradient
+                      colors={[COLORS.lightWhite, COLORS.white_s]}
+                      className="rounded-xl p-1">
+                      <MaterialCommunityIcons
+                        name={'gamepad-variant-outline'}
+                        size={heightPercentageToDP(3)}
+                        color={COLORS.darkGray}
+                      />
+                    </LinearGradient>
+                    <Text
+                      style={{
+                        marginStart: heightPercentageToDP(1),
+                        flex: 1,
+                        fontFamily: FONT.Montserrat_Regular,
+                        fontSize: heightPercentageToDP(2),
+                        color: COLORS.black,
+                      }}>
+                      Game Description
+                    </Text>
+
+                    <Ionicons
+                      name={'chevron-forward-outline'}
+                      size={heightPercentageToDP(3)}
+                      color={COLORS.darkGray}
+                    />
+                  </TouchableOpacity>
+                ) : user &&
+                  user.role === 'subadmin' &&
+                  user.subadminfeature.gamedescription ? (
+                  <TouchableOpacity
+                    onPress={() => navigation.navigate('GameDescription')}
+                    style={{
+                      height: heightPercentageToDP(7),
+                      flexDirection: 'row',
+                      backgroundColor: COLORS.white_s,
+                      alignItems: 'center',
+                      paddingHorizontal: heightPercentageToDP(2),
+                      marginTop: heightPercentageToDP(2),
+                      borderRadius: heightPercentageToDP(1),
+                    }}>
+                    <LinearGradient
+                      colors={[COLORS.lightWhite, COLORS.white_s]}
+                      className="rounded-xl p-1">
+                      <MaterialCommunityIcons
+                        name={'gamepad-variant-outline'}
+                        size={heightPercentageToDP(3)}
+                        color={COLORS.darkGray}
+                      />
+                    </LinearGradient>
+                    <Text
+                      style={{
+                        marginStart: heightPercentageToDP(1),
+                        flex: 1,
+                        fontFamily: FONT.Montserrat_Regular,
+                        fontSize: heightPercentageToDP(2),
+                        color: COLORS.black,
+                      }}>
+                      Game Description
+                    </Text>
+
+                    <Ionicons
+                      name={'chevron-forward-outline'}
+                      size={heightPercentageToDP(3)}
+                      color={COLORS.darkGray}
+                    />
+                  </TouchableOpacity>
+                ) : null}
                 {/** About us container */}
-                <TouchableOpacity
-                  onPress={() => navigation.navigate('AboutUs')}
-                  style={{
-                    height: heightPercentageToDP(7),
-                    flexDirection: 'row',
-                    backgroundColor: COLORS.white_s,
-                    alignItems: 'center',
-                    paddingHorizontal: heightPercentageToDP(2),
-                    marginTop: heightPercentageToDP(2),
-                    borderRadius: heightPercentageToDP(1),
-                  }}>
-                  <LinearGradient
-                    colors={[COLORS.lightWhite, COLORS.white_s]}
-                    className="rounded-xl p-1">
-                    <AntDesign
-                      name={'infocirlceo'}
+                {user && user.role === 'admin' ? (
+                  <TouchableOpacity
+                    onPress={() => navigation.navigate('AboutUs')}
+                    style={{
+                      height: heightPercentageToDP(7),
+                      flexDirection: 'row',
+                      backgroundColor: COLORS.white_s,
+                      alignItems: 'center',
+                      paddingHorizontal: heightPercentageToDP(2),
+                      marginTop: heightPercentageToDP(2),
+                      borderRadius: heightPercentageToDP(1),
+                    }}>
+                    <LinearGradient
+                      colors={[COLORS.lightWhite, COLORS.white_s]}
+                      className="rounded-xl p-1">
+                      <AntDesign
+                        name={'infocirlceo'}
+                        size={heightPercentageToDP(3)}
+                        color={COLORS.darkGray}
+                      />
+                    </LinearGradient>
+                    <Text
+                      style={{
+                        marginStart: heightPercentageToDP(1),
+                        flex: 1,
+                        fontFamily: FONT.Montserrat_Regular,
+                        fontSize: heightPercentageToDP(2),
+                        color: COLORS.black,
+                      }}>
+                      About Us
+                    </Text>
+
+                    <Ionicons
+                      name={'chevron-forward-outline'}
                       size={heightPercentageToDP(3)}
                       color={COLORS.darkGray}
                     />
-                  </LinearGradient>
-                  <Text
+                  </TouchableOpacity>
+                ) : user &&
+                  user.role === 'subadmin' &&
+                  user.subadminfeature.aboutus ? (
+                  <TouchableOpacity
+                    onPress={() => navigation.navigate('AboutUs')}
                     style={{
-                      marginStart: heightPercentageToDP(1),
-                      flex: 1,
-                      fontFamily: FONT.Montserrat_Regular,
-                      fontSize: heightPercentageToDP(2),
-                      color: COLORS.black,
+                      height: heightPercentageToDP(7),
+                      flexDirection: 'row',
+                      backgroundColor: COLORS.white_s,
+                      alignItems: 'center',
+                      paddingHorizontal: heightPercentageToDP(2),
+                      marginTop: heightPercentageToDP(2),
+                      borderRadius: heightPercentageToDP(1),
                     }}>
-                    About Us
-                  </Text>
+                    <LinearGradient
+                      colors={[COLORS.lightWhite, COLORS.white_s]}
+                      className="rounded-xl p-1">
+                      <AntDesign
+                        name={'infocirlceo'}
+                        size={heightPercentageToDP(3)}
+                        color={COLORS.darkGray}
+                      />
+                    </LinearGradient>
+                    <Text
+                      style={{
+                        marginStart: heightPercentageToDP(1),
+                        flex: 1,
+                        fontFamily: FONT.Montserrat_Regular,
+                        fontSize: heightPercentageToDP(2),
+                        color: COLORS.black,
+                      }}>
+                      About Us
+                    </Text>
 
-                  <Ionicons
-                    name={'chevron-forward-outline'}
-                    size={heightPercentageToDP(3)}
-                    color={COLORS.darkGray}
-                  />
-                </TouchableOpacity>
-
+                    <Ionicons
+                      name={'chevron-forward-outline'}
+                      size={heightPercentageToDP(3)}
+                      color={COLORS.darkGray}
+                    />
+                  </TouchableOpacity>
+                ) : null}
                 {/** Create location */}
-                <TouchableOpacity
-                  onPress={() => navigation.navigate('CreateLocation')}
-                  style={{
-                    height: heightPercentageToDP(7),
-                    flexDirection: 'row',
-                    backgroundColor: COLORS.white_s,
-                    alignItems: 'center',
-                    paddingHorizontal: heightPercentageToDP(2),
-                    borderRadius: heightPercentageToDP(1),
-                    marginTop: heightPercentageToDP(2),
-                  }}>
-                  <LinearGradient
-                    colors={[COLORS.lightWhite, COLORS.white_s]}
-                    className="rounded-xl p-1">
-                    <Entypo
-                      name={'location'}
+                {user && user.role === 'admin' ? (
+                  <TouchableOpacity
+                    onPress={() => navigation.navigate('CreateLocation')}
+                    style={{
+                      height: heightPercentageToDP(7),
+                      flexDirection: 'row',
+                      backgroundColor: COLORS.white_s,
+                      alignItems: 'center',
+                      paddingHorizontal: heightPercentageToDP(2),
+                      borderRadius: heightPercentageToDP(1),
+                      marginTop: heightPercentageToDP(2),
+                    }}>
+                    <LinearGradient
+                      colors={[COLORS.lightWhite, COLORS.white_s]}
+                      className="rounded-xl p-1">
+                      <Entypo
+                        name={'location'}
+                        size={heightPercentageToDP(3)}
+                        color={COLORS.darkGray}
+                      />
+                    </LinearGradient>
+                    <Text
+                      style={{
+                        marginStart: heightPercentageToDP(1),
+                        flex: 1,
+                        fontFamily: FONT.Montserrat_Regular,
+                        fontSize: heightPercentageToDP(2),
+                        color: COLORS.black,
+                      }}>
+                      Create Location
+                    </Text>
+
+                    <Ionicons
+                      name={'chevron-forward-outline'}
                       size={heightPercentageToDP(3)}
                       color={COLORS.darkGray}
                     />
-                  </LinearGradient>
-                  <Text
-                    style={{
-                      marginStart: heightPercentageToDP(1),
-                      flex: 1,
-                      fontFamily: FONT.Montserrat_Regular,
-                      fontSize: heightPercentageToDP(2),
-                      color: COLORS.black,
-                    }}>
-                    Create Location
-                  </Text>
-
-                  <Ionicons
-                    name={'chevron-forward-outline'}
-                    size={heightPercentageToDP(3)}
-                    color={COLORS.darkGray}
-                  />
-                </TouchableOpacity>
+                  </TouchableOpacity>
+                ) : null}
 
                 {/** Add Promotion */}
-                <TouchableOpacity
-                  onPress={() => navigation.navigate('AllPromotion')}
-                  style={{
-                    height: heightPercentageToDP(7),
-                    flexDirection: 'row',
-                    backgroundColor: COLORS.white_s,
-                    alignItems: 'center',
-                    paddingHorizontal: heightPercentageToDP(2),
-                    borderRadius: heightPercentageToDP(1),
-                    marginTop: heightPercentageToDP(2),
-                  }}>
-                  <LinearGradient
-                    colors={[COLORS.lightWhite, COLORS.white_s]}
-                    className="rounded-xl p-1">
-                    <Fontisto
-                      name={'date'}
+                {user && user.role === 'admin' ? (
+                  <TouchableOpacity
+                    onPress={() => navigation.navigate('AllPromotion')}
+                    style={{
+                      height: heightPercentageToDP(7),
+                      flexDirection: 'row',
+                      backgroundColor: COLORS.white_s,
+                      alignItems: 'center',
+                      paddingHorizontal: heightPercentageToDP(2),
+                      borderRadius: heightPercentageToDP(1),
+                      marginTop: heightPercentageToDP(2),
+                    }}>
+                    <LinearGradient
+                      colors={[COLORS.lightWhite, COLORS.white_s]}
+                      className="rounded-xl p-1">
+                      <Fontisto
+                        name={'date'}
+                        size={heightPercentageToDP(3)}
+                        color={COLORS.darkGray}
+                      />
+                    </LinearGradient>
+                    <Text
+                      style={{
+                        marginStart: heightPercentageToDP(1),
+                        flex: 1,
+                        fontFamily: FONT.Montserrat_Regular,
+                        fontSize: heightPercentageToDP(2),
+                        color: COLORS.black,
+                      }}>
+                      Add Promotion
+                    </Text>
+
+                    <Ionicons
+                      name={'chevron-forward-outline'}
                       size={heightPercentageToDP(3)}
                       color={COLORS.darkGray}
                     />
-                  </LinearGradient>
-                  <Text
+                  </TouchableOpacity>
+                ) : user &&
+                  user.role === 'subadmin' &&
+                  user.subadminfeature.promotions ? (
+                  <TouchableOpacity
+                    onPress={() => navigation.navigate('AllPromotion')}
                     style={{
-                      marginStart: heightPercentageToDP(1),
-                      flex: 1,
-                      fontFamily: FONT.Montserrat_Regular,
-                      fontSize: heightPercentageToDP(2),
-                      color: COLORS.black,
+                      height: heightPercentageToDP(7),
+                      flexDirection: 'row',
+                      backgroundColor: COLORS.white_s,
+                      alignItems: 'center',
+                      paddingHorizontal: heightPercentageToDP(2),
+                      borderRadius: heightPercentageToDP(1),
+                      marginTop: heightPercentageToDP(2),
                     }}>
-                    Add Promotion
-                  </Text>
+                    <LinearGradient
+                      colors={[COLORS.lightWhite, COLORS.white_s]}
+                      className="rounded-xl p-1">
+                      <Fontisto
+                        name={'date'}
+                        size={heightPercentageToDP(3)}
+                        color={COLORS.darkGray}
+                      />
+                    </LinearGradient>
+                    <Text
+                      style={{
+                        marginStart: heightPercentageToDP(1),
+                        flex: 1,
+                        fontFamily: FONT.Montserrat_Regular,
+                        fontSize: heightPercentageToDP(2),
+                        color: COLORS.black,
+                      }}>
+                      Add Promotion
+                    </Text>
 
-                  <Ionicons
-                    name={'chevron-forward-outline'}
-                    size={heightPercentageToDP(3)}
-                    color={COLORS.darkGray}
-                  />
-                </TouchableOpacity>
+                    <Ionicons
+                      name={'chevron-forward-outline'}
+                      size={heightPercentageToDP(3)}
+                      color={COLORS.darkGray}
+                    />
+                  </TouchableOpacity>
+                ) : null}
 
                 {/** Add Notification */}
-                <TouchableOpacity
-                  onPress={() => navigation.navigate('SendNotification')}
-                  style={{
-                    height: heightPercentageToDP(7),
-                    flexDirection: 'row',
-                    backgroundColor: COLORS.white_s,
-                    alignItems: 'center',
-                    paddingHorizontal: heightPercentageToDP(2),
-                    borderRadius: heightPercentageToDP(1),
-                    marginTop: heightPercentageToDP(2),
-                  }}>
-                  <LinearGradient
-                    colors={[COLORS.lightWhite, COLORS.white_s]}
-                    className="rounded-xl p-1">
+                {user && user.role === 'admin' ? (
+                  <TouchableOpacity
+                    onPress={() => navigation.navigate('SendNotification')}
+                    style={{
+                      height: heightPercentageToDP(7),
+                      flexDirection: 'row',
+                      backgroundColor: COLORS.white_s,
+                      alignItems: 'center',
+                      paddingHorizontal: heightPercentageToDP(2),
+                      borderRadius: heightPercentageToDP(1),
+                      marginTop: heightPercentageToDP(2),
+                    }}>
+                    <LinearGradient
+                      colors={[COLORS.lightWhite, COLORS.white_s]}
+                      className="rounded-xl p-1">
+                      <Ionicons
+                        name={'notifications'}
+                        size={heightPercentageToDP(3)}
+                        color={COLORS.darkGray}
+                      />
+                    </LinearGradient>
+                    <Text
+                      style={{
+                        marginStart: heightPercentageToDP(1),
+                        flex: 1,
+                        fontFamily: FONT.Montserrat_Regular,
+                        fontSize: heightPercentageToDP(2),
+                        color: COLORS.black,
+                      }}>
+                      Push Notifiction
+                    </Text>
+
                     <Ionicons
-                      name={'notifications'}
+                      name={'chevron-forward-outline'}
                       size={heightPercentageToDP(3)}
                       color={COLORS.darkGray}
                     />
-                  </LinearGradient>
-                  <Text
+                  </TouchableOpacity>
+                ) : user &&
+                  user.role === 'subadmin' &&
+                  user.subadminfeature.pushnotification ? (
+                  <TouchableOpacity
+                    onPress={() => navigation.navigate('SendNotification')}
                     style={{
-                      marginStart: heightPercentageToDP(1),
-                      flex: 1,
-                      fontFamily: FONT.Montserrat_Regular,
-                      fontSize: heightPercentageToDP(2),
-                      color: COLORS.black,
+                      height: heightPercentageToDP(7),
+                      flexDirection: 'row',
+                      backgroundColor: COLORS.white_s,
+                      alignItems: 'center',
+                      paddingHorizontal: heightPercentageToDP(2),
+                      borderRadius: heightPercentageToDP(1),
+                      marginTop: heightPercentageToDP(2),
                     }}>
-                    Push Notifiction
-                  </Text>
+                    <LinearGradient
+                      colors={[COLORS.lightWhite, COLORS.white_s]}
+                      className="rounded-xl p-1">
+                      <Ionicons
+                        name={'notifications'}
+                        size={heightPercentageToDP(3)}
+                        color={COLORS.darkGray}
+                      />
+                    </LinearGradient>
+                    <Text
+                      style={{
+                        marginStart: heightPercentageToDP(1),
+                        flex: 1,
+                        fontFamily: FONT.Montserrat_Regular,
+                        fontSize: heightPercentageToDP(2),
+                        color: COLORS.black,
+                      }}>
+                      Push Notifiction
+                    </Text>
 
-                  <Ionicons
-                    name={'chevron-forward-outline'}
-                    size={heightPercentageToDP(3)}
-                    color={COLORS.darkGray}
-                  />
-                </TouchableOpacity>
+                    <Ionicons
+                      name={'chevron-forward-outline'}
+                      size={heightPercentageToDP(3)}
+                      color={COLORS.darkGray}
+                    />
+                  </TouchableOpacity>
+                ) : null}
 
                 {/** Create Result */}
-                <TouchableOpacity
-                  onPress={() => navigation.navigate('Search')}
-                  style={{
-                    height: heightPercentageToDP(7),
-                    flexDirection: 'row',
-                    backgroundColor: COLORS.white_s,
-                    alignItems: 'center',
-                    paddingHorizontal: heightPercentageToDP(2),
-                    borderRadius: heightPercentageToDP(1),
-                    marginTop: heightPercentageToDP(2),
-                  }}>
-                  <LinearGradient
-                    colors={[COLORS.lightWhite, COLORS.white_s]}
-                    className="rounded-xl p-1">
-                    <Entypo
-                      name={'trophy'}
+                {user && user.role === 'admin' ? (
+                  <TouchableOpacity
+                    onPress={() => navigation.navigate('Search')}
+                    style={{
+                      height: heightPercentageToDP(7),
+                      flexDirection: 'row',
+                      backgroundColor: COLORS.white_s,
+                      alignItems: 'center',
+                      paddingHorizontal: heightPercentageToDP(2),
+                      borderRadius: heightPercentageToDP(1),
+                      marginTop: heightPercentageToDP(2),
+                    }}>
+                    <LinearGradient
+                      colors={[COLORS.lightWhite, COLORS.white_s]}
+                      className="rounded-xl p-1">
+                      <Entypo
+                        name={'trophy'}
+                        size={heightPercentageToDP(3)}
+                        color={COLORS.darkGray}
+                      />
+                    </LinearGradient>
+                    <Text
+                      style={{
+                        marginStart: heightPercentageToDP(1),
+                        flex: 1,
+                        fontFamily: FONT.Montserrat_Regular,
+                        fontSize: heightPercentageToDP(2),
+                        color: COLORS.black,
+                      }}>
+                      Create Result
+                    </Text>
+
+                    <Ionicons
+                      name={'chevron-forward-outline'}
                       size={heightPercentageToDP(3)}
                       color={COLORS.darkGray}
                     />
-                  </LinearGradient>
-                  <Text
+                  </TouchableOpacity>
+                ) : user &&
+                  user.role === 'subadmin' &&
+                  user.subadminfeature.createresult ? (
+                  <TouchableOpacity
+                    onPress={() => navigation.navigate('Search')}
                     style={{
-                      marginStart: heightPercentageToDP(1),
-                      flex: 1,
-                      fontFamily: FONT.Montserrat_Regular,
-                      fontSize: heightPercentageToDP(2),
-                      color: COLORS.black,
+                      height: heightPercentageToDP(7),
+                      flexDirection: 'row',
+                      backgroundColor: COLORS.white_s,
+                      alignItems: 'center',
+                      paddingHorizontal: heightPercentageToDP(2),
+                      borderRadius: heightPercentageToDP(1),
+                      marginTop: heightPercentageToDP(2),
                     }}>
-                    Create Result
-                  </Text>
+                    <LinearGradient
+                      colors={[COLORS.lightWhite, COLORS.white_s]}
+                      className="rounded-xl p-1">
+                      <Entypo
+                        name={'trophy'}
+                        size={heightPercentageToDP(3)}
+                        color={COLORS.darkGray}
+                      />
+                    </LinearGradient>
+                    <Text
+                      style={{
+                        marginStart: heightPercentageToDP(1),
+                        flex: 1,
+                        fontFamily: FONT.Montserrat_Regular,
+                        fontSize: heightPercentageToDP(2),
+                        color: COLORS.black,
+                      }}>
+                      Create Result
+                    </Text>
 
-                  <Ionicons
-                    name={'chevron-forward-outline'}
-                    size={heightPercentageToDP(3)}
-                    color={COLORS.darkGray}
-                  />
-                </TouchableOpacity>
+                    <Ionicons
+                      name={'chevron-forward-outline'}
+                      size={heightPercentageToDP(3)}
+                      color={COLORS.darkGray}
+                    />
+                  </TouchableOpacity>
+                ) : null}
 
                 {/** Update Profile container */}
+                {user && user.role === 'admin' ? (
+                  <TouchableOpacity
+                    onPress={() => navigation.navigate('UpdateProfile')}
+                    style={{
+                      height: heightPercentageToDP(7),
+                      flexDirection: 'row',
+                      backgroundColor: COLORS.white_s,
+                      alignItems: 'center',
+                      paddingHorizontal: heightPercentageToDP(2),
+                      marginTop: heightPercentageToDP(2),
+                      borderRadius: heightPercentageToDP(1),
+                    }}>
+                    <LinearGradient
+                      colors={[COLORS.grayBg, COLORS.white_s]}
+                      className="rounded-xl p-1">
+                      <MaterialCommunityIcons
+                        name={'account'}
+                        size={heightPercentageToDP(3)}
+                        color={COLORS.darkGray}
+                      />
+                    </LinearGradient>
+                    <Text
+                      style={{
+                        marginStart: heightPercentageToDP(1),
+                        flex: 1,
+                        fontFamily: FONT.Montserrat_Regular,
+                        fontSize: heightPercentageToDP(2),
+                        color: COLORS.black,
+                      }}>
+                      Update Profile
+                    </Text>
 
-                <TouchableOpacity
-                  onPress={() => navigation.navigate('UpdateProfile')}
-                  style={{
-                    height: heightPercentageToDP(7),
-                    flexDirection: 'row',
-                    backgroundColor: COLORS.white_s,
-                    alignItems: 'center',
-                    paddingHorizontal: heightPercentageToDP(2),
-                    marginTop: heightPercentageToDP(2),
-                    borderRadius: heightPercentageToDP(1),
-                  }}>
-                  <LinearGradient
-                    colors={[COLORS.grayBg, COLORS.white_s]}
-                    className="rounded-xl p-1">
-                    <MaterialCommunityIcons
-                      name={'account'}
+                    <Ionicons
+                      name={'chevron-forward-outline'}
                       size={heightPercentageToDP(3)}
                       color={COLORS.darkGray}
                     />
-                  </LinearGradient>
-                  <Text
+                  </TouchableOpacity>
+                ) : user &&
+                  user.role === 'subadmin' &&
+                  user.subadminfeature.updateprofile ? (
+                  <TouchableOpacity
+                    onPress={() => navigation.navigate('UpdateProfile')}
                     style={{
-                      marginStart: heightPercentageToDP(1),
-                      flex: 1,
-                      fontFamily: FONT.Montserrat_Regular,
-                      fontSize: heightPercentageToDP(2),
-                      color: COLORS.black,
+                      height: heightPercentageToDP(7),
+                      flexDirection: 'row',
+                      backgroundColor: COLORS.white_s,
+                      alignItems: 'center',
+                      paddingHorizontal: heightPercentageToDP(2),
+                      marginTop: heightPercentageToDP(2),
+                      borderRadius: heightPercentageToDP(1),
                     }}>
-                    Update Profile
-                  </Text>
-
-                  <Ionicons
-                    name={'chevron-forward-outline'}
-                    size={heightPercentageToDP(3)}
-                    color={COLORS.darkGray}
-                  />
-                </TouchableOpacity>
-
-                {/** Add  Deposit */}
-
-                <TouchableOpacity
-                  onPress={() => navigation.navigate('Payment')}
-                  style={{
-                    height: heightPercentageToDP(7),
-                    flexDirection: 'row',
-                    backgroundColor: COLORS.white_s,
-                    alignItems: 'center',
-                    paddingHorizontal: heightPercentageToDP(2),
-                    marginTop: heightPercentageToDP(2),
-                    borderRadius: heightPercentageToDP(1),
-                  }}>
-                  <LinearGradient
-                    colors={[COLORS.grayBg, COLORS.white_s]}
-                    className="rounded-xl p-1">
-                    <Image
-                      source={require('../../assets/image/deposit.png')}
-                      resizeMode="cover"
+                    <LinearGradient
+                      colors={[COLORS.grayBg, COLORS.white_s]}
+                      className="rounded-xl p-1">
+                      <MaterialCommunityIcons
+                        name={'account'}
+                        size={heightPercentageToDP(3)}
+                        color={COLORS.darkGray}
+                      />
+                    </LinearGradient>
+                    <Text
                       style={{
-                        height: heightPercentageToDP(3),
-                        width: heightPercentageToDP(3),
-                      }}
+                        marginStart: heightPercentageToDP(1),
+                        flex: 1,
+                        fontFamily: FONT.Montserrat_Regular,
+                        fontSize: heightPercentageToDP(2),
+                        color: COLORS.black,
+                      }}>
+                      Update Profile
+                    </Text>
+
+                    <Ionicons
+                      name={'chevron-forward-outline'}
+                      size={heightPercentageToDP(3)}
+                      color={COLORS.darkGray}
                     />
-                  </LinearGradient>
-                  <Text
+                  </TouchableOpacity>
+                ) : null}
+
+                {/** Add  PAYMENT OPTION */}
+
+                {user && user.role === 'admin' ? (
+                  <TouchableOpacity
+                    onPress={() => navigation.navigate('Payment')}
                     style={{
-                      marginStart: heightPercentageToDP(1),
-                      flex: 1,
-                      fontFamily: FONT.Montserrat_Regular,
-                      fontSize: heightPercentageToDP(2),
-                      color: COLORS.black,
+                      height: heightPercentageToDP(7),
+                      flexDirection: 'row',
+                      backgroundColor: COLORS.white_s,
+                      alignItems: 'center',
+                      paddingHorizontal: heightPercentageToDP(2),
+                      marginTop: heightPercentageToDP(2),
+                      borderRadius: heightPercentageToDP(1),
                     }}>
-                    Deposit Payment
-                  </Text>
+                    <LinearGradient
+                      colors={[COLORS.grayBg, COLORS.white_s]}
+                      className="rounded-xl p-1">
+                      <Image
+                        source={require('../../assets/image/deposit.png')}
+                        resizeMode="cover"
+                        style={{
+                          height: heightPercentageToDP(3),
+                          width: heightPercentageToDP(3),
+                        }}
+                      />
+                    </LinearGradient>
+                    <Text
+                      style={{
+                        marginStart: heightPercentageToDP(1),
+                        flex: 1,
+                        fontFamily: FONT.Montserrat_Regular,
+                        fontSize: heightPercentageToDP(2),
+                        color: COLORS.black,
+                      }}>
+                      Deposit Payment
+                    </Text>
 
-                  <Ionicons
-                    name={'chevron-forward-outline'}
-                    size={heightPercentageToDP(3)}
-                    color={COLORS.darkGray}
-                  />
-                </TouchableOpacity>
+                    <Ionicons
+                      name={'chevron-forward-outline'}
+                      size={heightPercentageToDP(3)}
+                      color={COLORS.darkGray}
+                    />
+                  </TouchableOpacity>
+                ) : user &&
+                  user.role === 'subadmin' &&
+                  user.subadminfeature.paymentoption ? (
+                  <TouchableOpacity
+                    onPress={() => navigation.navigate('Payment')}
+                    style={{
+                      height: heightPercentageToDP(7),
+                      flexDirection: 'row',
+                      backgroundColor: COLORS.white_s,
+                      alignItems: 'center',
+                      paddingHorizontal: heightPercentageToDP(2),
+                      marginTop: heightPercentageToDP(2),
+                      borderRadius: heightPercentageToDP(1),
+                    }}>
+                    <LinearGradient
+                      colors={[COLORS.grayBg, COLORS.white_s]}
+                      className="rounded-xl p-1">
+                      <Image
+                        source={require('../../assets/image/deposit.png')}
+                        resizeMode="cover"
+                        style={{
+                          height: heightPercentageToDP(3),
+                          width: heightPercentageToDP(3),
+                        }}
+                      />
+                    </LinearGradient>
+                    <Text
+                      style={{
+                        marginStart: heightPercentageToDP(1),
+                        flex: 1,
+                        fontFamily: FONT.Montserrat_Regular,
+                        fontSize: heightPercentageToDP(2),
+                        color: COLORS.black,
+                      }}>
+                      Deposit Payment
+                    </Text>
 
+                    <Ionicons
+                      name={'chevron-forward-outline'}
+                      size={heightPercentageToDP(3)}
+                      color={COLORS.darkGray}
+                    />
+                  </TouchableOpacity>
+                ) : null}
                 {/** Withdraw */}
-{/* 
+                {/* 
                 <TouchableOpacity
                   onPress={() => navigation.navigate('Withdraw')}
                   style={{
@@ -618,86 +1035,169 @@ const Setting = () => {
 
                 {/** ALL COUNTRY container */}
 
-                <TouchableOpacity
-                  onPress={() => navigation.navigate('AllCountry')}
-                  style={{
-                    height: heightPercentageToDP(7),
-                    flexDirection: 'row',
-                    backgroundColor: COLORS.white_s,
-                    alignItems: 'center',
-                    paddingHorizontal: heightPercentageToDP(2),
-                    marginTop: heightPercentageToDP(2),
-                    borderRadius: heightPercentageToDP(1),
-                  }}>
-                  <LinearGradient
-                    colors={[COLORS.grayBg, COLORS.white_s]}
-                    className="rounded-xl p-1">
-                    <Fontisto
-                      name={'world-o'}
+                {user && user.role === 'admin' ? (
+                  <TouchableOpacity
+                    onPress={() => navigation.navigate('AllCountry')}
+                    style={{
+                      height: heightPercentageToDP(7),
+                      flexDirection: 'row',
+                      backgroundColor: COLORS.white_s,
+                      alignItems: 'center',
+                      paddingHorizontal: heightPercentageToDP(2),
+                      marginTop: heightPercentageToDP(2),
+                      borderRadius: heightPercentageToDP(1),
+                    }}>
+                    <LinearGradient
+                      colors={[COLORS.grayBg, COLORS.white_s]}
+                      className="rounded-xl p-1">
+                      <Fontisto
+                        name={'world-o'}
+                        size={heightPercentageToDP(3)}
+                        color={COLORS.darkGray}
+                      />
+                    </LinearGradient>
+                    <Text
+                      style={{
+                        marginStart: heightPercentageToDP(1),
+                        flex: 1,
+                        fontFamily: FONT.Montserrat_Regular,
+                        fontSize: heightPercentageToDP(2),
+                        color: COLORS.black,
+                      }}>
+                      All Country
+                    </Text>
+
+                    <Ionicons
+                      name={'chevron-forward-outline'}
                       size={heightPercentageToDP(3)}
                       color={COLORS.darkGray}
                     />
-                  </LinearGradient>
-                  <Text
+                  </TouchableOpacity>
+                ) : user &&
+                  user.role === 'subadmin' &&
+                  user.subadminfeature.allcountry ? (
+                  <TouchableOpacity
+                    onPress={() => navigation.navigate('AllCountry')}
                     style={{
-                      marginStart: heightPercentageToDP(1),
-                      flex: 1,
-                      fontFamily: FONT.Montserrat_Regular,
-                      fontSize: heightPercentageToDP(2),
-                      color: COLORS.black,
+                      height: heightPercentageToDP(7),
+                      flexDirection: 'row',
+                      backgroundColor: COLORS.white_s,
+                      alignItems: 'center',
+                      paddingHorizontal: heightPercentageToDP(2),
+                      marginTop: heightPercentageToDP(2),
+                      borderRadius: heightPercentageToDP(1),
                     }}>
-                    All Country
-                  </Text>
+                    <LinearGradient
+                      colors={[COLORS.grayBg, COLORS.white_s]}
+                      className="rounded-xl p-1">
+                      <Fontisto
+                        name={'world-o'}
+                        size={heightPercentageToDP(3)}
+                        color={COLORS.darkGray}
+                      />
+                    </LinearGradient>
+                    <Text
+                      style={{
+                        marginStart: heightPercentageToDP(1),
+                        flex: 1,
+                        fontFamily: FONT.Montserrat_Regular,
+                        fontSize: heightPercentageToDP(2),
+                        color: COLORS.black,
+                      }}>
+                      All Country
+                    </Text>
 
-                  <Ionicons
-                    name={'chevron-forward-outline'}
-                    size={heightPercentageToDP(3)}
-                    color={COLORS.darkGray}
-                  />
-                </TouchableOpacity>
+                    <Ionicons
+                      name={'chevron-forward-outline'}
+                      size={heightPercentageToDP(3)}
+                      color={COLORS.darkGray}
+                    />
+                  </TouchableOpacity>
+                ) : null}
 
                 {/** PLAY container */}
 
-                <TouchableOpacity
-                  onPress={() => navigation.navigate('PlayArenaLocation')}
-                  style={{
-                    height: heightPercentageToDP(7),
-                    flexDirection: 'row',
-                    backgroundColor: COLORS.white_s,
-                    alignItems: 'center',
-                    paddingHorizontal: heightPercentageToDP(2),
-                    marginTop: heightPercentageToDP(2),
-                    borderRadius: heightPercentageToDP(1),
-                  }}>
-                  <LinearGradient
-                    colors={[COLORS.grayBg, COLORS.white_s]}
-                    className="rounded-xl p-1">
-                    <MaterialCommunityIcons
-                      name={'play-circle-outline'}
+                {user && user.role === 'admin' ? (
+                  <TouchableOpacity
+                    onPress={() => navigation.navigate('PlayArenaLocation')}
+                    style={{
+                      height: heightPercentageToDP(7),
+                      flexDirection: 'row',
+                      backgroundColor: COLORS.white_s,
+                      alignItems: 'center',
+                      paddingHorizontal: heightPercentageToDP(2),
+                      marginTop: heightPercentageToDP(2),
+                      borderRadius: heightPercentageToDP(1),
+                    }}>
+                    <LinearGradient
+                      colors={[COLORS.grayBg, COLORS.white_s]}
+                      className="rounded-xl p-1">
+                      <MaterialCommunityIcons
+                        name={'play-circle-outline'}
+                        size={heightPercentageToDP(3)}
+                        color={COLORS.darkGray}
+                      />
+                    </LinearGradient>
+                    <Text
+                      style={{
+                        marginStart: heightPercentageToDP(1),
+                        flex: 1,
+                        fontFamily: FONT.Montserrat_Regular,
+                        fontSize: heightPercentageToDP(2),
+                        color: COLORS.black,
+                      }}>
+                      All Play
+                    </Text>
+
+                    <Ionicons
+                      name={'chevron-forward-outline'}
                       size={heightPercentageToDP(3)}
                       color={COLORS.darkGray}
                     />
-                  </LinearGradient>
-                  <Text
+                  </TouchableOpacity>
+                ) : user &&
+                  user.role === 'subadmin' &&
+                  user.subadminfeature.play ? (
+                  <TouchableOpacity
+                    onPress={() => navigation.navigate('PlayArenaLocation')}
                     style={{
-                      marginStart: heightPercentageToDP(1),
-                      flex: 1,
-                      fontFamily: FONT.Montserrat_Regular,
-                      fontSize: heightPercentageToDP(2),
-                      color: COLORS.black,
+                      height: heightPercentageToDP(7),
+                      flexDirection: 'row',
+                      backgroundColor: COLORS.white_s,
+                      alignItems: 'center',
+                      paddingHorizontal: heightPercentageToDP(2),
+                      marginTop: heightPercentageToDP(2),
+                      borderRadius: heightPercentageToDP(1),
                     }}>
-                    All Play
-                  </Text>
+                    <LinearGradient
+                      colors={[COLORS.grayBg, COLORS.white_s]}
+                      className="rounded-xl p-1">
+                      <MaterialCommunityIcons
+                        name={'play-circle-outline'}
+                        size={heightPercentageToDP(3)}
+                        color={COLORS.darkGray}
+                      />
+                    </LinearGradient>
+                    <Text
+                      style={{
+                        marginStart: heightPercentageToDP(1),
+                        flex: 1,
+                        fontFamily: FONT.Montserrat_Regular,
+                        fontSize: heightPercentageToDP(2),
+                        color: COLORS.black,
+                      }}>
+                      All Play
+                    </Text>
 
-                  <Ionicons
-                    name={'chevron-forward-outline'}
-                    size={heightPercentageToDP(3)}
-                    color={COLORS.darkGray}
-                  />
-                </TouchableOpacity>
-
+                    <Ionicons
+                      name={'chevron-forward-outline'}
+                      size={heightPercentageToDP(3)}
+                      color={COLORS.darkGray}
+                    />
+                  </TouchableOpacity>
+                ) : null}
                 {/** PLAYBET HISTORY */}
-{/* 
+                {/* 
                 <TouchableOpacity
                   onPress={() => navigation.navigate('PlayHistory')}
                   style={{
@@ -735,88 +1235,249 @@ const Setting = () => {
                     color={COLORS.darkGray}
                   />
                 </TouchableOpacity> */}
-
                 {/** BALANCE SHEET*/}
+                {user && user.role === 'admin' ? (
+                  <TouchableOpacity
+                    onPress={() => navigation.navigate('BalanceSheet')}
+                    style={{
+                      height: heightPercentageToDP(7),
+                      flexDirection: 'row',
+                      backgroundColor: COLORS.white_s,
+                      alignItems: 'center',
+                      paddingHorizontal: heightPercentageToDP(2),
+                      marginTop: heightPercentageToDP(2),
+                      borderRadius: heightPercentageToDP(1),
+                    }}>
+                    <LinearGradient
+                      colors={[COLORS.grayBg, COLORS.white_s]}
+                      className="rounded-xl p-1">
+                      <FontAwesome
+                        name={'balance-scale'}
+                        size={heightPercentageToDP(3)}
+                        color={COLORS.darkGray}
+                      />
+                    </LinearGradient>
+                    <Text
+                      style={{
+                        marginStart: heightPercentageToDP(1),
+                        flex: 1,
+                        fontFamily: FONT.Montserrat_Regular,
+                        fontSize: heightPercentageToDP(2),
+                        color: COLORS.black,
+                      }}>
+                      Transaction History
+                    </Text>
 
-                <TouchableOpacity
-                  onPress={() => navigation.navigate('BalanceSheet')}
-                  style={{
-                    height: heightPercentageToDP(7),
-                    flexDirection: 'row',
-                    backgroundColor: COLORS.white_s,
-                    alignItems: 'center',
-                    paddingHorizontal: heightPercentageToDP(2),
-                    marginTop: heightPercentageToDP(2),
-                    borderRadius: heightPercentageToDP(1),
-                  }}>
-                  <LinearGradient
-                    colors={[COLORS.grayBg, COLORS.white_s]}
-                    className="rounded-xl p-1">
-                    <FontAwesome
-                      name={'balance-scale'}
+                    <Ionicons
+                      name={'chevron-forward-outline'}
                       size={heightPercentageToDP(3)}
                       color={COLORS.darkGray}
                     />
-                  </LinearGradient>
-                  <Text
+                  </TouchableOpacity>
+                ) : user &&
+                  user.role === 'subadmin' &&
+                  user.subadminfeature.transcationhistory ? (
+                  <TouchableOpacity
+                    onPress={() => navigation.navigate('BalanceSheet')}
                     style={{
-                      marginStart: heightPercentageToDP(1),
-                      flex: 1,
-                      fontFamily: FONT.Montserrat_Regular,
-                      fontSize: heightPercentageToDP(2),
-                      color: COLORS.black,
+                      height: heightPercentageToDP(7),
+                      flexDirection: 'row',
+                      backgroundColor: COLORS.white_s,
+                      alignItems: 'center',
+                      paddingHorizontal: heightPercentageToDP(2),
+                      marginTop: heightPercentageToDP(2),
+                      borderRadius: heightPercentageToDP(1),
                     }}>
-                    Transaction History
-                  </Text>
+                    <LinearGradient
+                      colors={[COLORS.grayBg, COLORS.white_s]}
+                      className="rounded-xl p-1">
+                      <FontAwesome
+                        name={'balance-scale'}
+                        size={heightPercentageToDP(3)}
+                        color={COLORS.darkGray}
+                      />
+                    </LinearGradient>
+                    <Text
+                      style={{
+                        marginStart: heightPercentageToDP(1),
+                        flex: 1,
+                        fontFamily: FONT.Montserrat_Regular,
+                        fontSize: heightPercentageToDP(2),
+                        color: COLORS.black,
+                      }}>
+                      Transaction History
+                    </Text>
 
-                  <Ionicons
-                    name={'chevron-forward-outline'}
-                    size={heightPercentageToDP(3)}
-                    color={COLORS.darkGray}
-                  />
-                </TouchableOpacity>
+                    <Ionicons
+                      name={'chevron-forward-outline'}
+                      size={heightPercentageToDP(3)}
+                      color={COLORS.darkGray}
+                    />
+                  </TouchableOpacity>
+                ) : null}
 
                 {/** Change Password */}
 
-                <TouchableOpacity
-                  onPress={() => navigation.navigate('ChangePassword')}
-                  style={{
-                    height: heightPercentageToDP(7),
-                    flexDirection: 'row',
-                    backgroundColor: COLORS.white_s,
-                    alignItems: 'center',
-                    paddingHorizontal: heightPercentageToDP(2),
-                    marginTop: heightPercentageToDP(2),
-                    borderRadius: heightPercentageToDP(1),
-                  }}>
-                  <LinearGradient
-                    colors={[COLORS.grayBg, COLORS.white_s]}
-                    className="rounded-xl p-1">
-                    <MaterialIcons
-                      name={'password'}
+                {user && user.role === 'admin' ? (
+                  <TouchableOpacity
+                    onPress={() => navigation.navigate('ChangePassword')}
+                    style={{
+                      height: heightPercentageToDP(7),
+                      flexDirection: 'row',
+                      backgroundColor: COLORS.white_s,
+                      alignItems: 'center',
+                      paddingHorizontal: heightPercentageToDP(2),
+                      marginTop: heightPercentageToDP(2),
+                      borderRadius: heightPercentageToDP(1),
+                    }}>
+                    <LinearGradient
+                      colors={[COLORS.grayBg, COLORS.white_s]}
+                      className="rounded-xl p-1">
+                      <MaterialIcons
+                        name={'password'}
+                        size={heightPercentageToDP(3)}
+                        color={COLORS.darkGray}
+                      />
+                    </LinearGradient>
+                    <Text
+                      style={{
+                        marginStart: heightPercentageToDP(1),
+                        flex: 1,
+                        fontFamily: FONT.Montserrat_Regular,
+                        fontSize: heightPercentageToDP(2),
+                        color: COLORS.black,
+                      }}>
+                      Change Password
+                    </Text>
+
+                    <Ionicons
+                      name={'chevron-forward-outline'}
                       size={heightPercentageToDP(3)}
                       color={COLORS.darkGray}
                     />
-                  </LinearGradient>
-                  <Text
+                  </TouchableOpacity>
+                ) : user &&
+                  user.role === 'subadmin' &&
+                  user.subadminfeature.changepassword ? (
+                  <TouchableOpacity
+                    onPress={() => navigation.navigate('ChangePassword')}
                     style={{
-                      marginStart: heightPercentageToDP(1),
-                      flex: 1,
-                      fontFamily: FONT.Montserrat_Regular,
-                      fontSize: heightPercentageToDP(2),
-                      color: COLORS.black,
+                      height: heightPercentageToDP(7),
+                      flexDirection: 'row',
+                      backgroundColor: COLORS.white_s,
+                      alignItems: 'center',
+                      paddingHorizontal: heightPercentageToDP(2),
+                      marginTop: heightPercentageToDP(2),
+                      borderRadius: heightPercentageToDP(1),
                     }}>
-                    Change Password
-                  </Text>
+                    <LinearGradient
+                      colors={[COLORS.grayBg, COLORS.white_s]}
+                      className="rounded-xl p-1">
+                      <MaterialIcons
+                        name={'password'}
+                        size={heightPercentageToDP(3)}
+                        color={COLORS.darkGray}
+                      />
+                    </LinearGradient>
+                    <Text
+                      style={{
+                        marginStart: heightPercentageToDP(1),
+                        flex: 1,
+                        fontFamily: FONT.Montserrat_Regular,
+                        fontSize: heightPercentageToDP(2),
+                        color: COLORS.black,
+                      }}>
+                      Change Password
+                    </Text>
 
-                  <Ionicons
-                    name={'chevron-forward-outline'}
-                    size={heightPercentageToDP(3)}
-                    color={COLORS.darkGray}
-                  />
-                </TouchableOpacity>
+                    <Ionicons
+                      name={'chevron-forward-outline'}
+                      size={heightPercentageToDP(3)}
+                      color={COLORS.darkGray}
+                    />
+                  </TouchableOpacity>
+                ) : null}
 
-                {/** Update Email */}
+                {/** App Link */}
+                {user && user.role === 'admin' ? (
+                  <TouchableOpacity
+                    onPress={() => navigation.navigate('Applink')}
+                    style={{
+                      height: heightPercentageToDP(7),
+                      flexDirection: 'row',
+                      backgroundColor: COLORS.white_s,
+                      alignItems: 'center',
+                      paddingHorizontal: heightPercentageToDP(2),
+                      marginTop: heightPercentageToDP(2),
+                      borderRadius: heightPercentageToDP(1),
+                    }}>
+                    <LinearGradient
+                      colors={[COLORS.grayBg, COLORS.white_s]}
+                      className="rounded-xl p-1">
+                      <MaterialIcons
+                        name={'download'}
+                        size={heightPercentageToDP(3)}
+                        color={COLORS.darkGray}
+                      />
+                    </LinearGradient>
+                    <Text
+                      style={{
+                        marginStart: heightPercentageToDP(1),
+                        flex: 1,
+                        fontFamily: FONT.Montserrat_Regular,
+                        fontSize: heightPercentageToDP(2),
+                        color: COLORS.black,
+                      }}>
+                      App Link
+                    </Text>
+
+                    <Ionicons
+                      name={'chevron-forward-outline'}
+                      size={heightPercentageToDP(3)}
+                      color={COLORS.darkGray}
+                    />
+                  </TouchableOpacity>
+                ) : user &&
+                  user.role === 'subadmin' &&
+                  user.subadminfeature.changepassword ? (
+                  <TouchableOpacity
+                    onPress={() => navigation.navigate('Applink')}
+                    style={{
+                      height: heightPercentageToDP(7),
+                      flexDirection: 'row',
+                      backgroundColor: COLORS.white_s,
+                      alignItems: 'center',
+                      paddingHorizontal: heightPercentageToDP(2),
+                      marginTop: heightPercentageToDP(2),
+                      borderRadius: heightPercentageToDP(1),
+                    }}>
+                    <LinearGradient
+                      colors={[COLORS.grayBg, COLORS.white_s]}
+                      className="rounded-xl p-1">
+                      <MaterialIcons
+                        name={'android'}
+                        size={heightPercentageToDP(3)}
+                        color={COLORS.darkGray}
+                      />
+                    </LinearGradient>
+                    <Text
+                      style={{
+                        marginStart: heightPercentageToDP(1),
+                        flex: 1,
+                        fontFamily: FONT.Montserrat_Regular,
+                        fontSize: heightPercentageToDP(2),
+                        color: COLORS.black,
+                      }}>
+                      App Link
+                    </Text>
+
+                    <Ionicons
+                      name={'chevron-forward-outline'}
+                      size={heightPercentageToDP(3)}
+                      color={COLORS.darkGray}
+                    />
+                  </TouchableOpacity>
+                ) : null}
 
                 {/** Logout container */}
                 <TouchableOpacity
@@ -874,4 +1535,3 @@ const styles = StyleSheet.create({
     fontFamily: FONT.Montserrat_Bold,
   },
 });
-

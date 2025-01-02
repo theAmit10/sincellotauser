@@ -45,7 +45,7 @@ const AllCountry = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
 
-  const {accesstoken} = useSelector(state => state.user);
+  const {accesstoken, user} = useSelector(state => state.user);
 
   const {data, isLoading, error, refetch} = useGetAllCountryQuery(accesstoken);
 
@@ -105,9 +105,9 @@ const AllCountry = () => {
           style={{
             width: '100%',
             height:
-            Platform.OS === 'android'
-              ? heightPercentageToDP(85)
-              : heightPercentageToDP(80),
+              Platform.OS === 'android'
+                ? heightPercentageToDP(85)
+                : heightPercentageToDP(80),
           }}
           imageStyle={{
             borderTopLeftRadius: heightPercentageToDP(5),
@@ -116,9 +116,9 @@ const AllCountry = () => {
           <View
             style={{
               height:
-              Platform.OS === 'android'
-                ? heightPercentageToDP(85)
-                : heightPercentageToDP(80),
+                Platform.OS === 'android'
+                  ? heightPercentageToDP(85)
+                  : heightPercentageToDP(80),
               width: widthPercentageToDP(100),
 
               borderTopLeftRadius: heightPercentageToDP(5),
@@ -230,34 +230,50 @@ const AllCountry = () => {
                         }}>
                         {item.countryname}
                       </Text>
-                      <View
-                        style={{
-                          flex: 1,
-                          flexDirection: 'row',
-                          justifyContent: 'flex-end',
-                          alignItems: 'flex-end',
-                          paddingEnd: heightPercentageToDP(2),
-                          gap: heightPercentageToDP(2),
-                        }}>
-                        {/** EDIT BUTTON */}
 
-                        <TouchableOpacity onPress={() => editingData(item)}>
-                          <LinearGradient
-                            colors={[COLORS.grayBg, COLORS.white_s]}
-                            style={{borderRadius: 10, padding: 5}}>
-                            <FontAwesome
-                              name={'edit'}
-                              size={heightPercentageToDP(3)}
-                              color={COLORS.darkGray}
-                            />
-                          </LinearGradient>
-                        </TouchableOpacity>
+                      {user && user.role === 'admin' ? (
+                        <View
+                          style={{
+                            flex: 1,
+                            flexDirection: 'row',
+                            justifyContent: 'flex-end',
+                            alignItems: 'flex-end',
+                            paddingEnd: heightPercentageToDP(2),
+                            gap: heightPercentageToDP(2),
+                          }}>
+                          {/** EDIT BUTTON */}
 
-                        {/** DELETE BUTTON */}
+                          <TouchableOpacity onPress={() => editingData(item)}>
+                            <LinearGradient
+                              colors={[COLORS.grayBg, COLORS.white_s]}
+                              style={{borderRadius: 10, padding: 5}}>
+                              <FontAwesome
+                                name={'edit'}
+                                size={heightPercentageToDP(3)}
+                                color={COLORS.darkGray}
+                              />
+                            </LinearGradient>
+                          </TouchableOpacity>
 
-                        {deleteIsLoading ? (
-                          seletedItem === item._id ? (
-                            <Loading color={COLORS.green} />
+                          {/** DELETE BUTTON */}
+
+                          {deleteIsLoading ? (
+                            seletedItem === item._id ? (
+                              <Loading color={COLORS.green} />
+                            ) : (
+                              <TouchableOpacity
+                                onPress={() => deletingData(item)}>
+                                <LinearGradient
+                                  colors={[COLORS.grayBg, COLORS.white_s]}
+                                  style={{borderRadius: 10, padding: 5}}>
+                                  <MaterialCommunityIcons
+                                    name={'delete'}
+                                    size={heightPercentageToDP(3)}
+                                    color={COLORS.darkGray}
+                                  />
+                                </LinearGradient>
+                              </TouchableOpacity>
+                            )
                           ) : (
                             <TouchableOpacity
                               onPress={() => deletingData(item)}>
@@ -271,21 +287,69 @@ const AllCountry = () => {
                                 />
                               </LinearGradient>
                             </TouchableOpacity>
-                          )
-                        ) : (
-                          <TouchableOpacity onPress={() => deletingData(item)}>
+                          )}
+                        </View>
+                      ) : user &&
+                        user.role === 'subadmin' &&
+                        user.subadminfeature.editanddeletecountry ? (
+                        <View
+                          style={{
+                            flex: 1,
+                            flexDirection: 'row',
+                            justifyContent: 'flex-end',
+                            alignItems: 'flex-end',
+                            paddingEnd: heightPercentageToDP(2),
+                            gap: heightPercentageToDP(2),
+                          }}>
+                          {/** EDIT BUTTON */}
+
+                          <TouchableOpacity onPress={() => editingData(item)}>
                             <LinearGradient
                               colors={[COLORS.grayBg, COLORS.white_s]}
                               style={{borderRadius: 10, padding: 5}}>
-                              <MaterialCommunityIcons
-                                name={'delete'}
+                              <FontAwesome
+                                name={'edit'}
                                 size={heightPercentageToDP(3)}
                                 color={COLORS.darkGray}
                               />
                             </LinearGradient>
                           </TouchableOpacity>
-                        )}
-                      </View>
+
+                          {/** DELETE BUTTON */}
+
+                          {deleteIsLoading ? (
+                            seletedItem === item._id ? (
+                              <Loading color={COLORS.green} />
+                            ) : (
+                              <TouchableOpacity
+                                onPress={() => deletingData(item)}>
+                                <LinearGradient
+                                  colors={[COLORS.grayBg, COLORS.white_s]}
+                                  style={{borderRadius: 10, padding: 5}}>
+                                  <MaterialCommunityIcons
+                                    name={'delete'}
+                                    size={heightPercentageToDP(3)}
+                                    color={COLORS.darkGray}
+                                  />
+                                </LinearGradient>
+                              </TouchableOpacity>
+                            )
+                          ) : (
+                            <TouchableOpacity
+                              onPress={() => deletingData(item)}>
+                              <LinearGradient
+                                colors={[COLORS.grayBg, COLORS.white_s]}
+                                style={{borderRadius: 10, padding: 5}}>
+                                <MaterialCommunityIcons
+                                  name={'delete'}
+                                  size={heightPercentageToDP(3)}
+                                  color={COLORS.darkGray}
+                                />
+                              </LinearGradient>
+                            </TouchableOpacity>
+                          )}
+                        </View>
+                      ) : null}
                     </View>
 
                     <View
@@ -351,27 +415,53 @@ const AllCountry = () => {
               />
             )}
 
-            <View
-              style={{
-                margin: heightPercentageToDP(2),
-              }}>
-              <TouchableOpacity
-                onPress={() => navigation.navigate('Createcountry')}
+            {user && user.role === 'admin' ? (
+              <View
                 style={{
-                  backgroundColor: COLORS.blue,
-                  padding: heightPercentageToDP(2),
-                  borderRadius: heightPercentageToDP(1),
-                  alignItems: 'center',
+                  margin: heightPercentageToDP(2),
                 }}>
-                <Text
+                <TouchableOpacity
+                  onPress={() => navigation.navigate('Createcountry')}
                   style={{
-                    color: COLORS.white,
-                    fontFamily: FONT.Montserrat_Regular,
+                    backgroundColor: COLORS.blue,
+                    padding: heightPercentageToDP(2),
+                    borderRadius: heightPercentageToDP(1),
+                    alignItems: 'center',
                   }}>
-                  Create new country
-                </Text>
-              </TouchableOpacity>
-            </View>
+                  <Text
+                    style={{
+                      color: COLORS.white,
+                      fontFamily: FONT.Montserrat_Regular,
+                    }}>
+                    Create new country
+                  </Text>
+                </TouchableOpacity>
+              </View>
+            ) : user &&
+              user.role === 'subadmin' &&
+              user.subadminfeature.createcountry ? (
+              <View
+                style={{
+                  margin: heightPercentageToDP(2),
+                }}>
+                <TouchableOpacity
+                  onPress={() => navigation.navigate('Createcountry')}
+                  style={{
+                    backgroundColor: COLORS.blue,
+                    padding: heightPercentageToDP(2),
+                    borderRadius: heightPercentageToDP(1),
+                    alignItems: 'center',
+                  }}>
+                  <Text
+                    style={{
+                      color: COLORS.white,
+                      fontFamily: FONT.Montserrat_Regular,
+                    }}>
+                    Create new country
+                  </Text>
+                </TouchableOpacity>
+              </View>
+            ) : null}
           </View>
         </ImageBackground>
       </View>

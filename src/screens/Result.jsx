@@ -41,7 +41,7 @@ const Result = ({route}) => {
 
   const dispatch = useDispatch();
 
-  const {accesstoken} = useSelector(state => state.user);
+  const {user, accesstoken} = useSelector(state => state.user);
   const {loadingResult, results} = useSelector(state => state.result);
   const [filteredData, setFilteredData] = useState([]);
 
@@ -61,7 +61,6 @@ const Result = ({route}) => {
   useEffect(() => {
     setFilteredData(results); // Update filteredData whenever locations change
   }, [results]);
-
 
   const [selectedItem, setSelectedItem] = useState('');
   const [showProgressBar, setProgressBar] = useState(false);
@@ -178,28 +177,58 @@ const Result = ({route}) => {
                   justifyContent: 'space-between',
                 }}>
                 <NoDataFound data={'No Result Found'} />
-                <TouchableOpacity
-                  onPress={() =>
-                    navigation.navigate('CreateResult', {
-                      datedata: datedata,
-                      locationdata: locationdata,
-                      timedata: timedata,
-                    })
-                  }
-                  style={{
-                    backgroundColor: COLORS.blue,
-                    padding: heightPercentageToDP(2),
-                    borderRadius: heightPercentageToDP(1),
-                    alignItems: 'center',
-                  }}>
-                  <Text
-                    style={{
-                      color: COLORS.white,
-                      fontFamily: FONT.Montserrat_Regular,
-                    }}>
-                    Create Result
-                  </Text>
-                </TouchableOpacity>
+                {
+                  /** Create Result Button */
+                  user && user.role === 'admin' ? (
+                    <TouchableOpacity
+                      onPress={() =>
+                        navigation.navigate('CreateResult', {
+                          datedata: datedata,
+                          locationdata: locationdata,
+                          timedata: timedata,
+                        })
+                      }
+                      style={{
+                        backgroundColor: COLORS.blue,
+                        padding: heightPercentageToDP(2),
+                        borderRadius: heightPercentageToDP(1),
+                        alignItems: 'center',
+                      }}>
+                      <Text
+                        style={{
+                          color: COLORS.white,
+                          fontFamily: FONT.Montserrat_Regular,
+                        }}>
+                        Create Result
+                      </Text>
+                    </TouchableOpacity>
+                  ) : user &&
+                    user.role === 'subadmin' &&
+                    user.subadminfeature.createresult ? (
+                    <TouchableOpacity
+                      onPress={() =>
+                        navigation.navigate('CreateResult', {
+                          datedata: datedata,
+                          locationdata: locationdata,
+                          timedata: timedata,
+                        })
+                      }
+                      style={{
+                        backgroundColor: COLORS.blue,
+                        padding: heightPercentageToDP(2),
+                        borderRadius: heightPercentageToDP(1),
+                        alignItems: 'center',
+                      }}>
+                      <Text
+                        style={{
+                          color: COLORS.white,
+                          fontFamily: FONT.Montserrat_Regular,
+                        }}>
+                        Create Result
+                      </Text>
+                    </TouchableOpacity>
+                  ) : null
+                }
               </View>
             ) : (
               <View
@@ -306,52 +335,108 @@ const Result = ({route}) => {
                     </View>
                   </View>
 
-                  <TouchableOpacity
-                    onPress={() =>
-                      navigation.navigate('UpdateResult', {
-                        locationdata: locationdata,
-                        timedata: timedata,
-                        datedata: datedata,
-                        resultdata: filteredData[0],
-                      })
-                    }
-                    style={{
-                      backgroundColor: COLORS.blue,
-                      padding: heightPercentageToDP(2),
-                      borderRadius: heightPercentageToDP(1),
-                      alignItems: 'center',
-                    }}>
-                    <Text
-                      style={{
-                        color: COLORS.white,
-                        fontFamily: FONT.Montserrat_Regular,
-                      }}>
-                      Update Result
-                    </Text>
-                  </TouchableOpacity>
-
-                  {showProgressBar ? (
-                    <View style={{flex: 1, marginTop: heightPercentageToDP(2)}}>
-                      <Loading />
-                    </View>
-                  ) : (
-                    <TouchableOpacity
-                      onPress={deleteLocationHandler}
-                      style={{
-                        backgroundColor: COLORS.darkGray,
-                        padding: heightPercentageToDP(2),
-                        borderRadius: heightPercentageToDP(1),
-                        alignItems: 'center',
-                      }}>
-                      <Text
+                  {user && user.role === 'admin' ? (
+                    <>
+                      <TouchableOpacity
+                        onPress={() =>
+                          navigation.navigate('UpdateResult', {
+                            locationdata: locationdata,
+                            timedata: timedata,
+                            datedata: datedata,
+                            resultdata: filteredData[0],
+                          })
+                        }
                         style={{
-                          color: COLORS.white,
-                          fontFamily: FONT.Montserrat_Regular,
+                          backgroundColor: COLORS.blue,
+                          padding: heightPercentageToDP(2),
+                          borderRadius: heightPercentageToDP(1),
+                          alignItems: 'center',
                         }}>
-                        Delete Result
-                      </Text>
-                    </TouchableOpacity>
-                  )}
+                        <Text
+                          style={{
+                            color: COLORS.white,
+                            fontFamily: FONT.Montserrat_Regular,
+                          }}>
+                          Update Result
+                        </Text>
+                      </TouchableOpacity>
+
+                      {showProgressBar ? (
+                        <View
+                          style={{flex: 1, marginTop: heightPercentageToDP(2)}}>
+                          <Loading />
+                        </View>
+                      ) : (
+                        <TouchableOpacity
+                          onPress={deleteLocationHandler}
+                          style={{
+                            backgroundColor: COLORS.darkGray,
+                            padding: heightPercentageToDP(2),
+                            borderRadius: heightPercentageToDP(1),
+                            alignItems: 'center',
+                          }}>
+                          <Text
+                            style={{
+                              color: COLORS.white,
+                              fontFamily: FONT.Montserrat_Regular,
+                            }}>
+                            Delete Result
+                          </Text>
+                        </TouchableOpacity>
+                      )}
+                    </>
+                  ) : user &&
+                    user.role === 'subadmin' &&
+                    user.subadminfeature.createresult ? (
+                    <>
+                      <TouchableOpacity
+                        onPress={() =>
+                          navigation.navigate('UpdateResult', {
+                            locationdata: locationdata,
+                            timedata: timedata,
+                            datedata: datedata,
+                            resultdata: filteredData[0],
+                          })
+                        }
+                        style={{
+                          backgroundColor: COLORS.blue,
+                          padding: heightPercentageToDP(2),
+                          borderRadius: heightPercentageToDP(1),
+                          alignItems: 'center',
+                        }}>
+                        <Text
+                          style={{
+                            color: COLORS.white,
+                            fontFamily: FONT.Montserrat_Regular,
+                          }}>
+                          Update Result
+                        </Text>
+                      </TouchableOpacity>
+                      {showProgressBar ? (
+                        <View
+                          style={{flex: 1, marginTop: heightPercentageToDP(2)}}>
+                          <Loading />
+                        </View>
+                      ) : (
+                        <TouchableOpacity
+                          onPress={deleteLocationHandler}
+                          style={{
+                            backgroundColor: COLORS.darkGray,
+                            padding: heightPercentageToDP(2),
+                            borderRadius: heightPercentageToDP(1),
+                            alignItems: 'center',
+                          }}>
+                          <Text
+                            style={{
+                              color: COLORS.white,
+                              fontFamily: FONT.Montserrat_Regular,
+                            }}>
+                            Delete Result
+                          </Text>
+                        </TouchableOpacity>
+                      )}
+                    </>
+                  ) : null}
                 </View>
               </View>
             )}

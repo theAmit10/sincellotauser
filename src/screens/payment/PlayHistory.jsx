@@ -77,6 +77,19 @@ const historyapidata = [
   },
 ];
 
+function formatAmount(value) {
+  if (typeof value === "string") {
+    value = parseFloat(value); // Convert string to float if necessary
+  }
+
+  // Check if the number has decimals
+  if (value % 1 === 0) {
+    return value; // Return as is if it's a whole number
+  } else {
+    return parseFloat(value.toFixed(1)); // Return with one decimal point if it has decimals
+  }
+}
+
 const PlayHistory = ({route}) => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
@@ -137,6 +150,11 @@ const PlayHistory = ({route}) => {
     }));
   };
 
+  function extractNumberFromString(input) {
+    // Remove the last character (assuming it's always 'X') and convert the result to a number
+    return parseInt(input.slice(0, -1), 10);
+  }
+
   return (
     <SafeAreaView style={{flex: 1}}>
       <Background />
@@ -169,18 +187,49 @@ const PlayHistory = ({route}) => {
               style={{
                 height: heightPercentageToDP(5),
                 width: widthPercentageToDP(100),
-                justifyContent: 'center',
+                flexDirection: 'row',
+                justifyContent: 'space-between',
                 alignItems: 'center',
+                paddingHorizontal: heightPercentageToDP(2),
               }}>
+              <Text
+                style={{
+                  fontFamily: FONT.Montserrat_Regular,
+                  fontSize: heightPercentageToDP(2),
+                  color: COLORS.white_s,
+                  width: widthPercentageToDP(30),
+                  textAlign: 'center',
+                }}
+                numberOfLines={1}
+                ellipsizeMode="tail"
+                >
+                {userdata.name}
+              </Text>
+
               <View
                 style={{
                   width: widthPercentageToDP(20),
                   height: heightPercentageToDP(0.8),
                   backgroundColor: COLORS.grayBg,
                   borderRadius: heightPercentageToDP(2),
+                }}></View>
+
+              <Text
+                style={{
+                  fontFamily: FONT.Montserrat_Regular,
+                  fontSize: heightPercentageToDP(2),
+                  color: COLORS.white_s,
+                  overflow: 'hidden',
+                  width: widthPercentageToDP(30),
+                  textAlign: 'center',
                 }}
-              />
+                numberOfLines={1}
+                ellipsizeMode="tail"
+                >
+                {userdata.country?.countryname}
+              </Text>
             </View>
+
 
             <View style={{margin: heightPercentageToDP(2)}}>
               <GradientTextWhite style={styles.textStyle}>
@@ -239,7 +288,11 @@ const PlayHistory = ({route}) => {
                             <MaterialCommunityIcons
                               name={'play-circle-outline'}
                               size={heightPercentageToDP(3)}
-                              color={COLORS.darkGray}
+                              color={
+                                item?.walletName
+                                  ? COLORS.green
+                                  : COLORS.darkGray
+                              }
                             />
                           </View>
 
@@ -267,8 +320,8 @@ const PlayHistory = ({route}) => {
                                   width: '70%',
                                 }}
                                 numberOfLines={2}>
-                                : {calculateTotalAmount(item.playnumbers)}{' '}
-                                {user.country.countrycurrencysymbol}
+                                : {formatAmount(calculateTotalAmount(item?.playnumbers))}{' '}
+                                {item?.currency?.countrycurrencysymbol}
                               </Text>
                             </View>
 
@@ -285,7 +338,9 @@ const PlayHistory = ({route}) => {
                                   fontSize: heightPercentageToDP(1.8),
                                   color: COLORS.black,
                                 }}>
-                                {formatDate(item.lotdate.lotdate)}
+                                {item?.lotdate?.lotdate
+                                  ? formatDate(item?.lotdate?.lotdate)
+                                  : ''}
                               </Text>
                             </View>
                           </View>
@@ -338,7 +393,7 @@ const PlayHistory = ({route}) => {
                               <Text
                                 numberOfLines={1}
                                 style={styles.detailLabel}>
-                                {item.lotlocation.lotlocation}
+                                {item?.lotlocation?.lotlocation}
                               </Text>
                             </View>
                             <View style={styles.detailContainer}>
@@ -350,11 +405,17 @@ const PlayHistory = ({route}) => {
                               </Text>
                             </View>
                             <View style={styles.detailContainer}>
-                              <Text style={styles.detailValue}>Total bets</Text>
+                              <Text style={styles.detailValue}>
+                                {item?.walletName
+                                  ? 'Winning No.'
+                                  : 'Total bets'}
+                              </Text>
                               <Text
                                 numberOfLines={3}
                                 style={styles.detailLabel}>
-                                {item.playnumbers.length}
+                                {item?.walletName
+                                  ? item?.playnumbers[0]?.playnumber
+                                  : item?.playnumbers?.length}
                               </Text>
                             </View>
                           </View>
@@ -388,17 +449,23 @@ const PlayHistory = ({route}) => {
                               }}>
                               <View style={styles.detailContainer}>
                                 <Text style={styles.detailLabel}>
-                                  {pitem.playnumber}
+                                  {pitem?.playnumber}
                                 </Text>
                               </View>
                               <View style={styles.detailContainer}>
                                 <Text style={styles.detailLabel}>
-                                  {pitem.amount}
+                                  {/* {pitem?.amount} */}
+                                  {item?.walletName
+                                    ? formatAmount(pitem?.amount /
+                                      extractNumberFromString(
+                                        item?.lotlocation?.maximumReturn,
+                                      ))
+                                    : formatAmount(pitem?.amount)}
                                 </Text>
                               </View>
                               <View style={styles.detailContainer}>
                                 <Text style={styles.detailLabel}>
-                                  {pitem.winningamount}
+                                  {formatAmount(pitem?.winningamount)}
                                 </Text>
                               </View>
                             </View>

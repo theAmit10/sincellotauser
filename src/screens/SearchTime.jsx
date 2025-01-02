@@ -96,6 +96,7 @@ const SearchTime = ({route}) => {
         type: 'success',
         text1: data.message,
       });
+      dispatch(getTimeAccordingLocation(accesstoken, locationdata._id));
       setProgressBar(false);
     } catch (error) {
       setProgressBar(false);
@@ -248,7 +249,8 @@ const SearchTime = ({route}) => {
                             timedata: item,
                             locationdata: locationdata,
                           })
-                        }>
+                        }
+                       >
                         <LinearGradient
                           colors={
                             index % 2 === 0
@@ -368,6 +370,97 @@ const SearchTime = ({route}) => {
                                   )}
                                 </TouchableOpacity>
                               </View>
+                            ) : user && user.role === 'subadmin' ? (
+                              <View
+                                style={{
+                                  flexDirection: 'row',
+                                  justifyContent: 'center',
+                                  alignItems: 'center',
+                                  gap: heightPercentageToDP(2),
+                                }}>
+                                {/** Update Locatiion */}
+
+                                {user.subadminfeature.edittime && (
+                                  <TouchableOpacity
+                                    onPress={() =>
+                                      navigation.navigate('UpdateTime', {
+                                        locationdata: locationdata,
+                                        timedata: item,
+                                      })
+                                    }>
+                                    {filteredData.length === 0 ? (
+                                      selectedItem === item._id ? (
+                                        <Loading />
+                                      ) : (
+                                        <LinearGradient
+                                          colors={[
+                                            COLORS.lightWhite,
+                                            COLORS.white_s,
+                                          ]}
+                                          className="rounded-xl p-1">
+                                          <MaterialCommunityIcons
+                                            name={'circle-edit-outline'}
+                                            size={heightPercentageToDP(3)}
+                                            color={COLORS.darkGray}
+                                          />
+                                        </LinearGradient>
+                                      )
+                                    ) : (
+                                      <LinearGradient
+                                        colors={[
+                                          COLORS.lightWhite,
+                                          COLORS.white_s,
+                                        ]}
+                                        className="rounded-xl p-1">
+                                        <MaterialCommunityIcons
+                                          name={'circle-edit-outline'}
+                                          size={heightPercentageToDP(3)}
+                                          color={COLORS.darkGray}
+                                        />
+                                      </LinearGradient>
+                                    )}
+                                  </TouchableOpacity>
+                                )}
+
+                                {/** Delete Locatiion */}
+
+                                {user.subadminfeature.deletetime && (
+                                  <TouchableOpacity
+                                    onPress={() => deleteLocationHandler(item)}>
+                                    {showProgressBar ? (
+                                      selectedItem === item._id ? (
+                                        <Loading />
+                                      ) : (
+                                        <LinearGradient
+                                          colors={[
+                                            COLORS.lightWhite,
+                                            COLORS.white_s,
+                                          ]}
+                                          className="rounded-xl p-1">
+                                          <MaterialCommunityIcons
+                                            name={'delete'}
+                                            size={heightPercentageToDP(3)}
+                                            color={COLORS.darkGray}
+                                          />
+                                        </LinearGradient>
+                                      )
+                                    ) : (
+                                      <LinearGradient
+                                        colors={[
+                                          COLORS.lightWhite,
+                                          COLORS.white_s,
+                                        ]}
+                                        className="rounded-xl p-1">
+                                        <MaterialCommunityIcons
+                                          name={'delete'}
+                                          size={heightPercentageToDP(3)}
+                                          color={COLORS.darkGray}
+                                        />
+                                      </LinearGradient>
+                                    )}
+                                  </TouchableOpacity>
+                                )}
+                              </View>
                             ) : null}
                           </View>
                         </LinearGradient>
@@ -383,34 +476,67 @@ const SearchTime = ({route}) => {
 
               {/** Bottom Submit Container */}
 
-              <View
-                style={{
-                  marginBottom: heightPercentageToDP(5),
-                  marginHorizontal: heightPercentageToDP(2),
-                  marginTop: heightPercentageToDP(2),
-                }}>
-                {/** container */}
-                <TouchableOpacity
-                  onPress={() =>
-                    navigation.navigate('CreateTime', {
-                      locationdata: locationdata,
-                    })
-                  }
+              {user && user.role === 'admin' ? (
+                <View
                   style={{
-                    backgroundColor: COLORS.blue,
-                    padding: heightPercentageToDP(2),
-                    borderRadius: heightPercentageToDP(1),
-                    alignItems: 'center',
+                    marginBottom: heightPercentageToDP(5),
+                    marginHorizontal: heightPercentageToDP(2),
+                    marginTop: heightPercentageToDP(2),
                   }}>
-                  <Text
+                  {/** container */}
+                  <TouchableOpacity
+                    onPress={() =>
+                      navigation.navigate('CreateTime', {
+                        locationdata: locationdata,
+                      })
+                    }
                     style={{
-                      color: COLORS.white,
-                      fontFamily: FONT.Montserrat_Regular,
+                      backgroundColor: COLORS.blue,
+                      padding: heightPercentageToDP(2),
+                      borderRadius: heightPercentageToDP(1),
+                      alignItems: 'center',
                     }}>
-                    Create Time
-                  </Text>
-                </TouchableOpacity>
-              </View>
+                    <Text
+                      style={{
+                        color: COLORS.white,
+                        fontFamily: FONT.Montserrat_Regular,
+                      }}>
+                      Create Time
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+              ) : user &&
+                user.role === 'subadmin' &&
+                user.subadminfeature.createtime ? (
+                <View
+                  style={{
+                    marginBottom: heightPercentageToDP(5),
+                    marginHorizontal: heightPercentageToDP(2),
+                    marginTop: heightPercentageToDP(2),
+                  }}>
+                  {/** container */}
+                  <TouchableOpacity
+                    onPress={() =>
+                      navigation.navigate('CreateTime', {
+                        locationdata: locationdata,
+                      })
+                    }
+                    style={{
+                      backgroundColor: COLORS.blue,
+                      padding: heightPercentageToDP(2),
+                      borderRadius: heightPercentageToDP(1),
+                      alignItems: 'center',
+                    }}>
+                    <Text
+                      style={{
+                        color: COLORS.white,
+                        fontFamily: FONT.Montserrat_Regular,
+                      }}>
+                      Create Time
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+              ) : null}
 
               {/** end */}
             </View>

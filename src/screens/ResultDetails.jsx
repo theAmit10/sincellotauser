@@ -84,7 +84,7 @@ const ResultDetails = ({route}) => {
         
       </article>
       <aside>
-        <h1><span>Since 1927</span></h1>
+        <h1><span>Since 2001</span></h1>
         <div>
           <p>A Mobile Lottery App</p>
         </div>

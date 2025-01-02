@@ -272,11 +272,12 @@ export const sincelotAdminApi = createApi({
       }),
     }),
 
-    // FOR GETTING ALL DEPOSIT
-    getAllDeposit: builder.query({
-      query: accesstoken => ({
-        url: 'user/getalldeposit',
-        method: 'get',
+
+     // FOR GETTING ALL DEPOSIT
+     getAllDeposit: builder.query({
+      query: ({ accesstoken, page, limit }) => ({
+        url: `user/getalldeposit?page=${page}&limit=${limit}`,
+        method: "get",
         headers: {
           Authorization: `Bearer ${accesstoken}`,
         },
@@ -285,9 +286,9 @@ export const sincelotAdminApi = createApi({
 
     // FOR GETTING ALL WITHDRAW
     getAllWithdraw: builder.query({
-      query: accesstoken => ({
-        url: 'user/getallwithdraw',
-        method: 'get',
+      query: ({ accesstoken, page, limit }) => ({
+        url: `user/getallwithdraw?page=${page}&limit=${limit}`,
+        method: "get",
         headers: {
           Authorization: `Bearer ${accesstoken}`,
         },
@@ -325,7 +326,7 @@ export const sincelotAdminApi = createApi({
         method: 'PUT',
         headers: {
           Authorization: `Bearer ${accesstoken}`,
-          'Content-Type': 'application/json',
+          // 'Content-Type': 'application/json',
         },
         body,
       }),
@@ -380,10 +381,11 @@ export const sincelotAdminApi = createApi({
     }),
 
     // FOR GETTING ALL BALANCE SHEET
+
     getAllBalance: builder.query({
-      query: accesstoken => ({
-        url: 'result/balancesheet',
-        method: 'GET',
+      query: ({ accesstoken, page, limit }) => ({
+        url: `result/balancesheet?page=${page}&limit=${limit}`,
+        method: "GET",
         headers: {
           Authorization: `Bearer ${accesstoken}`,
         },
@@ -437,6 +439,80 @@ export const sincelotAdminApi = createApi({
       }),
     }),
 
+     // FOR DELETE A SUB ADMIN
+     deleteSubAdmin: builder.mutation({
+      query: ({accesstoken, userId}) => ({
+        url: `user/deleteuser/${userId}`,
+        method: 'DELETE',
+        headers: {
+          Authorization: `Bearer ${accesstoken}`,
+        },
+      }),
+    }),
+
+
+      // RESET ANY USER PASSWORD
+      resetSubAdminPassword: builder.mutation({
+        query: ({ body, userId,accesstoken}) => ({
+          url: `user/updateuserpassword/${userId}/password`,
+          method: 'PATCH',
+          headers: {
+            Authorization: `Bearer ${accesstoken}`,
+            'Content-Type': 'application/json',
+          },
+          body,
+        }),
+      }),
+
+       // FOR UPDATE SUB ADMIN FEATURE
+       updateSubAdminFeature: builder.mutation({
+        query: ({ body, userId,accesstoken}) => ({
+          url: `user/updatesubadmin/${userId}`,
+          method: 'PUT',
+          headers: {
+            Authorization: `Bearer ${accesstoken}`,
+          },
+          body,
+        }),
+      }),
+
+
+       // FOR GETTING ALL APP LINK
+    getAppLink: builder.query({
+      query: (accesstoken) => ({
+        url: "result/getapplink",
+        method: "get",
+        headers: {
+          Authorization: `Bearer ${accesstoken}`,
+        },
+      }),
+    }),
+
+     // FOR ADDING APP LINK
+     addAppLink: builder.mutation({
+      query: ({ accesstoken, body }) => ({
+        url: "result/createapplink",
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${accesstoken}`,
+          "Content-Type": "application/json",
+        },
+        body,
+      }),
+    }),
+
+     // FOR DELETE App
+     deleteAppLink: builder.mutation({
+      query: ({ accesstoken, body }) => ({
+        url: `result/deleteapplink`,
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${accesstoken}`,
+        },
+        body,
+      }),
+    }),
+
 
     // ######## END #########
   }),
@@ -478,6 +554,12 @@ export const {
   useUpdateLocationAutomationMutation,
   useGetNextResultQuery,
   useGetAllPlayHomeQuery,
-  useGetSingleUserPlayHistoryQuery
+  useGetSingleUserPlayHistoryQuery,
+  useDeleteSubAdminMutation,
+  useUpdateSubAdminFeatureMutation,
+  useResetSubAdminPasswordMutation,
+  useGetAppLinkQuery,
+  useAddAppLinkMutation,
+  useDeleteAppLinkMutation,
 
 } = sincelotAdminApi;

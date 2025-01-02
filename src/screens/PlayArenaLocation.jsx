@@ -24,6 +24,7 @@ import {useSelector} from 'react-redux';
 import GradientTextWhite from '../components/helpercComponent/GradientTextWhite';
 import LinearGradient from 'react-native-linear-gradient';
 import {useGetAllLocationWithTimeQuery} from '../helper/Networkcall';
+import moment from 'moment-timezone';
 
 const datatypefilter = [
   {id: 'all', val: 'All'},
@@ -140,7 +141,7 @@ const locationdata = [
 
 const PlayArenaLocation = () => {
   const navigation = useNavigation();
-  const {accesstoken} = useSelector(state => state.user);
+  const {accesstoken,user} = useSelector(state => state.user);
   const [alldatafiler, setalldatafilter] = useState([]);
   const [selectedFilter, setSelectedFilter] = useState(null);
 
@@ -179,7 +180,13 @@ const PlayArenaLocation = () => {
   const settingFilterData = itemf => {
     setSelectedFilter(itemf._id);
     if (itemf.maximumReturn.toLowerCase() === 'all') {
-      setFilteredData(data?.locationData);
+      // setFilteredData(data?.locationData);
+      const sortedData = [...(data?.locationData || [])].sort((a, b) => {
+        const aReturn = parseFloat(a.maximumReturn.replace('x', ''));
+        const bReturn = parseFloat(b.maximumReturn.replace('x', ''));
+        return bReturn - aReturn; // Sort from highest to lowest
+      });
+      setFilteredData(sortedData);
     } else {
       const filtered = data?.locationData.filter(item =>
         item.maximumReturn
@@ -208,15 +215,53 @@ const PlayArenaLocation = () => {
     setFilteredData(filtered);
   };
 
+  // useEffect(() => {
+  //   setFilteredData(data?.locationData); // Update filteredData whenever locations change
+  // }, [data]);
+
   useEffect(() => {
-    setFilteredData(data?.locationData); // Update filteredData whenever locations change
+    if (!isLoading && data) {
+      const sortedData = [...(data?.locationData || [])].sort((a, b) => {
+        const aReturn = parseFloat(a.maximumReturn.replace('x', ''));
+        const bReturn = parseFloat(b.maximumReturn.replace('x', ''));
+        return bReturn - aReturn; // Sort from highest to lowest
+      });
+      setFilteredData(sortedData); // Update filteredData whenever locations change
+      console.log(sortedData);
+    }
   }, [data]);
+
+  const getNextTimeForHighlights = times => {
+    if (times.length === 1) {
+      return times[0];
+    }
+
+    const currentISTTime = moment().tz(user?.country?.timezone).format('hh:mm A');
+    const sortedTimes = [...times].sort((a, b) =>
+      moment(a.time, 'hh:mm A').diff(moment(b.time, 'hh:mm A')),
+    );
+
+    for (let i = 0; i < sortedTimes.length; i++) {
+      if (
+        moment(currentISTTime, 'hh:mm A').isBefore(
+          moment(sortedTimes[i].time, 'hh:mm A'),
+        )
+      ) {
+        return sortedTimes[i];
+      }
+    }
+
+    return sortedTimes[0];
+  };
+
 
   const renderItem = ({item, index}) => {
     const groupedTimes = [];
     for (let i = 0; i < item.times.length; i += 2) {
       groupedTimes.push(item.times.slice(i, i + 2));
     }
+
+    const nextTime = getNextTimeForHighlights(item?.times);
 
     return (
       <>
@@ -302,7 +347,18 @@ const PlayArenaLocation = () => {
                               locationdata: item,
                               timedata: timeItem,
                             })
-                          }>
+                          }
+                          style={{
+                            borderColor:
+                              timeItem.time === nextTime.time
+                                ? COLORS.red
+                                : "transparent",
+                            borderWidth:
+                              timeItem.time === nextTime.time ? 2 : 2,
+                            borderRadius: heightPercentageToDP(2),
+                            overflow: 'hidden',
+                          }}
+                          >
                           <LinearGradient
                             colors={
                               idx % 2 === 0
@@ -312,12 +368,14 @@ const PlayArenaLocation = () => {
                             start={{x: 0, y: 0}} // start from left
                             end={{x: 1, y: 0}} // end at right
                             style={{
-                              ...styles.item,
                               flexDirection: 'row',
                               justifyContent: 'space-between',
                               alignItems: 'center',
                               gap: heightPercentageToDP(2),
                               opacity: 1,
+                              paddingVertical: heightPercentageToDP(2),
+                              paddingHorizontal: heightPercentageToDP(2),
+                              borderRadius: heightPercentageToDP(1),
                             }}>
                             <Text
                               style={{
@@ -326,7 +384,7 @@ const PlayArenaLocation = () => {
                                 fontSize: heightPercentageToDP(1.8),
                                 textAlignVertical: 'center',
                               }}>
-                              {timeItem.time}
+                                {timeItem.time}
                             </Text>
                             <Text
                               style={{
@@ -360,9 +418,9 @@ const PlayArenaLocation = () => {
           style={{
             width: '100%',
             height:
-            Platform.OS === 'android'
-              ? heightPercentageToDP(85)
-              : heightPercentageToDP(80),
+              Platform.OS === 'android'
+                ? heightPercentageToDP(85)
+                : heightPercentageToDP(80),
           }}
           imageStyle={{
             borderTopLeftRadius: heightPercentageToDP(5),
@@ -371,9 +429,9 @@ const PlayArenaLocation = () => {
           <View
             style={{
               height:
-              Platform.OS === 'android'
-                ? heightPercentageToDP(85)
-                : heightPercentageToDP(80),
+                Platform.OS === 'android'
+                  ? heightPercentageToDP(85)
+                  : heightPercentageToDP(80),
               width: widthPercentageToDP(100),
               borderTopLeftRadius: heightPercentageToDP(5),
               borderTopRightRadius: heightPercentageToDP(5),
@@ -433,56 +491,20 @@ const PlayArenaLocation = () => {
                 />
               </View>
 
-              {/* <View
-                style={{
-                  height: heightPercentageToDP(7),
-                  flexDirection: 'row',
-                  backgroundColor: COLORS.white_s,
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  borderRadius: heightPercentageToDP(3),
-                  marginTop: heightPercentageToDP(2),
-                  overflow: 'scroll',
-                }}>
-                {alldatafiler.map(item => (
-                  <TouchableOpacity
-                    onPress={() => settingFilterData(item)}
-                    key={item._id}
-                    style={{
-                      backgroundColor: COLORS.grayHalfBg,
-                      padding: heightPercentageToDP(1),
-                      margin: heightPercentageToDP(0.2),
-                      borderRadius: heightPercentageToDP(1),
-                      borderColor:
-                        selectedFilter == item._id
-                          ? COLORS.green
-                          : COLORS.grayHalfBg,
-                      borderWidth: 1,
-                    }}>
-                    <Text
-                      style={{
-                        fontFamily: FONT.Montserrat_Regular,
-                        fontSize: heightPercentageToDP(1.5),
-                        color: COLORS.black,
-                        paddingHorizontal: heightPercentageToDP(0.5),
-                      }}>
-                      {item.maximumReturn}
-                    </Text>
-                  </TouchableOpacity>
-                ))}
-              </View> */}
-              <ScrollView
+              
+              {/* <ScrollView
                 horizontal
                 showsHorizontalScrollIndicator={false}
                 contentContainerStyle={{
                   alignItems: 'center',
-                  paddingHorizontal: heightPercentageToDP(1)
+                  paddingHorizontal: heightPercentageToDP(1),
                 }}
                 style={{
                   height: heightPercentageToDP(7),
                   backgroundColor: COLORS.white_s,
                   borderRadius: heightPercentageToDP(3),
                   marginTop: heightPercentageToDP(2),
+                 
                 }}>
                 {alldatafiler.map(item => (
                   <TouchableOpacity
@@ -510,7 +532,50 @@ const PlayArenaLocation = () => {
                     </Text>
                   </TouchableOpacity>
                 ))}
-              </ScrollView>
+              </ScrollView> */}
+              <View
+                style={{
+                  height: heightPercentageToDP(6),
+                  backgroundColor: COLORS.white_s,
+                  borderRadius: heightPercentageToDP(3),
+                  marginTop: heightPercentageToDP(2),
+                  overflow: 'hidden', // Ensures content stays inside the rounded container
+                }}>
+                <ScrollView
+                  horizontal
+                  showsHorizontalScrollIndicator={false}
+                  contentContainerStyle={{
+                    alignItems: 'center',
+                    paddingHorizontal: heightPercentageToDP(1),
+                  }}>
+                  {alldatafiler.map(item => (
+                    <TouchableOpacity
+                      onPress={() => settingFilterData(item)}
+                      key={item._id}
+                      style={{
+                        backgroundColor: COLORS.grayHalfBg,
+                        padding: heightPercentageToDP(1),
+                        margin: heightPercentageToDP(0.2),
+                        borderRadius: heightPercentageToDP(1),
+                        borderColor:
+                          selectedFilter == item._id
+                            ? COLORS.green
+                            : COLORS.grayHalfBg,
+                        borderWidth: 1,
+                      }}>
+                      <Text
+                        style={{
+                          fontFamily: FONT.Montserrat_Regular,
+                          fontSize: heightPercentageToDP(1.5),
+                          color: COLORS.black,
+                          paddingHorizontal: heightPercentageToDP(0.5),
+                        }}>
+                        {item.maximumReturn}
+                      </Text>
+                    </TouchableOpacity>
+                  ))}
+                </ScrollView>
+              </View>
             </View>
 
             <View style={{flex: 2}}>
@@ -524,6 +589,7 @@ const PlayArenaLocation = () => {
                   initialNumToRender={10}
                   maxToRenderPerBatch={10}
                   windowSize={10}
+                  ListFooterComponent={() => <View style={{height: 100}}></View>}
                 />
               )}
             </View>

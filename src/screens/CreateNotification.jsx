@@ -131,9 +131,25 @@ const CreateNotification = ({route}) => {
               style={{
                 height: heightPercentageToDP(5),
                 width: widthPercentageToDP(100),
-                justifyContent: 'center',
+                flexDirection: 'row',
+                justifyContent: 'space-between',
                 alignItems: 'center',
+                paddingHorizontal: heightPercentageToDP(2),
               }}>
+              <Text
+                style={{
+                  fontFamily: FONT.Montserrat_Regular,
+                  fontSize: heightPercentageToDP(2),
+                  color: COLORS.white_s,
+                  width: widthPercentageToDP(30),
+                  textAlign: 'center',
+                }}
+                numberOfLines={1}
+                ellipsizeMode="tail"
+                >
+                {userdata.name}
+              </Text>
+
               <View
                 style={{
                   width: widthPercentageToDP(20),
@@ -141,7 +157,23 @@ const CreateNotification = ({route}) => {
                   backgroundColor: COLORS.grayBg,
                   borderRadius: heightPercentageToDP(2),
                 }}></View>
+
+              <Text
+                style={{
+                  fontFamily: FONT.Montserrat_Regular,
+                  fontSize: heightPercentageToDP(2),
+                  color: COLORS.white_s,
+                  overflow: 'hidden',
+                  width: widthPercentageToDP(30),
+                  textAlign: 'center',
+                }}
+                numberOfLines={1}
+                ellipsizeMode="tail"
+                >
+                {userdata.country?.countryname}
+              </Text>
             </View>
+
 
             {/** Result Main Container */}
 

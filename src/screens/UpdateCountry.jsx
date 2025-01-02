@@ -64,6 +64,31 @@ const UpdateCountry = ({route}) => {
     item.countrycurrencysymbol,
   );
 
+  const [imageFileName, setImageFileName] = useState('Choose a file');
+  const [mineImage, setMineImage] = useState(null);
+  const [imageSource, setImageSource] = useState(null);
+
+  // For Opening PhoneStorage
+  const selectDoc = async () => {
+    try {
+      const doc = await DocumentPicker.pick({
+        type: [DocumentPicker.types.images],
+        allowMultiSelection: true,
+      });
+
+      if (doc) {
+        console.log(doc);
+        setMineImage(doc);
+        setImageSource({uri: doc[0].uri});
+        setImageFileName(doc[0].name);
+      }
+    } catch (err) {
+      if (DocumentPicker.isCancel(err))
+        console.log('User cancelled the upload', err);
+      else console.log(err);
+    }
+  };
+
   const [updateCurrency, {isLoading, error}] = useUpdateCurrencyMutation();
 
   const submitDeposit = async () => {
@@ -78,36 +103,93 @@ const UpdateCountry = ({route}) => {
       return;
     } else {
       console.log('Update Currency Running');
-      try {
-        const formData = {
-          countrycurrencyvaluecomparedtoinr: countrycurrencyvaluecomparedtoinr,
-          countrycurrencysymbol: countrycurrencysymbol,
-        };
 
-        console.log('FORM DATA :: ' + JSON.stringify(formData));
+      if (imageSource) {
+        try {
+          // const formData = {
+          //   countrycurrencyvaluecomparedtoinr: countrycurrencyvaluecomparedtoinr,
+          //   countrycurrencysymbol: countrycurrencysymbol,
+          // };
 
-        const res = await updateCurrency({
-          accesstoken: accesstoken,
-          id: item._id,
-          body: formData,
-        }).unwrap();
+          const formData = new FormData();
 
-        console.log('Res :: ' + res);
-        console.log('Res String :: ' + JSON.stringify(res));
-
-        Toast.show({type: 'success', text1: 'Success', text2: res.message});
-        navigation.goBack();
-      } catch (error) {
-        console.log('Error during deposit:', error);
-        if (error.response) {
-          Toast.show({type: 'error', text1: error.response.data});
-        } else if (error.request) {
-          Toast.show({
-            type: 'error',
-            text1: 'Request was made, but no response was received',
+          formData.append('countrycurrencysymbol', countrycurrencysymbol);
+          formData.append(
+            'countrycurrencyvaluecomparedtoinr',
+            countrycurrencyvaluecomparedtoinr,
+          );
+          formData.append('countryicon', {
+            uri: mineImage[0].uri,
+            name: mineImage[0].name,
+            type: mineImage[0].type || 'image/jpeg', // Default to 'image/jpeg' if type is null
           });
-        } else {
-          Toast.show({type: 'error', text1: error.message});
+
+          console.log('FORM DATA :: ' + JSON.stringify(formData));
+
+          const res = await updateCurrency({
+            accesstoken: accesstoken,
+            id: item._id,
+            body: formData,
+          }).unwrap();
+
+          console.log('Res :: ' + res);
+          console.log('Res String :: ' + JSON.stringify(res));
+
+          Toast.show({type: 'success', text1: 'Success', text2: res.message});
+          navigation.goBack();
+        } catch (error) {
+          console.log('Error during deposit:', error);
+          if (error.response) {
+            Toast.show({type: 'error', text1: error.response.data});
+          } else if (error.request) {
+            Toast.show({
+              type: 'error',
+              text1: 'Request was made, but no response was received',
+            });
+          } else {
+            Toast.show({type: 'error', text1: error.message});
+          }
+        }
+      } else {
+        try {
+          // const formData = {
+          //   countrycurrencyvaluecomparedtoinr: countrycurrencyvaluecomparedtoinr,
+          //   countrycurrencysymbol: countrycurrencysymbol,
+          // };
+
+          const formData = new FormData();
+
+          formData.append('countrycurrencysymbol', countrycurrencysymbol);
+          formData.append(
+            'countrycurrencyvaluecomparedtoinr',
+            countrycurrencyvaluecomparedtoinr,
+          );
+
+          console.log('FORM DATA :: ' + JSON.stringify(formData));
+
+          const res = await updateCurrency({
+            accesstoken: accesstoken,
+            id: item._id,
+            body: formData,
+          }).unwrap();
+
+          console.log('Res :: ' + res);
+          console.log('Res String :: ' + JSON.stringify(res));
+
+          Toast.show({type: 'success', text1: 'Success', text2: res.message});
+          navigation.goBack();
+        } catch (error) {
+          console.log('Error during deposit:', error);
+          if (error.response) {
+            Toast.show({type: 'error', text1: error.response.data});
+          } else if (error.request) {
+            Toast.show({
+              type: 'error',
+              text1: 'Request was made, but no response was received',
+            });
+          } else {
+            Toast.show({type: 'error', text1: error.message});
+          }
         }
       }
     }
@@ -292,6 +374,64 @@ const UpdateCountry = ({route}) => {
                       />
                     </LinearGradient>
                   </View>
+
+                  {/** country icon */}
+
+                  <TouchableOpacity
+                    onPress={selectDoc}
+                    style={{
+                      borderRadius: heightPercentageToDP(2),
+                    }}>
+                    <Text
+                      style={{
+                        fontFamily: FONT.Montserrat_SemiBold,
+                        color: COLORS.black,
+                        fontSize: heightPercentageToDP(2),
+                        paddingStart: heightPercentageToDP(1),
+                      }}>
+                      Icon
+                    </Text>
+
+                    <LinearGradient
+                      colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
+                      start={{x: 0, y: 0}} // start from left
+                      end={{x: 1, y: 0}} // end at right
+                      style={{
+                        borderRadius: heightPercentageToDP(2),
+                        flexDirection: 'row',
+                        alignItems: 'center', // Ensures vertical alignment of items
+                        padding: heightPercentageToDP(0.5), // Adjust padding for spacing
+                      }}>
+                      <Text
+                        style={{
+                          backgroundColor: 'transparent',
+                          fontFamily: FONT.HELVETICA_REGULAR,
+                          color: COLORS.black,
+                          fontSize: heightPercentageToDP(2),
+                          textAlign: 'left',
+                          paddingStart: heightPercentageToDP(2), // Padding for spacing on the left
+                          flex: 1, // Let the text take available space
+                        }}>
+                        {imageFileName}
+                      </Text>
+                      <View
+                        style={{
+                          justifyContent: 'center',
+                          alignItems: 'center',
+                          paddingEnd: heightPercentageToDP(2),
+                        }}>
+                        <LinearGradient
+                          colors={[COLORS.grayBg, COLORS.white_s]}
+                          style={{borderRadius: 20, padding: 10}}>
+                          <AntDesign
+                            name={'upload'}
+                            size={heightPercentageToDP(3)}
+                            color={COLORS.darkGray}
+                          />
+                        </LinearGradient>
+                      </View>
+                    </LinearGradient>
+                  </TouchableOpacity>
                 </View>
               </ScrollView>
 

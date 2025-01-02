@@ -30,7 +30,10 @@ const UpdateLocation = ({route}) => {
 
   console.log(JSON.stringify(locationdata));
   const [enterData, setEnterData] = useState('');
+  const [bettinglimit, setbettinglimit] = useState(locationdata.bettinglimit);
+
   const [loading, setLoading] = useState(false);
+
 
   const dispatch = useDispatch();
   const navigation = useNavigation();
@@ -48,7 +51,14 @@ const UpdateLocation = ({route}) => {
         type: 'error',
         text1: 'Please Enter Location Name',
       });
-    } else {
+    }
+    else if (!bettinglimit) {
+      Toast.show({
+        type: 'error',
+        text1: 'Please Enter Betting Limit for this location',
+      });
+    }
+     else {
       Toast.show({
         type: 'success',
         text1: 'Processing ',
@@ -70,6 +80,7 @@ const UpdateLocation = ({route}) => {
         url,
         {
           lotlocation: enterData,
+          bettinglimit: bettinglimit,
         },
         {
           headers: {
@@ -190,6 +201,48 @@ const UpdateLocation = ({route}) => {
                   label="location"
                   value={enterData}
                   onChangeText={text => setEnterData(text)}
+                />
+              </View>
+
+              {/** FOR BETTING LIMIT */}
+              <GradientText
+                style={{
+                  fontFamily: FONT.Montserrat_Regular,
+                  fontSize: heightPercentageToDP(2.5),
+                  color: COLORS.black,
+                  marginBottom: heightPercentageToDP(1),
+                  marginTop: heightPercentageToDP(2),
+                }}>
+                Betting Limit
+              </GradientText>
+
+              <View
+                style={{
+                  height: heightPercentageToDP(7),
+                  flexDirection: 'row',
+                  backgroundColor: COLORS.white_s,
+                  alignItems: 'center',
+                  paddingHorizontal: heightPercentageToDP(2),
+                  borderRadius: heightPercentageToDP(1),
+                }}>
+                <Entypo
+                  name={'area-graph'}
+                  size={heightPercentageToDP(3)}
+                  color={COLORS.darkGray}
+                />
+                <TextInput
+                  style={{
+                    marginStart: heightPercentageToDP(1),
+                    flex: 1,
+                    fontFamily: FONT.Montserrat_Regular,
+                    color: COLORS.black,
+                    fontSize: heightPercentageToDP(2.5),
+                  }}
+                  placeholder="For example:  2"
+                  label="betting limit"
+                  placeholderTextColor={COLORS.darkGray}
+                  value={bettinglimit}
+                  onChangeText={text => setbettinglimit(text)}
                 />
               </View>
             </View>

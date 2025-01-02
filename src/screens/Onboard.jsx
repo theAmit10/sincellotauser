@@ -31,7 +31,7 @@ const Onboard = () => {
             fontFamily: FONT.ZCOOL_Regular,
             fontSize: heightPercentageToDP(3),
           }}>
-          Since 1927
+          Since 2001
         </Text>
       </View>
 

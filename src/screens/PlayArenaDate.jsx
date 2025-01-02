@@ -34,6 +34,7 @@ import axios from 'axios';
 import GradientTextWhite from '../components/helpercComponent/GradientTextWhite';
 import {useDeletePlayzoneMutation} from '../helper/Networkcall';
 import moment from 'moment';
+import 'moment-timezone';
 
 const PlayArenaDate = ({route}) => {
   const navigation = useNavigation();
@@ -47,7 +48,9 @@ const PlayArenaDate = ({route}) => {
   // FOR DELETING PLAYZONE
   const [deletePlayzone, {isLoading, error}] = useDeletePlayzoneMutation();
 
- 
+  function getCurrentDateInTimezone() {
+    return moment.tz('Asia/Kolkata').format('DD-MM-YYYY');
+  }
 
   const focused = useIsFocused();
 
@@ -72,49 +75,122 @@ const PlayArenaDate = ({route}) => {
   //   setFilteredData(filtered);
   // };
 
-
-  const handleSearch = (text) => {
+  const handleSearch = text => {
     // Get current date
-    const currentDate = moment().startOf("day");
-    // Get the next date
-    const nextDate = currentDate.clone().add(1, "days");
+    // const currentDate = moment().startOf("day");
+    // // Get the next date
+    // const nextDate = currentDate.clone().add(1, "days");
+
+    // if (dates) {
+    //   const filtered = dates.filter((item) => {
+    //     const itemDate = moment(item.lotdate, "DD-MM-YYYY"); // Parse lotdate with correct format
+
+    //     // Exclude if the item.lotdate matches the next day
+    //     return (
+    //       !itemDate.isSame(nextDate, "day") &&
+    //       item.lotdate.toLowerCase().includes(text.toLowerCase())
+    //     );
+    //   });
+    //   setFilteredData(filtered);
+    // }
+
+    // Get current, previous, and next dates
+    const currentDate = moment().startOf('day');
+    const previousDate = currentDate.clone().subtract(1, 'days');
+    const nextDate = currentDate.clone().add(1, 'days');
+
+    // Get the current time
+    const currentTime = moment();
+    const isWithinTimeRange = currentTime.isBetween(
+      moment().set({hour: 23, minute: 0}), // 11:00 PM
+      moment().add(1, 'days').startOf('day'), // 12:00 AM
+    );
 
     if (dates) {
-      const filtered = dates.filter((item) => {
-        const itemDate = moment(item.lotdate, "DD-MM-YYYY"); // Parse lotdate with correct format
+      const filtered = dates.filter(item => {
+        const itemDate = moment(item.lotdate, 'DD-MM-YYYY'); // Parse lotdate correctly
 
-        // Exclude if the item.lotdate matches the next day
-        return (
-          !itemDate.isSame(nextDate, "day") &&
-          item.lotdate.toLowerCase().includes(text.toLowerCase())
-        );
+        // Always include the previous date and current date
+        if (
+          itemDate.isSame(previousDate, 'day') ||
+          itemDate.isSame(currentDate, 'day')
+        ) {
+          return true;
+        }
+
+        // Include the next date only if it's between 11:00 PM - 12:00 AM
+        if (itemDate.isSame(nextDate, 'day') && isWithinTimeRange) {
+          return true;
+        }
+
+        return false; // Exclude all other dates
       });
-      setFilteredData(filtered);
+
+      // Optional: Apply search text filtering
+      const finalFiltered = filtered.filter(item =>
+        item.lotdate.toLowerCase().includes(text.toLowerCase()),
+      );
+
+      setFilteredData(finalFiltered); // Update the filteredDataD
     }
   };
 
+  // useEffect(() => {
+  //   if (dates) {
+  //     const currentDate = moment().startOf("day");
+  //     const nextDate = currentDate.clone().add(1, "days");
+
+  //     // Filter out items where the lotdate is the next day
+  //     const filtered = dates.filter((item) => {
+  //       const itemDate = moment(item.lotdate, "DD-MM-YYYY"); // Adjust format as needed
+  //       return !itemDate.isSame(nextDate, "day");
+  //     });
+
+  //     setFilteredData(filtered); // Update filteredData whenever dates change
+  //   }
+  // }, [dates]);
+
   useEffect(() => {
     if (dates) {
-      const currentDate = moment().startOf("day");
-      const nextDate = currentDate.clone().add(1, "days");
+      // Get current, previous, and next dates
+      const currentDate = moment().startOf('day');
+      const previousDate = currentDate.clone().subtract(1, 'days');
+      const nextDate = currentDate.clone().add(1, 'days');
 
-      // Filter out items where the lotdate is the next day
-      const filtered = dates.filter((item) => {
-        const itemDate = moment(item.lotdate, "DD-MM-YYYY"); // Adjust format as needed
-        return !itemDate.isSame(nextDate, "day");
+      // Get the current time
+      const currentTime = moment();
+      const isWithinTimeRange = currentTime.isBetween(
+        moment().set({hour: 23, minute: 0}), // 11:00 PM
+        moment().add(1, 'days').startOf('day'), // 12:00 AM
+      );
+
+      const filtered = dates.filter(item => {
+        const itemDate = moment(item.lotdate, 'DD-MM-YYYY');
+
+        // Always include the previous date and current date
+        if (
+          itemDate.isSame(previousDate, 'day') ||
+          itemDate.isSame(currentDate, 'day')
+        ) {
+          return true;
+        }
+
+        // Include the next date if it's between 11:00 PM - 12:00 AM
+        if (itemDate.isSame(nextDate, 'day') && isWithinTimeRange) {
+          return true;
+        }
+
+        return false; // Exclude all other dates
       });
 
-      setFilteredData(filtered); // Update filteredData whenever dates change
+      setFilteredData(filtered); // Update the filtered data with the three dates
     }
   }, [dates]);
-
- 
 
   const [selectedItem, setSelectedItem] = useState('');
   const [showProgressBar, setProgressBar] = useState(false);
 
-
-// CURRENTLY WE ARE ABLE TO DELETE ONLY DATE BUT NOT DELETING THE PLAYZONE
+  // CURRENTLY WE ARE ABLE TO DELETE ONLY DATE BUT NOT DELETING THE PLAYZONE
   const deleteLocationHandler = async item => {
     console.log('Item clicked :: ' + item._id);
     setProgressBar(true);
@@ -163,181 +239,195 @@ const PlayArenaDate = ({route}) => {
         style={{flex: 1}}
         behavior="height"
         keyboardVerticalOffset={-60}>
-      <Background />
-      <View style={{flex: 1, justifyContent: 'flex-end'}}>
-        <ImageBackground
-          source={require('../../assets/image/tlwbg.jpg')}
-          style={{
-            width: '100%',
-            height:
-            Platform.OS === 'android'
-              ? heightPercentageToDP(85)
-              : heightPercentageToDP(80),
-          }}
-          imageStyle={{
-            borderTopLeftRadius: heightPercentageToDP(5),
-            borderTopRightRadius: heightPercentageToDP(5),
-          }}>
-          {/** Main Cointainer */}
-
-          <View
+        <Background />
+        <View style={{flex: 1, justifyContent: 'flex-end'}}>
+          <ImageBackground
+            source={require('../../assets/image/tlwbg.jpg')}
             style={{
+              width: '100%',
               height:
-              Platform.OS === 'android'
-                ? heightPercentageToDP(85)
-                : heightPercentageToDP(80),
-              width: widthPercentageToDP(100),
-
+                Platform.OS === 'android'
+                  ? heightPercentageToDP(85)
+                  : heightPercentageToDP(80),
+            }}
+            imageStyle={{
               borderTopLeftRadius: heightPercentageToDP(5),
               borderTopRightRadius: heightPercentageToDP(5),
             }}>
-            {/** Top Style View */}
+            {/** Main Cointainer */}
+
             <View
               style={{
-                height: heightPercentageToDP(5),
+                height:
+                  Platform.OS === 'android'
+                    ? heightPercentageToDP(85)
+                    : heightPercentageToDP(80),
                 width: widthPercentageToDP(100),
-                justifyContent: 'center',
-                alignItems: 'center',
+
+                borderTopLeftRadius: heightPercentageToDP(5),
+                borderTopRightRadius: heightPercentageToDP(5),
               }}>
+              {/** Top Style View */}
               <View
                 style={{
-                  width: widthPercentageToDP(20),
-                  height: heightPercentageToDP(0.8),
-                  backgroundColor: COLORS.grayBg,
-                  borderRadius: heightPercentageToDP(2),
-                }}></View>
-            </View>
-
-            {/** Content Container */}
-
-            <View
-              style={{
-                height: heightPercentageToDP(15),
-                margin: heightPercentageToDP(2),
-              }}>
-              <View
-                style={{
-                  justifyContent: 'space-between',
+                  height: heightPercentageToDP(5),
+                  width: widthPercentageToDP(100),
+                  justifyContent: 'center',
                   alignItems: 'center',
-                  flexDirection: 'row',
                 }}>
-                <GradientTextWhite style={styles.textStyle}>
-                  Search Date
-                </GradientTextWhite>
-                <GradientTextWhite
+                <View
                   style={{
-                    fontSize: heightPercentageToDP(2),
-                    fontFamily: FONT.Montserrat_Bold,
-                    marginEnd: heightPercentageToDP(2),
-                    color: COLORS.white_s,
+                    width: widthPercentageToDP(20),
+                    height: heightPercentageToDP(0.8),
+                    backgroundColor: COLORS.grayBg,
+                    borderRadius: heightPercentageToDP(2),
+                  }}></View>
+              </View>
+
+              {/** Content Container */}
+
+              <View
+                style={{
+                  height: heightPercentageToDP(15),
+                  margin: heightPercentageToDP(2),
+                }}>
+                <View
+                  style={{
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    flexDirection: 'row',
                   }}>
-                  {locationdata?.limit}
-                </GradientTextWhite>
+                  <GradientTextWhite style={styles.textStyle}>
+                    Search Date
+                  </GradientTextWhite>
+                  <GradientTextWhite
+                    style={{
+                      fontSize: heightPercentageToDP(2),
+                      fontFamily: FONT.Montserrat_Bold,
+                      marginEnd: heightPercentageToDP(2),
+                      color: COLORS.white_s,
+                    }}>
+                    {locationdata?.limit}
+                  </GradientTextWhite>
+                </View>
+
+                {/** Search container */}
+
+                <View
+                  style={{
+                    height: heightPercentageToDP(7),
+                    flexDirection: 'row',
+                    backgroundColor: COLORS.white_s,
+                    alignItems: 'center',
+                    paddingHorizontal: heightPercentageToDP(2),
+                    borderRadius: heightPercentageToDP(1),
+                    marginTop: heightPercentageToDP(2),
+                  }}>
+                  <Fontisto
+                    name={'search'}
+                    size={heightPercentageToDP(3)}
+                    color={COLORS.darkGray}
+                  />
+                  <TextInput
+                    style={{
+                      marginStart: heightPercentageToDP(1),
+                      flex: 1,
+                      fontFamily: FONT.Montserrat_SemiBold,
+                      fontSize: heightPercentageToDP(2),
+                      color: COLORS.black,
+                    }}
+                    placeholder="Search for date"
+                    placeholderTextColor={COLORS.black}
+                    label="Search"
+                    onChangeText={handleSearch}
+                  />
+                </View>
               </View>
 
-              {/** Search container */}
+              <View style={{margin: heightPercentageToDP(2)}}>
+                <GradientText style={styles.textStyle}>
+                  {locationdata.name}
+                </GradientText>
+                <GradientText style={styles.textStyle}>
+                  {timedata.time}
+                </GradientText>
+              </View>
 
               <View
                 style={{
-                  height: heightPercentageToDP(7),
-                  flexDirection: 'row',
-                  backgroundColor: COLORS.white_s,
-                  alignItems: 'center',
-                  paddingHorizontal: heightPercentageToDP(2),
-                  borderRadius: heightPercentageToDP(1),
-                  marginTop: heightPercentageToDP(2),
+                  flex: 2,
                 }}>
-                <Fontisto
-                  name={'search'}
-                  size={heightPercentageToDP(3)}
-                  color={COLORS.darkGray}
-                />
-                <TextInput
-                  style={{
-                    marginStart: heightPercentageToDP(1),
-                    flex: 1,
-                    fontFamily: FONT.Montserrat_SemiBold,
-                    fontSize: heightPercentageToDP(2),
-                    color: COLORS.black,
-                  }}
-                  placeholder="Search for date"
-                  placeholderTextColor={COLORS.black}
-                  label="Search"
-                  onChangeText={handleSearch}
-                />
-              </View>
-            </View>
-
-            <View style={{margin: heightPercentageToDP(2)}}>
-              <GradientText style={styles.textStyle}>
-                {locationdata.name}
-              </GradientText>
-              <GradientText style={styles.textStyle}>
-                {timedata.time}
-              </GradientText>
-            </View>
-
-            <View
-              style={{
-                flex: 2,
-              }}>
-              {loading ? (
-                <Loading />
-              ) : filteredData.length === 0 ? (
-                <View style={{margin: heightPercentageToDP(2)}}>
-                  <NoDataFound data={'No data available'} />
-                </View>
-              ) : (
-                <FlatList
-                  data={filteredData}
-                  renderItem={({item, index}) => (
-                    <TouchableOpacity
-                      onPress={() =>
-                        navigation.navigate('PlayArenaAdmin', {
-                          datedata: item,
-                          locationdata: locationdata,
-                          timedata: timedata,
-                        })
-                      }>
-                      <LinearGradient
-                        colors={
-                          index % 2 === 0
-                            ? [COLORS.time_firstblue, COLORS.time_secondbluw]
-                            : [COLORS.time_firstgreen, COLORS.time_secondgreen]
+                {loading ? (
+                  <Loading />
+                ) : filteredData.length === 0 ? (
+                  <View style={{margin: heightPercentageToDP(2)}}>
+                    <NoDataFound data={'No data available'} />
+                  </View>
+                ) : (
+                  <FlatList
+                    data={filteredData}
+                    renderItem={({item, index}) => (
+                      <TouchableOpacity
+                        onPress={() =>
+                          navigation.navigate('PlayArenaAdmin', {
+                            datedata: item,
+                            locationdata: locationdata,
+                            timedata: timedata,
+                          })
                         }
-                        start={{x: 0, y: 0}} // start from left
-                        end={{x: 1, y: 0}} // end at right
                         style={{
-                          ...styles.item,
-                          backgroundColor:
-                            index % 2 === 0
-                              ? COLORS.lightDarkGray
-                              : COLORS.grayHalfBg,
+                          borderColor:
+                            getCurrentDateInTimezone() === item.lotdate
+                              ? COLORS.orange
+                              : 'transparent',
+                          borderWidth: 2,
+                          borderRadius: heightPercentageToDP(2),
+                          marginHorizontal: heightPercentageToDP(2),
+                          marginBottom: heightPercentageToDP(1),
+                          overflow: 'hidden',
                         }}>
-                        <View
+                        <LinearGradient
+                          colors={
+                            index % 2 === 0
+                              ? [COLORS.time_firstblue, COLORS.time_secondbluw]
+                              : [
+                                  COLORS.time_firstgreen,
+                                  COLORS.time_secondgreen,
+                                ]
+                          }
+                          start={{x: 0, y: 0}} // start from left
+                          end={{x: 1, y: 0}} // end at right
                           style={{
                             flexDirection: 'row',
                             justifyContent: 'space-between',
+                            padding: heightPercentageToDP(2),
+                            borderRadius: heightPercentageToDP(1),
+                            alignItems: 'center'
                           }}>
-                          <Text
-                            style={{
-                              color: COLORS.black,
-                              fontFamily: FONT.HELVETICA_BOLD,
-                              fontSize: heightPercentageToDP(2.5),
-                            }}>
-                            {item.lotdate}
-                          </Text>
-
                           <View
                             style={{
                               flexDirection: 'row',
-                              justifyContent: 'center',
-                              alignItems: 'center',
-                              gap: heightPercentageToDP(2),
+                              justifyContent: 'space-between',
                             }}>
-                            {/** Update Locatiion */}
+                            <Text
+                              style={{
+                                color: COLORS.black,
+                                fontFamily: FONT.HELVETICA_BOLD,
+                                fontSize: heightPercentageToDP(2.5),
+                              }}>
+                              {item.lotdate}
+                            </Text>
 
-                            <TouchableOpacity
+                            <View
+                              style={{
+                                flexDirection: 'row',
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                                gap: heightPercentageToDP(2),
+                              }}>
+                              {/** Update Locatiion */}
+
+                              {/* <TouchableOpacity
                               onPress={() =>
                                 navigation.navigate('UpdateDate', {
                                   locationdata: locationdata,
@@ -370,11 +460,11 @@ const PlayArenaDate = ({route}) => {
                                   />
                                 </LinearGradient>
                               )}
-                            </TouchableOpacity>
+                            </TouchableOpacity> */}
 
-                            {/** Delete Locatiion */}
+                              {/** Delete Locatiion */}
 
-                            <TouchableOpacity
+                              {/* <TouchableOpacity
                               onPress={() => deleteLocationHandler(item)}>
                               {showProgressBar ? (
                                 selectedItem === item._id ? (
@@ -401,57 +491,57 @@ const PlayArenaDate = ({route}) => {
                                   />
                                 </LinearGradient>
                               )}
-                            </TouchableOpacity>
+                            </TouchableOpacity> */}
+                            </View>
                           </View>
-                        </View>
-                      </LinearGradient>
-                    </TouchableOpacity>
-                  )}
-                  keyExtractor={item => item._id}
-                  initialNumToRender={10} // Render initial 10 items
-                  maxToRenderPerBatch={10} // Batch size to render
-                  windowSize={10} // Number of items kept in memory
-                />
-              )}
-            </View>
+                        </LinearGradient>
+                      </TouchableOpacity>
+                    )}
+                    keyExtractor={item => item._id}
+                    initialNumToRender={10} // Render initial 10 items
+                    maxToRenderPerBatch={10} // Batch size to render
+                    windowSize={10} // Number of items kept in memory
+                  />
+                )}
+              </View>
 
-            {/** Bottom Submit Container */}
+              {/** Bottom Submit Container */}
 
-            <View
-              style={{
-                marginBottom: heightPercentageToDP(5),
-                marginHorizontal: heightPercentageToDP(2),
-                marginTop: heightPercentageToDP(2),
-              }}>
-              {/** Email container */}
-
-              <TouchableOpacity
-                onPress={() =>
-                  navigation.navigate('CreateDate', {
-                    locationdata: locationdata,
-                    timedata: timedata,
-                  })
-                }
+              <View
                 style={{
-                  backgroundColor: COLORS.blue,
-                  padding: heightPercentageToDP(2),
-                  borderRadius: heightPercentageToDP(1),
-                  alignItems: 'center',
+                  marginBottom: heightPercentageToDP(5),
+                  marginHorizontal: heightPercentageToDP(2),
+                  marginTop: heightPercentageToDP(2),
                 }}>
-                <Text
-                  style={{
-                    color: COLORS.white,
-                    fontFamily: FONT.Montserrat_Regular,
-                  }}>
-                  Create Date
-                </Text>
-              </TouchableOpacity>
-            </View>
+                {/** Email container */}
 
-            {/** end */}
-          </View>
-        </ImageBackground>
-      </View>
+                <TouchableOpacity
+                  onPress={() =>
+                    navigation.navigate('CreateDate', {
+                      locationdata: locationdata,
+                      timedata: timedata,
+                    })
+                  }
+                  style={{
+                    backgroundColor: COLORS.blue,
+                    padding: heightPercentageToDP(2),
+                    borderRadius: heightPercentageToDP(1),
+                    alignItems: 'center',
+                  }}>
+                  <Text
+                    style={{
+                      color: COLORS.white,
+                      fontFamily: FONT.Montserrat_Regular,
+                    }}>
+                    Create Date
+                  </Text>
+                </TouchableOpacity>
+              </View>
+
+              {/** end */}
+            </View>
+          </ImageBackground>
+        </View>
       </KeyboardAvoidingView>
     </SafeAreaView>
   );

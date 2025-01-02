@@ -1,4 +1,6 @@
 import {
+  ImageBackground,
+  SafeAreaView,
   StyleSheet,
   Text,
   TextInput,
@@ -27,7 +29,7 @@ import {loadAllAboutUs} from '../redux/actions/userAction';
 const UpdateAboutUs = ({route}) => {
   const {aboutdata} = route.params;
 
-//   console.log('About Data : ' + JSON.stringify(aboutdata));
+  //   console.log('About Data : ' + JSON.stringify(aboutdata));
 
   const {accesstoken} = useSelector(state => state.user);
 
@@ -106,144 +108,154 @@ const UpdateAboutUs = ({route}) => {
 
       {/** Login Cointainer */}
 
-      <View
+      <ImageBackground
+        source={require('../../assets/image/tlwbg.jpg')}
         style={{
+          width: '100%',
           height: heightPercentageToDP(65),
-          width: widthPercentageToDP(100),
-          backgroundColor: COLORS.white_s,
+        }}
+        imageStyle={{
           borderTopLeftRadius: heightPercentageToDP(5),
           borderTopRightRadius: heightPercentageToDP(5),
         }}>
-        {/** Top Style View */}
         <View
           style={{
-            height: heightPercentageToDP(5),
+            height: heightPercentageToDP(65),
             width: widthPercentageToDP(100),
-            justifyContent: 'center',
-            alignItems: 'center',
+            borderTopLeftRadius: heightPercentageToDP(5),
+            borderTopRightRadius: heightPercentageToDP(5),
           }}>
+          {/** Top Style View */}
           <View
             style={{
-              width: widthPercentageToDP(20),
-              height: heightPercentageToDP(0.8),
-              backgroundColor: COLORS.grayBg,
-              borderRadius: heightPercentageToDP(2),
-            }}></View>
-        </View>
-
-        {/** Result Main Container */}
-
-        <View style={{padding: heightPercentageToDP(2)}}>
-          <GradientText
-            style={{
-              fontFamily: FONT.Montserrat_Regular,
-              fontSize: heightPercentageToDP(2.5),
-              color: COLORS.black,
-              marginBottom: heightPercentageToDP(1),
-            }}>
-            Update About Us
-          </GradientText>
-
-          {/** Title container */}
-
-          <View
-            style={{
-              height: heightPercentageToDP(7),
-              flexDirection: 'row',
-              backgroundColor: COLORS.grayHalfBg,
+              height: heightPercentageToDP(5),
+              width: widthPercentageToDP(100),
+              justifyContent: 'center',
               alignItems: 'center',
-              paddingHorizontal: heightPercentageToDP(2),
-              borderRadius: heightPercentageToDP(1),
             }}>
-            <LinearGradient
-              colors={[COLORS.lightWhite, COLORS.white_s]}
-              className="rounded-xl p-1">
-              <MaterialIcons
-                name={'description'}
-                size={heightPercentageToDP(3)}
-                color={COLORS.black}
-              />
-            </LinearGradient>
-            <TextInput
+            <View
               style={{
-                marginStart: heightPercentageToDP(1),
-                flex: 1,
-                fontFamily: FONT.Montserrat_Regular,
-                color: COLORS.black,
-              }}
-              placeholder="Enter Title"
-              placeholderTextColor={COLORS.black}
-              label="location"
-              value={titleValue}
-              onChangeText={text => setTitle(text)}
-            />
+                width: widthPercentageToDP(20),
+                height: heightPercentageToDP(0.8),
+                backgroundColor: COLORS.grayBg,
+                borderRadius: heightPercentageToDP(2),
+              }}></View>
           </View>
 
-          {/** Description Containter */}
+          {/** Result Main Container */}
 
-          <View
-            style={{
-              height: heightPercentageToDP(20),
-              flexDirection: 'row',
-              backgroundColor: COLORS.grayHalfBg,
-              alignItems: 'flex-start',
-              paddingHorizontal: heightPercentageToDP(2),
-              borderRadius: heightPercentageToDP(1),
-              marginTop: heightPercentageToDP(2),
-            }}>
-            <TextInput
+          <View style={{padding: heightPercentageToDP(2)}}>
+            <GradientText
               style={{
-                marginStart: heightPercentageToDP(1),
-                flex: 1,
                 fontFamily: FONT.Montserrat_Regular,
-                minHeight: heightPercentageToDP(20),
-                textAlignVertical: 'top',
+                fontSize: heightPercentageToDP(2.5),
                 color: COLORS.black,
-              }}
-              placeholder="Enter Description"
-              placeholderTextColor={COLORS.black}
-              label="location"
-              value={discriptionValue}
-              onChangeText={text => setDescription(text)}
-              multiline={true}
-            />
-          </View>
-        </View>
+                marginBottom: heightPercentageToDP(1),
+              }}>
+              Update About Us
+            </GradientText>
 
-        {showProgressBar ? (
-          <View style={{flex: 1}}>
-            <Loading />
-          </View>
-        ) : (
-          <View
-            style={{
-              justifyContent: 'flex-end',
-              flex: 1,
-              alignItems: 'flex-end',
-              paddingVertical: heightPercentageToDP(4),
-              paddingHorizontal: heightPercentageToDP(2),
-            }}>
-            <TouchableOpacity
-              onPress={updateProfileHandler}
-              className="rounded-full"
+            {/** Title container */}
+
+            <View
               style={{
                 height: heightPercentageToDP(7),
-                width: heightPercentageToDP(7),
                 flexDirection: 'row',
-                backgroundColor: COLORS.blue,
+                backgroundColor: COLORS.grayHalfBg,
                 alignItems: 'center',
                 paddingHorizontal: heightPercentageToDP(2),
                 borderRadius: heightPercentageToDP(1),
               }}>
-              <Ionicons
-                name={'send'}
-                size={heightPercentageToDP(3)}
-                color={COLORS.white}
+              <LinearGradient
+                colors={[COLORS.lightWhite, COLORS.white_s]}
+                className="rounded-xl p-1">
+                <MaterialIcons
+                  name={'description'}
+                  size={heightPercentageToDP(3)}
+                  color={COLORS.black}
+                />
+              </LinearGradient>
+              <TextInput
+                style={{
+                  marginStart: heightPercentageToDP(1),
+                  flex: 1,
+                  fontFamily: FONT.Montserrat_Regular,
+                  color: COLORS.black,
+                }}
+                placeholder="Enter Title"
+                placeholderTextColor={COLORS.black}
+                label="location"
+                value={titleValue}
+                onChangeText={text => setTitle(text)}
               />
-            </TouchableOpacity>
+            </View>
+
+            {/** Description Containter */}
+
+            <View
+              style={{
+                height: heightPercentageToDP(20),
+                flexDirection: 'row',
+                backgroundColor: COLORS.grayHalfBg,
+                alignItems: 'flex-start',
+                paddingHorizontal: heightPercentageToDP(2),
+                borderRadius: heightPercentageToDP(1),
+                marginTop: heightPercentageToDP(2),
+              }}>
+              <TextInput
+                style={{
+                  marginStart: heightPercentageToDP(1),
+                  flex: 1,
+                  fontFamily: FONT.Montserrat_Regular,
+                  minHeight: heightPercentageToDP(20),
+                  textAlignVertical: 'top',
+                  color: COLORS.black,
+                }}
+                placeholder="Enter Description"
+                placeholderTextColor={COLORS.black}
+                label="location"
+                value={discriptionValue}
+                onChangeText={text => setDescription(text)}
+                multiline={true}
+              />
+            </View>
           </View>
-        )}
-      </View>
+
+          {showProgressBar ? (
+            <View style={{flex: 1}}>
+              <Loading />
+            </View>
+          ) : (
+            <View
+              style={{
+                justifyContent: 'flex-end',
+                flex: 1,
+                alignItems: 'flex-end',
+                paddingVertical: heightPercentageToDP(4),
+                paddingHorizontal: heightPercentageToDP(2),
+              }}>
+              <TouchableOpacity
+                onPress={updateProfileHandler}
+                className="rounded-full"
+                style={{
+                  height: heightPercentageToDP(7),
+                  width: heightPercentageToDP(7),
+                  flexDirection: 'row',
+                  backgroundColor: COLORS.blue,
+                  alignItems: 'center',
+                  paddingHorizontal: heightPercentageToDP(2),
+                  borderRadius: heightPercentageToDP(1),
+                }}>
+                <Ionicons
+                  name={'send'}
+                  size={heightPercentageToDP(3)}
+                  color={COLORS.white}
+                />
+              </TouchableOpacity>
+            </View>
+          )}
+        </View>
+      </ImageBackground>
     </SafeAreaView>
   );
 };

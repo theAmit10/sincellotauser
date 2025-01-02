@@ -59,12 +59,22 @@ const AllDeposit = () => {
   const [selectedItem, setSelectedItem] = useState(null);
   const navigation = useNavigation();
   const [updateKey, setUpdateKey] = useState(0);
+  const [filteredData, setFilteredData] = useState([]);
+
+  const [seletedImageId, setSelectedImageId] = useState('');
 
   console.log('Accesstoken :: ' + accesstoken);
   console.log('User ID :: ' + user.userId);
 
-  const {isLoading, data, isError, refetch} =
-    useGetAllDepositQuery(accesstoken);
+  const [page, setPage] = useState(1); // Current page
+  const [dataList, setDataList] = useState([]); // List of all data
+  const [isFetchingNextPage, setIsFetchingNextPage] = useState(false);
+
+  const {isLoading, data, isError, refetch} = useGetAllDepositQuery({
+    accesstoken,
+    page, // current page number
+    limit: 100, // number of items per page
+  });
 
   // FOR UPDATING PAYMENT STATUS
   const [
@@ -74,10 +84,24 @@ const AllDeposit = () => {
 
   const isFocused = useIsFocused();
 
+  // const fetchMoreData = () => {
+  //   if (!isFetchingNextPage && !isLoading) {
+  //     setIsFetchingNextPage(true); // Show progress bar
+  //     setPage(prevPage => prevPage + 1); // Increment page number
+  //     refetch(); // Fetch next page data
+  //     setIsFetchingNextPage(false); // Hide progress bar
+  //   }
+  // };
 
   useEffect(() => {
     refetch();
   }, [updateKey, isFocused]);
+
+  // useEffect(() => {
+  //   if (data && data.deposits?.length) {
+  //     setFilteredData(prevData => [...prevData, ...data.deposits]); // Append new data
+  //   }
+  // }, [data]);
 
   console.log('IS loaging :: ', isLoading);
 
@@ -88,12 +112,10 @@ const AllDeposit = () => {
     }));
   };
 
-  const [filteredData, setFilteredData] = useState([]);
-
   useEffect(() => {
     if (!isLoading) {
       console.log('USE Effect running');
-      setFilteredData(data.deposits);
+      setFilteredData(data?.deposits);
     }
   }, [isLoading, isFocused, refetch, updateKey]);
 
@@ -215,20 +237,6 @@ const AllDeposit = () => {
         console.log(updateStatusError);
       }
     }
-
-    // const body = {
-    //   transactionId: item._id,
-    //   paymentStatus: 'Completed',
-    // };
-
-    // const res = await updateDepositPaymentStatus({
-    //   accesstoken: accesstoken,
-    //   body: body,
-    // }).unwrap();
-
-    // refetch();
-
-    // Toast.show({type: 'success', text1: 'Success', text2: res.message});
   };
 
   // FOR CANCELLING
@@ -333,20 +341,6 @@ const AllDeposit = () => {
       Toast.show({type: 'success', text1: 'Success', text2: res.message});
       setUpdateKey(prevKey => prevKey + 1);
     }
-
-    // const body = {
-    //   transactionId: item._id,
-    //   paymentStatus: 'Cancelled',
-    // };
-
-    // const res = await updateDepositPaymentStatus({
-    //   accesstoken: accesstoken,
-    //   body: body,
-    // }).unwrap();
-
-    // refetch();
-
-    // Toast.show({type: 'success', text1: 'Success', text2: res.message});
   };
 
   const [alertVisibleAccepted, setAlertVisibleAccepted] = useState(false);
@@ -380,14 +374,16 @@ const AllDeposit = () => {
     setSelectedItem(item);
 
     // Calculate the amount
-    const calculatedAmount = item.convertedAmount
-      ? item.convertedAmount
-      : multiplyStringNumbers(
-          item.amount,
-          item.currency !== undefined
-            ? item.currency.countrycurrencyvaluecomparedtoinr
-            : 1,
-        );
+    // const calculatedAmount = item.convertedAmount
+    //   ? item.convertedAmount
+    //   : multiplyStringNumbers(
+    //       item.amount,
+    //       item.currency !== undefined
+    //         ? item.currency.countrycurrencyvaluecomparedtoinr
+    //         : 1,
+    //     );
+
+    const calculatedAmount = item.amount;
 
     // Set the calculated amount and country
     setCalculatedAmount(calculatedAmount);
@@ -433,6 +429,7 @@ const AllDeposit = () => {
   const [alertVisibleReceipt, setAlertVisibleReceipt] = useState(false);
 
   const showAlertReceipt = item => {
+    setSelectedImageId(item._id);
     setAlertVisibleReceipt(true);
   };
 
@@ -445,6 +442,20 @@ const AllDeposit = () => {
     setAlertVisibleReceipt(false);
     console.log('Yes pressed');
   };
+
+  function formatAmount(value) {
+    if (typeof value === "string") {
+      value = parseFloat(value); // Convert string to float if necessary
+    }
+  
+    // Check if the number has decimals
+    if (value % 1 === 0) {
+      return value; // Return as is if it's a whole number
+    } else {
+      return parseFloat(value.toFixed(1)); // Return with one decimal point if it has decimals
+    }
+  }
+  
 
   return (
     <SafeAreaView style={{flex: 1}}>
@@ -522,7 +533,7 @@ const AllDeposit = () => {
                       fontSize: heightPercentageToDP(2),
                       color: COLORS.black,
                     }}
-                    placeholder="Search for userid"
+                    placeholder="Search for user Id"
                     placeholderTextColor={COLORS.black}
                     label="Search"
                     onChangeText={handleSearch}
@@ -547,16 +558,18 @@ const AllDeposit = () => {
                     data={filteredData}
                     showsVerticalScrollIndicator={false}
                     renderItem={({item}) => {
-                      const calculatedAmount = item.convertedAmount
-                        ? item.convertedAmount
-                        : multiplyStringNumbers(
-                            item.amount,
-                            item.currency !== undefined
-                              ? item.currency.countrycurrencyvaluecomparedtoinr
-                              : 1,
-                          );
+                      // const calculatedAmount = item.convertedAmount
+                      //   ? item.convertedAmount
+                      //   : multiplyStringNumbers(
+                      //       item.amount,
+                      //       item.currency !== undefined
+                      //         ? item.currency.countrycurrencyvaluecomparedtoinr
+                      //         : 1,
+                      //     );
 
+                      const calculatedAmount = item.amount;
                       const usercountry = item.currency;
+                      const paymentType = item.paymentType;
 
                       return (
                         <LinearGradient
@@ -671,7 +684,7 @@ const AllDeposit = () => {
                                       fontSize: heightPercentageToDP(1.8),
                                       color: COLORS.black,
                                     }}>
-                                    {calculatedAmount}
+                                    {formatAmount(calculatedAmount)}
                                   </Text>
                                 </View>
                               </View>
@@ -780,6 +793,7 @@ const AllDeposit = () => {
                                         onYes={handleYesAccepted}
                                         defaultAmount={calculatedAmount}
                                         usercountry={usercountry}
+                                        paymentType={paymentType}
                                       />
 
                                       {/** FOR REJECTING */}
@@ -789,6 +803,7 @@ const AllDeposit = () => {
                                         onYes={handleYesRejected}
                                         defaultAmount={calculatedAmount}
                                         usercountry={usercountry}
+                                        paymentType={paymentType}
                                       />
                                     </>
                                   )}
@@ -879,13 +894,15 @@ const AllDeposit = () => {
                               </View>
 
                               {/** FOR SHOWING RECEIPT */}
-                              <CustomReceiptViewer
-                                visible={alertVisibleReceipt}
-                                onClose={closeAlertReceipt}
-                                onYes={handleYesReceipt}
-                                data={item}
-                                img={item.receipt}
-                              />
+                              {seletedImageId === item._id && (
+                                <CustomReceiptViewer
+                                  visible={alertVisibleReceipt}
+                                  onClose={closeAlertReceipt}
+                                  onYes={handleYesReceipt}
+                                  data={item}
+                                  img={item.receipt}
+                                />
+                              )}
 
                               {/** BOTTOM DEPOSIT DETAILS CONTAINER  */}
 
@@ -918,7 +935,7 @@ const AllDeposit = () => {
                                   </Text>
                                 </View>
                                 <TouchableOpacity
-                                  onPress={() => showAlertReceipt()}
+                                  onPress={() => showAlertReceipt(item)}
                                   style={styles.detailContainer}>
                                   <Text style={styles.detailLabel}>
                                     Receipt
@@ -1023,56 +1040,3 @@ const styles = StyleSheet.create({
     fontSize: heightPercentageToDP(1.8),
   },
 });
-
-// const historyapidatas = [
-//   {
-//     id: 1,
-//     amount: '638383',
-//     currency: 'INR',
-//     date: 'Apr 19, 2024 05:36 PM',
-//     status: 'success',
-//     paymentmethod: 'UPI',
-//     transactionid: '2938398398238',
-//     type: 'deposit',
-//   },
-//   {
-//     id: 2,
-//     amount: '8383',
-//     currency: 'INR',
-//     date: 'Apr 09, 2024 05:36 PM',
-//     status: 'pending',
-//     paymentmethod: 'Bank',
-//     transactionid: '2938398398238',
-//     type: 'withdraw',
-//   },
-//   {
-//     id: 3,
-//     amount: '9638383',
-//     currency: 'INR',
-//     date: 'Apr 19, 2024 05:36 PM',
-//     status: 'success',
-//     paymentmethod: 'UPI',
-//     transactionid: '2938398398238',
-//     type: 'deposit',
-//   },
-//   {
-//     id: 4,
-//     amount: '238383',
-//     currency: 'INR',
-//     date: 'Apr 19, 2024 05:36 PM',
-//     status: 'success',
-//     paymentmethod: 'UPI',
-//     transactionid: '2938398398238',
-//     type: 'deposit',
-//   },
-//   {
-//     id: 5,
-//     amount: '138383',
-//     currency: 'INR',
-//     date: 'Apr 19, 2024 05:36 PM',
-//     status: 'success',
-//     paymentmethod: 'UPI',
-//     transactionid: '2938398398238',
-//     type: 'deposit',
-//   },
-// ];

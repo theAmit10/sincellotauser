@@ -85,6 +85,8 @@ import SelectCountry from '../components/helpercComponent/SelectCountry';
 import ModifySubadmin from '../screens/ModifySubadmin';
 import PlayHistory from '../screens/payment/PlayHistory';
 import History from '../screens/payment/History';
+import Applink from '../screens/Applink';
+import UpdateApplink from '../screens/UpdateApplink';
 
 
 
@@ -185,6 +187,8 @@ const Main = () => {
                 <Stack.Screen  name="ModifySubadmin" component={ModifySubadmin}/>
                 <Stack.Screen  name="PlayHistory" component={PlayHistory}/>
                 <Stack.Screen  name="History" component={History}/>
+                <Stack.Screen  name="Applink" component={Applink}/>
+                <Stack.Screen  name="UpdateApplink" component={UpdateApplink}/>
 
 
 

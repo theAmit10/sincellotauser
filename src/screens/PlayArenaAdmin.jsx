@@ -239,27 +239,24 @@ const PlayArenaAdmin = ({route}) => {
   //   refetch();
   // }, [focused]);
 
-    // Refetch data every 6 seconds
-    useEffect(() => {
-      const intervalId = setInterval(() => {
-        console.log("Refetching data...");
-        refetch(); // Trigger a refetch every 6 seconds
-      }, 6000);
-  
-      // Cleanup the interval when the component unmounts
-      return () => clearInterval(intervalId);
-    }, [focused, refetch]);
-  
-    // Update filtered data after refetch
-    useEffect(() => {
-      if (!isLoading && data) {
-        console.log('Data refetched: ', data);
-        setFilteredData(data?.playzone?.playnumbers || []);
-      }
-    }, [isLoading, data]);
-  
+  // Refetch data every 6 seconds
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      console.log('Refetching data...');
+      refetch(); // Trigger a refetch every 6 seconds
+    }, 6000);
 
- 
+    // Cleanup the interval when the component unmounts
+    return () => clearInterval(intervalId);
+  }, [focused, refetch]);
+
+  // Update filtered data after refetch
+  useEffect(() => {
+    if (!isLoading && data) {
+      console.log('Data refetched: ', data);
+      setFilteredData(data?.playzone?.playnumbers || []);
+    }
+  }, [isLoading, data]);
 
   console.log('IS loaging :: ', isLoading);
 
@@ -287,7 +284,6 @@ const PlayArenaAdmin = ({route}) => {
   //   }
   // }, [isLoading, data]);
 
-
   const sortByAmount = (order = 'asc') => {
     const sortedData = [...filteredData].sort((a, b) => {
       return order === 'asc' ? a.amount - b.amount : b.amount - a.amount;
@@ -311,6 +307,29 @@ const PlayArenaAdmin = ({route}) => {
     });
     setFilteredData(sortedData);
   };
+
+  const getTotalAmount = data => {
+    if (!data.playzone || !Array.isArray(data.playzone.playnumbers)) {
+      return 0;
+    }
+
+    return data.playzone.playnumbers.reduce((total, playnumber) => {
+      return total + playnumber.amount;
+    }, 0);
+  };
+
+  function formatAmount(value) {
+    if (typeof value === "string") {
+      value = parseFloat(value); // Convert string to float if necessary
+    }
+  
+    // Check if the number has decimals
+    if (value % 1 === 0) {
+      return value; // Return as is if it's a whole number
+    } else {
+      return parseFloat(value.toFixed(1)); // Return with one decimal point if it has decimals
+    }
+  }
 
   return (
     <SafeAreaView style={{flex: 1}}>
@@ -436,6 +455,13 @@ const PlayArenaAdmin = ({route}) => {
                     }}>
                     Game Insights
                   </Text>
+                  <Text
+                    style={{
+                      color: COLORS.white,
+                      fontFamily: FONT.Montserrat_Regular,
+                    }}>
+                    Total Amount : {formatAmount(getTotalAmount(data))}
+                  </Text>
                 </TouchableOpacity>
               </View>
             )}
@@ -560,7 +586,7 @@ const PlayArenaAdmin = ({route}) => {
                               fontSize: heightPercentageToDP(1.8),
                               color: COLORS.black,
                             }}>
-                            {item.amount}
+                            {formatAmount(item.amount)}
                           </Text>
                         </View>
 
@@ -586,7 +612,7 @@ const PlayArenaAdmin = ({route}) => {
                               fontSize: heightPercentageToDP(1.8),
                               color: COLORS.black,
                             }}>
-                            {item.distributiveamount}
+                            {formatAmount(item.distributiveamount)}
                           </Text>
                         </View>
                       </View>
@@ -771,8 +797,8 @@ const PlayArenaAdmin = ({route}) => {
                                       color: COLORS.black,
                                     }}>
                                     {useritem?.convertedAmount
-                                      ? useritem?.convertedAmount
-                                      : useritem?.amount}
+                                      ? formatAmount(useritem?.convertedAmount)
+                                      : formatAmount(useritem?.amount)}
                                   </Text>
                                 </View>
                               </View>

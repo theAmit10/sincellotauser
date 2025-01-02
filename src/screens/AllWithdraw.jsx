@@ -100,11 +100,18 @@ const AllWithdraw = () => {
   const [updateKey, setUpdateKey] = useState(0);
   const navigation = useNavigation();
 
+  const [page, setPage] = useState(1); // Current page
+  const [dataList, setDataList] = useState([]); // List of all data
+  const [isFetchingNextPage, setIsFetchingNextPage] = useState(false);
+
   console.log('Accesstoken :: ' + accesstoken);
   console.log('User ID :: ' + user.userId);
 
-  const {isLoading, data, isError, refetch} =
-    useGetAllWithdrawQuery(accesstoken);
+  const {isLoading, data, isError, refetch} = useGetAllWithdrawQuery({
+    accesstoken,
+    page, // current page number
+    limit: 100, // number of items per page
+  });
 
   // useFocusEffect(
   //   useCallback(() => {
@@ -114,7 +121,6 @@ const AllWithdraw = () => {
   // );
 
   const isFocused = useIsFocused();
-
 
   useEffect(() => {
     refetch();
@@ -136,6 +142,17 @@ const AllWithdraw = () => {
     }));
   };
 
+  console.log('Error happen');
+  console.log(updateStatusError);
+
+  useEffect(() => {
+    if (updateStatusError !== undefined) {
+      Toast.show({
+        type: 'error',
+        text1: updateStatusError?.data?.message,
+      });
+    }
+  }, [updateStatusError]);
 
   const [filteredData, setFilteredData] = useState([]);
 
@@ -144,7 +161,7 @@ const AllWithdraw = () => {
       console.log('USE Effect running');
       setFilteredData(data.withdrawals);
     }
-  }, [isLoading, isFocused, refetch,updateKey]);
+  }, [isLoading, isFocused, refetch, updateKey]);
 
   const handleSearch = text => {
     if (data) {
@@ -502,14 +519,16 @@ const AllWithdraw = () => {
     setSelectedItem(item);
 
     // Calculate the amount
-    const calculatedAmount = item.convertedAmount
-      ? item.convertedAmount
-      : multiplyStringNumbers(
-          item.amount,
-          item.currency !== undefined
-            ? item.currency.countrycurrencyvaluecomparedtoinr
-            : 1,
-        );
+    // const calculatedAmount = item.convertedAmount
+    //   ? item.convertedAmount
+    //   : multiplyStringNumbers(
+    //       item.amount,
+    //       item.currency !== undefined
+    //         ? item.currency.countrycurrencyvaluecomparedtoinr
+    //         : 1,
+    //     );
+
+    const calculatedAmount = item.amount;
 
     // Set the calculated amount and country
     setCalculatedAmount(calculatedAmount);
@@ -537,6 +556,20 @@ const AllWithdraw = () => {
     cancellingData(selectedItem, paymentUpdateNote, imageSource, amount);
     console.log('Yes pressed');
   };
+
+
+  function formatAmount(value) {
+    if (typeof value === "string") {
+      value = parseFloat(value); // Convert string to float if necessary
+    }
+  
+    // Check if the number has decimals
+    if (value % 1 === 0) {
+      return value; // Return as is if it's a whole number
+    } else {
+      return parseFloat(value.toFixed(1)); // Return with one decimal point if it has decimals
+    }
+  }
 
   return (
     <SafeAreaView style={{flex: 1}}>
@@ -639,16 +672,19 @@ const AllWithdraw = () => {
                     showsVerticalScrollIndicator={false}
                     data={filteredData}
                     renderItem={({item}) => {
-                      const calculatedAmount = item.convertedAmount
-                        ? item.convertedAmount
-                        : multiplyStringNumbers(
-                            item.amount,
-                            item.currency !== undefined
-                              ? item.currency.countrycurrencyvaluecomparedtoinr
-                              : 1,
-                          );
+                      // const calculatedAmount = item.convertedAmount
+                      //   ? item.convertedAmount
+                      //   : multiplyStringNumbers(
+                      //       item.amount,
+                      //       item.currency !== undefined
+                      //         ? item.currency.countrycurrencyvaluecomparedtoinr
+                      //         : 1,
+                      //     );
 
+                      const calculatedAmount = item.amount;
                       const usercountry = item.currency;
+                      const paymentType = item.paymentType;
+
                       return (
                         <LinearGradient
                           colors={[
@@ -660,7 +696,7 @@ const AllWithdraw = () => {
                           style={{
                             justifyContent: 'flex-start',
                             minHeight: expandedItems[item._id]
-                              ? heightPercentageToDP(35)
+                              ? heightPercentageToDP(40)
                               : heightPercentageToDP(10),
                             borderRadius: heightPercentageToDP(2),
                             marginTop: heightPercentageToDP(2),
@@ -678,7 +714,6 @@ const AllWithdraw = () => {
                             <View
                               style={{
                                 width: widthPercentageToDP(50),
-
                                 flexDirection: 'row',
                                 borderTopLeftRadius: heightPercentageToDP(2),
                                 borderTopEndRadius: heightPercentageToDP(2),
@@ -763,15 +798,7 @@ const AllWithdraw = () => {
                                       fontSize: heightPercentageToDP(1.8),
                                       color: COLORS.black,
                                     }}>
-                                    {item.convertedAmount
-                                      ? item.convertedAmount
-                                      : multiplyStringNumbers(
-                                          item.amount,
-                                          item.currency !== undefined
-                                            ? item.currency
-                                                .countrycurrencyvaluecomparedtoinr
-                                            : 1,
-                                        )}
+                                    {formatAmount(calculatedAmount)}
                                   </Text>
                                 </View>
                               </View>
@@ -907,6 +934,7 @@ const AllWithdraw = () => {
                                   onYes={handleYesAccepted}
                                   defaultAmount={calculatedAmount}
                                   usercountry={usercountry}
+                                  paymentType={paymentType}
                                 />
 
                                 {/** FOR REJECTING */}
@@ -916,6 +944,7 @@ const AllWithdraw = () => {
                                   onYes={handleYesRejected}
                                   defaultAmount={calculatedAmount}
                                   usercountry={usercountry}
+                                  paymentType={paymentType}
                                 />
                               </>
                             )}
@@ -1650,6 +1679,80 @@ const AllWithdraw = () => {
                                       </TouchableOpacity>
                                     </View>
                                   </View>
+
+                                  {item.swiftcode && (
+                                    <View
+                                      style={{
+                                        flex: 1,
+                                        borderBottomLeftRadius:
+                                          heightPercentageToDP(2),
+                                        borderBottomEndRadius:
+                                          heightPercentageToDP(2),
+                                        flexDirection: 'row',
+                                        paddingHorizontal:
+                                          heightPercentageToDP(2),
+                                        alignItems: 'center',
+                                        justifyContent: 'space-between',
+                                      }}>
+                                      <View
+                                        style={{
+                                          width: widthPercentageToDP(20),
+                                        }}>
+                                        <Text
+                                          style={{
+                                            ...styles.detailLabel,
+                                            width: '70%',
+                                          }}>
+                                          Swift code
+                                        </Text>
+                                      </View>
+
+                                      <View
+                                        style={{
+                                          flex: 1,
+
+                                          justifyContent: 'flex-start',
+                                          alignItems: 'flex-start',
+                                        }}>
+                                        <Text style={styles.detailValue}>
+                                          {item.swiftcode}
+                                        </Text>
+                                      </View>
+
+                                      <View
+                                        style={{
+                                          ...styles.detailContainer,
+
+                                          justifyContent: 'flex-end',
+                                          alignItems: 'flex-end',
+                                        }}>
+                                        <TouchableOpacity
+                                          onPress={() =>
+                                            copyToClipboard(item.swiftcode)
+                                          }>
+                                          <LinearGradient
+                                            colors={[
+                                              COLORS.lightWhite,
+                                              COLORS.white_s,
+                                            ]}
+                                            style={{
+                                              padding:
+                                                heightPercentageToDP(0.5),
+                                              borderRadius:
+                                                heightPercentageToDP(1),
+                                              justifyContent: 'center',
+                                              alignItems: 'center',
+                                            }}>
+                                            <AntDesign
+                                              name={'copy1'}
+                                              size={heightPercentageToDP(2.5)}
+                                              color={COLORS.darkGray}
+                                            />
+                                          </LinearGradient>
+                                        </TouchableOpacity>
+                                      </View>
+                                    </View>
+                                  )}
                                 </>
                               )}
 

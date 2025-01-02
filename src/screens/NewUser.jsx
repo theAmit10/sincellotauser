@@ -237,6 +237,15 @@ const NewUser = () => {
                               }}>
                               User Id - {item.userId}
                             </Text>
+                            <Text
+                                style={{
+                                  color: COLORS.black,
+                                  fontFamily: FONT.Montserrat_Regular,
+                                  fontSize: heightPercentageToDP(2),
+                                  textAlignVertical: 'center',
+                                }}>
+                                Country - {item.country?.countryname}
+                              </Text>
                           </View>
                         </View>
                       </LinearGradient>

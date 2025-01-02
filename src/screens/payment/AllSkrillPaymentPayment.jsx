@@ -218,9 +218,9 @@ const AllSkrillPaymentPayment = () => {
                             <GradientTextWhite style={styles.textStyleContent}>
                               Skrill
                             </GradientTextWhite>
-                            <GradientTextWhite style={styles.textStyleContent}>
+                            {/* <GradientTextWhite style={styles.textStyleContent}>
                               {item.paymentId}
-                            </GradientTextWhite>
+                            </GradientTextWhite> */}
                           </View>
 
                           <View
@@ -316,11 +316,11 @@ const AllSkrillPaymentPayment = () => {
                         </View>
                         <View
                           style={{
-                            flexDirection: 'row',
+                            flexDirection: 'column',
                             justifyContent: 'center',
                             alignItems: 'center',
                             flex: 1,
-                            paddingBottom: heightPercentageToDP(2),
+                            padding: heightPercentageToDP(2),
                          
                           }}>
                           <View

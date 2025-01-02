@@ -4,7 +4,6 @@ import {
   ScrollView,
   StyleSheet,
   Text,
-  TextInput,
   TouchableOpacity,
   View,
 } from 'react-native';
@@ -16,34 +15,40 @@ import {
 } from 'react-native-responsive-screen';
 import {COLORS, FONT} from '../../assets/constants';
 import GradientText from '../components/helpercComponent/GradientText';
-import Fontisto from 'react-native-vector-icons/Fontisto';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Entypo from 'react-native-vector-icons/Entypo';
 import Toast from 'react-native-toast-message';
 import {useIsFocused, useNavigation} from '@react-navigation/native';
-import ProfileBackground from '../components/background/ProfileBackground';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import AntDesign from 'react-native-vector-icons/AntDesign';
-import Wallet from '../components/home/Wallet';
-import {Consumer} from 'react-native-paper/lib/typescript/core/settings';
 import {useDispatch, useSelector} from 'react-redux';
-import {loadProfile, loadSingleUser, logout} from '../redux/actions/userAction';
-import {useMessageAndErrorUser} from '../utils/hooks';
+import { loadSingleUser} from '../redux/actions/userAction';
 import Loading from '../components/helpercComponent/Loading';
-import {HOVER} from 'nativewind/dist/utils/selector';
-import LinearGradient from 'react-native-linear-gradient';
-import UrlHelper from '../helper/UrlHelper';
-import axios from 'axios';
-import GradientTextWhite from '../components/helpercComponent/GradientTextWhite';
 import UserProfileBackground from '../components/background/UserProfileBackground';
+
+export const roundToInteger = (input) => {
+  // Convert input to a float
+  const floatValue = parseFloat(input);
+
+  // Check if it's a valid number
+  if (isNaN(floatValue)) {
+    return "Invalid number"; // Handle invalid input
+  }
+
+  // Check if the number is already an integer
+  if (Number.isInteger(floatValue)) {
+    return floatValue; // Return the number as it is
+  }
+
+  // Return the integer part (without rounding)
+  return Math.floor(floatValue);
+};
 
 const UpdateProfile = ({route}) => {
   const navigation = useNavigation();
 
   const {userdata, fromscreen} = route.params;
 
-  const {singleuser, accesstoken, loadingSingleUser} = useSelector(
+  const {singleuser, accesstoken, loadingSingleUser, user} = useSelector(
     state => state.user,
   );
 
@@ -141,375 +146,1065 @@ const UpdateProfile = ({route}) => {
                   </View>
                 ) : (
                   <ScrollView showsVerticalScrollIndicator={false}>
-                    <TouchableOpacity
-                      onPress={() =>
-                        navigation.navigate('EditUserWallet', {
-                          data: singleuser.walletOne,
-                          forwallet: 'one',
-                        })
-                      }
-                      style={{
-                        height: heightPercentageToDP(25),
-                        flexDirection: 'row',
-                        backgroundColor: COLORS.grayBg,
-                        alignItems: 'center',
-                        paddingHorizontal: heightPercentageToDP(2),
-                        borderRadius: heightPercentageToDP(1),
-                        margin: heightPercentageToDP(2),
-                      }}>
-                      <View
-                        style={{
-                          padding: heightPercentageToDP(2),
-                        }}>
-                        <Text
-                          style={{
-                            marginStart: heightPercentageToDP(1),
-                            flex: 1,
-                            fontFamily: FONT.Montserrat_Regular,
-                            color: COLORS.darkGray,
-                            width: widthPercentageToDP(25),
-                            marginStart: heightPercentageToDP(-1),
-                            textAlignVertical: 'bottom',
-                          }}>
-                          Total Balance
-                        </Text>
-                        <Text
-                          style={{
-                            marginStart: heightPercentageToDP(1),
-                            flex: 1,
-                            fontFamily: FONT.Montserrat_SemiBold,
-                            color: COLORS.darkGray,
-                            fontSize: heightPercentageToDP(3),
-                            marginStart: heightPercentageToDP(-1),
-                          }}>
-                          {singleuser.walletOne?.walletName}
-                        </Text>
-
-                        <View
-                          style={{
-                            flexDirection: 'row',
-                            justifyContent: 'flex-end',
-                            gap: heightPercentageToDP(1),
-                            marginStart: heightPercentageToDP(-1),
-                          }}>
-                          <View
-                            style={{
-                              backgroundColor: COLORS.white_s,
-                              padding: heightPercentageToDP(1),
-                              borderRadius: heightPercentageToDP(1),
-                              justifyContent: 'center',
-                            }}>
-                            <Ionicons
-                              name={'wallet'}
-                              size={heightPercentageToDP(4)}
-                              color={COLORS.darkGray}
-                            />
-                          </View>
-                          <GradientText
-                            style={{
-                              ...styles.textStyle,
-                              width: widthPercentageToDP(60),
-                            }}>
-                            {singleuser?.walletOne?.balance}
-                          </GradientText>
-                        </View>
-                      </View>
-
-                      <View
-                        style={{
-                          flex: 1,
-                          backgroundColor: COLORS.white,
-                          position: 'absolute',
-                          right: heightPercentageToDP(2),
-                          borderRadius: heightPercentageToDP(1),
-                          padding: heightPercentageToDP(1),
-                          top: heightPercentageToDP(2),
-                        }}>
-                        <MaterialCommunityIcons
-                          name={'circle-edit-outline'}
-                          size={heightPercentageToDP(4)}
-                          color={COLORS.darkGray}
-                        />
-                      </View>
-                    </TouchableOpacity>
-
                     {/** Wallet Two */}
 
-                    <TouchableOpacity
-                      onPress={() =>
-                        navigation.navigate('EditUserWallet', {
-                          data: singleuser.walletTwo,
-                          forwallet: 'two',
-                        })
-                      }
-                      style={{
-                        height: heightPercentageToDP(25),
-                        flexDirection: 'row',
-                        backgroundColor: COLORS.grayBg,
-                        alignItems: 'center',
-                        paddingHorizontal: heightPercentageToDP(2),
-                        borderRadius: heightPercentageToDP(1),
-                        margin: heightPercentageToDP(2),
-                      }}>
-                      <View
+                    {user && user.role === 'admin' ? (
+                      <TouchableOpacity
+                        onPress={() =>
+                          navigation.navigate('EditUserWallet', {
+                            data: singleuser.walletTwo,
+                            forwallet: 'two',
+                            singleuserdata: singleuser
+                          })
+                        }
                         style={{
-                          padding: heightPercentageToDP(2),
+                          height: heightPercentageToDP(25),
+                          flexDirection: 'row',
+                          backgroundColor: COLORS.grayBg,
+                          alignItems: 'center',
+                          paddingHorizontal: heightPercentageToDP(2),
+                          borderRadius: heightPercentageToDP(1),
+                          margin: heightPercentageToDP(2),
                         }}>
-                        <Text
+                        <View
                           style={{
-                            marginStart: heightPercentageToDP(1),
-                            flex: 1,
-                            fontFamily: FONT.Montserrat_Regular,
-                            color: COLORS.darkGray,
-                            width: widthPercentageToDP(25),
-                            marginStart: heightPercentageToDP(-1),
-                            textAlignVertical: 'bottom',
+                            padding: heightPercentageToDP(2),
                           }}>
-                          Total Balance
-                        </Text>
-                        <Text
-                          style={{
-                            marginStart: heightPercentageToDP(1),
-                            flex: 1,
-                            fontFamily: FONT.Montserrat_SemiBold,
-                            color: COLORS.darkGray,
-                            fontSize: heightPercentageToDP(3),
-                            marginStart: heightPercentageToDP(-1),
-                          }}>
-                          {singleuser.walletTwo?.walletName}
-                        </Text>
+                          <Text
+                            style={{
+                              marginStart: heightPercentageToDP(1),
+                              flex: 1,
+                              fontFamily: FONT.Montserrat_Regular,
+                              color: COLORS.darkGray,
+                              width: widthPercentageToDP(25),
+                              marginStart: heightPercentageToDP(-1),
+                              textAlignVertical: 'bottom',
+                            }}>
+                            Total Balance
+                          </Text>
+                          <Text
+                            style={{
+                              marginStart: heightPercentageToDP(1),
+                              flex: 1,
+                              fontFamily: FONT.Montserrat_SemiBold,
+                              color: COLORS.darkGray,
+                              fontSize: heightPercentageToDP(3),
+                              marginStart: heightPercentageToDP(-1),
+                            }}>
+                            {singleuser.walletTwo?.walletName}
+                          </Text>
+
+                          <View
+                            style={{
+                              flexDirection: 'row',
+                              justifyContent: 'flex-start',
+                              gap: heightPercentageToDP(1),
+                              marginStart: heightPercentageToDP(-1),
+                            }}>
+                            <View
+                              style={{
+                                backgroundColor: COLORS.white_s,
+                                padding: heightPercentageToDP(1),
+                                borderRadius: heightPercentageToDP(1),
+                                justifyContent: 'center',
+                              }}>
+                              <Ionicons
+                                name={'wallet'}
+                                size={heightPercentageToDP(4)}
+                                color={COLORS.darkGray}
+                              />
+                            </View>
+                            <GradientText
+                              style={{
+                                ...styles.textStyle,
+                                width: widthPercentageToDP(60),
+                              }}>
+                              {roundToInteger(singleuser?.walletTwo?.balance)}
+                              <Text
+                                style={{fontSize: heightPercentageToDP(1.5)}}>
+                                {singleuser?.country?.countrycurrencysymbol}
+                              </Text>
+                            </GradientText>
+                          </View>
+                        </View>
 
                         <View
                           style={{
-                            flexDirection: 'row',
-                            justifyContent: 'flex-start',
-                            gap: heightPercentageToDP(1),
-                            marginStart: heightPercentageToDP(-1),
+                            flex: 1,
+                            backgroundColor: COLORS.white,
+                            position: 'absolute',
+                            right: heightPercentageToDP(2),
+                            borderRadius: heightPercentageToDP(1),
+                            padding: heightPercentageToDP(1),
+                            top: heightPercentageToDP(2),
                           }}>
+                          <MaterialCommunityIcons
+                            name={'circle-edit-outline'}
+                            size={heightPercentageToDP(4)}
+                            color={COLORS.darkGray}
+                          />
+                        </View>
+                      </TouchableOpacity>
+                    ) : user &&
+                      user.role === 'subadmin' &&
+                      user.subadminfeature.gamewalletbalnceedit ? (
+                      <TouchableOpacity
+                        onPress={() =>
+                          navigation.navigate('EditUserWallet', {
+                            data: singleuser.walletTwo,
+                            forwallet: 'two',
+                            singleuserdata: singleuser
+                          })
+                        }
+                        style={{
+                          height: heightPercentageToDP(25),
+                          flexDirection: 'row',
+                          backgroundColor: COLORS.grayBg,
+                          alignItems: 'center',
+                          paddingHorizontal: heightPercentageToDP(2),
+                          borderRadius: heightPercentageToDP(1),
+                          margin: heightPercentageToDP(2),
+                        }}>
+                        <View
+                          style={{
+                            padding: heightPercentageToDP(2),
+                          }}>
+                          <Text
+                            style={{
+                              marginStart: heightPercentageToDP(1),
+                              flex: 1,
+                              fontFamily: FONT.Montserrat_Regular,
+                              color: COLORS.darkGray,
+                              width: widthPercentageToDP(25),
+                              marginStart: heightPercentageToDP(-1),
+                              textAlignVertical: 'bottom',
+                            }}>
+                            Total Balance
+                          </Text>
+                          <Text
+                            style={{
+                              marginStart: heightPercentageToDP(1),
+                              flex: 1,
+                              fontFamily: FONT.Montserrat_SemiBold,
+                              color: COLORS.darkGray,
+                              fontSize: heightPercentageToDP(3),
+                              marginStart: heightPercentageToDP(-1),
+                            }}>
+                            {singleuser.walletTwo?.walletName}
+                          </Text>
+
                           <View
                             style={{
-                              backgroundColor: COLORS.white_s,
-                              padding: heightPercentageToDP(1),
-                              borderRadius: heightPercentageToDP(1),
-                              justifyContent: 'center',
+                              flexDirection: 'row',
+                              justifyContent: 'flex-start',
+                              gap: heightPercentageToDP(1),
+                              marginStart: heightPercentageToDP(-1),
                             }}>
-                            <Ionicons
-                              name={'wallet'}
-                              size={heightPercentageToDP(4)}
-                              color={COLORS.darkGray}
-                            />
+                            <View
+                              style={{
+                                backgroundColor: COLORS.white_s,
+                                padding: heightPercentageToDP(1),
+                                borderRadius: heightPercentageToDP(1),
+                                justifyContent: 'center',
+                              }}>
+                              <Ionicons
+                                name={'wallet'}
+                                size={heightPercentageToDP(4)}
+                                color={COLORS.darkGray}
+                              />
+                            </View>
+                            <GradientText
+                              style={{
+                                ...styles.textStyle,
+                                width: widthPercentageToDP(60),
+                              }}>
+                              {roundToInteger(singleuser?.walletTwo?.balance)}
+                              <Text
+                                style={{fontSize: heightPercentageToDP(1.5)}}>
+                                {singleuser?.country?.countrycurrencysymbol}
+                              </Text>
+                            </GradientText>
                           </View>
-                          <GradientText
-                            style={{
-                              ...styles.textStyle,
-                              width: widthPercentageToDP(60),
-                            }}>
-                            {singleuser?.walletTwo?.balance}
-                          </GradientText>
                         </View>
-                      </View>
 
-                      <View
+                        <View
+                          style={{
+                            flex: 1,
+                            backgroundColor: COLORS.white,
+                            position: 'absolute',
+                            right: heightPercentageToDP(2),
+                            borderRadius: heightPercentageToDP(1),
+                            padding: heightPercentageToDP(1),
+                            top: heightPercentageToDP(2),
+                          }}>
+                          <MaterialCommunityIcons
+                            name={'circle-edit-outline'}
+                            size={heightPercentageToDP(4)}
+                            color={COLORS.darkGray}
+                          />
+                        </View>
+                      </TouchableOpacity>
+                    ) : (
+                      <TouchableOpacity
+                        // onPress={() =>
+                        //   navigation.navigate('EditUserWallet', {
+                        //     data: singleuser.walletTwo,
+                        //     forwallet: 'two',
+                        //   })
+                        // }
                         style={{
-                          flex: 1,
-                          backgroundColor: COLORS.white,
-                          position: 'absolute',
-                          right: heightPercentageToDP(2),
+                          height: heightPercentageToDP(25),
+                          flexDirection: 'row',
+                          backgroundColor: COLORS.grayBg,
+                          alignItems: 'center',
+                          paddingHorizontal: heightPercentageToDP(2),
                           borderRadius: heightPercentageToDP(1),
-                          padding: heightPercentageToDP(1),
-                          top: heightPercentageToDP(2),
+                          margin: heightPercentageToDP(2),
                         }}>
-                        <MaterialCommunityIcons
-                          name={'circle-edit-outline'}
-                          size={heightPercentageToDP(4)}
-                          color={COLORS.darkGray}
-                        />
-                      </View>
-                    </TouchableOpacity>
+                        <View
+                          style={{
+                            padding: heightPercentageToDP(2),
+                          }}>
+                          <Text
+                            style={{
+                              marginStart: heightPercentageToDP(1),
+                              flex: 1,
+                              fontFamily: FONT.Montserrat_Regular,
+                              color: COLORS.darkGray,
+                              width: widthPercentageToDP(25),
+                              marginStart: heightPercentageToDP(-1),
+                              textAlignVertical: 'bottom',
+                            }}>
+                            Total Balance
+                          </Text>
+                          <Text
+                            style={{
+                              marginStart: heightPercentageToDP(1),
+                              flex: 1,
+                              fontFamily: FONT.Montserrat_SemiBold,
+                              color: COLORS.darkGray,
+                              fontSize: heightPercentageToDP(3),
+                              marginStart: heightPercentageToDP(-1),
+                            }}>
+                            {singleuser.walletTwo?.walletName}
+                          </Text>
+
+                          <View
+                            style={{
+                              flexDirection: 'row',
+                              justifyContent: 'flex-start',
+                              gap: heightPercentageToDP(1),
+                              marginStart: heightPercentageToDP(-1),
+                            }}>
+                            <View
+                              style={{
+                                backgroundColor: COLORS.white_s,
+                                padding: heightPercentageToDP(1),
+                                borderRadius: heightPercentageToDP(1),
+                                justifyContent: 'center',
+                              }}>
+                              <Ionicons
+                                name={'wallet'}
+                                size={heightPercentageToDP(4)}
+                                color={COLORS.darkGray}
+                              />
+                            </View>
+                            <GradientText
+                              style={{
+                                ...styles.textStyle,
+                                width: widthPercentageToDP(60),
+                              }}>
+                              {roundToInteger(singleuser?.walletTwo?.balance)}
+                              <Text
+                                style={{fontSize: heightPercentageToDP(1.5)}}>
+                                {singleuser?.country?.countrycurrencysymbol}
+                              </Text>
+                            </GradientText>
+                          </View>
+                        </View>
+
+                        <View
+                          style={{
+                            flex: 1,
+                            backgroundColor: COLORS.white,
+                            position: 'absolute',
+                            right: heightPercentageToDP(2),
+                            borderRadius: heightPercentageToDP(1),
+                            padding: heightPercentageToDP(1),
+                            top: heightPercentageToDP(2),
+                          }}>
+                          <MaterialCommunityIcons
+                            name={'circle-edit-outline'}
+                            size={heightPercentageToDP(4)}
+                            color={COLORS.darkGray}
+                          />
+                        </View>
+                      </TouchableOpacity>
+                    )}
+
+                    {/** Wallet One */}
+
+                    {user && user.role === 'admin' ? (
+                      <TouchableOpacity
+                        onPress={() =>
+                          navigation.navigate('EditUserWallet', {
+                            data: singleuser.walletOne,
+                            forwallet: 'one',
+                            singleuserdata: singleuser
+                          })
+                        }
+                        style={{
+                          height: heightPercentageToDP(25),
+                          flexDirection: 'row',
+                          backgroundColor: COLORS.grayBg,
+                          alignItems: 'center',
+                          paddingHorizontal: heightPercentageToDP(2),
+                          borderRadius: heightPercentageToDP(1),
+                          margin: heightPercentageToDP(2),
+                        }}>
+                        <View
+                          style={{
+                            padding: heightPercentageToDP(2),
+                          }}>
+                          <Text
+                            style={{
+                              marginStart: heightPercentageToDP(1),
+                              flex: 1,
+                              fontFamily: FONT.Montserrat_Regular,
+                              color: COLORS.darkGray,
+                              width: widthPercentageToDP(25),
+                              marginStart: heightPercentageToDP(-1),
+                              textAlignVertical: 'bottom',
+                            }}>
+                            Total Balance
+                          </Text>
+                          <Text
+                            style={{
+                              marginStart: heightPercentageToDP(1),
+                              flex: 1,
+                              fontFamily: FONT.Montserrat_SemiBold,
+                              color: COLORS.darkGray,
+                              fontSize: heightPercentageToDP(3),
+                              marginStart: heightPercentageToDP(-1),
+                            }}>
+                            {singleuser.walletOne?.walletName}
+                          </Text>
+
+                          <View
+                            style={{
+                              flexDirection: 'row',
+                              justifyContent: 'flex-end',
+                              gap: heightPercentageToDP(1),
+                              marginStart: heightPercentageToDP(-1),
+                            }}>
+                            <View
+                              style={{
+                                backgroundColor: COLORS.white_s,
+                                padding: heightPercentageToDP(1),
+                                borderRadius: heightPercentageToDP(1),
+                                justifyContent: 'center',
+                              }}>
+                              <Ionicons
+                                name={'wallet'}
+                                size={heightPercentageToDP(4)}
+                                color={COLORS.darkGray}
+                              />
+                            </View>
+                            <GradientText
+                              style={{
+                                ...styles.textStyle,
+                                width: widthPercentageToDP(60),
+                              }}>
+                              {roundToInteger(singleuser?.walletOne?.balance)}
+                              <Text
+                                style={{fontSize: heightPercentageToDP(1.5)}}>
+                                {singleuser?.country?.countrycurrencysymbol}
+                              </Text>
+                            </GradientText>
+                          </View>
+                        </View>
+
+                        <View
+                          style={{
+                            flex: 1,
+                            backgroundColor: COLORS.white,
+                            position: 'absolute',
+                            right: heightPercentageToDP(2),
+                            borderRadius: heightPercentageToDP(1),
+                            padding: heightPercentageToDP(1),
+                            top: heightPercentageToDP(2),
+                          }}>
+                          <MaterialCommunityIcons
+                            name={'circle-edit-outline'}
+                            size={heightPercentageToDP(4)}
+                            color={COLORS.darkGray}
+                          />
+                        </View>
+                      </TouchableOpacity>
+                    ) : user &&
+                      user.role === 'subadmin' &&
+                      user.subadminfeature.withdrawalletbalanceedit ? (
+                      <TouchableOpacity
+                        onPress={() =>
+                          navigation.navigate('EditUserWallet', {
+                            data: singleuser.walletOne,
+                            forwallet: 'one',
+                            singleuserdata: singleuser
+                          })
+                        }
+                        style={{
+                          height: heightPercentageToDP(25),
+                          flexDirection: 'row',
+                          backgroundColor: COLORS.grayBg,
+                          alignItems: 'center',
+                          paddingHorizontal: heightPercentageToDP(2),
+                          borderRadius: heightPercentageToDP(1),
+                          margin: heightPercentageToDP(2),
+                        }}>
+                        <View
+                          style={{
+                            padding: heightPercentageToDP(2),
+                          }}>
+                          <Text
+                            style={{
+                              marginStart: heightPercentageToDP(1),
+                              flex: 1,
+                              fontFamily: FONT.Montserrat_Regular,
+                              color: COLORS.darkGray,
+                              width: widthPercentageToDP(25),
+                              marginStart: heightPercentageToDP(-1),
+                              textAlignVertical: 'bottom',
+                            }}>
+                            Total Balance
+                          </Text>
+                          <Text
+                            style={{
+                              marginStart: heightPercentageToDP(1),
+                              flex: 1,
+                              fontFamily: FONT.Montserrat_SemiBold,
+                              color: COLORS.darkGray,
+                              fontSize: heightPercentageToDP(3),
+                              marginStart: heightPercentageToDP(-1),
+                            }}>
+                            {singleuser.walletOne?.walletName}
+                          </Text>
+
+                          <View
+                            style={{
+                              flexDirection: 'row',
+                              justifyContent: 'flex-end',
+                              gap: heightPercentageToDP(1),
+                              marginStart: heightPercentageToDP(-1),
+                            }}>
+                            <View
+                              style={{
+                                backgroundColor: COLORS.white_s,
+                                padding: heightPercentageToDP(1),
+                                borderRadius: heightPercentageToDP(1),
+                                justifyContent: 'center',
+                              }}>
+                              <Ionicons
+                                name={'wallet'}
+                                size={heightPercentageToDP(4)}
+                                color={COLORS.darkGray}
+                              />
+                            </View>
+                            <GradientText
+                              style={{
+                                ...styles.textStyle,
+                                width: widthPercentageToDP(60),
+                              }}>
+                              {roundToInteger(singleuser?.walletOne?.balance)}
+                              <Text
+                                style={{fontSize: heightPercentageToDP(1.5)}}>
+                                {singleuser?.country?.countrycurrencysymbol}
+                              </Text>
+                            </GradientText>
+                          </View>
+                        </View>
+
+                        <View
+                          style={{
+                            flex: 1,
+                            backgroundColor: COLORS.white,
+                            position: 'absolute',
+                            right: heightPercentageToDP(2),
+                            borderRadius: heightPercentageToDP(1),
+                            padding: heightPercentageToDP(1),
+                            top: heightPercentageToDP(2),
+                          }}>
+                          <MaterialCommunityIcons
+                            name={'circle-edit-outline'}
+                            size={heightPercentageToDP(4)}
+                            color={COLORS.darkGray}
+                          />
+                        </View>
+                      </TouchableOpacity>
+                    ) : (
+                      <TouchableOpacity
+                        // onPress={() =>
+                        //   navigation.navigate('EditUserWallet', {
+                        //     data: singleuser.walletOne,
+                        //     forwallet: 'one',
+                        //   })
+                        // }
+                        style={{
+                          height: heightPercentageToDP(25),
+                          flexDirection: 'row',
+                          backgroundColor: COLORS.grayBg,
+                          alignItems: 'center',
+                          paddingHorizontal: heightPercentageToDP(2),
+                          borderRadius: heightPercentageToDP(1),
+                          margin: heightPercentageToDP(2),
+                        }}>
+                        <View
+                          style={{
+                            padding: heightPercentageToDP(2),
+                          }}>
+                          <Text
+                            style={{
+                              marginStart: heightPercentageToDP(1),
+                              flex: 1,
+                              fontFamily: FONT.Montserrat_Regular,
+                              color: COLORS.darkGray,
+                              width: widthPercentageToDP(25),
+                              marginStart: heightPercentageToDP(-1),
+                              textAlignVertical: 'bottom',
+                            }}>
+                            Total Balance
+                          </Text>
+                          <Text
+                            style={{
+                              marginStart: heightPercentageToDP(1),
+                              flex: 1,
+                              fontFamily: FONT.Montserrat_SemiBold,
+                              color: COLORS.darkGray,
+                              fontSize: heightPercentageToDP(3),
+                              marginStart: heightPercentageToDP(-1),
+                            }}>
+                            {singleuser.walletOne?.walletName}
+                          </Text>
+
+                          <View
+                            style={{
+                              flexDirection: 'row',
+                              justifyContent: 'flex-end',
+                              gap: heightPercentageToDP(1),
+                              marginStart: heightPercentageToDP(-1),
+                            }}>
+                            <View
+                              style={{
+                                backgroundColor: COLORS.white_s,
+                                padding: heightPercentageToDP(1),
+                                borderRadius: heightPercentageToDP(1),
+                                justifyContent: 'center',
+                              }}>
+                              <Ionicons
+                                name={'wallet'}
+                                size={heightPercentageToDP(4)}
+                                color={COLORS.darkGray}
+                              />
+                            </View>
+                            <GradientText
+                              style={{
+                                ...styles.textStyle,
+                                width: widthPercentageToDP(60),
+                              }}>
+                              {roundToInteger(singleuser?.walletOne?.balance)}
+                              <Text
+                                style={{fontSize: heightPercentageToDP(1.5)}}>
+                                {singleuser?.country?.countrycurrencysymbol}
+                              </Text>
+                            </GradientText>
+                          </View>
+                        </View>
+
+                        <View
+                          style={{
+                            flex: 1,
+                            backgroundColor: COLORS.white,
+                            position: 'absolute',
+                            right: heightPercentageToDP(2),
+                            borderRadius: heightPercentageToDP(1),
+                            padding: heightPercentageToDP(1),
+                            top: heightPercentageToDP(2),
+                          }}>
+                          <MaterialCommunityIcons
+                            name={'circle-edit-outline'}
+                            size={heightPercentageToDP(4)}
+                            color={COLORS.darkGray}
+                          />
+                        </View>
+                      </TouchableOpacity>
+                    )}
 
                     {/** User Id  */}
-                    <TouchableOpacity
-                      onPress={() =>
-                        navigation.navigate('ChangeUserId', {
-                          userdata: singleuser,
-                        })
-                      }
-                      style={{
-                        height: heightPercentageToDP(20),
-                        flexDirection: 'row',
-                        backgroundColor: COLORS.grayBg,
-                        alignItems: 'center',
-                        paddingHorizontal: heightPercentageToDP(2),
-                        borderRadius: heightPercentageToDP(1),
-                        margin: heightPercentageToDP(2),
-                      }}>
-                      <View
+
+                    {user && user.role === 'admin' ? (
+                      <TouchableOpacity
+                        onPress={() =>
+                          navigation.navigate('ChangeUserId', {
+                            userdata: singleuser,
+                          })
+                        }
                         style={{
-                          padding: heightPercentageToDP(2),
+                          height: heightPercentageToDP(20),
+                          flexDirection: 'row',
+                          backgroundColor: COLORS.grayBg,
+                          alignItems: 'center',
+                          paddingHorizontal: heightPercentageToDP(2),
+                          borderRadius: heightPercentageToDP(1),
+                          margin: heightPercentageToDP(2),
                         }}>
-                        <Text
+                        <View
                           style={{
-                            marginStart: heightPercentageToDP(1),
-                            flex: 1,
-                            fontFamily: FONT.Montserrat_Regular,
-                            color: COLORS.darkGray,
-                            width: widthPercentageToDP(25),
-                            marginStart: heightPercentageToDP(-1),
-                            textAlignVertical: 'bottom',
-                          }}></Text>
-                        <Text
-                          style={{
-                            marginStart: heightPercentageToDP(1),
-                            flex: 1,
-                            fontFamily: FONT.Montserrat_Regular,
-                            color: COLORS.darkGray,
-                            fontSize: heightPercentageToDP(2),
-                            marginStart: heightPercentageToDP(-1),
+                            padding: heightPercentageToDP(2),
                           }}>
-                          Change User Id
-                        </Text>
+                          <Text
+                            style={{
+                              marginStart: heightPercentageToDP(1),
+                              flex: 1,
+                              fontFamily: FONT.Montserrat_Regular,
+                              color: COLORS.darkGray,
+                              fontSize: heightPercentageToDP(2),
+                              marginStart: heightPercentageToDP(-1),
+                            }}>
+                            Change User Id
+                          </Text>
+                          <Text
+                            style={{
+                              marginStart: heightPercentageToDP(1),
+                              flex: 1,
+                              fontFamily: FONT.Montserrat_SemiBold,
+                              color: COLORS.darkGray,
+                              fontSize: heightPercentageToDP(3),
+                              marginStart: heightPercentageToDP(-1),
+                            }}>
+                            {singleuser?.userId}
+                          </Text>
+
+                          <View
+                            style={{
+                              flexDirection: 'row',
+                              justifyContent: 'flex-start',
+                              gap: heightPercentageToDP(1),
+                              marginStart: heightPercentageToDP(-1),
+                            }}>
+                            <View
+                              style={{
+                                backgroundColor: COLORS.white_s,
+                                padding: heightPercentageToDP(1),
+                                borderRadius: heightPercentageToDP(1),
+                                justifyContent: 'center',
+                              }}>
+                              <Entypo
+                                name={'user'}
+                                size={heightPercentageToDP(4)}
+                                color={COLORS.darkGray}
+                              />
+                            </View>
+                            <GradientText
+                              style={{
+                                ...styles.textStyle,
+                                width: widthPercentageToDP(60),
+                              }}>
+                              User Id
+                            </GradientText>
+                          </View>
+                        </View>
 
                         <View
                           style={{
-                            flexDirection: 'row',
-                            justifyContent: 'flex-start',
-                            gap: heightPercentageToDP(1),
-                            marginStart: heightPercentageToDP(-1),
+                            flex: 1,
+                            backgroundColor: COLORS.white,
+                            position: 'absolute',
+                            right: heightPercentageToDP(2),
+                            borderRadius: heightPercentageToDP(1),
+                            padding: heightPercentageToDP(1),
+                            top: heightPercentageToDP(2),
                           }}>
+                          <MaterialCommunityIcons
+                            name={'circle-edit-outline'}
+                            size={heightPercentageToDP(4)}
+                            color={COLORS.darkGray}
+                          />
+                        </View>
+                      </TouchableOpacity>
+                    ) : user &&
+                      user.role === 'subadmin' &&
+                      user.subadminfeature.useridedit ? (
+                      <TouchableOpacity
+                        onPress={() =>
+                          navigation.navigate('ChangeUserId', {
+                            userdata: singleuser,
+                          })
+                        }
+                        style={{
+                          height: heightPercentageToDP(20),
+                          flexDirection: 'row',
+                          backgroundColor: COLORS.grayBg,
+                          alignItems: 'center',
+                          paddingHorizontal: heightPercentageToDP(2),
+                          borderRadius: heightPercentageToDP(1),
+                          margin: heightPercentageToDP(2),
+                        }}>
+                        <View
+                          style={{
+                            padding: heightPercentageToDP(2),
+                          }}>
+                          <Text
+                            style={{
+                              marginStart: heightPercentageToDP(1),
+                              flex: 1,
+                              fontFamily: FONT.Montserrat_Regular,
+                              color: COLORS.darkGray,
+                              fontSize: heightPercentageToDP(2),
+                              marginStart: heightPercentageToDP(-1),
+                            }}>
+                            Change User Id
+                          </Text>
+                          <Text
+                            style={{
+                              marginStart: heightPercentageToDP(1),
+                              flex: 1,
+                              fontFamily: FONT.Montserrat_SemiBold,
+                              color: COLORS.darkGray,
+                              fontSize: heightPercentageToDP(3),
+                              marginStart: heightPercentageToDP(-1),
+                            }}>
+                            {singleuser?.userId}
+                          </Text>
+
                           <View
                             style={{
-                              backgroundColor: COLORS.white_s,
-                              padding: heightPercentageToDP(1),
-                              borderRadius: heightPercentageToDP(1),
-                              justifyContent: 'center',
+                              flexDirection: 'row',
+                              justifyContent: 'flex-start',
+                              gap: heightPercentageToDP(1),
+                              marginStart: heightPercentageToDP(-1),
                             }}>
-                            <Entypo
-                              name={'user'}
-                              size={heightPercentageToDP(4)}
-                              color={COLORS.darkGray}
-                            />
+                            <View
+                              style={{
+                                backgroundColor: COLORS.white_s,
+                                padding: heightPercentageToDP(1),
+                                borderRadius: heightPercentageToDP(1),
+                                justifyContent: 'center',
+                              }}>
+                              <Entypo
+                                name={'user'}
+                                size={heightPercentageToDP(4)}
+                                color={COLORS.darkGray}
+                              />
+                            </View>
+                            <GradientText
+                              style={{
+                                ...styles.textStyle,
+                                width: widthPercentageToDP(60),
+                              }}>
+                              User Id
+                            </GradientText>
                           </View>
-                          <GradientText
-                            style={{
-                              ...styles.textStyle,
-                              width: widthPercentageToDP(60),
-                            }}>
-                            User Id
-                          </GradientText>
                         </View>
-                      </View>
-
-                      <View
-                        style={{
-                          flex: 1,
-                          backgroundColor: COLORS.white,
-                          position: 'absolute',
-                          right: heightPercentageToDP(2),
-                          borderRadius: heightPercentageToDP(1),
-                          padding: heightPercentageToDP(1),
-                          top: heightPercentageToDP(2),
-                        }}>
-                        <MaterialCommunityIcons
-                          name={'circle-edit-outline'}
-                          size={heightPercentageToDP(4)}
-                          color={COLORS.darkGray}
-                        />
-                      </View>
-                    </TouchableOpacity>
-
-                    {/** Single User */}
-                    <TouchableOpacity
-                      onPress={() =>
-                        // Toast.show({
-                        //   type: 'info',
-                        //   text1: 'Comming soon'
-                        // })
-                        navigation.navigate('CreateNotification', {
-                          userdata: singleuser,
-                        })
-                      }
-                      style={{
-                        height: heightPercentageToDP(20),
-                        flexDirection: 'row',
-                        backgroundColor: COLORS.grayBg,
-                        alignItems: 'center',
-                        paddingHorizontal: heightPercentageToDP(2),
-                        borderRadius: heightPercentageToDP(1),
-                        margin: heightPercentageToDP(2),
-                      }}>
-                      <View
-                        style={{
-                          padding: heightPercentageToDP(2),
-                        }}>
-                        <Text
-                          style={{
-                            marginStart: heightPercentageToDP(1),
-                            flex: 1,
-                            fontFamily: FONT.Montserrat_Regular,
-                            color: COLORS.darkGray,
-                            width: widthPercentageToDP(25),
-                            marginStart: heightPercentageToDP(-1),
-                            textAlignVertical: 'bottom',
-                          }}></Text>
-                        <Text
-                          style={{
-                            marginStart: heightPercentageToDP(1),
-                            flex: 1,
-                            fontFamily: FONT.Montserrat_Regular,
-                            color: COLORS.darkGray,
-                            fontSize: heightPercentageToDP(2),
-                            marginStart: heightPercentageToDP(-1),
-                          }}>
-                          Push Notification
-                        </Text>
 
                         <View
                           style={{
-                            flexDirection: 'row',
-                            justifyContent: 'flex-start',
-                            gap: heightPercentageToDP(1),
-                            marginStart: heightPercentageToDP(-1),
+                            flex: 1,
+                            backgroundColor: COLORS.white,
+                            position: 'absolute',
+                            right: heightPercentageToDP(2),
+                            borderRadius: heightPercentageToDP(1),
+                            padding: heightPercentageToDP(1),
+                            top: heightPercentageToDP(2),
                           }}>
+                          <MaterialCommunityIcons
+                            name={'circle-edit-outline'}
+                            size={heightPercentageToDP(4)}
+                            color={COLORS.darkGray}
+                          />
+                        </View>
+                      </TouchableOpacity>
+                    ) : (
+                      <TouchableOpacity
+                        // onPress={() =>
+                        //   navigation.navigate('ChangeUserId', {
+                        //     userdata: singleuser,
+                        //   })
+                        // }
+                        style={{
+                          height: heightPercentageToDP(20),
+                          flexDirection: 'row',
+                          backgroundColor: COLORS.grayBg,
+                          alignItems: 'center',
+                          paddingHorizontal: heightPercentageToDP(2),
+                          borderRadius: heightPercentageToDP(1),
+                          margin: heightPercentageToDP(2),
+                        }}>
+                        <View
+                          style={{
+                            padding: heightPercentageToDP(2),
+                          }}>
+                          <Text
+                            style={{
+                              marginStart: heightPercentageToDP(1),
+                              flex: 1,
+                              fontFamily: FONT.Montserrat_Regular,
+                              color: COLORS.darkGray,
+                              fontSize: heightPercentageToDP(2),
+                              marginStart: heightPercentageToDP(-1),
+                            }}>
+                            Change User Id
+                          </Text>
+                          <Text
+                            style={{
+                              marginStart: heightPercentageToDP(1),
+                              flex: 1,
+                              fontFamily: FONT.Montserrat_SemiBold,
+                              color: COLORS.darkGray,
+                              fontSize: heightPercentageToDP(3),
+                              marginStart: heightPercentageToDP(-1),
+                            }}>
+                            {singleuser?.userId}
+                          </Text>
+
                           <View
                             style={{
-                              backgroundColor: COLORS.white_s,
-                              padding: heightPercentageToDP(1),
-                              borderRadius: heightPercentageToDP(1),
-                              justifyContent: 'center',
+                              flexDirection: 'row',
+                              justifyContent: 'flex-start',
+                              gap: heightPercentageToDP(1),
+                              marginStart: heightPercentageToDP(-1),
                             }}>
-                            <Entypo
-                              name={'user'}
-                              size={heightPercentageToDP(4)}
-                              color={COLORS.darkGray}
-                            />
+                            <View
+                              style={{
+                                backgroundColor: COLORS.white_s,
+                                padding: heightPercentageToDP(1),
+                                borderRadius: heightPercentageToDP(1),
+                                justifyContent: 'center',
+                              }}>
+                              <Entypo
+                                name={'user'}
+                                size={heightPercentageToDP(4)}
+                                color={COLORS.darkGray}
+                              />
+                            </View>
+                            <GradientText
+                              style={{
+                                ...styles.textStyle,
+                                width: widthPercentageToDP(60),
+                              }}>
+                              User Id
+                            </GradientText>
                           </View>
-                          <GradientText
-                            style={{
-                              ...styles.textStyle,
-                              width: widthPercentageToDP(60),
-                            }}>
-                            Notification
-                          </GradientText>
                         </View>
-                      </View>
 
-                      <View
+                        <View
+                          style={{
+                            flex: 1,
+                            backgroundColor: COLORS.white,
+                            position: 'absolute',
+                            right: heightPercentageToDP(2),
+                            borderRadius: heightPercentageToDP(1),
+                            padding: heightPercentageToDP(1),
+                            top: heightPercentageToDP(2),
+                          }}>
+                          <MaterialCommunityIcons
+                            name={'circle-edit-outline'}
+                            size={heightPercentageToDP(4)}
+                            color={COLORS.darkGray}
+                          />
+                        </View>
+                      </TouchableOpacity>
+                    )}
+
+                    {/** Single User NOTIFICATION */}
+
+                    {user && user.role === 'admin' ? (
+                      <TouchableOpacity
+                        onPress={() =>
+                          // Toast.show({
+                          //   type: 'info',
+                          //   text1: 'Comming soon'
+                          // })
+                          navigation.navigate('CreateNotification', {
+                            userdata: singleuser,
+                          })
+                        }
                         style={{
-                          flex: 1,
-                          backgroundColor: COLORS.white,
-                          position: 'absolute',
-                          right: heightPercentageToDP(2),
+                          height: heightPercentageToDP(20),
+                          flexDirection: 'row',
+                          backgroundColor: COLORS.grayBg,
+                          alignItems: 'center',
+                          paddingHorizontal: heightPercentageToDP(2),
                           borderRadius: heightPercentageToDP(1),
-                          padding: heightPercentageToDP(1),
-                          top: heightPercentageToDP(2),
+                          margin: heightPercentageToDP(2),
                         }}>
-                        <Ionicons
-                          name={'notifications'}
-                          size={heightPercentageToDP(4)}
-                          color={COLORS.darkGray}
-                        />
-                      </View>
-                    </TouchableOpacity>
+                        <View
+                          style={{
+                            padding: heightPercentageToDP(2),
+                          }}>
+                          <Text
+                            style={{
+                              marginStart: heightPercentageToDP(1),
+                              flex: 1,
+                              fontFamily: FONT.Montserrat_Regular,
+                              color: COLORS.darkGray,
+                              width: widthPercentageToDP(25),
+                              marginStart: heightPercentageToDP(-1),
+                              textAlignVertical: 'bottom',
+                            }}></Text>
+                          <Text
+                            style={{
+                              marginStart: heightPercentageToDP(1),
+                              flex: 1,
+                              fontFamily: FONT.Montserrat_Regular,
+                              color: COLORS.darkGray,
+                              fontSize: heightPercentageToDP(2),
+                              marginStart: heightPercentageToDP(-1),
+                            }}>
+                            Push Notification
+                          </Text>
+
+                          <View
+                            style={{
+                              flexDirection: 'row',
+                              justifyContent: 'flex-start',
+                              gap: heightPercentageToDP(1),
+                              marginStart: heightPercentageToDP(-1),
+                            }}>
+                            <View
+                              style={{
+                                backgroundColor: COLORS.white_s,
+                                padding: heightPercentageToDP(1),
+                                borderRadius: heightPercentageToDP(1),
+                                justifyContent: 'center',
+                              }}>
+                              <Entypo
+                                name={'user'}
+                                size={heightPercentageToDP(4)}
+                                color={COLORS.darkGray}
+                              />
+                            </View>
+                            <GradientText
+                              style={{
+                                ...styles.textStyle,
+                                width: widthPercentageToDP(60),
+                              }}>
+                              Notification
+                            </GradientText>
+                          </View>
+                        </View>
+
+                        <View
+                          style={{
+                            flex: 1,
+                            backgroundColor: COLORS.white,
+                            position: 'absolute',
+                            right: heightPercentageToDP(2),
+                            borderRadius: heightPercentageToDP(1),
+                            padding: heightPercentageToDP(1),
+                            top: heightPercentageToDP(2),
+                          }}>
+                          <Ionicons
+                            name={'notifications'}
+                            size={heightPercentageToDP(4)}
+                            color={COLORS.darkGray}
+                          />
+                        </View>
+                      </TouchableOpacity>
+                    ) : user &&
+                      user.role === 'subadmin' &&
+                      user.subadminfeature.notificationsend ? (
+                      <TouchableOpacity
+                        onPress={() =>
+                          // Toast.show({
+                          //   type: 'info',
+                          //   text1: 'Comming soon'
+                          // })
+                          navigation.navigate('CreateNotification', {
+                            userdata: singleuser,
+                          })
+                        }
+                        style={{
+                          height: heightPercentageToDP(20),
+                          flexDirection: 'row',
+                          backgroundColor: COLORS.grayBg,
+                          alignItems: 'center',
+                          paddingHorizontal: heightPercentageToDP(2),
+                          borderRadius: heightPercentageToDP(1),
+                          margin: heightPercentageToDP(2),
+                        }}>
+                        <View
+                          style={{
+                            padding: heightPercentageToDP(2),
+                          }}>
+                          <Text
+                            style={{
+                              marginStart: heightPercentageToDP(1),
+                              flex: 1,
+                              fontFamily: FONT.Montserrat_Regular,
+                              color: COLORS.darkGray,
+                              width: widthPercentageToDP(25),
+                              marginStart: heightPercentageToDP(-1),
+                              textAlignVertical: 'bottom',
+                            }}></Text>
+                          <Text
+                            style={{
+                              marginStart: heightPercentageToDP(1),
+                              flex: 1,
+                              fontFamily: FONT.Montserrat_Regular,
+                              color: COLORS.darkGray,
+                              fontSize: heightPercentageToDP(2),
+                              marginStart: heightPercentageToDP(-1),
+                            }}>
+                            Push Notification
+                          </Text>
+
+                          <View
+                            style={{
+                              flexDirection: 'row',
+                              justifyContent: 'flex-start',
+                              gap: heightPercentageToDP(1),
+                              marginStart: heightPercentageToDP(-1),
+                            }}>
+                            <View
+                              style={{
+                                backgroundColor: COLORS.white_s,
+                                padding: heightPercentageToDP(1),
+                                borderRadius: heightPercentageToDP(1),
+                                justifyContent: 'center',
+                              }}>
+                              <Entypo
+                                name={'user'}
+                                size={heightPercentageToDP(4)}
+                                color={COLORS.darkGray}
+                              />
+                            </View>
+                            <GradientText
+                              style={{
+                                ...styles.textStyle,
+                                width: widthPercentageToDP(60),
+                              }}>
+                              Notification
+                            </GradientText>
+                          </View>
+                        </View>
+
+                        <View
+                          style={{
+                            flex: 1,
+                            backgroundColor: COLORS.white,
+                            position: 'absolute',
+                            right: heightPercentageToDP(2),
+                            borderRadius: heightPercentageToDP(1),
+                            padding: heightPercentageToDP(1),
+                            top: heightPercentageToDP(2),
+                          }}>
+                          <Ionicons
+                            name={'notifications'}
+                            size={heightPercentageToDP(4)}
+                            color={COLORS.darkGray}
+                          />
+                        </View>
+                      </TouchableOpacity>
+                    ) : null}
 
                     {/** PLAY HISTORY */}
                     <TouchableOpacity
@@ -668,7 +1363,7 @@ const UpdateProfile = ({route}) => {
                               ...styles.textStyle,
                               width: widthPercentageToDP(60),
                             }}>
-                            Transaction History
+                            Transaction 
                           </GradientText>
                         </View>
                       </View>

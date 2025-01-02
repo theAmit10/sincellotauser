@@ -41,7 +41,7 @@ const SearchDate = ({route}) => {
 
   const dispatch = useDispatch();
 
-  const {accesstoken} = useSelector(state => state.user);
+  const {accesstoken, user} = useSelector(state => state.user);
   const {loading, dates} = useSelector(state => state.date);
   const [filteredData, setFilteredData] = useState([]);
 
@@ -68,19 +68,19 @@ const SearchDate = ({route}) => {
   //   setFilteredData(dates); // Update filteredData whenever locations change
   // }, [dates]);
 
-  const handleSearch = (text) => {
+  const handleSearch = text => {
     // Get current date
-    const currentDate = moment().startOf("day");
+    const currentDate = moment().startOf('day');
     // Get the next date
-    const nextDate = currentDate.clone().add(1, "days");
+    const nextDate = currentDate.clone().add(1, 'days');
 
     if (dates) {
-      const filtered = dates.filter((item) => {
-        const itemDate = moment(item.lotdate, "DD-MM-YYYY"); // Parse lotdate with correct format
+      const filtered = dates.filter(item => {
+        const itemDate = moment(item.lotdate, 'DD-MM-YYYY'); // Parse lotdate with correct format
 
         // Exclude if the item.lotdate matches the next day
         return (
-          !itemDate.isSame(nextDate, "day") &&
+          !itemDate.isSame(nextDate, 'day') &&
           item.lotdate.toLowerCase().includes(text.toLowerCase())
         );
       });
@@ -90,13 +90,13 @@ const SearchDate = ({route}) => {
 
   useEffect(() => {
     if (dates) {
-      const currentDate = moment().startOf("day");
-      const nextDate = currentDate.clone().add(1, "days");
+      const currentDate = moment().startOf('day');
+      const nextDate = currentDate.clone().add(1, 'days');
 
       // Filter out items where the lotdate is the next day
-      const filtered = dates.filter((item) => {
-        const itemDate = moment(item.lotdate, "DD-MM-YYYY"); // Adjust format as needed
-        return !itemDate.isSame(nextDate, "day");
+      const filtered = dates.filter(item => {
+        const itemDate = moment(item.lotdate, 'DD-MM-YYYY'); // Adjust format as needed
+        return !itemDate.isSame(nextDate, 'day');
       });
 
       setFilteredData(filtered); // Update filteredData whenever dates change
@@ -315,26 +315,41 @@ const SearchDate = ({route}) => {
                               {item.lotdate}
                             </Text>
 
-                            <View
-                              style={{
-                                flexDirection: 'row',
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                                gap: heightPercentageToDP(2),
-                              }}>
-                              {/** Update Locatiion */}
+                            {user && user.role === 'admin' ? (
+                              <View
+                                style={{
+                                  flexDirection: 'row',
+                                  justifyContent: 'center',
+                                  alignItems: 'center',
+                                  gap: heightPercentageToDP(2),
+                                }}>
+                                {/** Update Locatiion */}
 
-                              <TouchableOpacity
-                                onPress={() =>
-                                  navigation.navigate('UpdateDate', {
-                                    locationdata: locationdata,
-                                    timedata: timedata,
-                                    datedata: item,
-                                  })
-                                }>
-                                {filteredData.length === 0 ? (
-                                  selectedItem === item._id ? (
-                                    <Loading />
+                                {/* <TouchableOpacity
+                                  onPress={() =>
+                                    navigation.navigate('UpdateDate', {
+                                      locationdata: locationdata,
+                                      timedata: timedata,
+                                      datedata: item,
+                                    })
+                                  }>
+                                  {filteredData.length === 0 ? (
+                                    selectedItem === item._id ? (
+                                      <Loading />
+                                    ) : (
+                                      <LinearGradient
+                                        colors={[
+                                          COLORS.lightWhite,
+                                          COLORS.white_s,
+                                        ]}
+                                        className="rounded-xl p-1">
+                                        <MaterialCommunityIcons
+                                          name={'circle-edit-outline'}
+                                          size={heightPercentageToDP(3)}
+                                          color={COLORS.darkGray}
+                                        />
+                                      </LinearGradient>
+                                    )
                                   ) : (
                                     <LinearGradient
                                       colors={[
@@ -348,27 +363,30 @@ const SearchDate = ({route}) => {
                                         color={COLORS.darkGray}
                                       />
                                     </LinearGradient>
-                                  )
-                                ) : (
-                                  <LinearGradient
-                                    colors={[COLORS.lightWhite, COLORS.white_s]}
-                                    className="rounded-xl p-1">
-                                    <MaterialCommunityIcons
-                                      name={'circle-edit-outline'}
-                                      size={heightPercentageToDP(3)}
-                                      color={COLORS.darkGray}
-                                    />
-                                  </LinearGradient>
-                                )}
-                              </TouchableOpacity>
+                                  )}
+                                </TouchableOpacity> */}
 
-                              {/** Delete Locatiion */}
+                                {/** Delete Locatiion */}
 
-                              <TouchableOpacity
-                                onPress={() => deleteLocationHandler(item)}>
-                                {showProgressBar ? (
-                                  selectedItem === item._id ? (
-                                    <Loading />
+                                {/* <TouchableOpacity
+                                  onPress={() => deleteLocationHandler(item)}>
+                                  {showProgressBar ? (
+                                    selectedItem === item._id ? (
+                                      <Loading />
+                                    ) : (
+                                      <LinearGradient
+                                        colors={[
+                                          COLORS.lightWhite,
+                                          COLORS.white_s,
+                                        ]}
+                                        className="rounded-xl p-1">
+                                        <MaterialCommunityIcons
+                                          name={'delete'}
+                                          size={heightPercentageToDP(3)}
+                                          color={COLORS.darkGray}
+                                        />
+                                      </LinearGradient>
+                                    )
                                   ) : (
                                     <LinearGradient
                                       colors={[
@@ -382,20 +400,10 @@ const SearchDate = ({route}) => {
                                         color={COLORS.darkGray}
                                       />
                                     </LinearGradient>
-                                  )
-                                ) : (
-                                  <LinearGradient
-                                    colors={[COLORS.lightWhite, COLORS.white_s]}
-                                    className="rounded-xl p-1">
-                                    <MaterialCommunityIcons
-                                      name={'delete'}
-                                      size={heightPercentageToDP(3)}
-                                      color={COLORS.darkGray}
-                                    />
-                                  </LinearGradient>
-                                )}
-                              </TouchableOpacity>
-                            </View>
+                                  )}
+                                </TouchableOpacity> */}
+                              </View>
+                            ) : null}
                           </View>
                         </LinearGradient>
                       </TouchableOpacity>
@@ -410,36 +418,38 @@ const SearchDate = ({route}) => {
 
               {/** Bottom Submit Container */}
 
-              <View
-                style={{
-                  marginBottom: heightPercentageToDP(5),
-                  marginHorizontal: heightPercentageToDP(2),
-                  marginTop: heightPercentageToDP(2),
-                }}>
-                {/** Email container */}
-
-                <TouchableOpacity
-                  onPress={() =>
-                    navigation.navigate('CreateDate', {
-                      locationdata: locationdata,
-                      timedata: timedata,
-                    })
-                  }
+              {user && user.role === 'admin' ? (
+                <View
                   style={{
-                    backgroundColor: COLORS.blue,
-                    padding: heightPercentageToDP(2),
-                    borderRadius: heightPercentageToDP(1),
-                    alignItems: 'center',
+                    marginBottom: heightPercentageToDP(5),
+                    marginHorizontal: heightPercentageToDP(2),
+                    marginTop: heightPercentageToDP(2),
                   }}>
-                  <Text
+                  {/** Email container */}
+
+                  <TouchableOpacity
+                    onPress={() =>
+                      navigation.navigate('CreateDate', {
+                        locationdata: locationdata,
+                        timedata: timedata,
+                      })
+                    }
                     style={{
-                      color: COLORS.white,
-                      fontFamily: FONT.Montserrat_Regular,
+                      backgroundColor: COLORS.blue,
+                      padding: heightPercentageToDP(2),
+                      borderRadius: heightPercentageToDP(1),
+                      alignItems: 'center',
                     }}>
-                    Create Date
-                  </Text>
-                </TouchableOpacity>
-              </View>
+                    <Text
+                      style={{
+                        color: COLORS.white,
+                        fontFamily: FONT.Montserrat_Regular,
+                      }}>
+                      Create Date
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+              ) : null}
 
               {/** end */}
             </View>

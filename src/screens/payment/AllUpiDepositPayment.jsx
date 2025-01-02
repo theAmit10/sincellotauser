@@ -238,9 +238,9 @@ const AllUpiDepositPayment = () => {
                             <GradientTextWhite style={styles.textStyleContent}>
                               UPI
                             </GradientTextWhite>
-                            <GradientTextWhite style={styles.textStyleContent}>
+                            {/* <GradientTextWhite style={styles.textStyleContent}>
                               {item.paymentId}
-                            </GradientTextWhite>
+                            </GradientTextWhite> */}
                           </View>
 
                           <View
@@ -406,15 +406,15 @@ const AllUpiDepositPayment = () => {
 
                         <View
                           style={{
-                            flexDirection: 'row',
+                            flexDirection: 'column',
                             justifyContent: 'center',
                             alignItems: 'center',
                             flex: 1,
-                            paddingBottom: heightPercentageToDP(2),
+                            padding: heightPercentageToDP(2),
                           }}>
                           <View
                             style={{
-                              flex: 0.75,
+                              flex: 1,
                               display: 'flex',
                               justifyContent: 'flex-start',
                               alignItems: 'flex-start',

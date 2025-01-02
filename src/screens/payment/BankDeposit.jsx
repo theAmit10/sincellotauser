@@ -180,33 +180,43 @@ const BankDeposit = () => {
       Toast.show({type: 'error', text1: 'Add account number'});
       return;
     }
-    if (!swiftcode) {
-      Toast.show({type: 'error', text1: 'Add swift code'});
-      return;
-    }
     if (!paymentnote) {
       Toast.show({type: 'error', text1: 'Add payemnt code'});
       return;
     } else {
       try {
-        const body = {
-          bankname,
-          accountholdername,
-          ifsccode,
-          accountnumber,
-          swiftcode,
-          paymentnote
-        };
-
-        console.log('JSON BODY :: ', JSON.stringify(body));
-
-        const res = await createBankAccount({
-          accesstoken: accesstoken,
-          body: body,
-        }).unwrap();
-
-        Toast.show({type: 'success', text1: 'Success', text2: res.message});
-        navigation.goBack();
+        if (swiftcode) {
+          const body = {
+            bankname,
+            accountholdername,
+            ifsccode,
+            accountnumber,
+            swiftcode,
+            paymentnote,
+          };
+          console.log('JSON BODY :: ', JSON.stringify(body));
+          const res = await createBankAccount({
+            accesstoken: accesstoken,
+            body: body,
+          }).unwrap();
+          Toast.show({type: 'success', text1: 'Success', text2: res.message});
+          navigation.goBack();
+        } else {
+          const body = {
+            bankname,
+            accountholdername,
+            ifsccode,
+            accountnumber,
+            paymentnote,
+          };
+          console.log('JSON BODY :: ', JSON.stringify(body));
+          const res = await createBankAccount({
+            accesstoken: accesstoken,
+            body: body,
+          }).unwrap();
+          Toast.show({type: 'success', text1: 'Success', text2: res.message});
+          navigation.goBack();
+        }
       } catch (error) {
         console.log('Error during deposit:', error);
         if (error.response) {
@@ -283,7 +293,7 @@ const BankDeposit = () => {
                   style={{
                     height: heightPercentageToDP(70),
                     padding: heightPercentageToDP(1),
-                    marginBottom: heightPercentageToDP(5)
+                    marginBottom: heightPercentageToDP(5),
                   }}>
                   {/** BANK NAME */}
                   <View
@@ -456,7 +466,7 @@ const BankDeposit = () => {
                         fontSize: heightPercentageToDP(2),
                         paddingStart: heightPercentageToDP(1),
                       }}>
-                      Swift code
+                      Swift code (optional)
                     </Text>
 
                     <LinearGradient

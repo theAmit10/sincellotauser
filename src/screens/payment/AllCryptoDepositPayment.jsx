@@ -218,9 +218,9 @@ const AllCryptoDepositPayment = () => {
                             <GradientTextWhite style={styles.textStyleContent}>
                               Crypto
                             </GradientTextWhite>
-                            <GradientTextWhite style={styles.textStyleContent}>
+                            {/* <GradientTextWhite style={styles.textStyleContent}>
                               {item.paymentId}
-                            </GradientTextWhite>
+                            </GradientTextWhite> */}
                           </View>
 
                           <View
@@ -379,7 +379,7 @@ const AllCryptoDepositPayment = () => {
 
                         <View
                           style={{
-                            flexDirection: 'row',
+                            flexDirection: 'column',
                             gap: heightPercentageToDP(1),
                             justifyContent: 'center',
                             alignItems: 'center',

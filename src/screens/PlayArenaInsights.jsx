@@ -246,7 +246,7 @@ const PlayArenaInsights = ({route}) => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
 
-  const {accesstoken} = useSelector(state => state.user);
+  const {accesstoken, user} = useSelector(state => state.user);
   const [resultnumber, setresultnumber] = useState('');
   const [nextresult, setnextresult] = useState('');
   const [loading, setLoading] = useState(false);
@@ -309,10 +309,9 @@ const PlayArenaInsights = ({route}) => {
 
   const focused = useIsFocused();
 
-
   useEffect(() => {
     const intervalId = setInterval(() => {
-      console.log("Refetching data...");
+      console.log('Refetching data...');
       refetch(); // Trigger a refetch every 6 seconds
     }, 8000);
 
@@ -390,27 +389,30 @@ const PlayArenaInsights = ({route}) => {
   function getLowestAmount(playinsightdata) {
     // Extract playnumbers array
     const playnumbers = playinsightdata.playzone.playnumbers;
-  
+
     // Find the minimum amount in the playnumbers list
     const minAmount = Math.min(...playnumbers.map(p => p.amount));
-  
+
     // Get all playnumbers with the minimum amount
-    const minAmountPlaynumbers = playnumbers.filter(p => p.amount === minAmount);
-  
+    const minAmountPlaynumbers = playnumbers.filter(
+      p => p.amount === minAmount,
+    );
+
     // If there's more than one playnumber with the minimum amount, select one randomly
     if (minAmountPlaynumbers.length > 1) {
-      const randomIndex = Math.floor(Math.random() * minAmountPlaynumbers.length);
+      const randomIndex = Math.floor(
+        Math.random() * minAmountPlaynumbers.length,
+      );
       return minAmountPlaynumbers[randomIndex].amount;
     }
-  
+
     // Otherwise, return the amount of the single minimum amount
     return minAmountPlaynumbers[0].amount;
   }
-  
+
   // Usage example:
   // const lowestAmount = getLowestAmount(playinsightdata);
   // console.log(lowestAmount);
-  
 
   // console.log(getLowestAmount(playinsightdata)); // Output will be the lowest amount in the playnumbers array
 
@@ -430,28 +432,31 @@ const PlayArenaInsights = ({route}) => {
   function getPlaynumberOfLowestAmount(playinsightdata) {
     // Extract playnumbers array
     const playnumbers = playinsightdata.playzone.playnumbers;
-  
+
     // Find the minimum amount in the playnumbers list
     const minAmount = Math.min(...playnumbers.map(p => p.amount));
-  
+
     // Get all playnumbers with the minimum amount
-    const minAmountPlaynumbers = playnumbers.filter(p => p.amount === minAmount);
-  
+    const minAmountPlaynumbers = playnumbers.filter(
+      p => p.amount === minAmount,
+    );
+
     // If there's more than one playnumber with the minimum amount, select one randomly
     if (minAmountPlaynumbers.length > 1) {
-      const randomIndex = Math.floor(Math.random() * minAmountPlaynumbers.length);
+      const randomIndex = Math.floor(
+        Math.random() * minAmountPlaynumbers.length,
+      );
       return minAmountPlaynumbers[randomIndex].playnumber;
     }
-  
+
     // Otherwise, return the playnumber of the single minimum amount
     return minAmountPlaynumbers[0].playnumber;
   }
-  
+
   // Usage example:
   // const playnumber = getPlaynumberOfLowestAmount(playinsightdata);
   // console.log(playnumber);
   // console.log("getPlaynumberOfLowestAmount ::  ",playnumber);
-  
 
   // console.log(getPlaynumberOfLowestAmount(playinsightdata)); // Output will be the playnumber of the lowest amount in the playnumbers array
 
@@ -459,15 +464,13 @@ const PlayArenaInsights = ({route}) => {
   const [filteredData, setFilteredData] = useState([]);
   const [showProgressBar, setProgressBar] = useState(false);
 
-
-
   useEffect(() => {
     dispatch(
       getResultAccordingToLocationTimeDate(
         accesstoken,
         datedata._id,
         datedata.lottime._id,
-        datedata.lottime.lotlocation,
+        datedata.lottime.lotlocation._id,
       ),
     );
   }, [dispatch, focused]);
@@ -631,9 +634,9 @@ const PlayArenaInsights = ({route}) => {
           style={{
             width: '100%',
             height:
-            Platform.OS === 'android'
-              ? heightPercentageToDP(85)
-              : heightPercentageToDP(80),
+              Platform.OS === 'android'
+                ? heightPercentageToDP(85)
+                : heightPercentageToDP(80),
           }}
           imageStyle={{
             borderTopLeftRadius: heightPercentageToDP(5),
@@ -713,7 +716,7 @@ const PlayArenaInsights = ({route}) => {
                           textAlignVertical: 'center',
                           paddingStart: heightPercentageToDP(1),
                           textAlign: 'center',
-                          alignSelf: 'center'
+                          alignSelf: 'center',
                         }}>
                         {getTotalUsers(playinsightdata)}
                       </Text>
@@ -910,7 +913,7 @@ const PlayArenaInsights = ({route}) => {
                               fontSize: heightPercentageToDP(2),
                               paddingStart: heightPercentageToDP(1),
                             }}>
-                               {getLowestAmount(playinsightdata)}
+                            {getLowestAmount(playinsightdata)}
                           </Text>
                           <Text
                             style={{
@@ -927,11 +930,10 @@ const PlayArenaInsights = ({route}) => {
                       </LinearGradient>
                     </LinearGradient>
                   </View>
-                
 
                   {loadingResult ? (
                     <Loading />
-                  ) : filteredData.length == 0 ? (
+                  ) : filteredData.length === 0 ? (
                     <View
                       style={{
                         flex: 1,
@@ -973,7 +975,7 @@ const PlayArenaInsights = ({route}) => {
                               fontFamily: FONT.Montserrat_Bold,
                               color: COLORS.black,
                               textAlign: 'center',
-                              minHeight: heightPercentageToDP(7)
+                              minHeight: heightPercentageToDP(7),
                             }}
                             value={resultnumber}
                             onChangeText={text => setresultnumber(text)}
@@ -1031,27 +1033,53 @@ const PlayArenaInsights = ({route}) => {
                           </Text>
                         </LinearGradient>
                       </TouchableOpacity>
-                      <View
-                        style={{
-                          margin: heightPercentageToDP(2),
-                        }}>
-                        <TouchableOpacity
-                          onPress={submitHandler}
+                      {user && user.role === 'admin' ? (
+                        <View
                           style={{
-                            backgroundColor: COLORS.blue,
-                            padding: heightPercentageToDP(2),
-                            borderRadius: heightPercentageToDP(1),
-                            alignItems: 'center',
+                            margin: heightPercentageToDP(2),
                           }}>
-                          <Text
+                          <TouchableOpacity
+                            onPress={submitHandler}
                             style={{
-                              color: COLORS.white,
-                              fontFamily: FONT.Montserrat_Regular,
+                              backgroundColor: COLORS.blue,
+                              padding: heightPercentageToDP(2),
+                              borderRadius: heightPercentageToDP(1),
+                              alignItems: 'center',
                             }}>
-                            Create Result
-                          </Text>
-                        </TouchableOpacity>
-                      </View>
+                            <Text
+                              style={{
+                                color: COLORS.white,
+                                fontFamily: FONT.Montserrat_Regular,
+                              }}>
+                              Create Result
+                            </Text>
+                          </TouchableOpacity>
+                        </View>
+                      ) : user &&
+                        user.role === 'subadmin' &&
+                        user.subadminfeature.createresult ? (
+                        <View
+                          style={{
+                            margin: heightPercentageToDP(2),
+                          }}>
+                          <TouchableOpacity
+                            onPress={submitHandler}
+                            style={{
+                              backgroundColor: COLORS.blue,
+                              padding: heightPercentageToDP(2),
+                              borderRadius: heightPercentageToDP(1),
+                              alignItems: 'center',
+                            }}>
+                            <Text
+                              style={{
+                                color: COLORS.white,
+                                fontFamily: FONT.Montserrat_Regular,
+                              }}>
+                              Create Result
+                            </Text>
+                          </TouchableOpacity>
+                        </View>
+                      ) : null}
                     </View>
                   ) : (
                     <View

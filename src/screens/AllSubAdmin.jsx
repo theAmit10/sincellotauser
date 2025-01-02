@@ -35,7 +35,7 @@ import {useGetAllSubAdminQuery} from '../helper/Networkcall';
 const AllSubAdmin = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
-  const {accesstoken} = useSelector(state => state.user);
+  const {user, accesstoken} = useSelector(state => state.user);
 
   const [filteredData, setFilteredData] = useState([]);
 
@@ -56,10 +56,6 @@ const AllSubAdmin = () => {
   };
 
   const focused = useIsFocused();
-
-  // useEffect(() => {
-  //   dispatch(loadAllUsers(accesstoken));
-  // }, [dispatch, focused]);
 
   useFocusEffect(
     useCallback(() => {
@@ -254,6 +250,28 @@ const AllSubAdmin = () => {
                               }}>
                               User Id - {item.userId}
                             </Text>
+                            <Text
+                              style={{
+                                color: COLORS.black,
+                                fontFamily: FONT.Montserrat_Regular,
+                                fontSize: heightPercentageToDP(2),
+                                textAlignVertical: 'center',
+                              }}>
+                              {item.email}
+                            </Text>
+                            {item.contact != item.userId ? (
+                              <Text
+                                style={{
+                                  color: COLORS.black,
+                                  fontFamily: FONT.Montserrat_Regular,
+                                  fontSize: heightPercentageToDP(2),
+                                  textAlignVertical: 'center',
+                                }}>
+                                {item.contact != item.userId
+                                  ? item.contact
+                                  : null}
+                              </Text>
+                            ) : null}
                           </View>
                         </View>
                       </LinearGradient>

@@ -27,7 +27,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import UrlHelper from '../helper/UrlHelper';
 import axios from 'axios';
 import GradientTextWhite from '../components/helpercComponent/GradientTextWhite';
-import { useUpdateLocationAutomationMutation } from '../helper/Networkcall';
+import {useUpdateLocationAutomationMutation} from '../helper/Networkcall';
 import CustomAlertForSearch from '../components/helpercComponent/CustomAlertForSearch';
 
 const Search = () => {
@@ -40,7 +40,8 @@ const Search = () => {
   // const [filteredData, setFilteredData] = useState(locations);
   const [filteredData, setFilteredData] = useState([]);
 
-  const [updateLocationAutomation, {isLoading, error}] = useUpdateLocationAutomationMutation();
+  const [updateLocationAutomation, {isLoading, error}] =
+    useUpdateLocationAutomationMutation();
 
   const handleSearch = text => {
     const filtered = locations.filter(item =>
@@ -108,53 +109,47 @@ const Search = () => {
 
   // Toggle switch handler
   const toggleSwitch = async item => {
-    showAlertAccepted(item)
+    showAlertAccepted(item);
 
     callApiFunction(); // Call your API function here
-    
   };
 
   // Example API function to call
-  const callApiFunction = async (item) => {
+  const callApiFunction = async item => {
     console.log('working');
-    console.log('Iteme :: '+JSON.stringify(item));
+    console.log('Iteme :: ' + JSON.stringify(item));
 
     let automation = item.automation;
 
-    if(automation === 'automatic')
-    {
-      automation = "manual"
-    }else{
-      automation = "automatic"
+    if (automation === 'automatic') {
+      automation = 'manual';
+    } else {
+      automation = 'automatic';
     }
 
-    console.log("Automation :: "+automation)
+    console.log('Automation :: ' + automation);
 
-    try{
-
+    try {
       const formData = {
-        automation: automation
-      }
+        automation: automation,
+      };
 
       console.log('FORM DATA :: ' + JSON.stringify(formData));
 
       const res = await updateLocationAutomation({
         accesstoken: accesstoken,
         id: item._id,
-        body: formData
+        body: formData,
       }).unwrap();
 
-      console.log("Res :: "+res)
-      console.log("Res String :: "+JSON.stringify(res))
+      console.log('Res :: ' + res);
+      console.log('Res String :: ' + JSON.stringify(res));
 
       Toast.show({type: 'success', text1: 'Success', text2: res.message});
       dispatch(getAllLocations(accesstoken));
-
-    }catch(error)
-    {
-      console.log(error)
+    } catch (error) {
+      console.log(error);
     }
-
 
     // try {
     //   // Replace with your API call
@@ -182,7 +177,7 @@ const Search = () => {
     // Handle the Yes action here
     setAlertVisibleAccepted(false);
 
-    callApiFunction(selectedItem)
+    callApiFunction(selectedItem);
     console.log('Yes pressed');
   };
 
@@ -198,9 +193,9 @@ const Search = () => {
           style={{
             width: '100%',
             height:
-                  Platform.OS === 'android'
-                    ? heightPercentageToDP(85)
-                    : heightPercentageToDP(80),
+              Platform.OS === 'android'
+                ? heightPercentageToDP(85)
+                : heightPercentageToDP(80),
           }}
           imageStyle={{
             borderTopLeftRadius: heightPercentageToDP(5),
@@ -209,9 +204,9 @@ const Search = () => {
           <View
             style={{
               height:
-                  Platform.OS === 'android'
-                    ? heightPercentageToDP(85)
-                    : heightPercentageToDP(80),
+                Platform.OS === 'android'
+                  ? heightPercentageToDP(85)
+                  : heightPercentageToDP(80),
               width: widthPercentageToDP(100),
               borderTopLeftRadius: heightPercentageToDP(5),
               borderTopRightRadius: heightPercentageToDP(5),
@@ -438,6 +433,34 @@ const Search = () => {
             {/** Bottom Submit Container */}
 
             {user && user.role === 'admin' ? (
+              <View
+                style={{
+                  marginBottom: heightPercentageToDP(5),
+                  marginHorizontal: heightPercentageToDP(2),
+                  marginTop: heightPercentageToDP(2),
+                }}>
+                {/** Create location container */}
+
+                <TouchableOpacity
+                  onPress={() => navigation.navigate('CreateLocation')}
+                  style={{
+                    backgroundColor: COLORS.blue,
+                    padding: heightPercentageToDP(2),
+                    borderRadius: heightPercentageToDP(1),
+                    alignItems: 'center',
+                  }}>
+                  <Text
+                    style={{
+                      color: COLORS.white,
+                      fontFamily: FONT.Montserrat_Regular,
+                    }}>
+                    Create Location
+                  </Text>
+                </TouchableOpacity>
+              </View>
+            ) : user &&
+              user.role === 'subadmin' &&
+              user.subadminfeature.createlocation ? (
               <View
                 style={{
                   marginBottom: heightPercentageToDP(5),

@@ -99,7 +99,7 @@ const AdminAuthLoginBackground = () => {
               paddingEnd: heightPercentageToDP(2),
               color: COLORS.white_s,
             }}>
-            1927
+            2001
           </Text>
         </View>
 
@@ -205,7 +205,7 @@ const styles = StyleSheet.create({});
 //               paddingEnd: heightPercentageToDP(2),
 //               color: COLORS.white_s,
 //             }}>
-//             1927
+//             2001
 //           </Text>
 //         </View>
 

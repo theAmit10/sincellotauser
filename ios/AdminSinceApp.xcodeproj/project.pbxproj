@@ -12,16 +12,21 @@
 		13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.mm */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
+		18AD31B123A34AAE9920E6D1 /* deposit.png in Resources */ = {isa = PBXBuildFile; fileRef = EC505D97D90E485CB81E8A2D /* deposit.png */; };
 		21EF6D09C8DA4348BCCABE5D /* profileplaceholder.jpg in Resources */ = {isa = PBXBuildFile; fileRef = E91D09B1E62C499396E9E763 /* profileplaceholder.jpg */; };
+		3026E6816CCE4C5EA8968CF5 /* crypto.png in Resources */ = {isa = PBXBuildFile; fileRef = C4475FA8DBE749BA9AA4964F /* crypto.png */; };
 		31BD9DBB78E343FD9A89DDB5 /* ZCOOL-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 86EEFE5397684038BDC91DA0 /* ZCOOL-Regular.ttf */; };
+		33A37AD2697047FC8BDE3510 /* bank.png in Resources */ = {isa = PBXBuildFile; fileRef = 4A940F25308E4078993D2C4C /* bank.png */; };
 		3D43B256088E43919745EBB4 /* applogo.png in Resources */ = {isa = PBXBuildFile; fileRef = 9B4D11709142420CBCC24B00 /* applogo.png */; };
 		439945B11FC54CBCA39C42D8 /* logonobg.png in Resources */ = {isa = PBXBuildFile; fileRef = DCD2D92D9A05428EBDBA85C4 /* logonobg.png */; };
 		60F6EB790C5A43A9B9EB9B3E /* Helvetica.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9EA73F19FB344C2DADC32128 /* Helvetica.ttf */; };
+		68C1EBBC2FE747EEA8F23880 /* skrill.png in Resources */ = {isa = PBXBuildFile; fileRef = D2042D1771584225BDA26B47 /* skrill.png */; };
 		70FAB351EE3324C5D19E3198 /* Pods_AdminSinceApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E30B45746E28307D2F48E879 /* Pods_AdminSinceApp.framework */; };
 		775D90B5A55B4534A7B02AC8 /* SFPRO-MEDIUM.OTF in Resources */ = {isa = PBXBuildFile; fileRef = 0900EC20888B468AA5419FCF /* SFPRO-MEDIUM.OTF */; };
 		7CC1893AE02044CBA5E2E4DF /* Helvetica-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 02729E411592425F801C13AE /* Helvetica-Bold.ttf */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		8318501D50F340FC9BECF58D /* dark_user.png in Resources */ = {isa = PBXBuildFile; fileRef = D889874D527548559DBE117C /* dark_user.png */; };
+		8BC37A2DAFCC43219731A302 /* upi.png in Resources */ = {isa = PBXBuildFile; fileRef = 8561F973C22C47328EC67A81 /* upi.png */; };
 		9390C9B5A69B4A8B83D2487D /* Montserrat-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 24711469774B4454BB78FB70 /* Montserrat-Regular.ttf */; };
 		99D1CED44A6F4736936C3B18 /* Montserrat-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4279438B49F542B9B3024F3C /* Montserrat-Bold.ttf */; };
 		9C0CB9467B734A008CE2CCC6 /* sincelogo.png in Resources */ = {isa = PBXBuildFile; fileRef = 342AC1F6FBDD455289970A7D /* sincelogo.png */; };
@@ -29,14 +34,9 @@
 		C10897C616BE488594A6D356 /* SFPRO-REGULAR.OTF in Resources */ = {isa = PBXBuildFile; fileRef = A0CAE6D1A3AE4E0B85C3F2F9 /* SFPRO-REGULAR.OTF */; };
 		CA3F2F60BB1543F7AEEBBD1B /* Elephant.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 09B322D672DC43978FCD7673 /* Elephant.ttf */; };
 		CDD765B00324200DC36D126B /* Pods_AdminSinceApp_AdminSinceAppTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2EE25BEC43883F713C86A7A3 /* Pods_AdminSinceApp_AdminSinceAppTests.framework */; };
-		33A37AD2697047FC8BDE3510 /* bank.png in Resources */ = {isa = PBXBuildFile; fileRef = 4A940F25308E4078993D2C4C /* bank.png */; };
-		3026E6816CCE4C5EA8968CF5 /* crypto.png in Resources */ = {isa = PBXBuildFile; fileRef = C4475FA8DBE749BA9AA4964F /* crypto.png */; };
-		18AD31B123A34AAE9920E6D1 /* deposit.png in Resources */ = {isa = PBXBuildFile; fileRef = EC505D97D90E485CB81E8A2D /* deposit.png */; };
-		ED3F7A96741A40E2AEA88C79 /* paypal.png in Resources */ = {isa = PBXBuildFile; fileRef = FE70889CFF0743979910AB8A /* paypal.png */; };
-		68C1EBBC2FE747EEA8F23880 /* skrill.png in Resources */ = {isa = PBXBuildFile; fileRef = D2042D1771584225BDA26B47 /* skrill.png */; };
-		F8970EAC93294C1CACDBDD1A /* tlwbg.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 4438D81A34BD42118CAA1144 /* tlwbg.jpg */; };
-		8BC37A2DAFCC43219731A302 /* upi.png in Resources */ = {isa = PBXBuildFile; fileRef = 8561F973C22C47328EC67A81 /* upi.png */; };
 		E83BF72CA46A4076AA0CD675 /* withdraw.png in Resources */ = {isa = PBXBuildFile; fileRef = A930CC3CC9FF439485F43BCC /* withdraw.png */; };
+		ED3F7A96741A40E2AEA88C79 /* paypal.png in Resources */ = {isa = PBXBuildFile; fileRef = FE70889CFF0743979910AB8A /* paypal.png */; };
+		F8970EAC93294C1CACDBDD1A /* tlwbg.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 4438D81A34BD42118CAA1144 /* tlwbg.jpg */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -53,43 +53,43 @@
 		00E356EE1AD99517003FC87E /* AdminSinceAppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AdminSinceAppTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00E356F21AD99517003FC87E /* AdminSinceAppTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AdminSinceAppTests.m; sourceTree = "<group>"; };
-		02729E411592425F801C13AE /* Helvetica-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Helvetica-Bold.ttf"; path = "../assets/fonts/Helvetica-Bold.ttf"; sourceTree = "<group>"; };
-		0900EC20888B468AA5419FCF /* SFPRO-MEDIUM.OTF */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "SFPRO-MEDIUM.OTF"; path = "../assets/fonts/SFPRO-MEDIUM.OTF"; sourceTree = "<group>"; };
-		09B322D672DC43978FCD7673 /* Elephant.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = Elephant.ttf; path = ../assets/fonts/Elephant.ttf; sourceTree = "<group>"; };
+		02729E411592425F801C13AE /* Helvetica-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Helvetica-Bold.ttf"; path = "../assets/fonts/Helvetica-Bold.ttf"; sourceTree = "<group>"; };
+		0900EC20888B468AA5419FCF /* SFPRO-MEDIUM.OTF */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SFPRO-MEDIUM.OTF"; path = "../assets/fonts/SFPRO-MEDIUM.OTF"; sourceTree = "<group>"; };
+		09B322D672DC43978FCD7673 /* Elephant.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Elephant.ttf; path = ../assets/fonts/Elephant.ttf; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* AdminSinceApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AdminSinceApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = AdminSinceApp/AppDelegate.h; sourceTree = "<group>"; };
 		13B07FB01A68108700A75B9A /* AppDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = AppDelegate.mm; path = AdminSinceApp/AppDelegate.mm; sourceTree = "<group>"; };
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = AdminSinceApp/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = AdminSinceApp/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = AdminSinceApp/main.m; sourceTree = "<group>"; };
-		24711469774B4454BB78FB70 /* Montserrat-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Montserrat-Regular.ttf"; path = "../assets/fonts/Montserrat-Regular.ttf"; sourceTree = "<group>"; };
+		24711469774B4454BB78FB70 /* Montserrat-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Montserrat-Regular.ttf"; path = "../assets/fonts/Montserrat-Regular.ttf"; sourceTree = "<group>"; };
 		2EE25BEC43883F713C86A7A3 /* Pods_AdminSinceApp_AdminSinceAppTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AdminSinceApp_AdminSinceAppTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		342AC1F6FBDD455289970A7D /* sincelogo.png */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = sincelogo.png; path = ../assets/image/sincelogo.png; sourceTree = "<group>"; };
+		342AC1F6FBDD455289970A7D /* sincelogo.png */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = sincelogo.png; path = ../assets/image/sincelogo.png; sourceTree = "<group>"; };
 		3B4392A12AC88292D35C810B /* Pods-AdminSinceApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AdminSinceApp.debug.xcconfig"; path = "Target Support Files/Pods-AdminSinceApp/Pods-AdminSinceApp.debug.xcconfig"; sourceTree = "<group>"; };
-		4279438B49F542B9B3024F3C /* Montserrat-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Montserrat-Bold.ttf"; path = "../assets/fonts/Montserrat-Bold.ttf"; sourceTree = "<group>"; };
+		4279438B49F542B9B3024F3C /* Montserrat-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Montserrat-Bold.ttf"; path = "../assets/fonts/Montserrat-Bold.ttf"; sourceTree = "<group>"; };
+		4438D81A34BD42118CAA1144 /* tlwbg.jpg */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = tlwbg.jpg; path = ../assets/image/tlwbg.jpg; sourceTree = "<group>"; };
+		4A940F25308E4078993D2C4C /* bank.png */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = bank.png; path = ../assets/image/bank.png; sourceTree = "<group>"; };
 		5709B34CF0A7D63546082F79 /* Pods-AdminSinceApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AdminSinceApp.release.xcconfig"; path = "Target Support Files/Pods-AdminSinceApp/Pods-AdminSinceApp.release.xcconfig"; sourceTree = "<group>"; };
 		5B7EB9410499542E8C5724F5 /* Pods-AdminSinceApp-AdminSinceAppTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AdminSinceApp-AdminSinceAppTests.debug.xcconfig"; path = "Target Support Files/Pods-AdminSinceApp-AdminSinceAppTests/Pods-AdminSinceApp-AdminSinceAppTests.debug.xcconfig"; sourceTree = "<group>"; };
-		68F4832E57AE4EB38A92D8B0 /* Montserrat-SemiBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Montserrat-SemiBold.ttf"; path = "../assets/fonts/Montserrat-SemiBold.ttf"; sourceTree = "<group>"; };
-		69250B1A3A134EADB1B5976D /* orglogo.jpeg */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = orglogo.jpeg; path = ../assets/image/orglogo.jpeg; sourceTree = "<group>"; };
+		68F4832E57AE4EB38A92D8B0 /* Montserrat-SemiBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Montserrat-SemiBold.ttf"; path = "../assets/fonts/Montserrat-SemiBold.ttf"; sourceTree = "<group>"; };
+		69250B1A3A134EADB1B5976D /* orglogo.jpeg */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = orglogo.jpeg; path = ../assets/image/orglogo.jpeg; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = AdminSinceApp/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		86EEFE5397684038BDC91DA0 /* ZCOOL-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "ZCOOL-Regular.ttf"; path = "../assets/fonts/ZCOOL-Regular.ttf"; sourceTree = "<group>"; };
+		8561F973C22C47328EC67A81 /* upi.png */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = upi.png; path = ../assets/image/upi.png; sourceTree = "<group>"; };
+		86EEFE5397684038BDC91DA0 /* ZCOOL-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "ZCOOL-Regular.ttf"; path = "../assets/fonts/ZCOOL-Regular.ttf"; sourceTree = "<group>"; };
 		89C6BE57DB24E9ADA2F236DE /* Pods-AdminSinceApp-AdminSinceAppTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AdminSinceApp-AdminSinceAppTests.release.xcconfig"; path = "Target Support Files/Pods-AdminSinceApp-AdminSinceAppTests/Pods-AdminSinceApp-AdminSinceAppTests.release.xcconfig"; sourceTree = "<group>"; };
-		9B4D11709142420CBCC24B00 /* applogo.png */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = applogo.png; path = ../assets/image/applogo.png; sourceTree = "<group>"; };
-		9EA73F19FB344C2DADC32128 /* Helvetica.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = Helvetica.ttf; path = ../assets/fonts/Helvetica.ttf; sourceTree = "<group>"; };
-		A0CAE6D1A3AE4E0B85C3F2F9 /* SFPRO-REGULAR.OTF */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "SFPRO-REGULAR.OTF"; path = "../assets/fonts/SFPRO-REGULAR.OTF"; sourceTree = "<group>"; };
-		D889874D527548559DBE117C /* dark_user.png */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = dark_user.png; path = ../assets/image/dark_user.png; sourceTree = "<group>"; };
-		DCD2D92D9A05428EBDBA85C4 /* logonobg.png */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = logonobg.png; path = ../assets/image/logonobg.png; sourceTree = "<group>"; };
+		9B4D11709142420CBCC24B00 /* applogo.png */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = applogo.png; path = ../assets/image/applogo.png; sourceTree = "<group>"; };
+		9EA73F19FB344C2DADC32128 /* Helvetica.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Helvetica.ttf; path = ../assets/fonts/Helvetica.ttf; sourceTree = "<group>"; };
+		A0CAE6D1A3AE4E0B85C3F2F9 /* SFPRO-REGULAR.OTF */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SFPRO-REGULAR.OTF"; path = "../assets/fonts/SFPRO-REGULAR.OTF"; sourceTree = "<group>"; };
+		A930CC3CC9FF439485F43BCC /* withdraw.png */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = withdraw.png; path = ../assets/image/withdraw.png; sourceTree = "<group>"; };
+		C4475FA8DBE749BA9AA4964F /* crypto.png */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = crypto.png; path = ../assets/image/crypto.png; sourceTree = "<group>"; };
+		D2042D1771584225BDA26B47 /* skrill.png */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = skrill.png; path = ../assets/image/skrill.png; sourceTree = "<group>"; };
+		D889874D527548559DBE117C /* dark_user.png */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = dark_user.png; path = ../assets/image/dark_user.png; sourceTree = "<group>"; };
+		DCD2D92D9A05428EBDBA85C4 /* logonobg.png */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = logonobg.png; path = ../assets/image/logonobg.png; sourceTree = "<group>"; };
 		E30B45746E28307D2F48E879 /* Pods_AdminSinceApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AdminSinceApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		E91D09B1E62C499396E9E763 /* profileplaceholder.jpg */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = profileplaceholder.jpg; path = ../assets/image/profileplaceholder.jpg; sourceTree = "<group>"; };
+		E91D09B1E62C499396E9E763 /* profileplaceholder.jpg */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = profileplaceholder.jpg; path = ../assets/image/profileplaceholder.jpg; sourceTree = "<group>"; };
+		EC505D97D90E485CB81E8A2D /* deposit.png */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = deposit.png; path = ../assets/image/deposit.png; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
-		4A940F25308E4078993D2C4C /* bank.png */ = {isa = PBXFileReference; name = "bank.png"; path = "../assets/image/bank.png"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		C4475FA8DBE749BA9AA4964F /* crypto.png */ = {isa = PBXFileReference; name = "crypto.png"; path = "../assets/image/crypto.png"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		EC505D97D90E485CB81E8A2D /* deposit.png */ = {isa = PBXFileReference; name = "deposit.png"; path = "../assets/image/deposit.png"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		FE70889CFF0743979910AB8A /* paypal.png */ = {isa = PBXFileReference; name = "paypal.png"; path = "../assets/image/paypal.png"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		D2042D1771584225BDA26B47 /* skrill.png */ = {isa = PBXFileReference; name = "skrill.png"; path = "../assets/image/skrill.png"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		4438D81A34BD42118CAA1144 /* tlwbg.jpg */ = {isa = PBXFileReference; name = "tlwbg.jpg"; path = "../assets/image/tlwbg.jpg"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		8561F973C22C47328EC67A81 /* upi.png */ = {isa = PBXFileReference; name = "upi.png"; path = "../assets/image/upi.png"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		A930CC3CC9FF439485F43BCC /* withdraw.png */ = {isa = PBXFileReference; name = "withdraw.png"; path = "../assets/image/withdraw.png"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		FE70889CFF0743979910AB8A /* paypal.png */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = paypal.png; path = ../assets/image/paypal.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -180,7 +180,6 @@
 				A930CC3CC9FF439485F43BCC /* withdraw.png */,
 			);
 			name = Resources;
-			path = "";
 			sourceTree = "<group>";
 		};
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
@@ -566,7 +565,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 4TUC4FDZ7L;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = AdminSinceApp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -581,6 +583,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = AdminSinceApp;
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -593,7 +596,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 4TUC4FDZ7L;
 				INFOPLIST_FILE = AdminSinceApp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -607,6 +613,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = AdminSinceApp;
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -692,10 +699,7 @@
 					"-DFOLLY_USE_LIBCPP=1",
 					"-DFOLLY_CFG_NO_COROUTINES=1",
 				);
-				OTHER_LDFLAGS = (
-					"$(inherited)",
-					" ",
-				);
+				OTHER_LDFLAGS = "$(inherited)  ";
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
 				USE_HERMES = true;
@@ -774,10 +778,7 @@
 					"-DFOLLY_USE_LIBCPP=1",
 					"-DFOLLY_CFG_NO_COROUTINES=1",
 				);
-				OTHER_LDFLAGS = (
-					"$(inherited)",
-					" ",
-				);
+				OTHER_LDFLAGS = "$(inherited)  ";
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
 				USE_HERMES = true;

@@ -60,201 +60,214 @@ const AllUsers = () => {
         style={{flex: 1}}
         behavior="height"
         keyboardVerticalOffset={-60}>
+        <Background />
 
-  
-      <Background />
-
-      <View style={{flex: 1, justifyContent: 'flex-end'}}>
-        <ImageBackground
-          source={require('../../assets/image/tlwbg.jpg')}
-          style={{
-            width: '100%',
-            height: Platform.OS === "android" ? heightPercentageToDP(85) : heightPercentageToDP(80),
-          }}
-          imageStyle={{
-            borderTopLeftRadius: heightPercentageToDP(5),
-            borderTopRightRadius: heightPercentageToDP(5),
-          }}>
-          {/** Main Cointainer */}
-
-          <View
+        <View style={{flex: 1, justifyContent: 'flex-end'}}>
+          <ImageBackground
+            source={require('../../assets/image/tlwbg.jpg')}
             style={{
-              height: Platform.OS === "android" ? heightPercentageToDP(85) : heightPercentageToDP(80),
-              width: widthPercentageToDP(100),
+              width: '100%',
+              height:
+                Platform.OS === 'android'
+                  ? heightPercentageToDP(85)
+                  : heightPercentageToDP(80),
+            }}
+            imageStyle={{
               borderTopLeftRadius: heightPercentageToDP(5),
               borderTopRightRadius: heightPercentageToDP(5),
             }}>
-            {/** Top Style View */}
+            {/** Main Cointainer */}
+
             <View
               style={{
-                height: heightPercentageToDP(5),
+                height:
+                  Platform.OS === 'android'
+                    ? heightPercentageToDP(85)
+                    : heightPercentageToDP(80),
                 width: widthPercentageToDP(100),
-                justifyContent: 'center',
-                alignItems: 'center',
+                borderTopLeftRadius: heightPercentageToDP(5),
+                borderTopRightRadius: heightPercentageToDP(5),
               }}>
+              {/** Top Style View */}
               <View
                 style={{
-                  width: widthPercentageToDP(20),
-                  height: heightPercentageToDP(0.8),
-                  backgroundColor: COLORS.grayBg,
-                  borderRadius: heightPercentageToDP(2),
-                }}></View>
-            </View>
-
-            {/** Content Container */}
-
-            <View
-              style={{
-                height: heightPercentageToDP(15),
-                margin: heightPercentageToDP(2),
-              }}>
-              <GradientTextWhite style={styles.textStyle}>
-                All Users
-              </GradientTextWhite>
-
-              <View
-                style={{
-                  height: heightPercentageToDP(7),
-                  flexDirection: 'row',
-                  backgroundColor: COLORS.white_s,
+                  height: heightPercentageToDP(5),
+                  width: widthPercentageToDP(100),
+                  justifyContent: 'center',
                   alignItems: 'center',
-                  paddingHorizontal: heightPercentageToDP(2),
-                  borderRadius: heightPercentageToDP(1),
-                  marginTop: heightPercentageToDP(2),
                 }}>
-                <Fontisto
-                  name={'search'}
-                  size={heightPercentageToDP(3)}
-                  color={COLORS.darkGray}
-                />
-                <TextInput
+                <View
                   style={{
-                    marginStart: heightPercentageToDP(1),
-                    flex: 1,
-                    fontFamily: FONT.Montserrat_SemiBold,
-                    fontSize: heightPercentageToDP(2),
-                    color: COLORS.black,
-                  }}
-                  placeholder="Search for User"
-                  placeholderTextColor={COLORS.black}
-                  label="Search"
-                  onChangeText={handleSearch}
-                />
+                    width: widthPercentageToDP(20),
+                    height: heightPercentageToDP(0.8),
+                    backgroundColor: COLORS.grayBg,
+                    borderRadius: heightPercentageToDP(2),
+                  }}></View>
               </View>
-            </View>
 
-            <View
-              style={{
-                flex: 2,
-              }}>
-              {loadingAll ? (
-                <Loading />
-              ) : (
-                <FlatList
-                  data={filteredData}
-                  renderItem={({item, index}) => (
-                    <TouchableOpacity
-                      onPress={() =>
-                        navigation.navigate('UserDetails', {
-                          userdata: item,
-                        })
-                      }>
-                      <LinearGradient
-                        colors={
-                          index % 2 === 0
-                            ? [COLORS.lightblue, COLORS.midblue]
-                            : [COLORS.lightyellow, COLORS.darkyellow]
-                        }
-                        start={{x: 0, y: 0}} // start from left
-                        end={{x: 1, y: 0}} // end at right
-                        style={{
-                          ...styles.item,
-                          backgroundColor:
+              {/** Content Container */}
+
+              <View
+                style={{
+                  height: heightPercentageToDP(15),
+                  margin: heightPercentageToDP(2),
+                }}>
+                <GradientTextWhite style={styles.textStyle}>
+                  All Users
+                </GradientTextWhite>
+
+                <View
+                  style={{
+                    height: heightPercentageToDP(7),
+                    flexDirection: 'row',
+                    backgroundColor: COLORS.white_s,
+                    alignItems: 'center',
+                    paddingHorizontal: heightPercentageToDP(2),
+                    borderRadius: heightPercentageToDP(1),
+                    marginTop: heightPercentageToDP(2),
+                  }}>
+                  <Fontisto
+                    name={'search'}
+                    size={heightPercentageToDP(3)}
+                    color={COLORS.darkGray}
+                  />
+                  <TextInput
+                    style={{
+                      marginStart: heightPercentageToDP(1),
+                      flex: 1,
+                      fontFamily: FONT.Montserrat_SemiBold,
+                      fontSize: heightPercentageToDP(2),
+                      color: COLORS.black,
+                    }}
+                    placeholder="Search for User"
+                    placeholderTextColor={COLORS.black}
+                    label="Search"
+                    onChangeText={handleSearch}
+                  />
+                </View>
+              </View>
+
+              <View
+                style={{
+                  flex: 2,
+                }}>
+                {loadingAll ? (
+                  <Loading />
+                ) : (
+                  <FlatList
+                    data={filteredData}
+                    renderItem={({item, index}) => (
+                      <TouchableOpacity
+                        onPress={() =>
+                          navigation.navigate('UserDetails', {
+                            userdata: item,
+                          })
+                        }>
+                        <LinearGradient
+                          colors={
                             index % 2 === 0
-                              ? COLORS.lightDarkGray
-                              : COLORS.grayHalfBg,
-                        }}>
-                        <View
+                              ? [COLORS.lightblue, COLORS.midblue]
+                              : [COLORS.lightyellow, COLORS.darkyellow]
+                          }
+                          start={{x: 0, y: 0}} // start from left
+                          end={{x: 1, y: 0}} // end at right
                           style={{
-                            flexDirection: 'row',
-                            gap: heightPercentageToDP(2),
+                            ...styles.item,
+                            backgroundColor:
+                              index % 2 === 0
+                                ? COLORS.lightDarkGray
+                                : COLORS.grayHalfBg,
                           }}>
-                          {/** Profile Image Container */}
-                          <TouchableOpacity
-                            style={{
-                              borderRadius: 100,
-                              overflow: 'hidden',
-                              width: 60,
-                              height: 60,
-                            }}>
-                            {item.avatar?.url ? (
-                              <Image
-                                source={{
-                                  uri: `${serverName}/uploads/${item.avatar.url}`,
-                                }}
-                                resizeMode="cover"
-                                style={{
-                                  height: 60,
-                                  width: 60,
-                                }}
-                              />
-                            ) : (
-                              <Image
-                                source={require('../../assets/image/dark_user.png')}
-                                resizeMode="cover"
-                                style={{
-                                  height: 60,
-                                  width: 60,
-                                }}
-                              />
-                            )}
-                          </TouchableOpacity>
-
-                          {/** User Name */}
-
                           <View
                             style={{
-                              flex: 1,
-                              justifyContent: 'flex-start',
-                              alignItems: 'flex-start',
+                              flexDirection: 'row',
+                              gap: heightPercentageToDP(2),
                             }}>
-                            <Text
+                            {/** Profile Image Container */}
+                            <TouchableOpacity
                               style={{
-                                color: COLORS.black,
-                                fontFamily: FONT.Montserrat_SemiBold,
-                                fontSize: heightPercentageToDP(2.5),
-                                textAlignVertical: 'center',
+                                borderRadius: 100,
+                                overflow: 'hidden',
+                                width: 60,
+                                height: 60,
                               }}>
-                              {item.name}
-                            </Text>
-                            <Text
+                              {item.avatar?.url ? (
+                                <Image
+                                  source={{
+                                    uri: `${serverName}/uploads/${item.avatar.url}`,
+                                  }}
+                                  resizeMode="cover"
+                                  style={{
+                                    height: 60,
+                                    width: 60,
+                                  }}
+                                />
+                              ) : (
+                                <Image
+                                  source={require('../../assets/image/dark_user.png')}
+                                  resizeMode="cover"
+                                  style={{
+                                    height: 60,
+                                    width: 60,
+                                  }}
+                                />
+                              )}
+                            </TouchableOpacity>
+
+                            {/** User Name */}
+
+                            <View
                               style={{
-                                color: COLORS.black,
-                                fontFamily: FONT.Montserrat_Regular,
-                                fontSize: heightPercentageToDP(2),
-                                textAlignVertical: 'center',
+                                flex: 1,
+                                justifyContent: 'flex-start',
+                                alignItems: 'flex-start',
                               }}>
-                              User Id - {item.userId}
-                            </Text>
+                              <Text
+                                style={{
+                                  color: COLORS.black,
+                                  fontFamily: FONT.Montserrat_SemiBold,
+                                  fontSize: heightPercentageToDP(2.5),
+                                  textAlignVertical: 'center',
+                                }}>
+                                {item.name}
+                              </Text>
+                              <Text
+                                style={{
+                                  color: COLORS.black,
+                                  fontFamily: FONT.Montserrat_Regular,
+                                  fontSize: heightPercentageToDP(2),
+                                  textAlignVertical: 'center',
+                                }}>
+                                User Id - {item.userId}
+                              </Text>
+                              <Text
+                                style={{
+                                  color: COLORS.black,
+                                  fontFamily: FONT.Montserrat_Regular,
+                                  fontSize: heightPercentageToDP(2),
+                                  textAlignVertical: 'center',
+                                }}>
+                                Country - {item.country?.countryname}
+                              </Text>
+                            </View>
                           </View>
-                        </View>
-                      </LinearGradient>
-                    </TouchableOpacity>
-                  )}
-                  keyExtractor={item => item._id}
-                  initialNumToRender={10} // Render initial 10 items
-                  maxToRenderPerBatch={10} // Batch size to render
-                  windowSize={10} // Number of items kept in memory
-                />
-              )}
+                        </LinearGradient>
+                      </TouchableOpacity>
+                    )}
+                    keyExtractor={item => item._id}
+                    initialNumToRender={10} // Render initial 10 items
+                    maxToRenderPerBatch={10} // Batch size to render
+                    windowSize={10} // Number of items kept in memory
+                  />
+                )}
+              </View>
+
+              {/** Bottom Submit Container */}
+
+              {/** end */}
             </View>
-
-            {/** Bottom Submit Container */}
-
-            {/** end */}
-          </View>
-        </ImageBackground>
-      </View>
+          </ImageBackground>
+        </View>
       </KeyboardAvoidingView>
     </SafeAreaView>
   );
