@@ -74,6 +74,9 @@ const COLORS = {
 
   time_firstgreen: '#6D8341',
   time_secondgreen: '#C0D98A',
+
+  user_firstgreen: '#7EC630',
+  user_secondgreen: '#C0D98A',
   
 };
 

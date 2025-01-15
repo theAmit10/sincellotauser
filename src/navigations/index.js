@@ -87,6 +87,22 @@ import PlayHistory from '../screens/payment/PlayHistory';
 import History from '../screens/payment/History';
 import Applink from '../screens/Applink';
 import UpdateApplink from '../screens/UpdateApplink';
+import AllPartner from '../screens/partner/AllPartner';
+import PartnerDashboard from '../screens/partner/PartnerDashboard';
+import AllSubPartner from '../screens/partner/AllSubPartner';
+import AllRecharge from '../screens/partner/AllRecharge';
+import MinimumPercentage from '../screens/partner/MinimumPercentage';
+import PartnerPerformance from '../screens/partner/PartnerPerformance';
+import ProfitDeduction from '../screens/partner/ProfitDeduction';
+import PartnerSubPartner from '../screens/partner/PartnerSubPartner';
+import PartnerSubSubPartner from '../screens/partner/PartnerSubSubPartner';
+import AllUsersPartner from '../screens/partner/AllUsersPartner';
+import CreatePartner from '../screens/partner/CreatePartner';
+import PartnerDetails from '../screens/partner/PartnerDetails';
+import UpdatePermission from '../screens/partner/partnerdetails/UpdatePermission';
+import UpdatePercentage from '../screens/partner/partnerdetails/UpdatePercentage';
+import RechargeHistory from '../screens/partner/partnerdetails/RechargeHistory';
+import RechargePayment from '../screens/partner/partnerdetails/RechargePayment';
 
 
 
@@ -189,6 +205,26 @@ const Main = () => {
                 <Stack.Screen  name="History" component={History}/>
                 <Stack.Screen  name="Applink" component={Applink}/>
                 <Stack.Screen  name="UpdateApplink" component={UpdateApplink}/>
+
+                {/** PARTNER */}
+                <Stack.Screen  name="PartnerDashboard" component={PartnerDashboard}/>
+                <Stack.Screen  name="AllPartner" component={AllPartner}/>
+                <Stack.Screen  name="AllSubPartner" component={AllSubPartner}/>
+                <Stack.Screen  name="AllRecharge" component={AllRecharge}/>
+                <Stack.Screen  name="MinimumPercentage" component={MinimumPercentage}/>
+                <Stack.Screen  name="PartnerPerformance" component={PartnerPerformance}/>
+                <Stack.Screen  name="ProfitDeduction" component={ProfitDeduction}/>
+                <Stack.Screen  name="PartnerSubPartner" component={PartnerSubPartner}/>
+                <Stack.Screen  name="PartnerSubSubPartner" component={PartnerSubSubPartner}/>
+                <Stack.Screen  name="AllUsersPartner" component={AllUsersPartner}/>
+                <Stack.Screen  name="CreatePartner" component={CreatePartner}/>
+                <Stack.Screen  name="PartnerDetails" component={PartnerDetails}/>
+
+                {/** PARTNER DETAILS */}
+                <Stack.Screen  name="UpdatePermission" component={UpdatePermission}/>
+                <Stack.Screen  name="UpdatePercentage" component={UpdatePercentage}/>
+                <Stack.Screen  name="RechargeHistory" component={RechargeHistory}/>
+                <Stack.Screen  name="RechargePayment" component={RechargePayment}/>
 
 
 

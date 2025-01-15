@@ -19,6 +19,7 @@ import {
 import {COLORS, FONT} from '../../assets/constants';
 import GradientText from '../components/helpercComponent/GradientText';
 import Fontisto from 'react-native-vector-icons/Fontisto';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {useIsFocused, useNavigation} from '@react-navigation/native';
 import Background from '../components/background/Background';
 import Loading from '../components/helpercComponent/Loading';
@@ -247,9 +248,11 @@ const AllUsers = () => {
                                   fontSize: heightPercentageToDP(2),
                                   textAlignVertical: 'center',
                                 }}>
-                                Country - {item.country?.countryname}
+                                {item.country?.countryname}
                               </Text>
                             </View>
+
+                            {/** end */}
                           </View>
                         </LinearGradient>
                       </TouchableOpacity>
