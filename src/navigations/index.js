@@ -1,7 +1,7 @@
-import { StyleSheet} from 'react-native'
-import React, { useEffect } from 'react'
-import { NavigationContainer } from '@react-navigation/native'
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import {StyleSheet} from 'react-native';
+import React, {useEffect} from 'react';
+import {NavigationContainer} from '@react-navigation/native';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import Home from '../screens/Home';
 import Login from '../screens/Login';
 import Register from '../screens/Register';
@@ -103,144 +103,205 @@ import UpdatePermission from '../screens/partner/partnerdetails/UpdatePermission
 import UpdatePercentage from '../screens/partner/partnerdetails/UpdatePercentage';
 import RechargeHistory from '../screens/partner/partnerdetails/RechargeHistory';
 import RechargePayment from '../screens/partner/partnerdetails/RechargePayment';
+import AllLocation from '../screens/partner/AllLocation';
+import AllDate from '../screens/partner/AllDate';
 
-
-
-const Stack = createNativeStackNavigator()
+const Stack = createNativeStackNavigator();
 
 const Main = () => {
   return (
     <NavigationContainer>
-        <Stack.Navigator
+      <Stack.Navigator
         screenOptions={{headerShown: false}}
-        initialRouteName="SplashScreen"
-        >
-            <Stack.Group>
-                <Stack.Screen  name="Home" component={Home}/>
-                <Stack.Screen  name="Login" component={Login}/>
-                <Stack.Screen  name="Register" component={Register}/>
-                <Stack.Screen  name="OtpVerification" component={OtpVerification}/>
-                <Stack.Screen  name="Search" component={Search}/>
-                <Stack.Screen  name="Setting" component={Setting}/>
-                <Stack.Screen  name="SearchTime" component={SearchTime}/>
-                <Stack.Screen  name="SearchDate" component={SearchDate}/>
-                <Stack.Screen  name="Result" component={Result}/>
-                <Stack.Screen  name="ProfileBackground" component={ProfileBackground}/>
-                <Stack.Screen  name="Profile" component={Profile}/>
-                <Stack.Screen  name="SplashScreen" component={SplashScreen}/>
-              
-                <Stack.Screen  name="UpdateProfile" component={UpdateProfile}/>
-                <Stack.Screen  name="AllResult" component={AllResult}/>
-                <Stack.Screen  name="ResultDetails" component={ResultDetails}/>
-                <Stack.Screen  name="WalletBalance" component={WalletBalance}/>
-                <Stack.Screen  name="HomeLoading" component={HomeLoading}/>
-                <Stack.Screen  name="CreateLocation" component={CreateLocation}/>
-                <Stack.Screen  name="CreateTime" component={CreateTime}/>
-                <Stack.Screen  name="CreateDate" component={CreateDate}/>
-                <Stack.Screen  name="CreateResult" component={CreateResult}/>
-                <Stack.Screen  name="AdminDashboard" component={AdminDashboard}/>
-                <Stack.Screen  name="AllUsers" component={AllUsers}/>
-                <Stack.Screen  name="UserDetails" component={UserDetails}/>
-                <Stack.Screen  name="EditUserWallet" component={EditUserWallet}/>
-                <Stack.Screen  name="GameDescription" component={GameDescription}/>
-                <Stack.Screen  name="GameDescritptionDetails" component={GameDescritptionDetails}/>
-                <Stack.Screen  name="LocationDescription" component={LocationDescription}/>
-                <Stack.Screen  name="Onboard" component={Onboard}/>
-                <Stack.Screen  name="UpdateLocation" component={UpdateLocation}/>
-                <Stack.Screen  name="UpdateTime" component={UpdateTime}/>
-                <Stack.Screen  name="UpdateDate" component={UpdateDate}/>
-                <Stack.Screen  name="UpdateResult" component={UpdateResult}/>
-                <Stack.Screen  name="AllPromotion" component={AllPromotion}/>
-                <Stack.Screen  name="Notification" component={Notification}/>
-                <Stack.Screen  name="CreatePromotion" component={CreatePromotion}/>
-                <Stack.Screen  name="AboutUs" component={AboutUs}/>
-                <Stack.Screen  name="CreateAboutUs" component={CreateAboutUs}/>
-                <Stack.Screen  name="UploadProfilePicture" component={UploadProfilePicture}/>
-                <Stack.Screen  name="ChangePassword" component={ChangePassword}/>
-                <Stack.Screen  name="ChangeEmail" component={ChangeEmail}/>
-                <Stack.Screen  name="ForgotPassword" component={ForgotPassword}/>
-                <Stack.Screen  name="WalletModification" component={WalletModification}/>
-                <Stack.Screen  name="AllWallet" component={AllWallet}/>
-                <Stack.Screen  name="ChangeUserId" component={ChangeUserId}/>
-                <Stack.Screen  name="NewUser" component={NewUser}/>
-                <Stack.Screen  name="ResetPassword" component={ResetPassword}/>
-                <Stack.Screen  name="GoogleAuthPassword" component={GoogleAuthPassword}/>
-                <Stack.Screen  name="SendNotification" component={SendNotification}/>
-                <Stack.Screen  name="CreateNotification" component={CreateNotification}/>
-                <Stack.Screen  name="CreateNotificationForAllUsers" component={CreateNotificationForAllUsers}/>
-                <Stack.Screen  name="LocationTimeZone" component={LocationTimeZone}/>
-                <Stack.Screen  name="CreateResultFromTimeZone" component={CreateResultFromTimeZone}/>
-                <Stack.Screen  name="UpdateAboutUs" component={UpdateAboutUs}/>
+        initialRouteName="SplashScreen">
+        <Stack.Group>
+          <Stack.Screen name="Home" component={Home} />
+          <Stack.Screen name="Login" component={Login} />
+          <Stack.Screen name="Register" component={Register} />
+          <Stack.Screen name="OtpVerification" component={OtpVerification} />
+          <Stack.Screen name="Search" component={Search} />
+          <Stack.Screen name="Setting" component={Setting} />
+          <Stack.Screen name="SearchTime" component={SearchTime} />
+          <Stack.Screen name="SearchDate" component={SearchDate} />
+          <Stack.Screen name="Result" component={Result} />
+          <Stack.Screen
+            name="ProfileBackground"
+            component={ProfileBackground}
+          />
+          <Stack.Screen name="Profile" component={Profile} />
+          <Stack.Screen name="SplashScreen" component={SplashScreen} />
 
-                {/** PAYMENT */}
-                <Stack.Screen  name="Payment" component={Payment}/>
-                <Stack.Screen  name="AllUpiDepositPayment" component={AllUpiDepositPayment}/>
-                <Stack.Screen  name="UpiDeposit" component={UpiDeposit}/>
-                <Stack.Screen  name="AllBankDepositPayment" component={AllBankDepositPayment}/>
-                <Stack.Screen  name="BankDeposit" component={BankDeposit}/>
-                <Stack.Screen  name="AllPaypalDepositPayment" component={AllPaypalDepositPayment}/>
-                <Stack.Screen  name="AllCryptoDepositPayment" component={AllCryptoDepositPayment}/>
-                <Stack.Screen  name="AllSkrillPaymentPayment" component={AllSkrillPaymentPayment}/>
-                <Stack.Screen  name="PaypalDeposit" component={PaypalDeposit}/>
-                <Stack.Screen  name="Skrill" component={Skrill}/>
-                <Stack.Screen  name="CryptoDeposit" component={CryptoDeposit}/>
-                <Stack.Screen  name="AllDeposit" component={AllDeposit}/>
-                <Stack.Screen  name="ShowingReceipt" component={ShowingReceipt}/>
-                <Stack.Screen  name="AllWithdraw" component={AllWithdraw}/>
-                <Stack.Screen  name="AllCountry" component={AllCountry}/>
-                <Stack.Screen  name="Createcountry" component={Createcountry}/>
-                <Stack.Screen  name="UpdateCountry" component={UpdateCountry}/>
+          <Stack.Screen name="UpdateProfile" component={UpdateProfile} />
+          <Stack.Screen name="AllResult" component={AllResult} />
+          <Stack.Screen name="ResultDetails" component={ResultDetails} />
+          <Stack.Screen name="WalletBalance" component={WalletBalance} />
+          <Stack.Screen name="HomeLoading" component={HomeLoading} />
+          <Stack.Screen name="CreateLocation" component={CreateLocation} />
+          <Stack.Screen name="CreateTime" component={CreateTime} />
+          <Stack.Screen name="CreateDate" component={CreateDate} />
+          <Stack.Screen name="CreateResult" component={CreateResult} />
+          <Stack.Screen name="AdminDashboard" component={AdminDashboard} />
+          <Stack.Screen name="AllUsers" component={AllUsers} />
+          <Stack.Screen name="UserDetails" component={UserDetails} />
+          <Stack.Screen name="EditUserWallet" component={EditUserWallet} />
+          <Stack.Screen name="GameDescription" component={GameDescription} />
+          <Stack.Screen
+            name="GameDescritptionDetails"
+            component={GameDescritptionDetails}
+          />
+          <Stack.Screen
+            name="LocationDescription"
+            component={LocationDescription}
+          />
+          <Stack.Screen name="Onboard" component={Onboard} />
+          <Stack.Screen name="UpdateLocation" component={UpdateLocation} />
+          <Stack.Screen name="UpdateTime" component={UpdateTime} />
+          <Stack.Screen name="UpdateDate" component={UpdateDate} />
+          <Stack.Screen name="UpdateResult" component={UpdateResult} />
+          <Stack.Screen name="AllPromotion" component={AllPromotion} />
+          <Stack.Screen name="Notification" component={Notification} />
+          <Stack.Screen name="CreatePromotion" component={CreatePromotion} />
+          <Stack.Screen name="AboutUs" component={AboutUs} />
+          <Stack.Screen name="CreateAboutUs" component={CreateAboutUs} />
+          <Stack.Screen
+            name="UploadProfilePicture"
+            component={UploadProfilePicture}
+          />
+          <Stack.Screen name="ChangePassword" component={ChangePassword} />
+          <Stack.Screen name="ChangeEmail" component={ChangeEmail} />
+          <Stack.Screen name="ForgotPassword" component={ForgotPassword} />
+          <Stack.Screen
+            name="WalletModification"
+            component={WalletModification}
+          />
+          <Stack.Screen name="AllWallet" component={AllWallet} />
+          <Stack.Screen name="ChangeUserId" component={ChangeUserId} />
+          <Stack.Screen name="NewUser" component={NewUser} />
+          <Stack.Screen name="ResetPassword" component={ResetPassword} />
+          <Stack.Screen
+            name="GoogleAuthPassword"
+            component={GoogleAuthPassword}
+          />
+          <Stack.Screen name="SendNotification" component={SendNotification} />
+          <Stack.Screen
+            name="CreateNotification"
+            component={CreateNotification}
+          />
+          <Stack.Screen
+            name="CreateNotificationForAllUsers"
+            component={CreateNotificationForAllUsers}
+          />
+          <Stack.Screen name="LocationTimeZone" component={LocationTimeZone} />
+          <Stack.Screen
+            name="CreateResultFromTimeZone"
+            component={CreateResultFromTimeZone}
+          />
+          <Stack.Screen name="UpdateAboutUs" component={UpdateAboutUs} />
 
-                {/** FOR BETTING */}
-                <Stack.Screen  name="PlayArenaLocation" component={PlayArenaLocation}/>
-                <Stack.Screen  name="PlayArena" component={PlayArena}/>
-                <Stack.Screen  name="PlayArenaDate" component={PlayArenaDate}/>
-                <Stack.Screen  name="PlayArenaAdmin" component={PlayArenaAdmin}/>
-                <Stack.Screen  name="PlayArenaInsights" component={PlayArenaInsights}/>
-                <Stack.Screen  name="BalanceSheet" component={BalanceSheet}/>
-                <Stack.Screen  name="AllSubAdmin" component={AllSubAdmin}/>
-                <Stack.Screen  name="SelectCountry" component={SelectCountry}/>
-                <Stack.Screen  name="ModifySubadmin" component={ModifySubadmin}/>
-                <Stack.Screen  name="PlayHistory" component={PlayHistory}/>
-                <Stack.Screen  name="History" component={History}/>
-                <Stack.Screen  name="Applink" component={Applink}/>
-                <Stack.Screen  name="UpdateApplink" component={UpdateApplink}/>
+          {/** PAYMENT */}
+          <Stack.Screen name="Payment" component={Payment} />
+          <Stack.Screen
+            name="AllUpiDepositPayment"
+            component={AllUpiDepositPayment}
+          />
+          <Stack.Screen name="UpiDeposit" component={UpiDeposit} />
+          <Stack.Screen
+            name="AllBankDepositPayment"
+            component={AllBankDepositPayment}
+          />
+          <Stack.Screen name="BankDeposit" component={BankDeposit} />
+          <Stack.Screen
+            name="AllPaypalDepositPayment"
+            component={AllPaypalDepositPayment}
+          />
+          <Stack.Screen
+            name="AllCryptoDepositPayment"
+            component={AllCryptoDepositPayment}
+          />
+          <Stack.Screen
+            name="AllSkrillPaymentPayment"
+            component={AllSkrillPaymentPayment}
+          />
+          <Stack.Screen name="PaypalDeposit" component={PaypalDeposit} />
+          <Stack.Screen name="Skrill" component={Skrill} />
+          <Stack.Screen name="CryptoDeposit" component={CryptoDeposit} />
+          <Stack.Screen name="AllDeposit" component={AllDeposit} />
+          <Stack.Screen name="ShowingReceipt" component={ShowingReceipt} />
+          <Stack.Screen name="AllWithdraw" component={AllWithdraw} />
+          <Stack.Screen name="AllCountry" component={AllCountry} />
+          <Stack.Screen name="Createcountry" component={Createcountry} />
+          <Stack.Screen name="UpdateCountry" component={UpdateCountry} />
 
-                {/** PARTNER */}
-                <Stack.Screen  name="PartnerDashboard" component={PartnerDashboard}/>
-                <Stack.Screen  name="AllPartner" component={AllPartner}/>
-                <Stack.Screen  name="AllSubPartner" component={AllSubPartner}/>
-                <Stack.Screen  name="AllRecharge" component={AllRecharge}/>
-                <Stack.Screen  name="MinimumPercentage" component={MinimumPercentage}/>
-                <Stack.Screen  name="PartnerPerformance" component={PartnerPerformance}/>
-                <Stack.Screen  name="ProfitDeduction" component={ProfitDeduction}/>
-                <Stack.Screen  name="PartnerSubPartner" component={PartnerSubPartner}/>
-                <Stack.Screen  name="PartnerSubSubPartner" component={PartnerSubSubPartner}/>
-                <Stack.Screen  name="AllUsersPartner" component={AllUsersPartner}/>
-                <Stack.Screen  name="CreatePartner" component={CreatePartner}/>
-                <Stack.Screen  name="PartnerDetails" component={PartnerDetails}/>
+          {/** FOR BETTING */}
+          <Stack.Screen
+            name="PlayArenaLocation"
+            component={PlayArenaLocation}
+          />
+          <Stack.Screen name="PlayArena" component={PlayArena} />
+          <Stack.Screen name="PlayArenaDate" component={PlayArenaDate} />
+          <Stack.Screen name="PlayArenaAdmin" component={PlayArenaAdmin} />
+          <Stack.Screen
+            name="PlayArenaInsights"
+            component={PlayArenaInsights}
+          />
+          <Stack.Screen name="BalanceSheet" component={BalanceSheet} />
+          <Stack.Screen name="AllSubAdmin" component={AllSubAdmin} />
+          <Stack.Screen name="SelectCountry" component={SelectCountry} />
+          <Stack.Screen name="ModifySubadmin" component={ModifySubadmin} />
+          <Stack.Screen name="PlayHistory" component={PlayHistory} />
+          <Stack.Screen name="History" component={History} />
+          <Stack.Screen name="Applink" component={Applink} />
+          <Stack.Screen name="UpdateApplink" component={UpdateApplink} />
 
-                {/** PARTNER DETAILS */}
-                <Stack.Screen  name="UpdatePermission" component={UpdatePermission}/>
-                <Stack.Screen  name="UpdatePercentage" component={UpdatePercentage}/>
-                <Stack.Screen  name="RechargeHistory" component={RechargeHistory}/>
-                <Stack.Screen  name="RechargePayment" component={RechargePayment}/>
+          {/** PARTNER */}
+          <Stack.Screen name="PartnerDashboard" component={PartnerDashboard} />
+          <Stack.Screen name="AllPartner" component={AllPartner} />
+          <Stack.Screen name="AllSubPartner" component={AllSubPartner} />
+          <Stack.Screen name="AllRecharge" component={AllRecharge} />
+          <Stack.Screen
+            name="MinimumPercentage"
+            component={MinimumPercentage}
+          />
+          <Stack.Screen
+            name="PartnerPerformance"
+            component={PartnerPerformance}
+          />
+          <Stack.Screen name="ProfitDeduction" component={ProfitDeduction} />
+          <Stack.Screen
+            name="PartnerSubPartner"
+            component={PartnerSubPartner}
+          />
+          <Stack.Screen
+            name="PartnerSubSubPartner"
+            component={PartnerSubSubPartner}
+          />
+          <Stack.Screen name="AllUsersPartner" component={AllUsersPartner} />
+          <Stack.Screen name="CreatePartner" component={CreatePartner} />
+          <Stack.Screen name="PartnerDetails" component={PartnerDetails} />
 
+          {/** PARTNER DETAILS */}
+          <Stack.Screen name="UpdatePermission" component={UpdatePermission} />
+          <Stack.Screen name="UpdatePercentage" component={UpdatePercentage} />
+          <Stack.Screen name="RechargeHistory" component={RechargeHistory} />
+          <Stack.Screen name="RechargePayment" component={RechargePayment} />
 
+          {/* PARTNER PERFORMANCE  */}
+          <Stack.Screen name="AllLocation" component={AllLocation} />
+          <Stack.Screen name="AllDate" component={AllDate} />
+          
+        </Stack.Group>
+      </Stack.Navigator>
 
-            </Stack.Group>
-        </Stack.Navigator>
-
-        <Toast
-          position="top"
-          autoHide={true}
-          visibilityTime={2000}
-          onPress={() => Toast.hide()}
-        />
+      <Toast
+        position="top"
+        autoHide={true}
+        visibilityTime={2000}
+        onPress={() => Toast.hide()}
+      />
     </NavigationContainer>
-  )
-}
+  );
+};
 
-export default Main
+export default Main;
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({});

@@ -38,6 +38,15 @@ const PartnerDashboard = () => {
 
   return (
     <MainBackgound title={'Partner Dashboard'}>
+       {/** PARTNER PERFORMANCE */}
+
+       <PartnerDashComp
+        navigate={'AllLocation'}
+        title={'Partner Performance'}
+        subtitle={'List of all Partner Performace'}
+        fromicon={'FontAwesome6'}
+        iconname={'people-group'}
+      />
       {/** ALL PARTNER */}
 
       <PartnerDashComp
