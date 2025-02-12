@@ -6,17 +6,23 @@ import {heightPercentageToDP} from 'react-native-responsive-screen';
 import Loading from '../../components/helpercComponent/Loading';
 import {COLORS, FONT} from '../../../assets/constants';
 
-const MinimumPercentage = () => {
-  const [minimumpercentage, setminimumpercentage] = useState('');
+const NumberRange = () => {
+  const [startfrom, setsetfrom] = useState('');
+  const [endat, setendat] = useState('');
 
   return (
-    <MainBackgound title={'Minimum Percentage'}>
-      {/* MINIMUM PROFIT PERCENTAGE */}
+    <MainBackgound title={'Number Range'}>
       <Textinput
-        title="Minimum Profit Percentage"
-        value={minimumpercentage}
-        onChangeText={text => setminimumpercentage(text)} // Updates inputValue state
-        placeholder="Enter Percentage"
+        title="Number Range Start From"
+        value={startfrom}
+        onChangeText={text => setendat(text)} // Updates inputValue state
+        placeholder="Enter number"
+      />
+       <Textinput
+        title=" Number Range End At"
+        value={endat}
+        onChangeText={text => setendat(text)} // Updates inputValue state
+        placeholder="Enter number"
       />
 
       <View
@@ -50,6 +56,6 @@ const MinimumPercentage = () => {
   );
 };
 
-export default MinimumPercentage;
+export default NumberRange;
 
 const styles = StyleSheet.create({});

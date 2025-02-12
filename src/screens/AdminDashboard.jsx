@@ -196,13 +196,13 @@ const AdminDashboard = () => {
                               paddingVertical: heightPercentageToDP(2),
                               gap: heightPercentageToDP(2),
                             }}>
-
-
                             {/** PARTNER container */}
 
                             {user && user.role === 'admin' ? (
                               <TouchableOpacity
-                                onPress={() => navigation.navigate('PartnerDashboard')}>
+                                onPress={() =>
+                                  navigation.navigate('PartnerDashboard')
+                                }>
                                 <LinearGradient
                                   colors={[
                                     COLORS.time_firstblue,
@@ -277,7 +277,9 @@ const AdminDashboard = () => {
                               user.role === 'subadmin' &&
                               user.subadminfeature.users ? (
                               <TouchableOpacity
-                                onPress={() => navigation.navigate('PartnerDashboard')}>
+                                onPress={() =>
+                                  navigation.navigate('PartnerDashboard')
+                                }>
                                 <LinearGradient
                                   colors={[
                                     COLORS.time_firstblue,
@@ -319,6 +321,162 @@ const AdminDashboard = () => {
                                         marginStart: heightPercentageToDP(-1),
                                       }}>
                                       All partner data
+                                    </Text>
+                                  </View>
+
+                                  <View
+                                    style={{
+                                      flex: 2,
+                                      flexDirection: 'row',
+                                      justifyContent: 'flex-end',
+                                      gap: heightPercentageToDP(1),
+                                    }}>
+                                    {/* <GradientText style={{...styles.textStyle}}>
+                                      {allusers.length}
+                                    </GradientText> */}
+
+                                    <LinearGradient
+                                      colors={[
+                                        COLORS.lightWhite,
+                                        COLORS.white_s,
+                                      ]}
+                                      className="rounded-xl p-1">
+                                      <MaterialCommunityIcons
+                                        name={'account'}
+                                        size={heightPercentageToDP(4)}
+                                        color={COLORS.darkGray}
+                                      />
+                                    </LinearGradient>
+                                  </View>
+                                </LinearGradient>
+                              </TouchableOpacity>
+                            ) : null}
+
+                            {/** POWEBALL container */}
+
+                            {user && user.role === 'admin' ? (
+                              <TouchableOpacity
+                                onPress={() =>
+                                  navigation.navigate('PowerballDashboard')
+                                }>
+                                <LinearGradient
+                                  colors={[
+                                    COLORS.time_firstblue,
+                                    COLORS.time_secondbluw,
+                                  ]}
+                                  start={{x: 0, y: 0}} // start from left
+                                  end={{x: 1, y: 0}} // end at right
+                                  style={{
+                                    height: heightPercentageToDP(15),
+                                    flexDirection: 'row',
+                                    backgroundColor: COLORS.gray2,
+                                    alignItems: 'center',
+                                    paddingHorizontal: heightPercentageToDP(2),
+                                    borderRadius: heightPercentageToDP(1),
+                                  }}>
+                                  <View
+                                    style={{
+                                      padding: heightPercentageToDP(2),
+                                    }}>
+                                    <Text
+                                      style={{
+                                        marginStart: heightPercentageToDP(1),
+                                        flex: 1,
+                                        fontFamily: FONT.Montserrat_SemiBold,
+                                        color: COLORS.black,
+                                        fontSize: heightPercentageToDP(4),
+                                        marginStart: heightPercentageToDP(-1),
+                                      }}>
+                                      Powerball
+                                    </Text>
+
+                                    <Text
+                                      style={{
+                                        marginStart: heightPercentageToDP(1),
+                                        flex: 1,
+                                        fontFamily: FONT.Montserrat_Regular,
+                                        color: COLORS.black,
+                                        width: widthPercentageToDP(25),
+                                        marginStart: heightPercentageToDP(-1),
+                                      }}>
+                                      All Powerball data
+                                    </Text>
+                                  </View>
+
+                                  <View
+                                    style={{
+                                      flex: 2,
+                                      flexDirection: 'row',
+                                      justifyContent: 'flex-end',
+                                      gap: heightPercentageToDP(1),
+                                    }}>
+                                    <GradientText style={{...styles.textStyle}}>
+                                      {/* {allusers.length} */}
+                                    </GradientText>
+
+                                    <LinearGradient
+                                      colors={[
+                                        COLORS.lightWhite,
+                                        COLORS.white_s,
+                                      ]}
+                                      className="rounded-xl p-1">
+                                      <MaterialCommunityIcons
+                                        name={'account'}
+                                        size={heightPercentageToDP(4)}
+                                        color={COLORS.darkGray}
+                                      />
+                                    </LinearGradient>
+                                  </View>
+                                </LinearGradient>
+                              </TouchableOpacity>
+                            ) : user &&
+                              user.role === 'subadmin' &&
+                              user.subadminfeature.users ? (
+                              <TouchableOpacity
+                                onPress={() =>
+                                  navigation.navigate('PowerballDashboard')
+                                }>
+                                <LinearGradient
+                                  colors={[
+                                    COLORS.time_firstblue,
+                                    COLORS.time_secondbluw,
+                                  ]}
+                                  start={{x: 0, y: 0}} // start from left
+                                  end={{x: 1, y: 0}} // end at right
+                                  style={{
+                                    height: heightPercentageToDP(15),
+                                    flexDirection: 'row',
+                                    backgroundColor: COLORS.gray2,
+                                    alignItems: 'center',
+                                    paddingHorizontal: heightPercentageToDP(2),
+                                    borderRadius: heightPercentageToDP(1),
+                                  }}>
+                                  <View
+                                    style={{
+                                      padding: heightPercentageToDP(2),
+                                    }}>
+                                    <Text
+                                      style={{
+                                        marginStart: heightPercentageToDP(1),
+                                        flex: 1,
+                                        fontFamily: FONT.Montserrat_SemiBold,
+                                        color: COLORS.black,
+                                        fontSize: heightPercentageToDP(4),
+                                        marginStart: heightPercentageToDP(-1),
+                                      }}>
+                                      Powerball
+                                    </Text>
+
+                                    <Text
+                                      style={{
+                                        marginStart: heightPercentageToDP(1),
+                                        flex: 1,
+                                        fontFamily: FONT.Montserrat_Regular,
+                                        color: COLORS.black,
+                                        width: widthPercentageToDP(25),
+                                        marginStart: heightPercentageToDP(-1),
+                                      }}>
+                                      All Powerball data
                                     </Text>
                                   </View>
 

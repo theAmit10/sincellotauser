@@ -12,6 +12,8 @@ const Textinput = ({
   onChangeText,
   placeholder,
   editable = true,
+  keyboardType='default'
+
 }) => {
   return (
     <LinearGradient
@@ -47,6 +49,7 @@ const Textinput = ({
           placeholder={placeholder}
           placeholderTextColor={COLORS.gray}
           editable={editable}
+          keyboardType={keyboardType}
         />
       </View>
     </LinearGradient>

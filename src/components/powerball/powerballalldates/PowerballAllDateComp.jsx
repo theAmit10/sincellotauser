@@ -1,75 +1,59 @@
-import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {Pressable, StyleSheet, Text, View} from 'react-native';
 import React from 'react';
 import LinearGradient from 'react-native-linear-gradient';
-import GradientText from '../helpercComponent/GradientText';
+import {COLORS, FONT} from '../../../../assets/constants';
 import {heightPercentageToDP} from 'react-native-responsive-screen';
-import {useNavigation} from '@react-navigation/native';
-import {COLORS, FONT} from '../../../assets/constants';
 import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
-const PartnerDashComp = ({navigate, title, subtitle, fromicon, iconname, data}) => {
-  const navigation = useNavigation();
-
+const PowerballAllDateComp = ({
+  time,
+  fromicon,
+  iconname,
+  fromIconDelete,
+  iconNameDelete,
+  navigation,
+  navigate,
+  forprocess,
+}) => {
   return (
-    <TouchableOpacity onPress={() => navigation.navigate(navigate,{ data })}>
+    <Pressable onPress={() => navigation.navigate(navigate)}>
       <LinearGradient
         colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
         start={{x: 0, y: 0}} // start from left
         end={{x: 1, y: 0}} // end at right
-        style={styles.paymentOption}>
+        style={{
+          justifyContent: 'flex-start',
+          height: heightPercentageToDP(10),
+          borderRadius: heightPercentageToDP(2),
+          marginTop: heightPercentageToDP(2),
+          flexDirection: 'row',
+        }}>
         <View
           style={{
-            flex: 1,
-            gap: heightPercentageToDP(2),
-          }}>
-          <GradientText style={styles.textStyleContent}>{title}</GradientText>
-          <Text style={styles.subtitle}>{subtitle}</Text>
-        </View>
+            flex: 2,
 
-        <View style={styles.iconContainer}>
-          {fromicon === "FontAwesome6" && (
-            <FontAwesome6
-              name={iconname}
-              size={heightPercentageToDP(3)}
-              color={COLORS.darkGray}
-              style={styles.icon}
-            />
-          )}
-          {fromicon === "MaterialCommunityIcons" && (
-            <MaterialCommunityIcons
-              name={iconname}
-              size={heightPercentageToDP(3)}
-              color={COLORS.darkGray}
-              style={styles.icon}
-            />
-          )}
-          {fromicon === "FontAwesome5" && (
-            <FontAwesome5
-              name={iconname}
-              size={heightPercentageToDP(3)}
-              color={COLORS.darkGray}
-              style={styles.icon}
-            />
-          )}
-          
-          {fromicon === "Ionicons" && (
-            <Ionicons
-              name={iconname}
-              size={heightPercentageToDP(3)}
-              color={COLORS.darkGray}
-              style={styles.icon}
-            />
-          )}
+            justifyContent: 'center',
+            paddingHorizontal: heightPercentageToDP(2),
+          }}>
+          <Text
+            style={{
+              fontFamily: FONT.Montserrat_Bold,
+              fontSize: heightPercentageToDP(2),
+              color: COLORS.black,
+            }}>
+            {time}
+          </Text>
         </View>
       </LinearGradient>
-    </TouchableOpacity>
+    </Pressable>
   );
 };
 
-export default PartnerDashComp;
+export default PowerballAllDateComp;
 
 const styles = StyleSheet.create({
   textStyle: {

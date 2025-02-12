@@ -1,10 +1,12 @@
 import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react';
 import UrlHelper from './UrlHelper';
 
+// baseUrl: 'https://jenny.worldgames55fhgfg7sd8fvgsd8f6gs8dfgdsfgds6onion.ru/api/v1/',
+
 export const sincelotAdminApi = createApi({
   reducerPath: 'sincelotAdminApi ',
   baseQuery: fetchBaseQuery({
-    baseUrl: 'https://jenny.worldgames55fhgfg7sd8fvgsd8f6gs8dfgdsfgds6onion.ru/api/v1/',
+    baseUrl: 'https://adminbackend-apsw.onrender.com/api/v1/',
   }),
   endpoints: builder => ({
     getData: builder.query({
@@ -94,7 +96,7 @@ export const sincelotAdminApi = createApi({
     // FOR GETTING USERS HISTORY
     getHistory: builder.query({
       query: ({accesstoken, userId}) => ({
-        url:'user/getuserdeposit/?userid=' + userId,
+        url: 'user/getuserdeposit/?userid=' + userId,
         method: 'get',
         headers: {
           Authorization: `Bearer ${accesstoken}`,
@@ -102,8 +104,8 @@ export const sincelotAdminApi = createApi({
       }),
     }),
 
-     // FOR GETTING USERS SINGLE USER PLAY HISTORY
-     getSingleUserPlayHistory: builder.query({
+    // FOR GETTING USERS SINGLE USER PLAY HISTORY
+    getSingleUserPlayHistory: builder.query({
       query: ({accesstoken, userId}) => ({
         url: 'result/singleuserplayhistory/' + userId,
         method: 'get',
@@ -272,12 +274,11 @@ export const sincelotAdminApi = createApi({
       }),
     }),
 
-
-     // FOR GETTING ALL DEPOSIT
-     getAllDeposit: builder.query({
-      query: ({ accesstoken, page, limit }) => ({
+    // FOR GETTING ALL DEPOSIT
+    getAllDeposit: builder.query({
+      query: ({accesstoken, page, limit}) => ({
         url: `user/getalldeposit?page=${page}&limit=${limit}`,
-        method: "get",
+        method: 'get',
         headers: {
           Authorization: `Bearer ${accesstoken}`,
         },
@@ -286,9 +287,9 @@ export const sincelotAdminApi = createApi({
 
     // FOR GETTING ALL WITHDRAW
     getAllWithdraw: builder.query({
-      query: ({ accesstoken, page, limit }) => ({
+      query: ({accesstoken, page, limit}) => ({
         url: `user/getallwithdraw?page=${page}&limit=${limit}`,
-        method: "get",
+        method: 'get',
         headers: {
           Authorization: `Bearer ${accesstoken}`,
         },
@@ -383,17 +384,17 @@ export const sincelotAdminApi = createApi({
     // FOR GETTING ALL BALANCE SHEET
 
     getAllBalance: builder.query({
-      query: ({ accesstoken, page, limit }) => ({
+      query: ({accesstoken, page, limit}) => ({
         url: `result/balancesheet?page=${page}&limit=${limit}`,
-        method: "GET",
+        method: 'GET',
         headers: {
           Authorization: `Bearer ${accesstoken}`,
         },
       }),
     }),
 
-     // FOR GETTING ALL SUB ADMIN
-     getAllSubAdmin: builder.query({
+    // FOR GETTING ALL SUB ADMIN
+    getAllSubAdmin: builder.query({
       query: accesstoken => ({
         url: 'user/allsubadmin',
         method: 'GET',
@@ -403,9 +404,9 @@ export const sincelotAdminApi = createApi({
       }),
     }),
 
-     // FOR UPDATE A LOCATION AUTOMATION
-     updateLocationAutomation: builder.mutation({
-      query: ({accesstoken, body,id}) => ({
+    // FOR UPDATE A LOCATION AUTOMATION
+    updateLocationAutomation: builder.mutation({
+      query: ({accesstoken, body, id}) => ({
         url: `result/updatelotlocation/${id}`,
         method: 'PUT',
         headers: {
@@ -416,10 +417,9 @@ export const sincelotAdminApi = createApi({
       }),
     }),
 
-
     // FOR GETTING NEXT RESULT TIME
     getNextResult: builder.query({
-      query: ({accesstoken,locationid}) => ({
+      query: ({accesstoken, locationid}) => ({
         url: `result/nextresult?locationid=${locationid}`,
         method: 'GET',
         headers: {
@@ -427,7 +427,6 @@ export const sincelotAdminApi = createApi({
         },
       }),
     }),
-
 
     getAllPlayHome: builder.query({
       query: accesstoken => ({
@@ -439,8 +438,8 @@ export const sincelotAdminApi = createApi({
       }),
     }),
 
-     // FOR DELETE A SUB ADMIN
-     deleteSubAdmin: builder.mutation({
+    // FOR DELETE A SUB ADMIN
+    deleteSubAdmin: builder.mutation({
       query: ({accesstoken, userId}) => ({
         url: `user/deleteuser/${userId}`,
         method: 'DELETE',
@@ -450,69 +449,66 @@ export const sincelotAdminApi = createApi({
       }),
     }),
 
-
-      // RESET ANY USER PASSWORD
-      resetSubAdminPassword: builder.mutation({
-        query: ({ body, userId,accesstoken}) => ({
-          url: `user/updateuserpassword/${userId}/password`,
-          method: 'PATCH',
-          headers: {
-            Authorization: `Bearer ${accesstoken}`,
-            'Content-Type': 'application/json',
-          },
-          body,
-        }),
+    // RESET ANY USER PASSWORD
+    resetSubAdminPassword: builder.mutation({
+      query: ({body, userId, accesstoken}) => ({
+        url: `user/updateuserpassword/${userId}/password`,
+        method: 'PATCH',
+        headers: {
+          Authorization: `Bearer ${accesstoken}`,
+          'Content-Type': 'application/json',
+        },
+        body,
       }),
+    }),
 
-       // FOR UPDATE SUB ADMIN FEATURE
-       updateSubAdminFeature: builder.mutation({
-        query: ({ body, userId,accesstoken}) => ({
-          url: `user/updatesubadmin/${userId}`,
-          method: 'PUT',
-          headers: {
-            Authorization: `Bearer ${accesstoken}`,
-          },
-          body,
-        }),
+    // FOR UPDATE SUB ADMIN FEATURE
+    updateSubAdminFeature: builder.mutation({
+      query: ({body, userId, accesstoken}) => ({
+        url: `user/updatesubadmin/${userId}`,
+        method: 'PUT',
+        headers: {
+          Authorization: `Bearer ${accesstoken}`,
+        },
+        body,
       }),
+    }),
 
-
-       // FOR GETTING ALL APP LINK
+    // FOR GETTING ALL APP LINK
     getAppLink: builder.query({
-      query: (accesstoken) => ({
-        url: "result/getapplink",
-        method: "get",
+      query: accesstoken => ({
+        url: 'result/getapplink',
+        method: 'get',
         headers: {
           Authorization: `Bearer ${accesstoken}`,
         },
       }),
     }),
 
-     // FOR ADDING APP LINK
-     addAppLink: builder.mutation({
-      query: ({ accesstoken, body }) => ({
-        url: "result/createapplink",
-        method: "POST",
+    // FOR ADDING APP LINK
+    addAppLink: builder.mutation({
+      query: ({accesstoken, body}) => ({
+        url: 'result/createapplink',
+        method: 'POST',
         headers: {
           Authorization: `Bearer ${accesstoken}`,
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
         body,
       }),
     }),
 
-     // FOR DELETE App
-     deleteAppLink: builder.mutation({
-      query: ({ accesstoken, body }) => ({
+    // FOR DELETE App
+    deleteAppLink: builder.mutation({
+      query: ({accesstoken, body}) => ({
         url: `result/deleteapplink`,
-        method: "DELETE",
+        method: 'DELETE',
         headers: {
           Authorization: `Bearer ${accesstoken}`,
         },
         body,
       }),
     }),
-
 
     // ######## END #########
   }),
@@ -561,5 +557,4 @@ export const {
   useGetAppLinkQuery,
   useAddAppLinkMutation,
   useDeleteAppLinkMutation,
-
 } = sincelotAdminApi;

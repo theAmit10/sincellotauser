@@ -6,17 +6,16 @@ import {heightPercentageToDP} from 'react-native-responsive-screen';
 import Loading from '../../components/helpercComponent/Loading';
 import {COLORS, FONT} from '../../../assets/constants';
 
-const MinimumPercentage = () => {
-  const [minimumpercentage, setminimumpercentage] = useState('');
+const PowerUpdateName = () => {
+  const [updatename, setupdatename] = useState('Powerball');
 
   return (
-    <MainBackgound title={'Minimum Percentage'}>
-      {/* MINIMUM PROFIT PERCENTAGE */}
+    <MainBackgound title={'Update Name'}>
       <Textinput
-        title="Minimum Profit Percentage"
-        value={minimumpercentage}
-        onChangeText={text => setminimumpercentage(text)} // Updates inputValue state
-        placeholder="Enter Percentage"
+        title="Name"
+        value={updatename}
+        onChangeText={text => setupdatename(text)} // Updates inputValue state
+        placeholder="Enter name"
       />
 
       <View
@@ -50,6 +49,6 @@ const MinimumPercentage = () => {
   );
 };
 
-export default MinimumPercentage;
+export default PowerUpdateName;
 
 const styles = StyleSheet.create({});

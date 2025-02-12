@@ -444,10 +444,10 @@ const AllDeposit = () => {
   };
 
   function formatAmount(value) {
-    if (typeof value === "string") {
+    if (typeof value === 'string') {
       value = parseFloat(value); // Convert string to float if necessary
     }
-  
+
     // Check if the number has decimals
     if (value % 1 === 0) {
       return value; // Return as is if it's a whole number
@@ -455,7 +455,6 @@ const AllDeposit = () => {
       return parseFloat(value.toFixed(1)); // Return with one decimal point if it has decimals
     }
   }
-  
 
   return (
     <SafeAreaView style={{flex: 1}}>

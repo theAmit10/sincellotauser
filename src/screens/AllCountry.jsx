@@ -171,7 +171,7 @@ const AllCountry = () => {
               </View>
             ) : (
               <FlatList
-                data={data.currencies}
+                data={data?.currencies}
                 renderItem={({item}) => (
                   <TouchableOpacity
                     style={{
