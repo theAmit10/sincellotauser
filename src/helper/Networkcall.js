@@ -510,6 +510,20 @@ export const sincelotAdminApi = createApi({
       }),
     }),
 
+    // [ PARTNER MODULE START ]
+
+    // FOR GETTING ALL PARTNER
+
+    getAllPartner: builder.query({
+      query: ({accesstoken, page, limit}) => ({
+        url: `user/getallpartner?page=${page}&limit=${limit}`,
+        method: 'get',
+        headers: {
+          Authorization: `Bearer ${accesstoken}`,
+        },
+      }),
+    }),
+
     // ######## END #########
   }),
 });
