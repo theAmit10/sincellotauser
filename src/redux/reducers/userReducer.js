@@ -106,6 +106,10 @@ export const userReducer = createReducer(
       .addCase('getAllNotificationSuccess', (state, action) => {
         state.loadingNotification = false;
         state.notifications = action.payload;
+      })
+      .addCase('getPartnerSuccess', (state, action) => {
+        state.loading = false;
+        state.partner = action.payload;
       });
 
     builder
@@ -156,6 +160,10 @@ export const userReducer = createReducer(
       .addCase('getAllNotificationFail', (state, action) => {
         state.loadingNotification = false;
         state.error = action.payload;
+      })
+      .addCase('getPartnerFail', (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
       });
 
     builder.addCase('getaccesstoken', (state, action) => {
@@ -178,7 +186,7 @@ export const userReducer = createReducer(
     });
     builder.addCase('clearSingleUser', state => {
       state.singleuser = {};
-    })
+    });
     builder.addCase('clearAllOneDayUser', state => {
       state.allonedayusers = [];
     });

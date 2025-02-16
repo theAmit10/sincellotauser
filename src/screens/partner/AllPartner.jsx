@@ -1,4 +1,5 @@
 import {
+  ActivityIndicator,
   FlatList,
   Image,
   ImageBackground,
@@ -30,177 +31,115 @@ import GradientTextWhite from '../../components/helpercComponent/GradientTextWhi
 import GradientText from '../../components/helpercComponent/GradientText';
 import Loading from '../../components/helpercComponent/Loading';
 import AllPartnerComp from '../../components/allpartner/AllPartnerComp';
+import {useGetAllPartnerQuery} from '../../helper/Networkcall';
+import MainBackgroundWithoutScrollview from '../../components/background/MainBackgroundWithoutScrollview';
 
 const AllPartner = () => {
   const navigation = useNavigation();
-  const dispatch = useDispatch();
-
   const {accesstoken} = useSelector(state => state.user);
 
-  const dummeyAllUsers = [
-    {
-      userid: '1090',
-      name: 'Babu Roa',
-      partner: true,
-      noofumser: '10',
-      profitpercentage:'10%',
-      rechargepercentage:'10%',
-      walletbalance: '3788',
-    },
-    {
-      userid: '1091',
-      name: 'Arjuna',
-      partner: true,
-      noofumser: '10',
-      profitpercentage:'10%',
-      rechargepercentage:'10%',
-      walletbalance: '3788',
-    },
-    {
-      userid: '1092',
-      name: 'Mark Jone',
-      partner: false,
-      noofumser: '10',
-      profitpercentage:'10%',
-      rechargepercentage:'10%',
-      walletbalance: '3788',
-    },
-    {
-      userid: '1093',
-      name: 'Janny Mona',
-      partner: true,
-      noofumser: '10',
-      profitpercentage:'10%',
-      rechargepercentage:'10%',
-      walletbalance: '3788',
-    },
-    {
-      userid: '1094',
-      name: 'Lucy cina',
-      partner: true,
-      noofumser: '10',
-      profitpercentage:'10%',
-      rechargepercentage:'10%',
-      walletbalance: '3788',
-    },
-  ];
+  // Pagination States
+  const [partners, setPartners] = useState([]);
+  const [page, setPage] = useState(1);
+  const limit = 10;
+  const [hasMore, setHasMore] = useState(true);
+  const [loading, setLoading] = useState(false);
 
-  const [filteredData, setFilteredData] = useState([]);
+  // Fetch data using Redux Query
+  const {data, isFetching} = useGetAllPartnerQuery({accesstoken, page, limit});
 
-  // Example usage:
-  // This will return the date and time in 'America/New_York' timezone.
-  // This will return the date and time in 'America/New_York' timezone.
+  useEffect(() => {
+    if (data?.partners) {
+      setPartners(prev =>
+        page === 1 ? data.partners : [...prev, ...data.partners],
+      ); // Reset on first page
+      setHasMore(data.partners.length === limit);
+    } else {
+      setHasMore(false);
+    }
+    setLoading(false);
+  }, [data, page]);
 
+  // Handle Load More
+  const loadMore = () => {
+    if (!loading && hasMore) {
+      setLoading(true);
+      setPage(prevPage => prevPage + 1);
+    }
+  };
+
+  // Search Function
   const handleSearch = text => {
-    const filtered = times.filter(item =>
-      item.lottime.toLowerCase().includes(text.toLowerCase()),
+    const filtered = partners.filter(item =>
+      item.name.toLowerCase().includes(text.toLowerCase()),
     );
-    setFilteredData(filtered);
+    setPartners(filtered);
   };
 
   return (
-    <SafeAreaView style={{flex: 1}}>
-      <Background />
-
-      {/** Main Cointainer */}
-
-      <View style={{flex: 1, justifyContent: 'flex-end'}}>
-        <GradientText
+    <MainBackgroundWithoutScrollview title={'All Partner'}>
+      <View
+        style={{
+          height: heightPercentageToDP(7),
+          flexDirection: 'row',
+          backgroundColor: COLORS.white_s,
+          alignItems: 'center',
+          paddingHorizontal: heightPercentageToDP(2),
+          borderRadius: heightPercentageToDP(1),
+          marginHorizontal: heightPercentageToDP(1),
+        }}>
+        <Fontisto
+          name={'search'}
+          size={heightPercentageToDP(3)}
+          color={COLORS.darkGray}
+        />
+        <TextInput
           style={{
-            ...styles.textStyle,
-            paddingLeft: heightPercentageToDP(2),
-          }}>
-          All Partner
-        </GradientText>
-        <ImageBackground
-          source={require('../../../assets/image/tlwbg.jpg')}
-          style={{
-            width: '100%',
-            height: heightPercentageToDP(80),
+            marginStart: heightPercentageToDP(1),
+            flex: 1,
+            fontFamily: FONT.Montserrat_Regular,
+            fontSize: heightPercentageToDP(2.5),
+            color: COLORS.black,
           }}
-          imageStyle={{
-            borderTopLeftRadius: heightPercentageToDP(5),
-            borderTopRightRadius: heightPercentageToDP(5),
-          }}>
-          <View
-            style={{
-              height: heightPercentageToDP(80),
-              width: widthPercentageToDP(100),
-
-              borderTopLeftRadius: heightPercentageToDP(5),
-              borderTopRightRadius: heightPercentageToDP(5),
-            }}>
-            {/** Top Style View */}
-            <View
-              style={{
-                height: heightPercentageToDP(5),
-                width: widthPercentageToDP(100),
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}>
-              <View
-                style={{
-                  width: widthPercentageToDP(20),
-                  height: heightPercentageToDP(0.8),
-                  backgroundColor: COLORS.grayBg,
-                  borderRadius: heightPercentageToDP(2),
-                }}></View>
-            </View>
-
-            <View
-              style={{
-                height: heightPercentageToDP(7),
-                flexDirection: 'row',
-                backgroundColor: COLORS.white_s,
-                alignItems: 'center',
-                paddingHorizontal: heightPercentageToDP(2),
-                borderRadius: heightPercentageToDP(1),
-                marginHorizontal: heightPercentageToDP(1),
-              }}>
-              <Fontisto
-                name={'search'}
-                size={heightPercentageToDP(3)}
-                color={COLORS.darkGray}
-              />
-              <TextInput
-                style={{
-                  marginStart: heightPercentageToDP(1),
-                  flex: 1,
-                  fontFamily: FONT.Montserrat_Regular,
-                  fontSize: heightPercentageToDP(2.5),
-                  color: COLORS.black,
-                }}
-                placeholder="Search for User"
-                placeholderTextColor={COLORS.black}
-                label="Search"
-                onChangeText={handleSearch}
-              />
-            </View>
-
-            {/** Content Container */}
-
-            <View
-              style={{
-                flex: 1,
-                padding: heightPercentageToDP(1),
-              }}>
-              <ScrollView
-                contentContainerStyle={{paddingBottom: heightPercentageToDP(2)}}
-                showsVerticalScrollIndicator={false}>
-                {/** User content */}
-                {false ? (
-                  <Loading />
-                ) : (
-                  dummeyAllUsers.map((item, index) => (
-                    <AllPartnerComp key={index} navigate={'PartnerSubPartner'} name={item.name} userid={item.userid} noofumser={item.noofumser} profitpercentage={item.profitpercentage} walletbalance={item.walletbalance} rechargepercentage={item.rechargepercentage} />
-                  ))
-                )}
-              </ScrollView>
-            </View>
-          </View>
-        </ImageBackground>
+          placeholder="Search for User"
+          placeholderTextColor={COLORS.black}
+          label="Search"
+          onChangeText={handleSearch}
+        />
       </View>
-    </SafeAreaView>
+
+      {/** Content Container */}
+
+      <View
+        style={{
+          flex: 1,
+          padding: heightPercentageToDP(1),
+        }}>
+        <FlatList
+          data={partners}
+          keyExtractor={(item, index) => index.toString()}
+          renderItem={({item}) => (
+            <AllPartnerComp
+              key={item.userid}
+              navigate={'PartnerSubPartner'}
+              name={item.name}
+              userid={item.userId}
+              noofumser={item.userList.length}
+              profitpercentage={item.profitPercentage}
+              walletbalance={item.walletTwo?.balance}
+              rechargepercentage={item.rechargePercentage}
+            />
+          )}
+          onEndReached={loadMore}
+          onEndReachedThreshold={0.5} // Trigger when user scrolls near the end
+          ListFooterComponent={() =>
+            loading ? (
+              <ActivityIndicator size="large" color={COLORS.white_s} />
+            ) : null
+          }
+        />
+      </View>
+    </MainBackgroundWithoutScrollview>
   );
 };
 

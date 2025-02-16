@@ -29,18 +29,25 @@ import GradientTextWhite from '../../components/helpercComponent/GradientTextWhi
 import GradientText from '../../components/helpercComponent/GradientText';
 import PartnerDashComp from '../../components/partnerdashboard/PartnerDashComp';
 import MainBackgound from '../../components/background/MainBackgound';
+import {loadPartnerProfile} from '../../redux/actions/userAction';
 
 const PartnerDashboard = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
 
-  const {accesstoken} = useSelector(state => state.user);
+  const {accesstoken, user, partner} = useSelector(state => state.user);
+
+  // useEffect(() => {
+  //   dispatch(loadPartnerProfile(accesstoken, user.userId));
+  // }, [dispatch]);
+
+  // console.log(partner);
 
   return (
     <MainBackgound title={'Partner Dashboard'}>
-       {/** PARTNER PERFORMANCE */}
+      {/** PARTNER PERFORMANCE */}
 
-       <PartnerDashComp
+      <PartnerDashComp
         navigate={'AllLocation'}
         title={'Partner Performance'}
         subtitle={'List of all Partner Performace'}

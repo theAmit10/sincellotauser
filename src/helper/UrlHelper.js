@@ -26,33 +26,31 @@ const CREATE_LOCATION_API = server + 'result/addlotlocation';
 const UPDATE_LOCATION_API = server + 'result/updatelotlocation';
 const DELETE_LOCATION_API = server + 'result/removelotlocation';
 
-
 // Creating through Admin FOR TIME
 const CREATE_TIME_API = server + 'result/addlottime';
 const UPDATE_TIME_API = server + 'result/updatelottime';
 const DELETE_TIME_API = server + 'result/removelottime';
 const GET_ALL_TIME_ACCORDING_TO_LOCATION_API = server + 'result/searchtime';
 
-
 // Creating through Admin FOR DATE
 const CREATE_DATE_API = server + 'result/addlotdate';
 const UPDATE_DATE_API = server + 'result/updatelotdate';
 const DELETE_DATE_API = server + 'result/removelotdate';
-const GET_ALL_DATE_ACCORDING_TO_LOCATION_AND_TIME_API = server + 'result/searchdate';
-
+const GET_ALL_DATE_ACCORDING_TO_LOCATION_AND_TIME_API =
+  server + 'result/searchdate';
 
 // Creating through Admin FOR RESULT
 const CREATE_RESULT_API = server + 'result/createresult';
 const GET_SINGLE_RESULT_API = server + 'result/searchresult';
 const UPDATE_RESULT_API = server + 'result/single';
 const DELETE_RESULT_API = server + 'result/removelotdate';
-const GET_ALL_RESULT_ACCORDING_TO_LOCATION_TIME_DATE_API = server + 'result/allresultlocation';
+const GET_ALL_RESULT_ACCORDING_TO_LOCATION_TIME_DATE_API =
+  server + 'result/allresultlocation';
 
-// For All Promtion 
+// For All Promtion
 const ALL_PROMOTIONS_API = server + 'user/getallpromotion';
 const CREATE_PROMOTIONS_API = server + 'user/addpromotion';
 const DELETE_PROMOTION_API = server + 'user/removepromotion';
-
 
 // For All About US
 const ALL_ABOUT_API = server + 'user/getallabout';
@@ -91,11 +89,10 @@ const CREATE_PAYPAL_API = server + 'result/addpaypalpayment';
 const CREATE_SKRILL_API = server + 'result/addskrillpayment';
 const CREATE_CRYPTO_API = server + 'result/addcryptopayment';
 const UPDATE_SUBADMIN_ROLE_API = server + 'user/updaterole';
+const PARTNER_PROFILE_API = server + 'user/getpartnerbyuserid';
 
-
-
-
- export default {
+export default {
+  PARTNER_PROFILE_API,
   LOGIN_API,
   USER_PROFILE_API,
   LOGOUT_API,
@@ -158,5 +155,5 @@ const UPDATE_SUBADMIN_ROLE_API = server + 'user/updaterole';
   CREATE_PAYPAL_API,
   CREATE_SKRILL_API,
   CREATE_CRYPTO_API,
-  UPDATE_SUBADMIN_ROLE_API
+  UPDATE_SUBADMIN_ROLE_API,
 };

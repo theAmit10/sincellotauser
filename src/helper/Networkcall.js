@@ -529,6 +529,7 @@ export const sincelotAdminApi = createApi({
 });
 
 export const {
+  useGetAllPartnerQuery,
   useGetDataQuery,
   useCreateWithdrawMutation,
   useGetAllLocationWithTimeQuery,
