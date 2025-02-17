@@ -1,11 +1,12 @@
-import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import React from 'react';
 import {useNavigation} from '@react-navigation/native';
 import LinearGradient from 'react-native-linear-gradient';
-import {COLORS, FONT} from '../../../assets/constants';
-import {heightPercentageToDP} from 'react-native-responsive-screen';
 
-const AllPartnerComp = ({
+import {heightPercentageToDP} from 'react-native-responsive-screen';
+import {COLORS, FONT} from '../../assets/constants';
+import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+
+const PartnerUserListComp = ({
   navigate,
   userid,
   name,
@@ -58,59 +59,6 @@ const AllPartnerComp = ({
                 {name}
               </Text>
             </View>
-
-            <View
-              style={{
-                flex: 1.5,
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'flex-start',
-              }}>
-              <Text style={styles.titleRegular} numberOfLines={1}>
-                Game Balance
-              </Text>
-              <Text
-                style={styles.titleBold}
-                numberOfLines={1}
-                adjustsFontSizeToFit={true}>
-                {walletbalance}
-              </Text>
-            </View>
-          </View>
-          <View style={styles.centerLine}></View>
-          <View style={styles.bottomContainer}>
-            <View
-              style={{
-                flex: 1,
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'flex-start',
-              }}>
-              <Text style={styles.titleRegular}>Profit</Text>
-              <Text style={styles.titleBold}>{profitpercentage}</Text>
-            </View>
-            <View
-              style={{
-                flex: 2,
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'flex-start',
-              }}>
-              <Text style={styles.titleRegular}>Recharge</Text>
-              <Text style={styles.titleBold}>{rechargepercentage}</Text>
-            </View>
-            <View
-              style={{
-                flex: 1.5,
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'flex-start',
-              }}>
-              <Text style={styles.titleRegular}>Total no. of users</Text>
-              <Text style={styles.titleBold} numberOfLines={1}>
-                {noofumser}
-              </Text>
-            </View>
           </View>
         </View>
       </LinearGradient>
@@ -118,7 +66,7 @@ const AllPartnerComp = ({
   );
 };
 
-export default AllPartnerComp;
+export default PartnerUserListComp;
 
 const styles = StyleSheet.create({
   textStyle: {
@@ -142,7 +90,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'pink',
     flexDirection: 'row',
     justifyContent: 'space-between',
-    height: heightPercentageToDP(15),
+    height: heightPercentageToDP(10),
     borderRadius: heightPercentageToDP(2),
     alignItems: 'center',
     gap: heightPercentageToDP(3),

@@ -120,7 +120,7 @@ const AllPartner = () => {
           keyExtractor={(item, index) => index.toString()}
           renderItem={({item}) => (
             <AllPartnerComp
-              key={item.userid}
+              key={item.userId}
               navigate={'PartnerSubPartner'}
               name={item.name}
               userid={item.userId}
@@ -128,6 +128,7 @@ const AllPartner = () => {
               profitpercentage={item.profitPercentage}
               walletbalance={item.walletTwo?.balance}
               rechargepercentage={item.rechargePercentage}
+              item={item}
             />
           )}
           onEndReached={loadMore}

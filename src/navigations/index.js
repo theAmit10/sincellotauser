@@ -119,7 +119,7 @@ import PowerTime from '../screens/powerball/PowerTime';
 import PowerAllDate from '../screens/powerball/PowerAllDate';
 import CreatePowerResult from '../screens/powerball/CreatePowerResult';
 import PowerAllResult from '../screens/powerball/PowerAllResult';
-
+import PartnerUserList from '../screens/partner/PartnerUserList';
 
 const Stack = createNativeStackNavigator();
 
@@ -317,13 +317,23 @@ const Main = () => {
           <Stack.Screen name="PowerGameRule" component={PowerGameRule} />
           <Stack.Screen name="PowerUpdateName" component={PowerUpdateName} />
           <Stack.Screen name="NumberRange" component={NumberRange} />
-          <Stack.Screen name="CreateNewMultiplier" component={CreateNewMultiplier} />
+          <Stack.Screen
+            name="CreateNewMultiplier"
+            component={CreateNewMultiplier}
+          />
           <Stack.Screen name="WinnerProfit" component={WinnerProfit} />
           <Stack.Screen name="PowerTime" component={PowerTime} />
-          <Stack.Screen name="CreatePowerResult" component={CreatePowerResult} />
+          <Stack.Screen
+            name="CreatePowerResult"
+            component={CreatePowerResult}
+          />
           <Stack.Screen name="PowerAllDate" component={PowerAllDate} />
           <Stack.Screen name="PowerAllResult" component={PowerAllResult} />
-          <Stack.Screen name="PowerGameInsights" component={PowerGameInsights} />
+          <Stack.Screen
+            name="PowerGameInsights"
+            component={PowerGameInsights}
+          />
+          <Stack.Screen name="PartnerUserList" component={PartnerUserList} />
           <Stack.Screen
             name="CreateTimePowerball"
             component={CreateTimePowerball}

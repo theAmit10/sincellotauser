@@ -524,11 +524,57 @@ export const sincelotAdminApi = createApi({
       }),
     }),
 
+    // GET PARTNER PARTNERLIST
+    getPartnerPartnerList: builder.query({
+      query: ({accesstoken, userId, page, limit}) => ({
+        url: `user/getpartnerpartnerlist/${userId}?page=${page}&limit=${limit}`,
+        headers: {
+          Authorization: `Bearer ${accesstoken}`,
+          method: 'get',
+        },
+      }),
+    }),
+
+    // GET PARTNER USERLIST
+    getPartnerUserList: builder.query({
+      query: ({accesstoken, userId, page, limit}) => ({
+        url: `user/getpartneruserlist/${userId}?page=${page}&limit=${limit}`,
+        method: 'get',
+        headers: {
+          Authorization: `Bearer ${accesstoken}`,
+        },
+      }),
+    }),
+
+    searchPartnerUserList: builder.query({
+      query: ({accesstoken, userId, query}) => ({
+        url: `user/searchuserlist/${userId}?query=${query}`,
+        method: 'get',
+        headers: {
+          Authorization: `Bearer ${accesstoken}`,
+        },
+      }),
+    }),
+
+    searchPartnerPartnerList: builder.query({
+      query: ({accesstoken, userId, query}) => ({
+        url: `user/searchpartnerlist/${userId}?query=${query}`,
+        method: 'get',
+        headers: {
+          Authorization: `Bearer ${accesstoken}`,
+        },
+      }),
+    }),
+
     // ######## END #########
   }),
 });
 
 export const {
+  useSearchPartnerPartnerListQuery,
+  useSearchPartnerUserListQuery,
+  useGetPartnerPartnerListQuery,
+  useGetPartnerUserListQuery,
   useGetAllPartnerQuery,
   useGetDataQuery,
   useCreateWithdrawMutation,
