@@ -588,11 +588,54 @@ export const sincelotAdminApi = createApi({
       }),
     }),
 
+    // [POWERBALL]
+
+    // [GET ALL POWERTIMES]
+    getAllPowerTimes: builder.query({
+      query: ({accesstoken}) => ({
+        url: `user/getallpowertime`,
+        method: 'get',
+        headers: {
+          Authorization: `Bearer ${accesstoken}`,
+        },
+      }),
+    }),
+
+    // [UPDATE POWER TIME]
+    // Inside your API slice
+    updatePowerballTime: builder.mutation({
+      query: ({accesstoken, id, body}) => ({
+        url: `user/updatepowertime/${id}`,
+        method: 'PUT',
+        body,
+        headers: {
+          Authorization: `Bearer ${accesstoken}`,
+          'Content-Type': 'application/json',
+        },
+      }),
+    }),
+
+    // [DELETE POWERBALL TIME]
+
+    deletePowerballTime: builder.query({
+      query: ({accesstoken, id}) => ({
+        url: `user/removepowertime/${id}`,
+        method: 'DELETE',
+        body,
+        headers: {
+          Authorization: `Bearer ${accesstoken}`,
+        },
+      }),
+    }),
+
     // ######## END #########
   }),
 });
 
 export const {
+  useGetAllPowerTimesQuery,
+  useUpdatePowerballTimeMutation,
+  useDeletePowerballTimeQuery,
   useSearchPartnerQuery,
   useSearchSubPartnerQuery,
   useSearchPartnerPartnerListQuery,

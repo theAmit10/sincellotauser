@@ -1,4 +1,10 @@
-import {Pressable, StyleSheet, Text, View} from 'react-native';
+import {
+  Pressable,
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+} from 'react-native';
 import React from 'react';
 import LinearGradient from 'react-native-linear-gradient';
 import {COLORS, FONT} from '../../../../assets/constants';
@@ -8,6 +14,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import {useNavigation} from '@react-navigation/native';
 
 const PowerAllTimesComp = ({
   time,
@@ -15,10 +22,11 @@ const PowerAllTimesComp = ({
   iconname,
   fromIconDelete,
   iconNameDelete,
-  navigation,
   navigate,
-  forprocess
+  forprocess,
+  item,
 }) => {
+  const navigation = useNavigation();
   return (
     <LinearGradient
       colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
@@ -54,10 +62,8 @@ const PowerAllTimesComp = ({
           justifyContent: 'space-around',
           paddingEnd: heightPercentageToDP(1),
         }}>
-        <Pressable
-          onPress={() =>
-            navigation.navigate(navigate, {forprocess})
-          }
+        <TouchableOpacity
+          onPress={() => navigation.navigate(navigate, {item})}
           style={{
             padding: heightPercentageToDP(1),
             backgroundColor: COLORS.white_s,
@@ -105,7 +111,7 @@ const PowerAllTimesComp = ({
               style={styles.icon}
             />
           )}
-        </Pressable>
+        </TouchableOpacity>
 
         <Pressable
           style={{
