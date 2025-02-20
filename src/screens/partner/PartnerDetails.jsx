@@ -12,8 +12,8 @@ const PartnerDetails = ({route}) => {
   return (
     <MainBackgound
       title={'Partner Details'}
-      lefttext={data.name}
-      righttext={data.userId}>
+      lefttext={data?.name}
+      righttext={data?.userId}>
       {/** PARTNER USER LIST */}
       <PartnerDashComp
         navigate={'PartnerUserList'}
@@ -30,6 +30,7 @@ const PartnerDetails = ({route}) => {
         subtitle={'Get all the partner list'}
         fromicon={'MaterialCommunityIcons'}
         iconname={'security'}
+        data={data}
       />
       {/** UPDATE PERMISSION */}
       <PartnerDashComp
