@@ -1,14 +1,18 @@
 import {FlatList, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import MainBackgroundWithoutScrollview from '../../components/background/MainBackgroundWithoutScrollview';
 import PowerAllTimesComp from '../../components/powerball/poweralltimes/PowerAllTimesComp';
 import {heightPercentageToDP} from 'react-native-responsive-screen';
 import Loading from '../../components/helpercComponent/Loading';
 import {COLORS, FONT} from '../../../assets/constants';
 import {useIsFocused, useNavigation} from '@react-navigation/native';
-import {useGetAllPowerTimesQuery} from '../../helper/Networkcall';
+import {
+  useDeletePowerballTimeMutation,
+  useGetAllPowerTimesQuery,
+} from '../../helper/Networkcall';
 import {useSelector} from 'react-redux';
 import NoDataFound from '../../components/helpercComponent/NoDataFound';
+import Toast from 'react-native-toast-message';
 
 const PowerAllTimes = () => {
   const navigation = useNavigation();
@@ -21,6 +25,37 @@ const PowerAllTimes = () => {
   useEffect(() => {
     refetch();
   }, [isFocused]);
+
+  const [deletePowerballTime, {isLoading: deleteTimeIsLoading}] =
+    useDeletePowerballTimeMutation();
+
+  const [selectedItem, setSelectedItem] = useState(null);
+
+  const handleDelete = item => {
+    setSelectedItem(item);
+    deletePowerballTimeFunc(item._id);
+  };
+
+  const deletePowerballTimeFunc = async id => {
+    try {
+      const res = await deletePowerballTime({accesstoken, id}).unwrap();
+
+      console.log(JSON.stringify(res));
+      Toast.show({
+        type: 'success',
+        text1: res?.message,
+      });
+
+      refetch();
+    } catch (error) {
+      console.log(error);
+      Toast.show({
+        type: 'error',
+        text1: 'Something went wrong',
+        text2: 'Please try again later',
+      });
+    }
+  };
 
   const Footer = () => {
     return (
@@ -71,6 +106,10 @@ const PowerAllTimes = () => {
               item={item}
               navigate={'UpdatePowerballTime'}
               forprocess={'edit'}
+              selectedItem={selectedItem}
+              setSelectedItem={setSelectedItem}
+              handleDelete={handleDelete}
+              deleteTimeIsLoading={deleteTimeIsLoading}
             />
           )}
         />

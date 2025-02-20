@@ -15,6 +15,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {useNavigation} from '@react-navigation/native';
+import Loading from '../../helpercComponent/Loading';
 
 const PowerAllTimesComp = ({
   time,
@@ -25,6 +26,10 @@ const PowerAllTimesComp = ({
   navigate,
   forprocess,
   item,
+  selectedItem,
+  setSelectedItem,
+  handleDelete,
+  deleteTimeIsLoading,
 }) => {
   const navigation = useNavigation();
   return (
@@ -42,7 +47,6 @@ const PowerAllTimesComp = ({
       <View
         style={{
           flex: 2,
-
           justifyContent: 'center',
           paddingHorizontal: heightPercentageToDP(2),
         }}>
@@ -55,114 +59,231 @@ const PowerAllTimesComp = ({
           {time}
         </Text>
       </View>
-      <View
-        style={{
-          flex: 1,
-          flexDirection: 'row',
-          justifyContent: 'space-around',
-          paddingEnd: heightPercentageToDP(1),
-        }}>
-        <TouchableOpacity
-          onPress={() => navigation.navigate(navigate, {item})}
+      {deleteTimeIsLoading ? (
+        selectedItem && selectedItem._id === item._id ? (
+          <Loading />
+        ) : (
+          <View
+            style={{
+              flex: 1,
+              flexDirection: 'row',
+              justifyContent: 'space-around',
+              paddingEnd: heightPercentageToDP(1),
+            }}>
+            <TouchableOpacity
+              onPress={() => navigation.navigate(navigate, {item})}
+              style={{
+                padding: heightPercentageToDP(1),
+                backgroundColor: COLORS.white_s,
+                justifyContent: 'center',
+                margin: heightPercentageToDP(2),
+                borderRadius: heightPercentageToDP(1),
+              }}>
+              {fromicon === 'FontAwesome6' && (
+                <FontAwesome6
+                  name={iconname}
+                  size={heightPercentageToDP(3)}
+                  color={COLORS.darkGray}
+                />
+              )}
+              {fromicon === 'MaterialCommunityIcons' && (
+                <MaterialCommunityIcons
+                  name={iconname}
+                  size={heightPercentageToDP(3)}
+                  color={COLORS.darkGray}
+                  style={styles.icon}
+                />
+              )}
+              {fromicon === 'FontAwesome5' && (
+                <FontAwesome5
+                  name={iconname}
+                  size={heightPercentageToDP(3)}
+                  color={COLORS.darkGray}
+                  style={styles.icon}
+                />
+              )}
+              {fromicon === 'FontAwesome' && (
+                <FontAwesome
+                  name={iconname}
+                  size={heightPercentageToDP(3)}
+                  color={COLORS.darkGray}
+                  style={styles.icon}
+                />
+              )}
+
+              {fromicon === 'Ionicons' && (
+                <Ionicons
+                  name={iconname}
+                  size={heightPercentageToDP(3)}
+                  color={COLORS.darkGray}
+                  style={styles.icon}
+                />
+              )}
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              onPress={() => handleDelete(item)}
+              style={{
+                padding: heightPercentageToDP(1),
+                backgroundColor: COLORS.white_s,
+                justifyContent: 'center',
+                margin: heightPercentageToDP(2),
+                borderRadius: heightPercentageToDP(1),
+              }}>
+              {fromIconDelete === 'FontAwesome6' && (
+                <FontAwesome6
+                  name={iconNameDelete}
+                  size={heightPercentageToDP(3)}
+                  color={COLORS.darkGray}
+                />
+              )}
+              {fromIconDelete === 'MaterialCommunityIcons' && (
+                <MaterialCommunityIcons
+                  name={iconNameDelete}
+                  size={heightPercentageToDP(3)}
+                  color={COLORS.darkGray}
+                  style={styles.icon}
+                />
+              )}
+              {fromIconDelete === 'FontAwesome5' && (
+                <FontAwesome5
+                  name={iconNameDelete}
+                  size={heightPercentageToDP(3)}
+                  color={COLORS.darkGray}
+                  style={styles.icon}
+                />
+              )}
+              {fromIconDelete === 'FontAwesome' && (
+                <FontAwesome
+                  name={iconNameDelete}
+                  size={heightPercentageToDP(3)}
+                  color={COLORS.darkGray}
+                  style={styles.icon}
+                />
+              )}
+
+              {fromIconDelete === 'Ionicons' && (
+                <Ionicons
+                  name={iconNameDelete}
+                  size={heightPercentageToDP(3)}
+                  color={COLORS.darkGray}
+                  style={styles.icon}
+                />
+              )}
+            </TouchableOpacity>
+          </View>
+        )
+      ) : (
+        <View
           style={{
-            padding: heightPercentageToDP(1),
-            backgroundColor: COLORS.white_s,
-            justifyContent: 'center',
-            margin: heightPercentageToDP(2),
-            borderRadius: heightPercentageToDP(1),
+            flex: 1,
+            flexDirection: 'row',
+            justifyContent: 'space-around',
+            paddingEnd: heightPercentageToDP(1),
           }}>
-          {fromicon === 'FontAwesome6' && (
-            <FontAwesome6
-              name={iconname}
-              size={heightPercentageToDP(3)}
-              color={COLORS.darkGray}
-            />
-          )}
-          {fromicon === 'MaterialCommunityIcons' && (
-            <MaterialCommunityIcons
-              name={iconname}
-              size={heightPercentageToDP(3)}
-              color={COLORS.darkGray}
-              style={styles.icon}
-            />
-          )}
-          {fromicon === 'FontAwesome5' && (
-            <FontAwesome5
-              name={iconname}
-              size={heightPercentageToDP(3)}
-              color={COLORS.darkGray}
-              style={styles.icon}
-            />
-          )}
-          {fromicon === 'FontAwesome' && (
-            <FontAwesome
-              name={iconname}
-              size={heightPercentageToDP(3)}
-              color={COLORS.darkGray}
-              style={styles.icon}
-            />
-          )}
+          <TouchableOpacity
+            onPress={() => navigation.navigate(navigate, {item})}
+            style={{
+              padding: heightPercentageToDP(1),
+              backgroundColor: COLORS.white_s,
+              justifyContent: 'center',
+              margin: heightPercentageToDP(2),
+              borderRadius: heightPercentageToDP(1),
+            }}>
+            {fromicon === 'FontAwesome6' && (
+              <FontAwesome6
+                name={iconname}
+                size={heightPercentageToDP(3)}
+                color={COLORS.darkGray}
+              />
+            )}
+            {fromicon === 'MaterialCommunityIcons' && (
+              <MaterialCommunityIcons
+                name={iconname}
+                size={heightPercentageToDP(3)}
+                color={COLORS.darkGray}
+                style={styles.icon}
+              />
+            )}
+            {fromicon === 'FontAwesome5' && (
+              <FontAwesome5
+                name={iconname}
+                size={heightPercentageToDP(3)}
+                color={COLORS.darkGray}
+                style={styles.icon}
+              />
+            )}
+            {fromicon === 'FontAwesome' && (
+              <FontAwesome
+                name={iconname}
+                size={heightPercentageToDP(3)}
+                color={COLORS.darkGray}
+                style={styles.icon}
+              />
+            )}
 
-          {fromicon === 'Ionicons' && (
-            <Ionicons
-              name={iconname}
-              size={heightPercentageToDP(3)}
-              color={COLORS.darkGray}
-              style={styles.icon}
-            />
-          )}
-        </TouchableOpacity>
+            {fromicon === 'Ionicons' && (
+              <Ionicons
+                name={iconname}
+                size={heightPercentageToDP(3)}
+                color={COLORS.darkGray}
+                style={styles.icon}
+              />
+            )}
+          </TouchableOpacity>
 
-        <Pressable
-          style={{
-            padding: heightPercentageToDP(1),
-            backgroundColor: COLORS.white_s,
-            justifyContent: 'center',
-            margin: heightPercentageToDP(2),
-            borderRadius: heightPercentageToDP(1),
-          }}>
-          {fromIconDelete === 'FontAwesome6' && (
-            <FontAwesome6
-              name={iconNameDelete}
-              size={heightPercentageToDP(3)}
-              color={COLORS.darkGray}
-            />
-          )}
-          {fromIconDelete === 'MaterialCommunityIcons' && (
-            <MaterialCommunityIcons
-              name={iconNameDelete}
-              size={heightPercentageToDP(3)}
-              color={COLORS.darkGray}
-              style={styles.icon}
-            />
-          )}
-          {fromIconDelete === 'FontAwesome5' && (
-            <FontAwesome5
-              name={iconNameDelete}
-              size={heightPercentageToDP(3)}
-              color={COLORS.darkGray}
-              style={styles.icon}
-            />
-          )}
-          {fromIconDelete === 'FontAwesome' && (
-            <FontAwesome
-              name={iconNameDelete}
-              size={heightPercentageToDP(3)}
-              color={COLORS.darkGray}
-              style={styles.icon}
-            />
-          )}
+          <TouchableOpacity
+            onPress={() => handleDelete(item)}
+            style={{
+              padding: heightPercentageToDP(1),
+              backgroundColor: COLORS.white_s,
+              justifyContent: 'center',
+              margin: heightPercentageToDP(2),
+              borderRadius: heightPercentageToDP(1),
+            }}>
+            {fromIconDelete === 'FontAwesome6' && (
+              <FontAwesome6
+                name={iconNameDelete}
+                size={heightPercentageToDP(3)}
+                color={COLORS.darkGray}
+              />
+            )}
+            {fromIconDelete === 'MaterialCommunityIcons' && (
+              <MaterialCommunityIcons
+                name={iconNameDelete}
+                size={heightPercentageToDP(3)}
+                color={COLORS.darkGray}
+                style={styles.icon}
+              />
+            )}
+            {fromIconDelete === 'FontAwesome5' && (
+              <FontAwesome5
+                name={iconNameDelete}
+                size={heightPercentageToDP(3)}
+                color={COLORS.darkGray}
+                style={styles.icon}
+              />
+            )}
+            {fromIconDelete === 'FontAwesome' && (
+              <FontAwesome
+                name={iconNameDelete}
+                size={heightPercentageToDP(3)}
+                color={COLORS.darkGray}
+                style={styles.icon}
+              />
+            )}
 
-          {fromIconDelete === 'Ionicons' && (
-            <Ionicons
-              name={iconNameDelete}
-              size={heightPercentageToDP(3)}
-              color={COLORS.darkGray}
-              style={styles.icon}
-            />
-          )}
-        </Pressable>
-      </View>
+            {fromIconDelete === 'Ionicons' && (
+              <Ionicons
+                name={iconNameDelete}
+                size={heightPercentageToDP(3)}
+                color={COLORS.darkGray}
+                style={styles.icon}
+              />
+            )}
+          </TouchableOpacity>
+        </View>
+      )}
     </LinearGradient>
   );
 };

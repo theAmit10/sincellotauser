@@ -602,7 +602,7 @@ export const sincelotAdminApi = createApi({
     }),
 
     // [UPDATE POWER TIME]
-    // Inside your API slice
+
     updatePowerballTime: builder.mutation({
       query: ({accesstoken, id, body}) => ({
         url: `user/updatepowertime/${id}`,
@@ -628,14 +628,38 @@ export const sincelotAdminApi = createApi({
       }),
     }),
 
+    deletePowerballTime: builder.mutation({
+      query: ({accesstoken, id}) => ({
+        url: `user/removepowertime/${id}`,
+        method: 'DELETE',
+        headers: {
+          Authorization: `Bearer ${accesstoken}`,
+          'Content-Type': 'application/json',
+        },
+      }),
+    }),
+
+    createPowerballTime: builder.mutation({
+      query: ({accesstoken, body}) => ({
+        url: `user/createpowertime`,
+        method: 'POST',
+        body,
+        headers: {
+          Authorization: `Bearer ${accesstoken}`,
+          'Content-Type': 'application/json',
+        },
+      }),
+    }),
+
     // ######## END #########
   }),
 });
 
 export const {
+  useCreatePowerballTimeMutation,
   useGetAllPowerTimesQuery,
   useUpdatePowerballTimeMutation,
-  useDeletePowerballTimeQuery,
+  useDeletePowerballTimeMutation,
   useSearchPartnerQuery,
   useSearchSubPartnerQuery,
   useSearchPartnerPartnerListQuery,

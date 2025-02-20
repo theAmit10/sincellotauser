@@ -33,7 +33,6 @@ const UpdatePowerballTime = ({route}) => {
       console.log('TIme :: ' + formatTime(selectedTime));
     }
   };
-
   const showTimepicker = () => {
     setShowPicker(true);
   };
@@ -49,8 +48,6 @@ const UpdatePowerballTime = ({route}) => {
 
     return `${paddedHours}:${paddedMinutes} ${ampm}`;
   };
-
-  // const [updatePowerballTime, {isLoading}] = useUpdatePowerballTimeQuery();
 
   const [updatePowerballTime, {isLoading}] = useUpdatePowerballTimeMutation();
 
@@ -93,8 +90,6 @@ const UpdatePowerballTime = ({route}) => {
       }
     }
   };
-
-  const loading = false;
 
   return (
     <MainBackgroundWithoutScrollview title={'Update Powerball Time'}>

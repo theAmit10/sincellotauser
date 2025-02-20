@@ -123,6 +123,7 @@ import PartnerUserList from '../screens/partner/PartnerUserList';
 import PartnerPartnerList from '../screens/partner/PartnerPartnerList';
 import SubPartnerDetails from '../screens/partner/SubPartnerDetails';
 import UpdatePowerballTime from '../screens/powerball/UpdatePowerballTime';
+import CreatePowerballTime from '../screens/CreatePowerballTime';
 
 const Stack = createNativeStackNavigator();
 
@@ -352,6 +353,10 @@ const Main = () => {
           <Stack.Screen
             name="UpdatePowerballTime"
             component={UpdatePowerballTime}
+          />
+          <Stack.Screen
+            name="CreatePowerballTime"
+            component={CreatePowerballTime}
           />
         </Stack.Group>
       </Stack.Navigator>
