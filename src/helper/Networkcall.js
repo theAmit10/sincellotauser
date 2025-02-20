@@ -651,11 +651,80 @@ export const sincelotAdminApi = createApi({
       }),
     }),
 
+    // [UPDATE POWERBALL GAME BASIC]
+    updateGameBasic: builder.mutation({
+      query: ({accesstoken, body}) => ({
+        url: `user/updategamedetails`,
+        method: 'PUT',
+        body,
+        headers: {
+          Authorization: `Bearer ${accesstoken}`,
+          'Content-Type': 'application/json',
+        },
+      }),
+    }),
+
+    // [ADD POWERBALL GAME MULTIPLIER]
+    addMultiplier: builder.mutation({
+      query: ({accesstoken, body}) => ({
+        url: `user/addmultipler`,
+        method: 'POST',
+        body,
+        headers: {
+          Authorization: `Bearer ${accesstoken}`,
+          'Content-Type': 'application/json',
+        },
+      }),
+    }),
+
+    // [DELETE POWERBALL GAME MULTIPLIER]
+    removeMultiplier: builder.mutation({
+      query: ({accesstoken, body}) => ({
+        url: `user/removemultipler`,
+        method: 'DELETE',
+        body,
+        headers: {
+          Authorization: `Bearer ${accesstoken}`,
+          'Content-Type': 'application/json',
+        },
+      }),
+    }),
+
+    // [UPDATE POWERBALL WINNER PRIZE]
+    updateWinnerPrize: builder.mutation({
+      query: ({accesstoken, body}) => ({
+        url: `user/updatewinnerprize`,
+        method: 'PUT',
+        body,
+        headers: {
+          Authorization: `Bearer ${accesstoken}`,
+          'Content-Type': 'application/json',
+        },
+      }),
+    }),
+
+    // [GET POWERBALL GAME]
+
+    getPowerBallGame: builder.query({
+      query: ({accesstoken}) => ({
+        url: `user/getallpowerball`,
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${accesstoken}`,
+        },
+      }),
+    }),
+
     // ######## END #########
   }),
 });
 
 export const {
+  useAddMultiplierMutation,
+  useGetPowerBallGameQuery,
+  useUpdateGameBasicMutation,
+  useRemoveMultiplierMutation,
+  useUpdateWinnerPrizeMutation,
   useCreatePowerballTimeMutation,
   useGetAllPowerTimesQuery,
   useUpdatePowerballTimeMutation,
