@@ -566,11 +566,35 @@ export const sincelotAdminApi = createApi({
       }),
     }),
 
+    // [ SEARCH PARTNER]
+    searchPartner: builder.query({
+      query: ({accesstoken, searchTerm}) => ({
+        url: `user/searchpartner/?searchTerm=${searchTerm}`,
+        method: 'get',
+        headers: {
+          Authorization: `Bearer ${accesstoken}`,
+        },
+      }),
+    }),
+
+    // [ SEARCH SUB PARTNER]
+    searchSubPartner: builder.query({
+      query: ({accesstoken, searchTerm}) => ({
+        url: `user/searchusubpartner/?searchTerm=${searchTerm}`,
+        method: 'get',
+        headers: {
+          Authorization: `Bearer ${accesstoken}`,
+        },
+      }),
+    }),
+
     // ######## END #########
   }),
 });
 
 export const {
+  useSearchPartnerQuery,
+  useSearchSubPartnerQuery,
   useSearchPartnerPartnerListQuery,
   useSearchPartnerUserListQuery,
   useGetPartnerPartnerListQuery,

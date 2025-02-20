@@ -34,9 +34,6 @@ const AllPartnerComp = ({
           }}>
           <View style={styles.topContainer}>
             <TouchableOpacity
-              onPress={() =>
-                navigation.navigate('PartnerDetails', {data: item})
-              }
               style={{
                 flex: 1,
                 display: 'flex',

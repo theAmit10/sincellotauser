@@ -149,13 +149,14 @@ const PartnerUserList = ({route}) => {
               renderItem={({item}) => (
                 <PartnerUserListComp
                   key={item._id.toString()} // Ensure unique key here as well
-                  navigate="PartnerSubPartner"
+                  navigate="UserDetails"
                   name={item.name}
                   userid={item.userId}
                   noofumser={item.userList?.length}
                   profitpercentage={item.profitPercentage}
                   walletbalance={item.walletTwo?.balance}
                   rechargepercentage={item.rechargePercentage}
+                  item={item}
                 />
               )}
               onEndReached={loadMore}

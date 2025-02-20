@@ -21,7 +21,7 @@ const PartnerUserListComp = ({
     <TouchableOpacity
       onPress={() => {
         console.log(item);
-        navigation.navigate(navigate, {data: item});
+        navigation.navigate(navigate, {userdata: item});
       }}>
       <LinearGradient
         colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}

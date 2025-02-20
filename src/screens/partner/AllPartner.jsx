@@ -1,144 +1,179 @@
+import React, {useEffect, useState, useCallback} from 'react';
+import {ActivityIndicator, FlatList, TextInput, View} from 'react-native';
+import {useSelector} from 'react-redux';
+import {useFocusEffect} from '@react-navigation/native';
 import {
-  ActivityIndicator,
-  FlatList,
-  Image,
-  ImageBackground,
-  SafeAreaView,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
-} from 'react-native';
-import React, {useEffect, useState} from 'react';
-import {
-  heightPercentageToDP,
-  widthPercentageToDP,
-} from 'react-native-responsive-screen';
-import Entypo from 'react-native-vector-icons/Entypo';
+  useGetAllPartnerQuery,
+  useSearchPartnerQuery,
+} from '../../helper/Networkcall';
+import {heightPercentageToDP} from 'react-native-responsive-screen';
 import Fontisto from 'react-native-vector-icons/Fontisto';
-import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import Toast from 'react-native-toast-message';
-import {useIsFocused, useNavigation} from '@react-navigation/native';
-import {useDispatch, useSelector} from 'react-redux';
-import LinearGradient from 'react-native-linear-gradient';
-import Background from '../../components/background/Background';
 import {COLORS, FONT} from '../../../assets/constants';
-import GradientTextWhite from '../../components/helpercComponent/GradientTextWhite';
-import GradientText from '../../components/helpercComponent/GradientText';
-import Loading from '../../components/helpercComponent/Loading';
-import AllPartnerComp from '../../components/allpartner/AllPartnerComp';
-import {useGetAllPartnerQuery} from '../../helper/Networkcall';
 import MainBackgroundWithoutScrollview from '../../components/background/MainBackgroundWithoutScrollview';
+import AllPartnerComp from '../../components/allpartner/AllPartnerComp';
 
 const AllPartner = () => {
-  const navigation = useNavigation();
   const {accesstoken} = useSelector(state => state.user);
 
-  // Pagination States
+  // States
   const [partners, setPartners] = useState([]);
   const [page, setPage] = useState(1);
-  const limit = 10;
+  const limit = 5;
   const [hasMore, setHasMore] = useState(true);
   const [loading, setLoading] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [debouncedSearch, setDebouncedSearch] = useState('');
+  const [refresh, setRefresh] = useState(false); // State to trigger a re-fetch
 
-  // Fetch data using Redux Query
-  const {data, isFetching} = useGetAllPartnerQuery({accesstoken, page, limit});
+  // Debounce Effect for Search
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setDebouncedSearch(searchQuery);
+    }, 500);
+    return () => clearTimeout(handler);
+  }, [searchQuery]);
+
+  // Fetch Paginated Data
+  const {
+    data: paginatedData,
+    refetch: refetchPaginated,
+    isFetching: fetchingPaginated,
+  } = useGetAllPartnerQuery(
+    {accesstoken, page, limit},
+    {skip: debouncedSearch.length > 0 || refresh}, // Skip pagination if searching or refreshing
+  );
+
+  // Fetch Search Data
+  const {data: searchData, isFetching: fetchingSearch} = useSearchPartnerQuery(
+    debouncedSearch.length > 0
+      ? {accesstoken, searchTerm: debouncedSearch}
+      : {skip: true},
+  );
+
+  // Reset State on Navigation Back
+  useFocusEffect(
+    useCallback(() => {
+      setPartners([]); // ✅ Reset Data
+      setPage(1); // ✅ Reset Page
+      setHasMore(true); // ✅ Reset Load More
+      setRefresh(prev => !prev); // ✅ Force Re-fetch
+    }, []),
+  );
 
   useEffect(() => {
-    if (data?.partners) {
-      setPartners(prev =>
-        page === 1 ? data.partners : [...prev, ...data.partners],
-      ); // Reset on first page
-      setHasMore(data.partners.length === limit);
-    } else {
-      setHasMore(false);
+    setLoading(true);
+
+    if (debouncedSearch.length > 0 && searchData?.partners) {
+      // For search results, replace the existing data
+      setPartners(searchData.partners);
+      setHasMore(false); // Disable pagination when searching
+    } else if (paginatedData?.partners) {
+      // For paginated data, filter out duplicates before appending
+      setPartners(prev => {
+        const newData = paginatedData.partners.filter(
+          newItem => !prev.some(prevItem => prevItem._id === newItem._id),
+        );
+        return page === 1 ? paginatedData.partners : [...prev, ...newData];
+      });
+
+      // Update `hasMore` based on the length of the new data
+      if (paginatedData.partners.length < limit) {
+        setHasMore(false); // No more data to fetch
+      } else {
+        setHasMore(true); // More data available
+      }
     }
+
     setLoading(false);
-  }, [data, page]);
+  }, [searchData, paginatedData, debouncedSearch, page]);
 
-  // Handle Load More
   const loadMore = () => {
-    if (!loading && hasMore) {
-      setLoading(true);
-      setPage(prevPage => prevPage + 1);
+    if (!loading && hasMore && debouncedSearch.length === 0) {
+      setPage(prev => prev + 1);
     }
   };
 
-  // Search Function
-  const handleSearch = text => {
-    const filtered = partners.filter(item =>
-      item.name.toLowerCase().includes(text.toLowerCase()),
-    );
-    setPartners(filtered);
+  // Pull-to-refresh function
+  const onRefresh = () => {
+    setLoading(true);
+    setPartners([]); // ✅ Clear Data
+    setPage(1); // ✅ Reset Page
+    refetchPaginated(); // ✅ Trigger API Call
+    setLoading(false);
   };
+
+  // Combined Loading State
+  const isLoading = fetchingPaginated || fetchingSearch || loading;
 
   return (
-    <MainBackgroundWithoutScrollview title={'All Partner'}>
-      <View
-        style={{
-          height: heightPercentageToDP(7),
-          flexDirection: 'row',
-          backgroundColor: COLORS.white_s,
-          alignItems: 'center',
-          paddingHorizontal: heightPercentageToDP(2),
-          borderRadius: heightPercentageToDP(1),
-          marginHorizontal: heightPercentageToDP(1),
-        }}>
-        <Fontisto
-          name={'search'}
-          size={heightPercentageToDP(3)}
-          color={COLORS.darkGray}
-        />
-        <TextInput
+    <MainBackgroundWithoutScrollview title="All Partner">
+      <View style={{flex: 1}}>
+        {/* SEARCH INPUT */}
+        <View
           style={{
-            marginStart: heightPercentageToDP(1),
-            flex: 1,
-            fontFamily: FONT.Montserrat_Regular,
-            fontSize: heightPercentageToDP(2.5),
-            color: COLORS.black,
-          }}
-          placeholder="Search for User"
-          placeholderTextColor={COLORS.black}
-          label="Search"
-          onChangeText={handleSearch}
-        />
-      </View>
+            height: heightPercentageToDP(7),
+            flexDirection: 'row',
+            backgroundColor: COLORS.white_s,
+            alignItems: 'center',
+            paddingHorizontal: heightPercentageToDP(2),
+            borderRadius: heightPercentageToDP(1),
+            marginHorizontal: heightPercentageToDP(1),
+          }}>
+          <Fontisto
+            name="search"
+            size={heightPercentageToDP(3)}
+            color={COLORS.darkGray}
+          />
+          <TextInput
+            style={{
+              marginStart: heightPercentageToDP(1),
+              flex: 1,
+              fontFamily: FONT.Montserrat_Regular,
+              fontSize: heightPercentageToDP(2.5),
+              color: COLORS.black,
+            }}
+            placeholder="Search for User"
+            placeholderTextColor={COLORS.black}
+            onChangeText={text => {
+              setLoading(true);
+              setSearchQuery(text);
+            }}
+          />
+        </View>
 
-      {/** Content Container */}
-
-      <View
-        style={{
-          flex: 1,
-          padding: heightPercentageToDP(1),
-        }}>
-        <FlatList
-          data={partners}
-          keyExtractor={(item, index) => index.toString()}
-          renderItem={({item}) => (
-            <AllPartnerComp
-              key={item.userId}
-              navigate={'PartnerSubPartner'}
-              name={item.name}
-              userid={item.userId}
-              noofumser={item.userList.length}
-              profitpercentage={item.profitPercentage}
-              walletbalance={item.walletTwo?.balance}
-              rechargepercentage={item.rechargePercentage}
-              item={item}
+        {/* PARTNER USER LIST */}
+        <View style={{flex: 1, padding: heightPercentageToDP(1)}}>
+          {isLoading && page === 1 ? (
+            <ActivityIndicator size="large" color={COLORS.white_s} />
+          ) : (
+            <FlatList
+              data={partners}
+              keyExtractor={item => item._id.toString()} // Ensure _id is unique
+              renderItem={({item}) => (
+                <AllPartnerComp
+                  key={item.userId}
+                  navigate={'PartnerDetails'}
+                  name={item.name}
+                  userid={item.userId}
+                  noofumser={item.userList.length}
+                  profitpercentage={item.profitPercentage}
+                  walletbalance={item.walletTwo?.balance}
+                  rechargepercentage={item.rechargePercentage}
+                  item={item}
+                />
+              )}
+              onEndReached={loadMore}
+              onEndReachedThreshold={0.2}
+              refreshing={isLoading}
+              onRefresh={onRefresh} // ✅ Pull-to-Refresh
+              ListFooterComponent={() =>
+                hasMore && isLoading ? (
+                  <ActivityIndicator size="large" color={COLORS.white_s} />
+                ) : null
+              }
             />
           )}
-          onEndReached={loadMore}
-          onEndReachedThreshold={0.5} // Trigger when user scrolls near the end
-          ListFooterComponent={() =>
-            loading ? (
-              <ActivityIndicator size="large" color={COLORS.white_s} />
-            ) : null
-          }
-        />
+        </View>
       </View>
     </MainBackgroundWithoutScrollview>
   );
@@ -146,93 +181,174 @@ const AllPartner = () => {
 
 export default AllPartner;
 
-const styles = StyleSheet.create({
-  textStyle: {
-    fontSize: heightPercentageToDP(4),
-    fontFamily: FONT.Montserrat_Bold,
-    color: COLORS.black,
-  },
-  container: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginTop: 20,
-    height: heightPercentageToDP(20),
-  },
-  item: {
-    padding: heightPercentageToDP(2),
-    marginVertical: heightPercentageToDP(1),
-    marginHorizontal: heightPercentageToDP(2),
-    borderRadius: heightPercentageToDP(1),
-  },
-  paymentOption: {
-    backgroundColor: 'pink',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    height: heightPercentageToDP(15),
-    borderRadius: heightPercentageToDP(2),
-    alignItems: 'center',
-    gap: heightPercentageToDP(3),
-    paddingStart: heightPercentageToDP(2),
-    marginTop: heightPercentageToDP(2),
-  },
-  iconContainer: {
-    backgroundColor: COLORS.white_s,
-    padding: heightPercentageToDP(1.5),
-    borderRadius: heightPercentageToDP(1),
-  },
-  icon: {
-    height: 25,
-    width: 25,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  textStyleContent: {
-    fontSize: heightPercentageToDP(3),
-    fontFamily: FONT.Montserrat_Bold,
-    color: COLORS.black,
-  },
-  subtitle: {
-    fontSize: heightPercentageToDP(1.5),
-    color: COLORS.black,
-    fontFamily: FONT.Montserrat_Regular,
-  },
-  topContainer: {
-    flex: 1,
-    display: 'flex',
-    flexDirection: 'row',
-  },
-  bottomContainer: {
-    flex: 1,
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  centerLine: {
-    height: 1,
-    backgroundColor: COLORS.white_s,
-  },
-  titleRegular: {
-    fontSize: heightPercentageToDP(1.5),
-    color: COLORS.black,
-    fontFamily: FONT.Montserrat_Regular,
-  },
-  titleBold: {
-    fontSize: heightPercentageToDP(2),
-    color: COLORS.black,
-    fontFamily: FONT.Montserrat_Bold,
-  },
-  titleSemiBold: {
-    fontSize: heightPercentageToDP(2),
-    color: COLORS.white_s,
-    fontFamily: FONT.Montserrat_Bold,
-  },
-  acceptBtn: {
-    backgroundColor: COLORS.green,
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: heightPercentageToDP(0.5),
-    borderRadius: heightPercentageToDP(2),
-  },
-});
+// import React, {useEffect, useState, useCallback} from 'react';
+// import {ActivityIndicator, FlatList, TextInput, View} from 'react-native';
+// import {useSelector} from 'react-redux';
+// import {useFocusEffect} from '@react-navigation/native';
+// import {
+//   useGetAllPartnerQuery,
+//   useSearchPartnerQuery,
+// } from '../../helper/Networkcall';
+// import {heightPercentageToDP} from 'react-native-responsive-screen';
+// import Fontisto from 'react-native-vector-icons/Fontisto';
+// import {COLORS, FONT} from '../../../assets/constants';
+// import MainBackgroundWithoutScrollview from '../../components/background/MainBackgroundWithoutScrollview';
+// import AllPartnerComp from '../../components/allpartner/AllPartnerComp';
+
+// const AllPartner = ({route}) => {
+//   const {accesstoken} = useSelector(state => state.user);
+//   const {data: item} = route.params;
+
+//   // States
+//   const [partners, setPartners] = useState([]);
+//   const [page, setPage] = useState(1);
+//   const limit = 5;
+//   const [hasMore, setHasMore] = useState(true);
+//   const [loading, setLoading] = useState(false);
+//   const [searchQuery, setSearchQuery] = useState('');
+//   const [debouncedSearch, setDebouncedSearch] = useState('');
+
+//   // Debounce Effect for Search
+//   useEffect(() => {
+//     const handler = setTimeout(() => {
+//       setDebouncedSearch(searchQuery);
+//     }, 500);
+//     return () => clearTimeout(handler);
+//   }, [searchQuery]);
+
+//   // Fetch Paginated Data
+//   const {
+//     data: paginatedData,
+//     refetch: refetchPaginated,
+//     isFetching: fetchingPaginated,
+//   } = useGetAllPartnerQuery(
+//     {accesstoken, page, limit},
+//     {skip: debouncedSearch.length > 0}, // Skip pagination if searching
+//   );
+
+//   // Fetch Search Data
+//   const {data: searchData, isFetching: fetchingSearch} = useSearchPartnerQuery(
+//     debouncedSearch.length > 0
+//       ? {accesstoken, searchTerm: debouncedSearch}
+//       : {skip: true},
+//   );
+
+//   // Reset State on Navigation Back
+//   useFocusEffect(
+//     useCallback(() => {
+//       setPartners([]); // ✅ Reset Data
+//       setPage(1); // ✅ Reset Page
+//       setHasMore(true); // ✅ Reset Load More
+//       refetchPaginated(); // ✅ Ensure Fresh Data
+//     }, [refetchPaginated]),
+//   );
+
+//   useEffect(() => {
+//     setLoading(true);
+
+//     if (debouncedSearch.length > 0 && searchData?.partners) {
+//       // For search results, replace the existing data
+//       setPartners(searchData.partners);
+//       setHasMore(false); // Disable pagination when searching
+//     } else if (paginatedData?.partners) {
+//       // For paginated data, filter out duplicates before appending
+//       setPartners(prev => {
+//         const newData = paginatedData.partners.filter(
+//           newItem => !prev.some(prevItem => prevItem._id === newItem._id),
+//         );
+//         return page === 1 ? paginatedData.partners : [...prev, ...newData];
+//       });
+
+//       // Update `hasMore` based on the length of the new data
+//       if (paginatedData.partners.length < limit) {
+//         setHasMore(false); // No more data to fetch
+//       } else {
+//         setHasMore(true); // More data available
+//       }
+//     }
+
+//     setLoading(false);
+//   }, [searchData, paginatedData, debouncedSearch, page]);
+
+//   const loadMore = () => {
+//     if (!loading && hasMore && debouncedSearch.length === 0) {
+//       setPage(prev => prev + 1);
+//     }
+//   };
+
+//   // Combined Loading State
+//   const isLoading = fetchingPaginated || fetchingSearch || loading;
+
+//   return (
+//     <MainBackgroundWithoutScrollview title="All Partner">
+//       <View style={{flex: 1}}>
+//         {/* SEARCH INPUT */}
+//         <View
+//           style={{
+//             height: heightPercentageToDP(7),
+//             flexDirection: 'row',
+//             backgroundColor: COLORS.white_s,
+//             alignItems: 'center',
+//             paddingHorizontal: heightPercentageToDP(2),
+//             borderRadius: heightPercentageToDP(1),
+//             marginHorizontal: heightPercentageToDP(1),
+//           }}>
+//           <Fontisto
+//             name="search"
+//             size={heightPercentageToDP(3)}
+//             color={COLORS.darkGray}
+//           />
+//           <TextInput
+//             style={{
+//               marginStart: heightPercentageToDP(1),
+//               flex: 1,
+//               fontFamily: FONT.Montserrat_Regular,
+//               fontSize: heightPercentageToDP(2.5),
+//               color: COLORS.black,
+//             }}
+//             placeholder="Search for User"
+//             placeholderTextColor={COLORS.black}
+//             onChangeText={text => {
+//               setLoading(true);
+//               setSearchQuery(text);
+//             }}
+//           />
+//         </View>
+
+//         {/* PARTNER USER LIST */}
+//         <View style={{flex: 1, padding: heightPercentageToDP(1)}}>
+//           {isLoading && page === 1 ? (
+//             <ActivityIndicator size="large" color={COLORS.white_s} />
+//           ) : (
+//             <FlatList
+//               data={partners}
+//               keyExtractor={item => item._id.toString()} // Ensure _id is unique
+//               renderItem={({item}) => (
+//                 <AllPartnerComp
+//                   key={item.userId}
+//                   navigate={'PartnerSubPartner'}
+//                   name={item.name}
+//                   userid={item.userId}
+//                   noofumser={item.userList.length}
+//                   profitpercentage={item.profitPercentage}
+//                   walletbalance={item.walletTwo?.balance}
+//                   rechargepercentage={item.rechargePercentage}
+//                   item={item}
+//                 />
+//               )}
+//               onEndReached={loadMore}
+//               onEndReachedThreshold={0.2}
+//               ListFooterComponent={() =>
+//                 hasMore && isLoading ? (
+//                   <ActivityIndicator size="large" color={COLORS.white_s} />
+//                 ) : null
+//               }
+//             />
+//           )}
+//         </View>
+//       </View>
+//     </MainBackgroundWithoutScrollview>
+//   );
+// };
+
+// export default AllPartner;

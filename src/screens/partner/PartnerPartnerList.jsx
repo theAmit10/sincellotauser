@@ -11,6 +11,7 @@ import Fontisto from 'react-native-vector-icons/Fontisto';
 import {COLORS, FONT} from '../../../assets/constants';
 import PartnerUserListComp from '../../components/PartnerUserListComp';
 import MainBackgroundWithoutScrollview from '../../components/background/MainBackgroundWithoutScrollview';
+import AllPartnerComp from '../../components/allpartner/AllPartnerComp';
 
 const PartnerPartnerList = ({route}) => {
   const {accesstoken} = useSelector(state => state.user);
@@ -145,15 +146,16 @@ const PartnerPartnerList = ({route}) => {
               data={partners}
               keyExtractor={item => item._id.toString()} // Ensure _id is unique
               renderItem={({item}) => (
-                <PartnerUserListComp
-                  key={item._id.toString()} // Ensure unique key here as well
-                  navigate="PartnerSubPartner"
+                <AllPartnerComp
+                  key={item._id.toString()}
+                  navigate={'SubPartnerDetails'}
                   name={item.name}
                   userid={item.userId}
-                  noofumser={item.partnerList?.length}
+                  noofumser={item.userList.length}
                   profitpercentage={item.profitPercentage}
                   walletbalance={item.walletTwo?.balance}
                   rechargepercentage={item.rechargePercentage}
+                  item={item}
                 />
               )}
               onEndReached={loadMore}
