@@ -34,8 +34,6 @@ const PowerUpdateName = () => {
     refetch();
   }, [isFocused]);
 
-  // FOR UPDATING NAME
-
   const [updateGameBasic, {isLoading: updateGameBasicIsLoading}] =
     useUpdateGameBasicMutation();
 
