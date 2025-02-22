@@ -6,7 +6,7 @@ import PartnerDashComp from '../../components/partnerdashboard/PartnerDashComp';
 const PowerballDashboard = () => {
   return (
     <MainBackgound title={'Powerball Dashboard'}>
-         {/** ALL Result */}
+      {/** ALL Result */}
       <PartnerDashComp
         navigate={'PowerAllResult'}
         title={'All Result'}
