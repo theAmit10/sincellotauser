@@ -5,6 +5,9 @@ import Textinput from '../../components/tlwinput/Textinput';
 import Loading from '../../components/helpercComponent/Loading';
 import {heightPercentageToDP} from 'react-native-responsive-screen';
 import {COLORS, FONT} from '../../../assets/constants';
+import {useAddMultiplierMutation} from '../../helper/Networkcall';
+import Toast from 'react-native-toast-message';
+import {useSelector} from 'react-redux';
 
 const CreateNewMultiplier = ({route}) => {
   const {forprocess} = route.params;
@@ -13,6 +16,47 @@ const CreateNewMultiplier = ({route}) => {
 
   const [createmultiplier, setmultiplier] = useState('');
   const [updatemultiplier, setupdatemultiplier] = useState('');
+
+  const {accesstoken} = useSelector(state => state.user);
+  const [addMultiplier, {isLoading}] = useAddMultiplierMutation();
+
+  const submitHandler = async () => {
+    if (!createmultiplier) {
+      Toast.show({
+        type: 'error',
+        text1: 'Please Enter Multiplier',
+      });
+    } else {
+      Toast.show({
+        type: 'success',
+        text1: 'Processing ',
+      });
+
+      try {
+        const body = {
+          value: createmultiplier,
+        };
+
+        const res = await addMultiplier({
+          accesstoken: accesstoken,
+          body: body,
+        }).unwrap(); // <-- Ensures we get clean response data
+
+        console.log(JSON.stringify(res));
+
+        Toast.show({
+          type: 'success',
+          text1: res.message,
+        });
+      } catch (error) {
+        console.log('Error during create powertime:', error);
+        Toast.show({
+          type: 'error',
+          text1: error.data.message,
+        });
+      }
+    }
+  };
 
   return (
     <>
@@ -32,10 +76,12 @@ const CreateNewMultiplier = ({route}) => {
               marginVertical: heightPercentageToDP(2),
               justifyContent: 'flex-end',
             }}>
-            {false ? (
+            {isLoading ? (
               <Loading />
             ) : (
               <TouchableOpacity
+                onPress={submitHandler}
+                disabled={isLoading}
                 style={{
                   backgroundColor: COLORS.blue,
                   padding: heightPercentageToDP(2),
