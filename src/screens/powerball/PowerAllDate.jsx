@@ -1,5 +1,3 @@
-
-
 import {FlatList, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import React from 'react';
 import MainBackgroundWithoutScrollview from '../../components/background/MainBackgroundWithoutScrollview';
@@ -10,8 +8,7 @@ import {COLORS, FONT} from '../../../assets/constants';
 import {useNavigation} from '@react-navigation/native';
 import PowerballAllDateComp from '../../components/powerball/powerballalldates/PowerballAllDateComp';
 
-
-const PowerAllDate = () => {
+const PowerAllDate = ({route}) => {
   const alltimes = [
     {
       id: 1,
@@ -29,7 +26,7 @@ const PowerAllDate = () => {
 
   const navigation = useNavigation();
 
- 
+  const {item} = route.params;
 
   return (
     <MainBackgroundWithoutScrollview title={'All Date'}>
@@ -45,11 +42,10 @@ const PowerAllDate = () => {
             fromIconDelete={'MaterialCommunityIcons'}
             iconNameDelete={'delete'}
             navigation={navigation}
-            navigate={"PowerGameInsights"}
+            navigate={'PowerGameInsights'}
           />
         )}
       />
-
     </MainBackgroundWithoutScrollview>
   );
 };
