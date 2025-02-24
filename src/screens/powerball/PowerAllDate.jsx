@@ -28,6 +28,8 @@ const PowerAllDate = ({route}) => {
 
   const {item} = route.params;
 
+  console.log('item :: ' + JSON.stringify(item));
+
   return (
     <MainBackgroundWithoutScrollview title={'All Date'}>
       <FlatList
