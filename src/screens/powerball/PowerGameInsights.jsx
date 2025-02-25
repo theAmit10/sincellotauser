@@ -36,7 +36,9 @@ const PowerGameInsights = ({route}) => {
     },
   ];
 
+  const {item} = route.params;
 
+  console.log('item :: ' + JSON.stringify(item));
 
   const [filteredData, setFilteredData] = useState([]);
 
@@ -48,21 +50,21 @@ const PowerGameInsights = ({route}) => {
   };
 
   //  const {timedata, locationdata} = route.params;
-  
-    const [expandedItems, setExpandedItems] = useState({});
-    const toggleItem = id => {
-      setExpandedItems(prev => ({
-        ...prev,
-        [id]: !prev[id],
-      }));
-    };
-  
-    const item = {
-      _id: 1,
-      name: 'Test',
-    };
-  
-    const navigation = useNavigation();
+
+  const [expandedItems, setExpandedItems] = useState({});
+  const toggleItem = id => {
+    setExpandedItems(prev => ({
+      ...prev,
+      [id]: !prev[id],
+    }));
+  };
+
+  // const item = {
+  //   _id: 1,
+  //   name: 'Test',
+  // };
+
+  const navigation = useNavigation();
 
   const Footer = () => {
     return (
@@ -159,11 +161,11 @@ const PowerGameInsights = ({route}) => {
         ListHeaderComponent={<Header />}
         renderItem={({item}) => (
           <PowerGameInsightsComp
-          item={item}
-          expandedItems={expandedItems}
-          setExpandedItems={setExpandedItems}
-          toggleItem={toggleItem}
-        />
+            item={item}
+            expandedItems={expandedItems}
+            setExpandedItems={setExpandedItems}
+            toggleItem={toggleItem}
+          />
         )}
       />
       <Footer />

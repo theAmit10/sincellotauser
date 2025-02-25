@@ -715,11 +715,23 @@ export const sincelotAdminApi = createApi({
       }),
     }),
 
+    // [GET ALL POWER DATE BASED UPON TIME]
+    getPowerDateBasedUponPowerTime: builder.query({
+      query: ({accesstoken, id, page, limit}) => ({
+        url: `user/getpowerdatebytime/${id}?page=${page}&limit=${limit}`,
+        method: 'get',
+        headers: {
+          Authorization: `Bearer ${accesstoken}`,
+        },
+      }),
+    }),
+
     // ######## END #########
   }),
 });
 
 export const {
+  useGetPowerDateBasedUponPowerTimeQuery,
   useAddMultiplierMutation,
   useGetPowerBallGameQuery,
   useUpdateGameBasicMutation,
