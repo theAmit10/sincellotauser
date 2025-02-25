@@ -761,11 +761,63 @@ export const sincelotAdminApi = createApi({
       }),
     }),
 
+    // [GET ALL USERS]
+    getAllUser: builder.query({
+      query: ({accesstoken, page, limit}) => ({
+        url: `user/alluser?page=${page}&limit=${limit}`,
+        method: 'get',
+        headers: {
+          Authorization: `Bearer ${accesstoken}`,
+        },
+      }),
+    }),
+
+    // [ SEARCH USERS]
+    searchUser: builder.query({
+      query: ({accesstoken, searchTerm}) => ({
+        url: `user/searchuser/?searchTerm=${searchTerm}`,
+        method: 'get',
+        headers: {
+          Authorization: `Bearer ${accesstoken}`,
+        },
+      }),
+    }),
+
+    // [REMOVE TOP PATNER]
+    removeTopPartner: builder.mutation({
+      query: ({accesstoken, body}) => ({
+        url: `user/removetoppartner`,
+        method: 'PUT',
+        body,
+        headers: {
+          Authorization: `Bearer ${accesstoken}`,
+          'Content-Type': 'application/json',
+        },
+      }),
+    }),
+
+    // [CREATE TOP PATNER]
+    createPartner: builder.mutation({
+      query: ({accesstoken, body}) => ({
+        url: `user/createpartner`,
+        method: 'POST',
+        body,
+        headers: {
+          Authorization: `Bearer ${accesstoken}`,
+          'Content-Type': 'application/json',
+        },
+      }),
+    }),
+
     // ######## END #########
   }),
 });
 
 export const {
+  useRemoveTopPartnerMutation,
+  useCreatePartnerMutation,
+  useSearchUserQuery,
+  useGetAllUserQuery,
   useUpdatePartnerProfitDeductionMutation,
   useGetAllProfitDeductionQuery,
   useGetAllSubPartnerQuery,

@@ -6,13 +6,34 @@ import {heightPercentageToDP} from 'react-native-responsive-screen';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {useNavigation} from '@react-navigation/native';
+import Loading from '../helpercComponent/Loading';
 
-const AllUserPartnerComp = ({item, navigate}) => {
+const AllUserPartnerComp = ({
+  item,
+  navigate,
+  createPartnerSubmitHandler,
+  seletedItem,
+  removePartnerSubmitHandler,
+  isRemoving,
+  isCreating,
+}) => {
   const navigation = useNavigation();
 
+  const handleUserClick = () => {
+    if (item.partnerType === 'user') {
+      navigation.navigate('UserDetails', {
+        userdata: item,
+        formscreen: 'AllUsersPartner',
+      });
+    } else {
+      navigation.navigate('PartnerDetails', {
+        data: item,
+      });
+    }
+  };
+
   return (
-    <TouchableOpacity
-      >
+    <TouchableOpacity onPress={handleUserClick}>
       <LinearGradient
         colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
         start={{x: 0, y: 0}} // start from left
@@ -32,7 +53,7 @@ const AllUserPartnerComp = ({item, navigate}) => {
                 alignItems: 'flex-start',
               }}>
               <Text style={styles.titleRegular}>User ID</Text>
-              <Text style={styles.titleBold}>{item.userid}</Text>
+              <Text style={styles.titleBold}>{item.userId}</Text>
             </View>
             <View
               style={{
@@ -49,36 +70,103 @@ const AllUserPartnerComp = ({item, navigate}) => {
           </View>
           <View style={styles.centerLine}></View>
           <View style={styles.bottomContainer}>
-            {item.partner === true ? (
-              <TouchableOpacity
-              onPress={() => navigation.navigate(navigate, {userid: item.userid})}
-                style={{
-                  borderRadius: heightPercentageToDP(2),
-                }}>
-                <LinearGradient
-                  colors={[COLORS.user_firstgreen, COLORS.time_secondgreen]}
-                  start={{x: 0, y: 0}} // start from left
-                  end={{x: 1, y: 0}} // end at right
-                  style={{
-                    padding: heightPercentageToDP(1.5),
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    borderRadius: heightPercentageToDP(2),
-                    flexDirection: 'row',
-                    gap: heightPercentageToDP(1),
-                  }}>
-                  <FontAwesome
-                    name={'edit'}
-                    size={heightPercentageToDP(3)}
-                    color={COLORS.black}
-                    style={styles.icon}
-                  />
+            {item.partnerType === 'user' ? (
+              isCreating ? (
+                seletedItem._id === item._id ? (
+                  <Loading />
+                ) : (
+                  <TouchableOpacity
+                    onPress={() => createPartnerSubmitHandler(item)}
+                    style={{
+                      borderRadius: heightPercentageToDP(2),
+                    }}>
+                    <LinearGradient
+                      colors={[COLORS.user_firstgreen, COLORS.time_secondgreen]}
+                      start={{x: 0, y: 0}} // start from left
+                      end={{x: 1, y: 0}} // end at right
+                      style={{
+                        padding: heightPercentageToDP(1.5),
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        borderRadius: heightPercentageToDP(2),
+                        flexDirection: 'row',
+                        gap: heightPercentageToDP(1),
+                      }}>
+                      <FontAwesome
+                        name={'edit'}
+                        size={heightPercentageToDP(3)}
+                        color={COLORS.black}
+                        style={styles.icon}
+                      />
 
-                  <Text style={styles.titleSemiBold}>Make Partner</Text>
-                </LinearGradient>
-              </TouchableOpacity>
+                      <Text style={styles.titleSemiBold}>Make Partner</Text>
+                    </LinearGradient>
+                  </TouchableOpacity>
+                )
+              ) : (
+                <TouchableOpacity
+                  onPress={() => createPartnerSubmitHandler(item)}
+                  style={{
+                    borderRadius: heightPercentageToDP(2),
+                  }}>
+                  <LinearGradient
+                    colors={[COLORS.user_firstgreen, COLORS.time_secondgreen]}
+                    start={{x: 0, y: 0}} // start from left
+                    end={{x: 1, y: 0}} // end at right
+                    style={{
+                      padding: heightPercentageToDP(1.5),
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      borderRadius: heightPercentageToDP(2),
+                      flexDirection: 'row',
+                      gap: heightPercentageToDP(1),
+                    }}>
+                    <FontAwesome
+                      name={'edit'}
+                      size={heightPercentageToDP(3)}
+                      color={COLORS.black}
+                      style={styles.icon}
+                    />
+
+                    <Text style={styles.titleSemiBold}>Make Partner</Text>
+                  </LinearGradient>
+                </TouchableOpacity>
+              )
+            ) : isRemoving ? (
+              seletedItem._id === item._id ? (
+                <Loading />
+              ) : (
+                <TouchableOpacity
+                  onPress={() => removePartnerSubmitHandler(item)}
+                  style={{
+                    borderRadius: heightPercentageToDP(2),
+                  }}>
+                  <LinearGradient
+                    colors={[COLORS.red, COLORS.red]}
+                    start={{x: 0, y: 0}} // start from left
+                    end={{x: 1, y: 0}} // end at right
+                    style={{
+                      padding: heightPercentageToDP(1.5),
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      borderRadius: heightPercentageToDP(2),
+                      flexDirection: 'row',
+                      gap: heightPercentageToDP(1),
+                    }}>
+                    <MaterialCommunityIcons
+                      name={'delete'}
+                      size={heightPercentageToDP(3)}
+                      color={COLORS.black}
+                      style={styles.icon}
+                    />
+
+                    <Text style={styles.titleSemiBold}>Remove Partner</Text>
+                  </LinearGradient>
+                </TouchableOpacity>
+              )
             ) : (
               <TouchableOpacity
+                onPress={() => removePartnerSubmitHandler(item)}
                 style={{
                   borderRadius: heightPercentageToDP(2),
                 }}>
