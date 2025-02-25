@@ -4,11 +4,16 @@ import {useSelector} from 'react-redux';
 import {useFocusEffect} from '@react-navigation/native';
 import {
   useGetAllPartnerQuery,
+  useGetPartnerPartnerListQuery,
+  useGetPartnerUserListQuery,
+  useSearchPartnerPartnerListQuery,
   useSearchPartnerQuery,
+  useSearchPartnerUserListQuery,
 } from '../../helper/Networkcall';
 import {heightPercentageToDP} from 'react-native-responsive-screen';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import {COLORS, FONT} from '../../../assets/constants';
+import PartnerUserListComp from '../../components/PartnerUserListComp';
 import MainBackgroundWithoutScrollview from '../../components/background/MainBackgroundWithoutScrollview';
 import AllPartnerComp from '../../components/allpartner/AllPartnerComp';
 
@@ -23,7 +28,6 @@ const AllPartner = () => {
   const [loading, setLoading] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [debouncedSearch, setDebouncedSearch] = useState('');
-  const [refresh, setRefresh] = useState(false); // State to trigger a re-fetch
 
   // Debounce Effect for Search
   useEffect(() => {
@@ -40,7 +44,7 @@ const AllPartner = () => {
     isFetching: fetchingPaginated,
   } = useGetAllPartnerQuery(
     {accesstoken, page, limit},
-    {skip: debouncedSearch.length > 0 || refresh}, // Skip pagination if searching or refreshing
+    {skip: debouncedSearch.length > 0}, // Skip pagination if searching
   );
 
   // Fetch Search Data
@@ -53,11 +57,11 @@ const AllPartner = () => {
   // Reset State on Navigation Back
   useFocusEffect(
     useCallback(() => {
-      setPartners([]); // ✅ Reset Data
+      // setPartners([]); // ✅ Reset Data
       setPage(1); // ✅ Reset Page
       setHasMore(true); // ✅ Reset Load More
-      setRefresh(prev => !prev); // ✅ Force Re-fetch
-    }, []),
+      refetchPaginated?.(); // ✅ Ensure Fresh Data
+    }, [refetchPaginated]),
   );
 
   useEffect(() => {
@@ -91,15 +95,6 @@ const AllPartner = () => {
     if (!loading && hasMore && debouncedSearch.length === 0) {
       setPage(prev => prev + 1);
     }
-  };
-
-  // Pull-to-refresh function
-  const onRefresh = () => {
-    setLoading(true);
-    setPartners([]); // ✅ Clear Data
-    setPage(1); // ✅ Reset Page
-    refetchPaginated(); // ✅ Trigger API Call
-    setLoading(false);
   };
 
   // Combined Loading State
@@ -164,8 +159,6 @@ const AllPartner = () => {
               )}
               onEndReached={loadMore}
               onEndReachedThreshold={0.2}
-              refreshing={isLoading}
-              onRefresh={onRefresh} // ✅ Pull-to-Refresh
               ListFooterComponent={() =>
                 hasMore && isLoading ? (
                   <ActivityIndicator size="large" color={COLORS.white_s} />
@@ -195,9 +188,8 @@ export default AllPartner;
 // import MainBackgroundWithoutScrollview from '../../components/background/MainBackgroundWithoutScrollview';
 // import AllPartnerComp from '../../components/allpartner/AllPartnerComp';
 
-// const AllPartner = ({route}) => {
+// const AllPartner = () => {
 //   const {accesstoken} = useSelector(state => state.user);
-//   const {data: item} = route.params;
 
 //   // States
 //   const [partners, setPartners] = useState([]);
@@ -207,6 +199,7 @@ export default AllPartner;
 //   const [loading, setLoading] = useState(false);
 //   const [searchQuery, setSearchQuery] = useState('');
 //   const [debouncedSearch, setDebouncedSearch] = useState('');
+//   const [refresh, setRefresh] = useState(false); // State to trigger a re-fetch
 
 //   // Debounce Effect for Search
 //   useEffect(() => {
@@ -223,7 +216,7 @@ export default AllPartner;
 //     isFetching: fetchingPaginated,
 //   } = useGetAllPartnerQuery(
 //     {accesstoken, page, limit},
-//     {skip: debouncedSearch.length > 0}, // Skip pagination if searching
+//     {skip: debouncedSearch.length > 0 || refresh}, // Skip pagination if searching or refreshing
 //   );
 
 //   // Fetch Search Data
@@ -239,8 +232,8 @@ export default AllPartner;
 //       setPartners([]); // ✅ Reset Data
 //       setPage(1); // ✅ Reset Page
 //       setHasMore(true); // ✅ Reset Load More
-//       refetchPaginated(); // ✅ Ensure Fresh Data
-//     }, [refetchPaginated]),
+//       setRefresh(prev => !prev); // ✅ Force Re-fetch
+//     }, []),
 //   );
 
 //   useEffect(() => {
@@ -274,6 +267,15 @@ export default AllPartner;
 //     if (!loading && hasMore && debouncedSearch.length === 0) {
 //       setPage(prev => prev + 1);
 //     }
+//   };
+
+//   // Pull-to-refresh function
+//   const onRefresh = () => {
+//     setLoading(true);
+//     setPartners([]); // ✅ Clear Data
+//     setPage(1); // ✅ Reset Page
+//     refetchPaginated(); // ✅ Trigger API Call
+//     setLoading(false);
 //   };
 
 //   // Combined Loading State
@@ -326,7 +328,7 @@ export default AllPartner;
 //               renderItem={({item}) => (
 //                 <AllPartnerComp
 //                   key={item.userId}
-//                   navigate={'PartnerSubPartner'}
+//                   navigate={'PartnerDetails'}
 //                   name={item.name}
 //                   userid={item.userId}
 //                   noofumser={item.userList.length}
@@ -338,6 +340,8 @@ export default AllPartner;
 //               )}
 //               onEndReached={loadMore}
 //               onEndReachedThreshold={0.2}
+//               refreshing={isLoading}
+//               onRefresh={onRefresh} // ✅ Pull-to-Refresh
 //               ListFooterComponent={() =>
 //                 hasMore && isLoading ? (
 //                   <ActivityIndicator size="large" color={COLORS.white_s} />

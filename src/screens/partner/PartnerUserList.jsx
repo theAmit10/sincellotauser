@@ -56,10 +56,10 @@ const PartnerUserList = ({route}) => {
   // Reset State on Navigation Back
   useFocusEffect(
     useCallback(() => {
-      setPartners([]); // ✅ Reset Data
+      // setPartners([]); // ✅ Reset Data
       setPage(1); // ✅ Reset Page
       setHasMore(true); // ✅ Reset Load More
-      refetchPaginated(); // ✅ Ensure Fresh Data
+      refetchPaginated?.(); // ✅ Ensure Fresh Data
     }, [refetchPaginated]),
   );
 
