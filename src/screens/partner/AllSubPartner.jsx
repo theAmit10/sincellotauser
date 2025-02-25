@@ -3,9 +3,7 @@ import {ActivityIndicator, FlatList, TextInput, View} from 'react-native';
 import {useSelector} from 'react-redux';
 import {useFocusEffect} from '@react-navigation/native';
 import {
-  useGetAllPartnerQuery,
   useGetAllSubPartnerQuery,
-  useSearchPartnerQuery,
   useSearchSubPartnerQuery,
 } from '../../helper/Networkcall';
 import {heightPercentageToDP} from 'react-native-responsive-screen';

@@ -9,21 +9,19 @@ import LinearGradient from 'react-native-linear-gradient';
 import Loading from '../helpercComponent/Loading';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 
-const ProfitDeducationComp = () => {
-  const [expandedItems, setExpandedItems] = useState({});
-  const toggleItem = id => {
-    setExpandedItems(prev => ({
-      ...prev,
-      [id]: !prev[id],
-    }));
-  };
-
-  const item = {
-    _id: 1,
-    userId: 1909,
-    paymentStatus: 'Pending',
-  };
-
+const ProfitDeducationComp = ({
+  item,
+  expandedItems,
+  setExpandedItems,
+  toggleItem,
+  updateStatusIsLoading,
+  selectedItem,
+  setSelectedItem,
+  selectedItemId,
+  setSelectedItemId,
+  handleComplete,
+  handleCancelled,
+}) => {
   return (
     <LinearGradient
       colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
@@ -32,7 +30,7 @@ const ProfitDeducationComp = () => {
       style={{
         justifyContent: 'flex-start',
         borderRadius: heightPercentageToDP(2),
-        marginTop: heightPercentageToDP(2),
+        marginTop: heightPercentageToDP(1),
       }}>
       <TouchableOpacity
         onPress={() => toggleItem(item._id)}
@@ -42,7 +40,7 @@ const ProfitDeducationComp = () => {
           borderTopEndRadius: heightPercentageToDP(2),
           flexDirection: 'row',
           marginBottom: heightPercentageToDP(1),
-          paddingVertical: heightPercentageToDP(2),
+          paddingVertical: heightPercentageToDP(1),
         }}>
         <View
           style={{
@@ -126,7 +124,7 @@ const ProfitDeducationComp = () => {
                   fontSize: heightPercentageToDP(1.8),
                   color: COLORS.black,
                 }}>
-                8948
+                {item.partnerId}
               </Text>
             </View>
           </View>
@@ -134,7 +132,7 @@ const ProfitDeducationComp = () => {
 
         {/** Right View */}
         <View style={{flex: 1, flexDirection: 'row'}}>
-          {false && item._id === '999' ? (
+          {updateStatusIsLoading && item._id === selectedItemId ? (
             <View
               style={{
                 flex: 1,
@@ -145,9 +143,9 @@ const ProfitDeducationComp = () => {
             </View>
           ) : (
             <>
-              {item.paymentStatus === 'Pending' && (
+              {item.status === 'Pending' && (
                 <TouchableOpacity
-                  onPress={() => showAlertAccepted(item)}
+                  onPress={() => handleComplete(item)}
                   style={{
                     width: '40%',
                     paddingHorizontal: 4,
@@ -167,7 +165,7 @@ const ProfitDeducationComp = () => {
               )}
 
               {/** PAYMENT STATUS TEXT */}
-              {item.paymentStatus === 'Pending' ? (
+              {item.status === 'Pending' ? (
                 <Text
                   style={{
                     fontFamily: FONT.Montserrat_Regular,
@@ -176,9 +174,9 @@ const ProfitDeducationComp = () => {
                     textAlignVertical: 'center',
                     alignSelf: 'center',
                   }}>
-                  {item.paymentStatus}
+                  {item.status}
                 </Text>
-              ) : item.paymentStatus === 'Completed' ? (
+              ) : item.status === 'Completed' ? (
                 <View
                   style={{
                     backgroundColor: COLORS.green,
@@ -196,7 +194,7 @@ const ProfitDeducationComp = () => {
                       textAlignVertical: 'center',
                       textAlign: 'center',
                     }}>
-                    {item.paymentStatus}
+                    {item.status}
                   </Text>
                 </View>
               ) : (
@@ -217,14 +215,14 @@ const ProfitDeducationComp = () => {
                       textAlignVertical: 'center',
                       textAlign: 'center',
                     }}>
-                    {item.paymentStatus}
+                    {item.status}
                   </Text>
                 </View>
               )}
 
-              {item.paymentStatus === 'Pending' && (
+              {item.status === 'Pending' && (
                 <TouchableOpacity
-                  onPress={() => showAlertRejected(item)}
+                  onPress={() => handleCancelled(item)}
                   style={{
                     width: '40%',
                     paddingHorizontal: 4,
@@ -281,7 +279,7 @@ const ProfitDeducationComp = () => {
                 Name
               </Text>
               <Text style={styles.detailValue} adjustsFontSizeToFit={true}>
-                Ali Khan
+                {item.name}
               </Text>
             </View>
 
@@ -292,7 +290,7 @@ const ProfitDeducationComp = () => {
                 alignItems: 'flex-start',
               }}>
               <Text style={{...styles.detailLabel}}>Profit Percentage</Text>
-              <Text style={styles.detailValue}>20 %</Text>
+              <Text style={styles.detailValue}>{item.profitPercentage}</Text>
             </View>
           </View>
 
@@ -317,13 +315,7 @@ const ProfitDeducationComp = () => {
                 alignItems: 'flex-start',
               }}>
               <Text style={{...styles.detailLabel}}>Reason</Text>
-              <Text style={styles.detailValue}>
-                SerializableStateInvariantMiddleware took 194ms, which is more
-                than the warning threshold of 32ms. If your state or actions are
-                very large, you may want to disable the middleware as it might
-                cause too much of a slowdown in development mode. See
-                https://redux-toolkit.js.org/api/getDefaultMiddleware for
-              </Text>
+              <Text style={styles.detailValue}>{item.reason}</Text>
             </View>
           </View>
         </>

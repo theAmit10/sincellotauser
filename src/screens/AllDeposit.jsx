@@ -394,25 +394,6 @@ const AllDeposit = () => {
     console.log(JSON.stringify(usercountry));
   };
 
-  // const showAlertRejected = item => {
-  //   setAlertVisibleRejected(true);
-  //   setSelectedItemId(item._id);
-  //   setSelectedItem(item);
-
-  //   // Calculate values here
-  //   const calculatedAmount = item.convertedAmount
-  //     ? item.convertedAmount
-  //     : multiplyStringNumbers(
-  //         item.amount,
-  //         item.currency !== undefined
-  //           ? item.currency.countrycurrencyvaluecomparedtoinr
-  //           : 1,
-  //       );
-
-  //   setSelectedAmount(calculatedAmount);
-  //   setSelectedCountry(item.currency);
-  // };
-
   const closeAlertRejected = () => {
     setAlertVisibleRejected(false);
   };

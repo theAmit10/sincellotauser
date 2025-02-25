@@ -737,11 +737,37 @@ export const sincelotAdminApi = createApi({
       }),
     }),
 
+    // [GET ALL PROFIT DEDUCTION]
+    getAllProfitDeduction: builder.query({
+      query: ({accesstoken, page, limit}) => ({
+        url: `user/getallprofitdeduction?page=${page}&limit=${limit}`,
+        method: 'get',
+        headers: {
+          Authorization: `Bearer ${accesstoken}`,
+        },
+      }),
+    }),
+
+    // [UPDATE PARTNER PROFIT DEDUCTION BY ID]
+    updatePartnerProfitDeduction: builder.mutation({
+      query: ({accesstoken, body}) => ({
+        url: `user/updateprofitdeduction`,
+        method: 'PUT',
+        body,
+        headers: {
+          Authorization: `Bearer ${accesstoken}`,
+          'Content-Type': 'application/json',
+        },
+      }),
+    }),
+
     // ######## END #########
   }),
 });
 
 export const {
+  useUpdatePartnerProfitDeductionMutation,
+  useGetAllProfitDeductionQuery,
   useGetAllSubPartnerQuery,
   useGetPowerDateBasedUponPowerTimeQuery,
   useAddMultiplierMutation,
