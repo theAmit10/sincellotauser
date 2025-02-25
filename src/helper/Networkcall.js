@@ -524,6 +524,17 @@ export const sincelotAdminApi = createApi({
       }),
     }),
 
+    // [GET ALL SUBPARTNER]
+    getAllSubPartner: builder.query({
+      query: ({accesstoken, page, limit}) => ({
+        url: `user/getallsubpartner?page=${page}&limit=${limit}`,
+        method: 'get',
+        headers: {
+          Authorization: `Bearer ${accesstoken}`,
+        },
+      }),
+    }),
+
     // GET PARTNER PARTNERLIST
     getPartnerPartnerList: builder.query({
       query: ({accesstoken, userId, page, limit}) => ({
@@ -731,6 +742,7 @@ export const sincelotAdminApi = createApi({
 });
 
 export const {
+  useGetAllSubPartnerQuery,
   useGetPowerDateBasedUponPowerTimeQuery,
   useAddMultiplierMutation,
   useGetPowerBallGameQuery,

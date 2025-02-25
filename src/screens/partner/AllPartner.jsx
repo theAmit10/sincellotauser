@@ -4,16 +4,11 @@ import {useSelector} from 'react-redux';
 import {useFocusEffect} from '@react-navigation/native';
 import {
   useGetAllPartnerQuery,
-  useGetPartnerPartnerListQuery,
-  useGetPartnerUserListQuery,
-  useSearchPartnerPartnerListQuery,
   useSearchPartnerQuery,
-  useSearchPartnerUserListQuery,
 } from '../../helper/Networkcall';
 import {heightPercentageToDP} from 'react-native-responsive-screen';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import {COLORS, FONT} from '../../../assets/constants';
-import PartnerUserListComp from '../../components/PartnerUserListComp';
 import MainBackgroundWithoutScrollview from '../../components/background/MainBackgroundWithoutScrollview';
 import AllPartnerComp from '../../components/allpartner/AllPartnerComp';
 
