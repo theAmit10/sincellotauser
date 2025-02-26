@@ -84,6 +84,7 @@ const PartnerDetails = ({route}) => {
         subtitle={'Update Partner Recharge '}
         fromicon={'MaterialCommunityIcons'}
         iconname={'human-capacity-decrease'}
+        data={data}
       />
       {/** Remove User */}
       <PartnerDashComp
@@ -92,7 +93,7 @@ const PartnerDetails = ({route}) => {
         subtitle={'Remove user for Partner List '}
         fromicon={'MaterialCommunityIcons'}
         iconname={'delete-empty'}
-        data={{key1: 'removeuser'}}
+        data={{key1: 'removeuser', key2: data}}
       />
     </MainBackgound>
   );

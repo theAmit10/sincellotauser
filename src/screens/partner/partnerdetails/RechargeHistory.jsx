@@ -31,6 +31,7 @@ import {COLORS, FONT} from '../../../../assets/constants';
 import GradientTextWhite from '../../../components/helpercComponent/GradientTextWhite';
 import {
   useGetAllDepositQuery,
+  useGetPartnerRechargeHistoryQuery,
   useUpdateDepositPaymentStatusMutation,
 } from '../../../helper/Networkcall';
 import CustomAlertForDeposit from '../../../components/helpercComponent/CustomAlertForDeposit';
@@ -52,7 +53,9 @@ export const multiplyStringNumbers = (str1, str2) => {
   return num1 * num2;
 };
 
-const RechargeHistory = () => {
+const RechargeHistory = ({route}) => {
+  const {data: partner} = route.params;
+  console.log(JSON.stringify(partner));
   const {accesstoken, user} = useSelector(state => state.user);
   const [expandedItems, setExpandedItems] = useState({});
   const [selectedItemId, setSelectedItemId] = useState('');
@@ -70,11 +73,14 @@ const RechargeHistory = () => {
   const [dataList, setDataList] = useState([]); // List of all data
   const [isFetchingNextPage, setIsFetchingNextPage] = useState(false);
 
-  const {isLoading, data, isError, refetch} = useGetAllDepositQuery({
-    accesstoken,
-    page, // current page number
-    limit: 100, // number of items per page
-  });
+  const {isLoading, data, isError, refetch} = useGetPartnerRechargeHistoryQuery(
+    {
+      accesstoken,
+      userId: partner.userId,
+      page: page, // current page number
+      limit: 100, // number of items per page
+    },
+  );
 
   // FOR UPDATING PAYMENT STATUS
   const [
@@ -115,13 +121,13 @@ const RechargeHistory = () => {
   useEffect(() => {
     if (!isLoading) {
       console.log('USE Effect running');
-      setFilteredData(data?.deposits);
+      setFilteredData(data?.recharges);
     }
   }, [isLoading, isFocused, refetch, updateKey]);
 
   const handleSearch = text => {
     if (data) {
-      const filtered = data.deposits.filter(item =>
+      const filtered = data.recharges.filter(item =>
         item.userId.toLowerCase().includes(text.toLowerCase()),
       );
       setFilteredData(filtered);
@@ -373,16 +379,6 @@ const RechargeHistory = () => {
     setSelectedItemId(item._id);
     setSelectedItem(item);
 
-    // Calculate the amount
-    // const calculatedAmount = item.convertedAmount
-    //   ? item.convertedAmount
-    //   : multiplyStringNumbers(
-    //       item.amount,
-    //       item.currency !== undefined
-    //         ? item.currency.countrycurrencyvaluecomparedtoinr
-    //         : 1,
-    //     );
-
     const calculatedAmount = item.amount;
 
     // Set the calculated amount and country
@@ -393,25 +389,6 @@ const RechargeHistory = () => {
     console.log(calculatedAmount);
     console.log(JSON.stringify(usercountry));
   };
-
-  // const showAlertRejected = item => {
-  //   setAlertVisibleRejected(true);
-  //   setSelectedItemId(item._id);
-  //   setSelectedItem(item);
-
-  //   // Calculate values here
-  //   const calculatedAmount = item.convertedAmount
-  //     ? item.convertedAmount
-  //     : multiplyStringNumbers(
-  //         item.amount,
-  //         item.currency !== undefined
-  //           ? item.currency.countrycurrencyvaluecomparedtoinr
-  //           : 1,
-  //       );
-
-  //   setSelectedAmount(calculatedAmount);
-  //   setSelectedCountry(item.currency);
-  // };
 
   const closeAlertRejected = () => {
     setAlertVisibleRejected(false);
@@ -548,7 +525,7 @@ const RechargeHistory = () => {
                     }}>
                     <Loading />
                   </View>
-                ) : filteredData.length === 0 ? (
+                ) : filteredData?.length === 0 ? (
                   <View>
                     <NoDataFound data={'No History Found'} />
                   </View>

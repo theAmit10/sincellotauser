@@ -945,11 +945,37 @@ export const sincelotAdminApi = createApi({
       }),
     }),
 
+    // [GET PARTNER RECHARGE HISTORY]
+    getPartnerRechargeHistory: builder.query({
+      query: ({accesstoken, userId, page, limit}) => ({
+        url: `user/getsinglepartnerrecharge/${userId}?page=${page}&limit=${limit}`,
+        method: 'get',
+        headers: {
+          Authorization: `Bearer ${accesstoken}`,
+        },
+      }),
+    }),
+
+    // [ REMOVE USER FOR PARTNER USERLIST ]
+    removeUserFromPartnerUserList: builder.mutation({
+      query: ({accesstoken, body}) => ({
+        url: `user/removeuserfromuserlist`,
+        method: 'PUT',
+        body,
+        headers: {
+          Authorization: `Bearer ${accesstoken}`,
+          'Content-Type': 'application/json',
+        },
+      }),
+    }),
+
     // ######## END #########
   }),
 });
 
 export const {
+  useRemoveUserFromPartnerUserListMutation,
+  useGetPartnerRechargeHistoryQuery,
   useUpdateRechargeMutation,
   useUpdateProfitMutation,
   useCreateNotificationMutation,
