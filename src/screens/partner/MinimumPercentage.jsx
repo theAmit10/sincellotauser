@@ -1,51 +1,121 @@
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import MainBackgound from '../../components/background/MainBackgound';
 import Textinput from '../../components/tlwinput/Textinput';
 import {heightPercentageToDP} from 'react-native-responsive-screen';
 import Loading from '../../components/helpercComponent/Loading';
 import {COLORS, FONT} from '../../../assets/constants';
+import {useSelector} from 'react-redux';
+import {
+  useGetDefaultProfitAndRechargePercentageQuery,
+  useUpdateDefaultProfitAndRechargePercentageMutation,
+} from '../../helper/Networkcall';
+import Toast from 'react-native-toast-message';
 
 const MinimumPercentage = () => {
   const [minimumpercentage, setminimumpercentage] = useState('');
+  const {accesstoken} = useSelector(state => state.user);
+
+  const {isLoading, data, refetch} =
+    useGetDefaultProfitAndRechargePercentageQuery({accesstoken});
+
+  console.log(JSON.stringify(data.settings));
+
+  useEffect(() => {
+    if (!isLoading && data) {
+      setminimumpercentage(data.settings.minProfitPercentage.toString());
+    }
+  }, [isLoading, data]);
+
+  const [
+    updateDefaultProfitAndRechargePercentage,
+    {isLoading: updateIsLoading},
+  ] = useUpdateDefaultProfitAndRechargePercentageMutation();
+
+  const updateSubmitHandler = async () => {
+    try {
+      if (!minimumpercentage) {
+        Toast.show({
+          type: 'error',
+          text1: 'Please Enter Minimum Percentage',
+        });
+        return;
+      }
+      if (isNaN(minimumpercentage)) {
+        Toast.show({
+          type: 'error',
+          text1: 'Please Enter Valid Percentage',
+        });
+        return;
+      }
+
+      const body = {
+        minProfitPercentage: minimumpercentage,
+      };
+
+      const res = await updateDefaultProfitAndRechargePercentage({
+        accesstoken,
+        body,
+      });
+
+      console.log(res.data);
+      Toast.show({
+        type: 'success',
+        text1: res.data.message,
+      });
+      await refetch();
+    } catch (e) {
+      Toast.show({
+        type: 'error',
+        text1: 'Something went wrong',
+      });
+    }
+  };
 
   return (
     <MainBackgound title={'Minimum Percentage'}>
-      {/* MINIMUM PROFIT PERCENTAGE */}
-      <Textinput
-        title="Minimum Profit Percentage"
-        value={minimumpercentage}
-        onChangeText={text => setminimumpercentage(text)} // Updates inputValue state
-        placeholder="Enter Percentage"
-      />
+      {isLoading ? (
+        <Loading />
+      ) : (
+        <>
+          {/* MINIMUM PROFIT PERCENTAGE */}
+          <Textinput
+            title="Minimum Profit Percentage"
+            value={minimumpercentage}
+            onChangeText={text => setminimumpercentage(text)} // Updates inputValue state
+            placeholder="Enter Percentage"
+          />
 
-      <View
-        style={{
-          flex: 1,
-          marginBottom: heightPercentageToDP(5),
-          marginVertical: heightPercentageToDP(2),
-          justifyContent: 'flex-end',
-        }}>
-        {false ? (
-          <Loading />
-        ) : (
-          <TouchableOpacity
+          <View
             style={{
-              backgroundColor: COLORS.blue,
-              padding: heightPercentageToDP(2),
-              borderRadius: heightPercentageToDP(1),
-              alignItems: 'center',
+              flex: 1,
+              marginBottom: heightPercentageToDP(5),
+              marginVertical: heightPercentageToDP(2),
+              justifyContent: 'flex-end',
             }}>
-            <Text
-              style={{
-                color: COLORS.white,
-                fontFamily: FONT.Montserrat_Regular,
-              }}>
-              Submit
-            </Text>
-          </TouchableOpacity>
-        )}
-      </View>
+            {updateIsLoading ? (
+              <Loading />
+            ) : (
+              <TouchableOpacity
+                onPress={updateSubmitHandler}
+                style={{
+                  backgroundColor: COLORS.blue,
+                  padding: heightPercentageToDP(2),
+                  borderRadius: heightPercentageToDP(1),
+                  alignItems: 'center',
+                }}>
+                <Text
+                  style={{
+                    color: COLORS.white,
+                    fontFamily: FONT.Montserrat_Regular,
+                  }}>
+                  Submit
+                </Text>
+              </TouchableOpacity>
+            )}
+          </View>
+        </>
+      )}
     </MainBackgound>
   );
 };

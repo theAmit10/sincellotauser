@@ -809,11 +809,37 @@ export const sincelotAdminApi = createApi({
       }),
     }),
 
+    // [GET SETTING FOR MINIMUM PROFIT AND RECHARGE PERCENTAGE]
+    getDefaultProfitAndRechargePercentage: builder.query({
+      query: ({accesstoken}) => ({
+        url: `user/getsettings`,
+        method: 'get',
+        headers: {
+          Authorization: `Bearer ${accesstoken}`,
+        },
+      }),
+    }),
+
+    // [UPDATE MINIMUM PROFIT AND RECHARGE PERCENTAGE]
+    updateDefaultProfitAndRechargePercentage: builder.mutation({
+      query: ({accesstoken, body}) => ({
+        url: `user/updatesetting`,
+        method: 'PUT',
+        body,
+        headers: {
+          Authorization: `Bearer ${accesstoken}`,
+          'Content-Type': 'application/json',
+        },
+      }),
+    }),
+
     // ######## END #########
   }),
 });
 
 export const {
+  useUpdateDefaultProfitAndRechargePercentageMutation,
+  useGetDefaultProfitAndRechargePercentageQuery,
   useRemoveTopPartnerMutation,
   useCreatePartnerMutation,
   useSearchUserQuery,
