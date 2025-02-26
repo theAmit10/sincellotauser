@@ -7,6 +7,7 @@ import Textinput from '../../../components/tlwinput/Textinput';
 import {heightPercentageToDP} from 'react-native-responsive-screen';
 import {
   useGetSinglePartnerQuery,
+  useRemoveUserFromPartnerUserListMutation,
   useUpdateProfitMutation,
   useUpdateRechargeMutation,
 } from '../../../helper/Networkcall';

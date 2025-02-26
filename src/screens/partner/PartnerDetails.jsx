@@ -88,12 +88,12 @@ const PartnerDetails = ({route}) => {
       />
       {/** Remove User */}
       <PartnerDashComp
-        navigate={'UpdatePercentage'}
+        navigate={'RemoveUserFromPartner'}
         title={'Remove User'}
         subtitle={'Remove user for Partner List '}
         fromicon={'MaterialCommunityIcons'}
         iconname={'delete-empty'}
-        data={{key1: 'removeuser', key2: data}}
+        data={data}
       />
     </MainBackgound>
   );

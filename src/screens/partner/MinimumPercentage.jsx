@@ -14,16 +14,18 @@ import Toast from 'react-native-toast-message';
 
 const MinimumPercentage = () => {
   const [minimumpercentage, setminimumpercentage] = useState('');
+  const [minimumrecharge, setminimumrecharge] = useState('');
   const {accesstoken} = useSelector(state => state.user);
 
   const {isLoading, data, refetch} =
     useGetDefaultProfitAndRechargePercentageQuery({accesstoken});
 
-  console.log(JSON.stringify(data.settings));
+  // console.log(JSON.stringify(data.settings));
 
   useEffect(() => {
     if (!isLoading && data) {
       setminimumpercentage(data.settings.minProfitPercentage.toString());
+      setminimumrecharge(data.settings.minRechargePercentage.toString());
     }
   }, [isLoading, data]);
 
@@ -48,9 +50,24 @@ const MinimumPercentage = () => {
         });
         return;
       }
+      if (!minimumrecharge) {
+        Toast.show({
+          type: 'error',
+          text1: 'Please Enter Minimum Recharge Percentage',
+        });
+        return;
+      }
+      if (isNaN(minimumrecharge)) {
+        Toast.show({
+          type: 'error',
+          text1: 'Please Enter Valid Recharge Percentage',
+        });
+        return;
+      }
 
       const body = {
         minProfitPercentage: minimumpercentage,
+        minRechargePercentage: minimumrecharge,
       };
 
       const res = await updateDefaultProfitAndRechargePercentage({
@@ -83,7 +100,15 @@ const MinimumPercentage = () => {
             title="Minimum Profit Percentage"
             value={minimumpercentage}
             onChangeText={text => setminimumpercentage(text)} // Updates inputValue state
-            placeholder="Enter Percentage"
+            placeholder="Enter Profit Percentage"
+          />
+
+          {/* MINIMUM RECHARGE PERCENTAGE */}
+          <Textinput
+            title="Minimum Recharge Percentage"
+            value={minimumrecharge}
+            onChangeText={text => setminimumrecharge(text)} // Updates inputValue state
+            placeholder="Enter Recharge Percentage"
           />
 
           <View
