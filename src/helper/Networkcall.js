@@ -906,11 +906,25 @@ export const sincelotAdminApi = createApi({
       }),
     }),
 
+    // [ CREATE NOTIFICATION ]
+    createNotification: builder.mutation({
+      query: ({accesstoken, body}) => ({
+        url: `user/sendnotificationsingle/`,
+        method: 'POST',
+        body,
+        headers: {
+          Authorization: `Bearer ${accesstoken}`,
+          'Content-Type': 'application/json',
+        },
+      }),
+    }),
+
     // ######## END #########
   }),
 });
 
 export const {
+  useCreateNotificationMutation,
   useUpdateRechargePaymentMethodPermissionMutation,
   useDeactivatePartnerRechargeModuleMutation,
   useActivatePartnerRechargeModuleMutation,

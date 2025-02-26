@@ -52,7 +52,7 @@ const PartnerDetails = ({route}) => {
       />
       {/** Send Notification */}
       <PartnerDashComp
-        navigate={'AllUsersPartner'}
+        navigate={'CreatePowerballNotification'}
         title={'Send Notification'}
         subtitle={'Send Notification for Partner'}
         fromicon={'Ionicons'}

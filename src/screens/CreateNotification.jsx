@@ -29,7 +29,10 @@ import axios from 'axios';
 import GradientTextWhite from '../components/helpercComponent/GradientTextWhite';
 
 const CreateNotification = ({route}) => {
-  const {userdata} = route.params;
+  let {userdata, data} = route.params;
+
+  console.log(JSON.stringify(data));
+
   const [enterData, setEnterData] = useState('');
   const {accesstoken} = useSelector(state => state.user);
   const {loading, location} = useSelector(state => state.location);
@@ -63,7 +66,7 @@ const CreateNotification = ({route}) => {
             title: titleValue,
             description: discriptionValue,
             devicetoken: userdata?.devicetoken,
-            userId: userdata._id
+            userId: userdata._id,
           },
           {
             headers: {
@@ -145,8 +148,7 @@ const CreateNotification = ({route}) => {
                   textAlign: 'center',
                 }}
                 numberOfLines={1}
-                ellipsizeMode="tail"
-                >
+                ellipsizeMode="tail">
                 {userdata.name}
               </Text>
 
@@ -168,12 +170,10 @@ const CreateNotification = ({route}) => {
                   textAlign: 'center',
                 }}
                 numberOfLines={1}
-                ellipsizeMode="tail"
-                >
+                ellipsizeMode="tail">
                 {userdata.country?.countryname}
               </Text>
             </View>
-
 
             {/** Result Main Container */}
 
