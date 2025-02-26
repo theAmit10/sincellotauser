@@ -39,6 +39,7 @@ const PartnerDetails = ({route}) => {
         subtitle={'Update Partner Permission'}
         fromicon={'MaterialCommunityIcons'}
         iconname={'security'}
+        data={data}
       />
       {/** Recharge Payment  */}
       <PartnerDashComp
@@ -47,6 +48,7 @@ const PartnerDetails = ({route}) => {
         subtitle={'Update Partner Payment '}
         fromicon={'FontAwesome6'}
         iconname={'money-check'}
+        data={data}
       />
       {/** Send Notification */}
       <PartnerDashComp
@@ -55,6 +57,7 @@ const PartnerDetails = ({route}) => {
         subtitle={'Send Notification for Partner'}
         fromicon={'Ionicons'}
         iconname={'notifications'}
+        data={data}
       />
       {/** Update Profit Percentage */}
       <PartnerDashComp

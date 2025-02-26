@@ -6,8 +6,18 @@ import {heightPercentageToDP} from 'react-native-responsive-screen';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {useNavigation} from '@react-navigation/native';
+import Loading from '../helpercComponent/Loading';
 
-const UpdatePermissionComp = ({item, navigate, title, active = false }) => {
+const UpdatePermissionComp = ({
+  item,
+  navigate,
+  title,
+  active = false,
+  updateSubmitHandler,
+  updateIsLoading,
+  selectedItem,
+  setSelectedItem,
+}) => {
   const navigation = useNavigation();
 
   return (
@@ -40,38 +50,106 @@ const UpdatePermissionComp = ({item, navigate, title, active = false }) => {
                 alignItems: 'flex-start',
               }}>
               {active === true ? (
-                <TouchableOpacity
-                  onPress={() =>
-                    navigation.navigate(navigate, {userid: item?.userid})
-                  }
-                  style={{
-                    borderRadius: heightPercentageToDP(2),
-                    width: '100%',
-                  }}>
-                  <LinearGradient
-                    colors={[COLORS.user_firstgreen, COLORS.time_secondgreen]}
-                    start={{x: 0, y: 0}} // start from left
-                    end={{x: 1, y: 0}} // end at right
+                updateIsLoading ? (
+                  selectedItem === title ? (
+                    <Loading />
+                  ) : (
+                    <TouchableOpacity
+                      onPress={() => updateSubmitHandler(title)}
+                      style={{
+                        borderRadius: heightPercentageToDP(2),
+                        width: '100%',
+                      }}>
+                      <LinearGradient
+                        colors={[
+                          COLORS.user_firstgreen,
+                          COLORS.time_secondgreen,
+                        ]}
+                        start={{x: 0, y: 0}} // start from left
+                        end={{x: 1, y: 0}} // end at right
+                        style={{
+                          padding: heightPercentageToDP(1.5),
+                          justifyContent: 'center',
+                          alignItems: 'center',
+                          borderRadius: heightPercentageToDP(2),
+                          flexDirection: 'row',
+                          gap: heightPercentageToDP(1),
+                        }}>
+                        <FontAwesome
+                          name={'edit'}
+                          size={heightPercentageToDP(3)}
+                          color={COLORS.black}
+                          style={styles.icon}
+                        />
+                        <Text style={styles.titleSemiBold}>Activated</Text>
+                      </LinearGradient>
+                    </TouchableOpacity>
+                  )
+                ) : (
+                  <TouchableOpacity
+                    onPress={() => updateSubmitHandler(title)}
                     style={{
-                      padding: heightPercentageToDP(1.5),
-                      justifyContent: 'center',
-                      alignItems: 'center',
                       borderRadius: heightPercentageToDP(2),
-                      flexDirection: 'row',
-                      gap: heightPercentageToDP(1),
+                      width: '100%',
                     }}>
-                    <FontAwesome
-                      name={'edit'}
-                      size={heightPercentageToDP(3)}
-                      color={COLORS.black}
-                      style={styles.icon}
-                    />
+                    <LinearGradient
+                      colors={[COLORS.user_firstgreen, COLORS.time_secondgreen]}
+                      start={{x: 0, y: 0}} // start from left
+                      end={{x: 1, y: 0}} // end at right
+                      style={{
+                        padding: heightPercentageToDP(1.5),
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        borderRadius: heightPercentageToDP(2),
+                        flexDirection: 'row',
+                        gap: heightPercentageToDP(1),
+                      }}>
+                      <FontAwesome
+                        name={'edit'}
+                        size={heightPercentageToDP(3)}
+                        color={COLORS.black}
+                        style={styles.icon}
+                      />
+                      <Text style={styles.titleSemiBold}>Activated</Text>
+                    </LinearGradient>
+                  </TouchableOpacity>
+                )
+              ) : updateIsLoading ? (
+                selectedItem === title ? (
+                  <Loading />
+                ) : (
+                  <TouchableOpacity
+                    onPress={() => updateSubmitHandler(title)}
+                    style={{
+                      borderRadius: heightPercentageToDP(2),
+                      width: '100%',
+                    }}>
+                    <LinearGradient
+                      colors={[COLORS.red, COLORS.red]}
+                      start={{x: 0, y: 0}} // start from left
+                      end={{x: 1, y: 0}} // end at right
+                      style={{
+                        padding: heightPercentageToDP(1.5),
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        borderRadius: heightPercentageToDP(2),
+                        flexDirection: 'row',
+                        gap: heightPercentageToDP(1),
+                      }}>
+                      <MaterialCommunityIcons
+                        name={'delete'}
+                        size={heightPercentageToDP(3)}
+                        color={COLORS.black}
+                        style={styles.icon}
+                      />
 
-                    <Text style={styles.titleSemiBold}>Active</Text>
-                  </LinearGradient>
-                </TouchableOpacity>
+                      <Text style={styles.titleSemiBold}>Deactivated</Text>
+                    </LinearGradient>
+                  </TouchableOpacity>
+                )
               ) : (
                 <TouchableOpacity
+                  onPress={() => updateSubmitHandler(title)}
                   style={{
                     borderRadius: heightPercentageToDP(2),
                     width: '100%',
@@ -95,7 +173,7 @@ const UpdatePermissionComp = ({item, navigate, title, active = false }) => {
                       style={styles.icon}
                     />
 
-                    <Text style={styles.titleSemiBold}>Deactivate</Text>
+                    <Text style={styles.titleSemiBold}>Deactivated</Text>
                   </LinearGradient>
                 </TouchableOpacity>
               )}

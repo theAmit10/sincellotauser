@@ -833,11 +833,90 @@ export const sincelotAdminApi = createApi({
       }),
     }),
 
+    // [GET SINGLE PARTNER]
+    getSinglePartner: builder.query({
+      query: ({accesstoken, userId}) => ({
+        url: `user/getpartnerbyuserid/${userId}`,
+        method: 'get',
+        headers: {
+          Authorization: `Bearer ${accesstoken}`,
+        },
+      }),
+    }),
+    // [GET SINGLE PARTNER RECHARGE PERMISSION]
+    getSinglePartnerRechargeModule: builder.query({
+      query: ({accesstoken, id}) => ({
+        url: `user/getrechargebyid/${id}`,
+        method: 'get',
+        headers: {
+          Authorization: `Bearer ${accesstoken}`,
+        },
+      }),
+    }),
+
+    // [UPDATE PARTNER PLAY AND TRANSACTION PERMISSION]
+    updatePartnerPlayAndTransactionPermission: builder.mutation({
+      query: ({accesstoken, body}) => ({
+        url: `user/updatepartnerpermission`,
+        method: 'PUT',
+        body,
+        headers: {
+          Authorization: `Bearer ${accesstoken}`,
+          'Content-Type': 'application/json',
+        },
+      }),
+    }),
+
+    // [ACTIVATE PARTNER RECHARGE MODULE ]
+    activatePartnerRechargeModule: builder.mutation({
+      query: ({accesstoken, body}) => ({
+        url: `result/updaterechargetouserandpartner`,
+        method: 'PUT',
+        body,
+        headers: {
+          Authorization: `Bearer ${accesstoken}`,
+          'Content-Type': 'application/json',
+        },
+      }),
+    }),
+
+    // [DEACTIVATE PARTNER RECHARGE MODULE ]
+    deactivatePartnerRechargeModule: builder.mutation({
+      query: ({accesstoken, body}) => ({
+        url: `result/deactivatedrechargetouserandpartner`,
+        method: 'PUT',
+        body,
+        headers: {
+          Authorization: `Bearer ${accesstoken}`,
+          'Content-Type': 'application/json',
+        },
+      }),
+    }),
+
+    // [ PARTNER RECHARGE MODULE PERMISSION UPDATE ]
+    updateRechargePaymentMethodPermission: builder.mutation({
+      query: ({accesstoken, body, id}) => ({
+        url: `user/updaterechargepermission/${id}`,
+        method: 'PUT',
+        body,
+        headers: {
+          Authorization: `Bearer ${accesstoken}`,
+          'Content-Type': 'application/json',
+        },
+      }),
+    }),
+
     // ######## END #########
   }),
 });
 
 export const {
+  useUpdateRechargePaymentMethodPermissionMutation,
+  useDeactivatePartnerRechargeModuleMutation,
+  useActivatePartnerRechargeModuleMutation,
+  useUpdatePartnerPlayAndTransactionPermissionMutation,
+  useGetSinglePartnerRechargeModuleQuery,
+  useGetSinglePartnerQuery,
   useUpdateDefaultProfitAndRechargePercentageMutation,
   useGetDefaultProfitAndRechargePercentageQuery,
   useRemoveTopPartnerMutation,
