@@ -919,11 +919,25 @@ export const sincelotAdminApi = createApi({
       }),
     }),
 
+    // [ UPDATE PROFIT PERCENTAGE ]
+    updateProfit: builder.mutation({
+      query: ({accesstoken, body}) => ({
+        url: `user/increaseprofit`,
+        method: 'PUT',
+        body,
+        headers: {
+          Authorization: `Bearer ${accesstoken}`,
+          'Content-Type': 'application/json',
+        },
+      }),
+    }),
+
     // ######## END #########
   }),
 });
 
 export const {
+  useUpdateProfitMutation,
   useCreateNotificationMutation,
   useUpdateRechargePaymentMethodPermissionMutation,
   useDeactivatePartnerRechargeModuleMutation,

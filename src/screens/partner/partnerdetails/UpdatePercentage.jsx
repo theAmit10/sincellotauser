@@ -1,26 +1,91 @@
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import MainBackgound from '../../../components/background/MainBackgound';
 import Loading from '../../../components/helpercComponent/Loading';
 import {COLORS, FONT} from '../../../../assets/constants';
 import Textinput from '../../../components/tlwinput/Textinput';
 import {heightPercentageToDP} from 'react-native-responsive-screen';
+import {
+  useGetSinglePartnerQuery,
+  useUpdateProfitMutation,
+} from '../../../helper/Networkcall';
+import Toast from 'react-native-toast-message';
+import {useSelector} from 'react-redux';
 
 const UpdatePercentage = ({route}) => {
   const {data} = route.params;
-  console.log(data);
-  const [userid, setuserid] = useState('1090');
+  const {accesstoken} = useSelector(state => state.user);
+
+  const partner = data.key2;
+
+  console.log(JSON.stringify(data));
+  const [userid, setuserid] = useState(partner.userId.toString());
   const [profitpercentage, setprofitpercentage] = useState('');
   const [rechargepercentage, setrechargepercenge] = useState('');
   const [topPartnerUserid, setTopPartnerUserid] = useState('');
   const [subPartnerUserid, setSubPartnerUserid] = useState('');
   const [subSubPartnerUserid, setSubSubPartnerUserid] = useState('');
 
+  const [updateProfit, {isLoading}] = useUpdateProfitMutation();
+
+  const {
+    isLoading: partnerIsLoading,
+    data: partnerData,
+    refetch,
+  } = useGetSinglePartnerQuery({accesstoken, userId: partner.userId});
+
+  useEffect(() => {
+    if (!partnerIsLoading && partnerData) {
+      setprofitpercentage(partnerData.partner.profitPercentage.toString());
+    }
+  }, [partnerIsLoading, partnerData]);
+
+  const updateSubmitHandler = async () => {
+    try {
+      if (!profitpercentage) {
+        Toast.show({
+          type: 'error',
+          text1: 'Please Enter Profit Percentage',
+        });
+        return;
+      }
+      if (isNaN(profitpercentage)) {
+        Toast.show({
+          type: 'error',
+          text1: 'Please Enter Valid Percentage',
+        });
+        return;
+      }
+
+      const body = {
+        partnerId: partner.userId,
+        profitPercentage: Number.parseInt(profitpercentage),
+      };
+
+      const res = await updateProfit({
+        accesstoken,
+        body,
+      });
+
+      Toast.show({
+        type: 'success',
+        text1: res.data.message,
+      });
+      await refetch();
+    } catch (e) {
+      console.log(e);
+      Toast.show({
+        type: 'error',
+        text1: 'Something went wrong',
+      });
+    }
+  };
+
   return (
     <MainBackgound
-      title={data.key1 === "removeuser" ? 'Remove User' : 'Update Percentage'}
-      lefttext={'Aryan'}
-      righttext={'1090'}>
+      title={data.key1 === 'removeuser' ? 'Remove User' : 'Update Percentage'}
+      lefttext={partner.name}
+      righttext={partner.userId}>
       {/** USER ID */}
       <Textinput
         title="User ID"
@@ -85,10 +150,11 @@ const UpdatePercentage = ({route}) => {
           flex: 1,
           justifyContent: 'flex-end',
         }}>
-        {false ? (
+        {isLoading ? (
           <Loading />
         ) : (
           <TouchableOpacity
+            onPress={updateSubmitHandler}
             style={{
               backgroundColor: COLORS.blue,
               padding: heightPercentageToDP(2),
