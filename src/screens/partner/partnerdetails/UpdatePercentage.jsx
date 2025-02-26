@@ -8,6 +8,7 @@ import {heightPercentageToDP} from 'react-native-responsive-screen';
 import {
   useGetSinglePartnerQuery,
   useUpdateProfitMutation,
+  useUpdateRechargeMutation,
 } from '../../../helper/Networkcall';
 import Toast from 'react-native-toast-message';
 import {useSelector} from 'react-redux';
@@ -27,6 +28,8 @@ const UpdatePercentage = ({route}) => {
   const [subSubPartnerUserid, setSubSubPartnerUserid] = useState('');
 
   const [updateProfit, {isLoading}] = useUpdateProfitMutation();
+  const [updateRecharge, {isLoading: rechargeIsLoading}] =
+    useUpdateRechargeMutation();
 
   const {
     isLoading: partnerIsLoading,
@@ -37,6 +40,7 @@ const UpdatePercentage = ({route}) => {
   useEffect(() => {
     if (!partnerIsLoading && partnerData) {
       setprofitpercentage(partnerData.partner.profitPercentage.toString());
+      setrechargepercenge(partnerData.partner.rechargePercentage.toString());
     }
   }, [partnerIsLoading, partnerData]);
 
@@ -63,6 +67,47 @@ const UpdatePercentage = ({route}) => {
       };
 
       const res = await updateProfit({
+        accesstoken,
+        body,
+      });
+
+      Toast.show({
+        type: 'success',
+        text1: res.data.message,
+      });
+      await refetch();
+    } catch (e) {
+      console.log(e);
+      Toast.show({
+        type: 'error',
+        text1: 'Something went wrong',
+      });
+    }
+  };
+
+  const updateSubmitHandlerForRecharge = async () => {
+    try {
+      if (!rechargepercentage) {
+        Toast.show({
+          type: 'error',
+          text1: 'Please Enter Recharge Percentage',
+        });
+        return;
+      }
+      if (isNaN(rechargepercentage)) {
+        Toast.show({
+          type: 'error',
+          text1: 'Please Enter Valid Percentage',
+        });
+        return;
+      }
+
+      const body = {
+        partnerId: partner.userId,
+        rechargePercentage: Number.parseInt(rechargepercentage),
+      };
+
+      const res = await updateRecharge({
         accesstoken,
         body,
       });
@@ -145,32 +190,63 @@ const UpdatePercentage = ({route}) => {
         />
       )}
 
-      <View
-        style={{
-          flex: 1,
-          justifyContent: 'flex-end',
-        }}>
-        {isLoading ? (
-          <Loading />
-        ) : (
-          <TouchableOpacity
-            onPress={updateSubmitHandler}
-            style={{
-              backgroundColor: COLORS.blue,
-              padding: heightPercentageToDP(2),
-              borderRadius: heightPercentageToDP(1),
-              alignItems: 'center',
-            }}>
-            <Text
+      {data.key1 === 'recharge' && (
+        <View
+          style={{
+            flex: 1,
+            justifyContent: 'flex-end',
+          }}>
+          {rechargeIsLoading ? (
+            <Loading />
+          ) : (
+            <TouchableOpacity
+              onPress={updateSubmitHandlerForRecharge}
               style={{
-                color: COLORS.white,
-                fontFamily: FONT.Montserrat_Regular,
+                backgroundColor: COLORS.blue,
+                padding: heightPercentageToDP(2),
+                borderRadius: heightPercentageToDP(1),
+                alignItems: 'center',
               }}>
-              Submit
-            </Text>
-          </TouchableOpacity>
-        )}
-      </View>
+              <Text
+                style={{
+                  color: COLORS.white,
+                  fontFamily: FONT.Montserrat_Regular,
+                }}>
+                Submit
+              </Text>
+            </TouchableOpacity>
+          )}
+        </View>
+      )}
+
+      {data.key1 === 'profit' && (
+        <View
+          style={{
+            flex: 1,
+            justifyContent: 'flex-end',
+          }}>
+          {isLoading ? (
+            <Loading />
+          ) : (
+            <TouchableOpacity
+              onPress={updateSubmitHandler}
+              style={{
+                backgroundColor: COLORS.blue,
+                padding: heightPercentageToDP(2),
+                borderRadius: heightPercentageToDP(1),
+                alignItems: 'center',
+              }}>
+              <Text
+                style={{
+                  color: COLORS.white,
+                  fontFamily: FONT.Montserrat_Regular,
+                }}>
+                Submit
+              </Text>
+            </TouchableOpacity>
+          )}
+        </View>
+      )}
     </MainBackgound>
   );
 };

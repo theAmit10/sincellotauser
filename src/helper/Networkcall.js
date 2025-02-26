@@ -932,11 +932,25 @@ export const sincelotAdminApi = createApi({
       }),
     }),
 
+    // [ UPDATE RECHARGE PERCENTAGE ]
+    updateRecharge: builder.mutation({
+      query: ({accesstoken, body}) => ({
+        url: `user/increaserecharge`,
+        method: 'PUT',
+        body,
+        headers: {
+          Authorization: `Bearer ${accesstoken}`,
+          'Content-Type': 'application/json',
+        },
+      }),
+    }),
+
     // ######## END #########
   }),
 });
 
 export const {
+  useUpdateRechargeMutation,
   useUpdateProfitMutation,
   useCreateNotificationMutation,
   useUpdateRechargePaymentMethodPermissionMutation,

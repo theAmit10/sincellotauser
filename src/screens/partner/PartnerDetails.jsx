@@ -75,7 +75,7 @@ const PartnerDetails = ({route}) => {
         subtitle={'Update Recharge Percentage '}
         fromicon={'MaterialCommunityIcons'}
         iconname={'account-cash'}
-        data={{key1: 'recharge'}}
+        data={{key1: 'recharge', key2: data}}
       />
       {/** Recharge History */}
       <PartnerDashComp
