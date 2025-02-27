@@ -969,11 +969,25 @@ export const sincelotAdminApi = createApi({
       }),
     }),
 
+    // [ UPDATE LIVE RESULT LINK ]
+    updateLiveResultLink: builder.mutation({
+      query: ({accesstoken, body, id}) => ({
+        url: `result/updateresultelink/${id}`,
+        method: 'PUT',
+        body,
+        headers: {
+          Authorization: `Bearer ${accesstoken}`,
+          'Content-Type': 'application/json',
+        },
+      }),
+    }),
+
     // ######## END #########
   }),
 });
 
 export const {
+  useUpdateLiveResultLinkMutation,
   useRemoveUserFromPartnerUserListMutation,
   useGetPartnerRechargeHistoryQuery,
   useUpdateRechargeMutation,
