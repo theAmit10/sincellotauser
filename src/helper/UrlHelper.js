@@ -82,6 +82,11 @@ const ALL_BANK_API = server + 'result/allbankpaymets';
 const ALL_SKRILL_API = server + 'result/allskrillpaymets';
 const ALL_PAYPAL_API = server + 'result/allpaypalpaymets';
 const ALL_CRYPTO_API = server + 'result/allcryptopaymets';
+const PARTNER_PAYPAL_API = server + 'result/getpartnerpaypallist';
+const PARTNER_SKRILL_API = server + 'result/getpartnerskrilllist';
+const PARTNER_CRYPTO_API = server + 'result/getpartnercryptolist';
+const PARTNER_UPI_API = server + 'result/getpartnerupilist';
+const PARTNER_BANK_API = server + 'result/getpartnerbanklist';
 
 const CREATE_UPI_API = server + 'result/addupipayment';
 const CREATE_BANK_API = server + 'result/addbankpayment';
@@ -92,6 +97,11 @@ const UPDATE_SUBADMIN_ROLE_API = server + 'user/updaterole';
 const PARTNER_PROFILE_API = server + 'user/getpartnerbyuserid';
 
 export default {
+  PARTNER_BANK_API,
+  PARTNER_CRYPTO_API,
+  PARTNER_PAYPAL_API,
+  PARTNER_SKRILL_API,
+  PARTNER_UPI_API,
   PARTNER_PROFILE_API,
   LOGIN_API,
   USER_PROFILE_API,

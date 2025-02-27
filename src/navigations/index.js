@@ -126,6 +126,12 @@ import UpdatePowerballTime from '../screens/powerball/UpdatePowerballTime';
 import CreatePowerballTime from '../screens/CreatePowerballTime';
 import CreatePowerballNotification from '../screens/CreatePowerballNotification';
 import RemoveUserFromPartner from '../screens/partner/partnerdetails/RemoveUserFromPartner';
+import PartnerUpiPaymentMethod from '../screens/payment/PartnerUpiPaymentMethod';
+import PartnerCryptoPaymentMethod from '../screens/payment/PartnerCryptoPaymentMethod';
+import ParrtnerBankPaymentMethod from '../screens/payment/ParrtnerBankPaymentMethod';
+import PartnerSkrillPaymentMethod from '../screens/payment/PartnerSkrillPaymentMethod';
+import PartnerPaypalPaymentMethod from '../screens/payment/PartnerPaypalPaymentMethod';
+import PartnerOtherPaymentMethod from '../screens/payment/PartnerOtherPaymentMethod';
 
 const Stack = createNativeStackNavigator();
 
@@ -368,6 +374,31 @@ const Main = () => {
           <Stack.Screen
             name="RemoveUserFromPartner"
             component={RemoveUserFromPartner}
+          />
+
+          <Stack.Screen
+            name="PartnerUpiPaymentMethod"
+            component={PartnerUpiPaymentMethod}
+          />
+          <Stack.Screen
+            name="PartnerCryptoPaymentMethod"
+            component={PartnerCryptoPaymentMethod}
+          />
+          <Stack.Screen
+            name="ParrtnerBankPaymentMethod"
+            component={ParrtnerBankPaymentMethod}
+          />
+          <Stack.Screen
+            name="PartnerSkrillPaymentMethod"
+            component={PartnerSkrillPaymentMethod}
+          />
+          <Stack.Screen
+            name="PartnerPaypalPaymentMethod"
+            component={PartnerPaypalPaymentMethod}
+          />
+          <Stack.Screen
+            name="PartnerOtherPaymentMethod"
+            component={PartnerOtherPaymentMethod}
           />
         </Stack.Group>
       </Stack.Navigator>

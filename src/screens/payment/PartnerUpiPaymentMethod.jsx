@@ -2,6 +2,7 @@ import {
   FlatList,
   Image,
   ImageBackground,
+  Platform,
   SafeAreaView,
   ScrollView,
   StyleSheet,
@@ -14,11 +15,11 @@ import {
   heightPercentageToDP,
   widthPercentageToDP,
 } from 'react-native-responsive-screen';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Toast from 'react-native-toast-message';
 import {useIsFocused, useNavigation} from '@react-navigation/native';
-import {useDispatch, useSelector} from 'react-redux';
+import {useSelector} from 'react-redux';
 import LinearGradient from 'react-native-linear-gradient';
 import Background from '../../components/background/Background';
 import {COLORS, FONT} from '../../../assets/constants';
@@ -27,14 +28,24 @@ import Clipboard from '@react-native-clipboard/clipboard';
 import Loading from '../../components/helpercComponent/Loading';
 import axios from 'axios';
 import UrlHelper from '../../helper/UrlHelper';
-import {useDeleteCryptoAccountMutation} from '../../helper/Networkcall';
+import {useDeleteUpiAccountMutation} from '../../helper/Networkcall';
 import {serverName} from '../../redux/store';
 
-const AllCryptoDepositPayment = () => {
+const upiapidata = [
+  {name: 'Wasu', upiid: '9876543210@ybl', id: '1'},
+  {name: 'Aman', upiid: '8876543210@ybl', id: '2'},
+  {name: 'Zasu', upiid: '7876543210@ybl', id: '3'},
+  {name: 'Masu', upiid: '1876543210@ybl', id: '4'},
+  {name: 'Kasu', upiid: '2876543210@ybl', id: '5'},
+];
+
+const PartnerUpiPaymentMethod = ({route}) => {
+  const {data: partnerdata} = route.params;
   const navigation = useNavigation();
-  const dispatch = useDispatch();
   const isFocused = useIsFocused();
   const {accesstoken, user} = useSelector(state => state.user);
+
+  const [seletedItem, setSelectedItem] = useState('');
 
   const copyToClipboard = val => {
     Clipboard.setString(val);
@@ -45,29 +56,50 @@ const AllCryptoDepositPayment = () => {
     });
   };
 
-  const settingUpiId = item => {
-    setSelectedUpiId(item);
-    setUpiVisible(false);
-  };
-
-  const [seletedItem, setSelectedItem] = useState('');
+  const [loadingAllData, setLoadingAllData] = useState(false);
+  const [allDepositdata, setAllDepositData] = useState([]);
 
   const [
-    deleteCryptoAccount,
+    deleteUpiAccount,
     {isLoading: deleteIsLoading, isError: deleteIsError},
-  ] = useDeleteCryptoAccountMutation();
+  ] = useDeleteUpiAccountMutation();
 
   useEffect(() => {
     allTheDepositData();
-  }, [isFocused, loadingAllData, allDepositdata]);
+  }, [isFocused]);
 
-  const [loadingAllData, setLoadingAllData] = useState(false);
-  const [allDepositdata, setAllDepositData] = useState([]);
+  useEffect(() => {
+    console.log(loadingAllData);
+  }, [loadingAllData]);
+
+  // const allTheDepositData = async () => {
+  //   try {
+  //     setLoadingAllData(true);
+  //     const {data} = await axios.get(UrlHelper.ALL_UPI_API, {
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //         Authorization: `Bearer ${accesstoken}`,
+  //       },
+  //     });
+
+  //     console.log('datat :: ' + JSON.stringify(data));
+  //     setAllDepositData(data.payments);
+  //     setLoadingAllData(false);
+  //   } catch (error) {
+  //     setLoadingAllData(false);
+  //     Toast.show({
+  //       type: 'error',
+  //       text1: 'Something went wrong',
+  //     });
+  //     console.log(error);
+  //   }
+  // };
 
   const allTheDepositData = async () => {
     try {
       setLoadingAllData(true);
-      const {data} = await axios.get(UrlHelper.ALL_CRYPTO_API, {
+      const url = `${UrlHelper.PARTNER_UPI_API}/${partnerdata.rechargeModule}`;
+      const {data} = await axios.get(url, {
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${accesstoken}`,
@@ -75,7 +107,7 @@ const AllCryptoDepositPayment = () => {
       });
 
       console.log('datat :: ' + JSON.stringify(data));
-      setAllDepositData(data.payments);
+      setAllDepositData(data.upiList);
       setLoadingAllData(false);
     } catch (error) {
       setLoadingAllData(false);
@@ -84,6 +116,8 @@ const AllCryptoDepositPayment = () => {
         text1: 'Something went wrong',
       });
       console.log(error);
+    } finally {
+      setLoadingAllData(false);
     }
   };
 
@@ -93,7 +127,7 @@ const AllCryptoDepositPayment = () => {
     console.log('Deleting Data');
     setSelectedItem(item._id);
 
-    const res = await deleteCryptoAccount({
+    const res = await deleteUpiAccount({
       accesstoken: accesstoken,
       id: item._id,
     }).unwrap();
@@ -148,18 +182,17 @@ const AllCryptoDepositPayment = () => {
             </View>
             <View style={{margin: heightPercentageToDP(2)}}>
               <GradientTextWhite style={styles.textStyle}>
-                Crypto Deposit
+                UPI Deposit
               </GradientTextWhite>
             </View>
 
             {/** FOR UPI ID DEPOSIT OPTION */}
-
             {loadingAllData ? (
               <View
                 style={{
                   flex: 1,
                 }}>
-                <Loading key={'No account found'} />
+                <Loading key={'No account found'} color={COLORS.white_s} />
               </View>
             ) : (
               <ScrollView showsVerticalScrollIndicator={false}>
@@ -178,11 +211,8 @@ const AllCryptoDepositPayment = () => {
                         <View
                           style={{
                             flexDirection: 'row',
-
                             height: heightPercentageToDP(5),
-
                             marginVertical: heightPercentageToDP(1),
-                            marginStart: heightPercentageToDP(3),
                           }}>
                           <View
                             style={{
@@ -199,7 +229,7 @@ const AllCryptoDepositPayment = () => {
                                 borderRadius: heightPercentageToDP(1),
                               }}>
                               <Image
-                                source={require('../../../assets/image/crypto.png')}
+                                source={require('../../../assets/image/upi.png')}
                                 resizeMode="cover"
                                 style={{
                                   height: 25,
@@ -208,11 +238,11 @@ const AllCryptoDepositPayment = () => {
                               />
                             </View>
                             <GradientTextWhite style={styles.textStyleContent}>
-                              Crypto
+                              UPI
                             </GradientTextWhite>
                             {/* <GradientTextWhite style={styles.textStyleContent}>
-                              {item.paymentId}
-                            </GradientTextWhite> */}
+                                {item.paymentId}
+                              </GradientTextWhite> */}
                           </View>
 
                           <View
@@ -221,9 +251,10 @@ const AllCryptoDepositPayment = () => {
                               justifyContent: 'flex-end',
                               alignItems: 'flex-end',
                               paddingEnd: heightPercentageToDP(2),
+                              flexDirection: 'row',
+                              gap: heightPercentageToDP(2),
                             }}>
                             {/** DELETE BUTTON */}
-
                             {deleteIsLoading ? (
                               seletedItem === item._id ? (
                                 <Loading />
@@ -274,9 +305,9 @@ const AllCryptoDepositPayment = () => {
                               justifyContent: 'space-between',
                             }}>
                             <Text style={styles.copytitle} numberOfLines={2}>
-                              Wallet Address
+                              UPI Holder Name
                             </Text>
-                            <Text style={styles.copytitle}>Network Type</Text>
+                            <Text style={styles.copytitle}>UPI ID</Text>
                           </View>
                           <View
                             style={{
@@ -284,16 +315,22 @@ const AllCryptoDepositPayment = () => {
                               gap: heightPercentageToDP(2),
                             }}>
                             <Text style={styles.copycontent} numberOfLines={2}>
-                              {item.walletaddress}
+                              {item.upiholdername}
                             </Text>
                             <Text style={styles.copycontent} numberOfLines={1}>
-                              {item.networktype}
+                              {item.upiid}
                             </Text>
                           </View>
-                          <View style={{gap: heightPercentageToDP(0.5)}}>
+                          <View
+                            style={{
+                              height: '100%',
+                              width: '10%',
+                              justifyContent: 'space-between',
+                              alignItems: 'flex-end',
+                            }}>
                             <TouchableOpacity
                               onPress={() =>
-                                copyToClipboard(item.walletaddress)
+                                copyToClipboard(item.upiholdername)
                               }>
                               <LinearGradient
                                 colors={[COLORS.lightWhite, COLORS.white_s]}
@@ -311,7 +348,7 @@ const AllCryptoDepositPayment = () => {
                               </LinearGradient>
                             </TouchableOpacity>
                             <TouchableOpacity
-                              onPress={() => copyToClipboard(item.networktype)}>
+                              onPress={() => copyToClipboard(item.upiid)}>
                               <LinearGradient
                                 colors={[COLORS.lightWhite, COLORS.white_s]}
                                 style={{
@@ -348,7 +385,7 @@ const AllCryptoDepositPayment = () => {
                             {item.qrcode ? (
                               <Image
                                 source={{
-                                  uri: `${serverName}/uploads/cryptoqrcode/${item.qrcode}`,
+                                  uri: `${serverName}/uploads/upiqrcode/${item.qrcode}`,
                                 }}
                                 resizeMode="cover"
                                 style={{
@@ -358,7 +395,7 @@ const AllCryptoDepositPayment = () => {
                               />
                             ) : (
                               <Image
-                                source={require('../../../assets/image/crypto.png')}
+                                source={require('../../../assets/image/upi.png')}
                                 resizeMode="cover"
                                 style={{
                                   height: 80,
@@ -369,34 +406,91 @@ const AllCryptoDepositPayment = () => {
                           </View>
                         </View>
 
+                        {item.paymentnote && (
+                          <View
+                            style={{
+                              flexDirection: 'column',
+                              justifyContent: 'center',
+                              alignItems: 'center',
+                              flex: 1,
+                              padding: heightPercentageToDP(2),
+                            }}>
+                            <View
+                              style={{
+                                flex: 1,
+                                display: 'flex',
+                                justifyContent: 'flex-start',
+                                alignItems: 'flex-start',
+                              }}>
+                              <Text
+                                style={{
+                                  ...styles.copytitle,
+                                  paddingLeft: heightPercentageToDP(1),
+                                  textAlignVertical: 'center',
+                                }}
+                                numberOfLines={2}>
+                                {item.paymentnote ? 'Note' : ''}
+                              </Text>
+                            </View>
+                            <View
+                              style={{
+                                flex: 2,
+                                paddingEnd: heightPercentageToDP(1),
+                              }}>
+                              <Text style={styles.copycontent}>
+                                {item.paymentnote}
+                              </Text>
+                            </View>
+                          </View>
+                        )}
+
+                        {/** FOR ACTIVATION STATUS */}
                         <View
                           style={{
                             flexDirection: 'column',
-                            gap: heightPercentageToDP(1),
                             justifyContent: 'center',
                             alignItems: 'center',
                             flex: 1,
-                            paddingHorizontal: heightPercentageToDP(2),
-                            borderRadius: heightPercentageToDP(2),
-                            paddingBottom: heightPercentageToDP(2),
+                            padding: heightPercentageToDP(2),
+                            gap: heightPercentageToDP(1),
                           }}>
                           <View
                             style={{
                               flex: 1,
-                              gap: heightPercentageToDP(2),
-                              justifyContent: 'space-between',
+                              display: 'flex',
+                              justifyContent: 'flex-start',
+                              alignItems: 'flex-start',
                             }}>
-                            <Text style={styles.copytitle} numberOfLines={2}>
-                              {item.paymentnote ? 'Note' : ''}
+                            <Text
+                              style={{
+                                ...styles.copytitle,
+                                paddingLeft: heightPercentageToDP(2),
+                              }}
+                              numberOfLines={1}>
+                              Activation Status
                             </Text>
                           </View>
                           <View
                             style={{
                               flex: 2,
-                              gap: heightPercentageToDP(2),
+                              backgroundColor:
+                                item.paymentStatus === 'Pending'
+                                  ? COLORS.orange
+                                  : item.paymentStatus === 'Approved'
+                                  ? COLORS.green
+                                  : COLORS.red,
+                              width: widthPercentageToDP(90),
+                              padding: heightPercentageToDP(1),
+                              borderRadius: heightPercentageToDP(4),
+                              justifyContent: 'center',
+                              alignItems: 'center',
                             }}>
-                            <Text style={styles.copycontent}>
-                              {item.paymentnote}
+                            <Text
+                              style={[
+                                styles.copycontent,
+                                {color: COLORS.white_s},
+                              ]}>
+                              {item.paymentStatus}
                             </Text>
                           </View>
                         </View>
@@ -405,28 +499,6 @@ const AllCryptoDepositPayment = () => {
                   ))}
               </ScrollView>
             )}
-
-            <View
-              style={{
-                margin: heightPercentageToDP(2),
-              }}>
-              <TouchableOpacity
-                onPress={() => navigation.navigate('CryptoDeposit')}
-                style={{
-                  backgroundColor: COLORS.blue,
-                  padding: heightPercentageToDP(2),
-                  borderRadius: heightPercentageToDP(1),
-                  alignItems: 'center',
-                }}>
-                <Text
-                  style={{
-                    color: COLORS.white,
-                    fontFamily: FONT.Montserrat_Regular,
-                  }}>
-                  Create new account
-                </Text>
-              </TouchableOpacity>
-            </View>
           </View>
         </ImageBackground>
       </View>
@@ -434,7 +506,7 @@ const AllCryptoDepositPayment = () => {
   );
 };
 
-export default AllCryptoDepositPayment;
+export default PartnerUpiPaymentMethod;
 
 const styles = StyleSheet.create({
   textStyle: {

@@ -6,10 +6,10 @@ import {COLORS, FONT} from '../../../assets/constants';
 import GradientTextWhite from '../helpercComponent/GradientTextWhite';
 import {heightPercentageToDP} from 'react-native-responsive-screen';
 
-const RechargePaymentComp = ({navigate, title}) => {
+const RechargePaymentComp = ({navigate, title, data}) => {
   const navigation = useNavigation();
   return (
-    <TouchableOpacity onPress={() => navigation.navigate(navigate)}>
+    <TouchableOpacity onPress={() => navigation.navigate(navigate, {data})}>
       <LinearGradient
         colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
         start={{x: 0, y: 0}} // start from left
