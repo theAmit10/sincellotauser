@@ -239,6 +239,8 @@ const Createcountry = () => {
   const navigation = useNavigation();
   const isFocused = useIsFocused();
   const {accesstoken} = useSelector(state => state.user);
+  const [ticketprice, setticketprice] = useState('');
+  const [multiplierprice, setmultiplierprice] = useState('');
 
   const [countryname, setcountryname] = useState('');
   const [timezone, settimezone] = useState('');
@@ -276,6 +278,15 @@ const Createcountry = () => {
     }
   };
 
+  /*************  ✨ Codeium Command ⭐  *************/
+  /**
+   * Creates a new currency. This function first checks if all required fields have been filled,
+   * and if not, shows an error toast. If all fields are filled, it creates a new FormData
+   * object, appends the required fields to it, and sends a POST request to the server to
+   * create a new currency. If the request is successful, it shows a success toast and
+   * navigates back to the previous screen. If the request fails, it shows an error toast.
+   */
+  /******  a6ed7680-4c04-4eb7-8d54-c5063693b4e2  *******/
   const submitDeposit = async () => {
     if (!countryname) {
       Toast.show({type: 'error', text1: 'Enter country name'});
@@ -292,6 +303,14 @@ const Createcountry = () => {
       });
       return;
     }
+    if (!ticketprice) {
+      Toast.show({type: 'error', text1: 'Enter ticket price'});
+      return;
+    }
+    if (!multiplierprice) {
+      Toast.show({type: 'error', text1: 'Enter multiplier price'});
+      return;
+    }
     if (!imageSource) {
       Toast.show({type: 'error', text1: 'Add currency icon'});
       return;
@@ -300,7 +319,9 @@ const Createcountry = () => {
       try {
         const formData = new FormData();
         formData.append('countryname', countryname);
-        formData.append("timezone", timezone);
+        formData.append('timezone', timezone);
+        formData.append('ticketprice', ticketprice);
+        formData.append('multiplierprice', multiplierprice);
         formData.append('countrycurrencysymbol', countrycurrencysymbol);
         formData.append(
           'countrycurrencyvaluecomparedtoinr',
@@ -410,9 +431,9 @@ const Createcountry = () => {
             style={{
               width: '100%',
               height:
-              Platform.OS === 'android'
-                ? heightPercentageToDP(85)
-                : heightPercentageToDP(80),
+                Platform.OS === 'android'
+                  ? heightPercentageToDP(85)
+                  : heightPercentageToDP(80),
             }}
             imageStyle={{
               borderTopLeftRadius: heightPercentageToDP(5),
@@ -421,9 +442,9 @@ const Createcountry = () => {
             <View
               style={{
                 height:
-                Platform.OS === 'android'
-                  ? heightPercentageToDP(85)
-                  : heightPercentageToDP(80),
+                  Platform.OS === 'android'
+                    ? heightPercentageToDP(85)
+                    : heightPercentageToDP(80),
                 width: widthPercentageToDP(100),
                 borderTopLeftRadius: heightPercentageToDP(5),
                 borderTopRightRadius: heightPercentageToDP(5),
@@ -615,6 +636,82 @@ const Createcountry = () => {
                       </LinearGradient>
                     </View>
 
+                    {/** TICKET PRICE */}
+                    <View
+                      style={{
+                        borderRadius: heightPercentageToDP(2),
+                      }}>
+                      <Text
+                        style={{
+                          fontFamily: FONT.Montserrat_SemiBold,
+                          color: COLORS.black,
+                          fontSize: heightPercentageToDP(2),
+                          paddingStart: heightPercentageToDP(1),
+                        }}>
+                        Ticket Price
+                      </Text>
+
+                      <LinearGradient
+                        colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
+                        start={{x: 0, y: 0}} // start from left
+                        end={{x: 1, y: 0}} // end at right
+                        style={{
+                          borderRadius: heightPercentageToDP(2),
+                        }}>
+                        <TextInput
+                          underlineColor="transparent"
+                          activeUnderlineColor="transparent"
+                          cursorColor={COLORS.white}
+                          placeholderTextColor={COLORS.black}
+                          style={{
+                            backgroundColor: 'transparent',
+                            fontFamily: FONT.Montserrat_Bold,
+                            color: COLORS.black,
+                          }}
+                          value={ticketprice}
+                          onChangeText={text => setticketprice(text)}
+                        />
+                      </LinearGradient>
+                    </View>
+
+                    {/** MULTIPLIER PRICE */}
+                    <View
+                      style={{
+                        borderRadius: heightPercentageToDP(2),
+                      }}>
+                      <Text
+                        style={{
+                          fontFamily: FONT.Montserrat_SemiBold,
+                          color: COLORS.black,
+                          fontSize: heightPercentageToDP(2),
+                          paddingStart: heightPercentageToDP(1),
+                        }}>
+                        Multiplier Price
+                      </Text>
+
+                      <LinearGradient
+                        colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
+                        start={{x: 0, y: 0}} // start from left
+                        end={{x: 1, y: 0}} // end at right
+                        style={{
+                          borderRadius: heightPercentageToDP(2),
+                        }}>
+                        <TextInput
+                          underlineColor="transparent"
+                          activeUnderlineColor="transparent"
+                          cursorColor={COLORS.white}
+                          placeholderTextColor={COLORS.black}
+                          style={{
+                            backgroundColor: 'transparent',
+                            fontFamily: FONT.Montserrat_Bold,
+                            color: COLORS.black,
+                          }}
+                          value={multiplierprice}
+                          onChangeText={text => setmultiplierprice(text)}
+                        />
+                      </LinearGradient>
+                    </View>
+
                     {/** country icon */}
 
                     <TouchableOpacity
@@ -634,44 +731,44 @@ const Createcountry = () => {
                       </Text>
 
                       <LinearGradient
-                      colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
-                      start={{x: 0, y: 0}} // start from left
-                      end={{x: 1, y: 0}} // end at right
-                      style={{
-                        borderRadius: heightPercentageToDP(2),
-                        flexDirection: 'row',
-                        alignItems: 'center', // Ensures vertical alignment of items
-                        padding: heightPercentageToDP(0.5), // Adjust padding for spacing
-                      }}>
-                      <Text
+                        colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
+                        start={{x: 0, y: 0}} // start from left
+                        end={{x: 1, y: 0}} // end at right
                         style={{
-                          backgroundColor: 'transparent',
-                          fontFamily: FONT.HELVETICA_REGULAR,
-                          color: COLORS.black,
-                          fontSize: heightPercentageToDP(2),
-                          textAlign: 'left',
-                          paddingStart: heightPercentageToDP(2), // Padding for spacing on the left
-                          flex: 1, // Let the text take available space
+                          borderRadius: heightPercentageToDP(2),
+                          flexDirection: 'row',
+                          alignItems: 'center', // Ensures vertical alignment of items
+                          padding: heightPercentageToDP(0.5), // Adjust padding for spacing
                         }}>
-                        {imageFileName}
-                      </Text>
-                      <View
-                        style={{
-                          justifyContent: 'center',
-                          alignItems: 'center',
-                          paddingEnd: heightPercentageToDP(2),
-                        }}>
-                        <LinearGradient
-                          colors={[COLORS.grayBg, COLORS.white_s]}
-                          style={{borderRadius: 20, padding: 10}}>
-                          <AntDesign
-                            name={'upload'}
-                            size={heightPercentageToDP(3)}
-                            color={COLORS.darkGray}
-                          />
-                        </LinearGradient>
-                      </View>
-                    </LinearGradient>
+                        <Text
+                          style={{
+                            backgroundColor: 'transparent',
+                            fontFamily: FONT.HELVETICA_REGULAR,
+                            color: COLORS.black,
+                            fontSize: heightPercentageToDP(2),
+                            textAlign: 'left',
+                            paddingStart: heightPercentageToDP(2), // Padding for spacing on the left
+                            flex: 1, // Let the text take available space
+                          }}>
+                          {imageFileName}
+                        </Text>
+                        <View
+                          style={{
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            paddingEnd: heightPercentageToDP(2),
+                          }}>
+                          <LinearGradient
+                            colors={[COLORS.grayBg, COLORS.white_s]}
+                            style={{borderRadius: 20, padding: 10}}>
+                            <AntDesign
+                              name={'upload'}
+                              size={heightPercentageToDP(3)}
+                              color={COLORS.darkGray}
+                            />
+                          </LinearGradient>
+                        </View>
+                      </LinearGradient>
                     </TouchableOpacity>
 
                     {/** country val */}

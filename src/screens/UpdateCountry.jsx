@@ -63,6 +63,10 @@ const UpdateCountry = ({route}) => {
   const [countrycurrencysymbol, setcountrycurrencysymbol] = useState(
     item.countrycurrencysymbol,
   );
+  const [ticketprice, setticketprice] = useState(item.ticketprice.toString());
+  const [multiplierprice, setmultiplierprice] = useState(
+    item.multiplierprice.toString(),
+  );
 
   const [imageFileName, setImageFileName] = useState('Choose a file');
   const [mineImage, setMineImage] = useState(null);
@@ -114,6 +118,8 @@ const UpdateCountry = ({route}) => {
           const formData = new FormData();
 
           formData.append('countrycurrencysymbol', countrycurrencysymbol);
+          formData.append('ticketprice', ticketprice);
+          formData.append('multiplierprice', multiplierprice);
           formData.append(
             'countrycurrencyvaluecomparedtoinr',
             countrycurrencyvaluecomparedtoinr,
@@ -160,6 +166,8 @@ const UpdateCountry = ({route}) => {
           const formData = new FormData();
 
           formData.append('countrycurrencysymbol', countrycurrencysymbol);
+          formData.append('ticketprice', ticketprice);
+          formData.append('multiplierprice', multiplierprice);
           formData.append(
             'countrycurrencyvaluecomparedtoinr',
             countrycurrencyvaluecomparedtoinr,
@@ -371,6 +379,82 @@ const UpdateCountry = ({route}) => {
                         }}
                         value={countrycurrencysymbol}
                         onChangeText={text => setcountrycurrencysymbol(text)}
+                      />
+                    </LinearGradient>
+                  </View>
+
+                  {/** TICKET PRICE */}
+                  <View
+                    style={{
+                      borderRadius: heightPercentageToDP(2),
+                    }}>
+                    <Text
+                      style={{
+                        fontFamily: FONT.Montserrat_SemiBold,
+                        color: COLORS.black,
+                        fontSize: heightPercentageToDP(2),
+                        paddingStart: heightPercentageToDP(1),
+                      }}>
+                      Ticket Price
+                    </Text>
+
+                    <LinearGradient
+                      colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
+                      start={{x: 0, y: 0}} // start from left
+                      end={{x: 1, y: 0}} // end at right
+                      style={{
+                        borderRadius: heightPercentageToDP(2),
+                      }}>
+                      <TextInput
+                        underlineColor="transparent"
+                        activeUnderlineColor="transparent"
+                        cursorColor={COLORS.white}
+                        placeholderTextColor={COLORS.black}
+                        style={{
+                          backgroundColor: 'transparent',
+                          fontFamily: FONT.Montserrat_Bold,
+                          color: COLORS.black,
+                        }}
+                        value={ticketprice}
+                        onChangeText={text => setticketprice(text)}
+                      />
+                    </LinearGradient>
+                  </View>
+
+                  {/** MULTIPLIER PRICE */}
+                  <View
+                    style={{
+                      borderRadius: heightPercentageToDP(2),
+                    }}>
+                    <Text
+                      style={{
+                        fontFamily: FONT.Montserrat_SemiBold,
+                        color: COLORS.black,
+                        fontSize: heightPercentageToDP(2),
+                        paddingStart: heightPercentageToDP(1),
+                      }}>
+                      Multiplier Price
+                    </Text>
+
+                    <LinearGradient
+                      colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
+                      start={{x: 0, y: 0}} // start from left
+                      end={{x: 1, y: 0}} // end at right
+                      style={{
+                        borderRadius: heightPercentageToDP(2),
+                      }}>
+                      <TextInput
+                        underlineColor="transparent"
+                        activeUnderlineColor="transparent"
+                        cursorColor={COLORS.white}
+                        placeholderTextColor={COLORS.black}
+                        style={{
+                          backgroundColor: 'transparent',
+                          fontFamily: FONT.Montserrat_Bold,
+                          color: COLORS.black,
+                        }}
+                        value={multiplierprice}
+                        onChangeText={text => setmultiplierprice(text)}
                       />
                     </LinearGradient>
                   </View>
