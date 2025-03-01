@@ -66,7 +66,11 @@ const PowerGameInsights = ({route}) => {
         }}>
         <TouchableOpacity
           onPress={() =>
-            navigation.navigate('CreatePowerResult', {forprocess: 'create'})
+            navigation.navigate('CreatePowerResult', {
+              forprocess: 'create',
+              powertime,
+              item,
+            })
           }
           style={{
             backgroundColor: COLORS.blue,

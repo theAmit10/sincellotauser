@@ -1167,11 +1167,37 @@ export const sincelotAdminApi = createApi({
       }),
     }),
 
+    // [ create POWERBALL RESULT ]
+    createPowerballResult: builder.mutation({
+      query: ({accesstoken, body}) => ({
+        url: `result/createpowerresult`,
+        method: 'POST',
+        body,
+        headers: {
+          Authorization: `Bearer ${accesstoken}`,
+          'Content-Type': 'application/json',
+        },
+      }),
+    }),
+
+    // GET POWERBALL GAME DETAILS
+    getPowerball: builder.query({
+      query: ({accesstoken}) => ({
+        url: `user/getallpowerball`,
+        method: 'get',
+        headers: {
+          Authorization: `Bearer ${accesstoken}`,
+        },
+      }),
+    }),
+
     // ######## END #########
   }),
 });
 
 export const {
+  useGetPowerballQuery,
+  useCreatePowerballResultMutation,
   useActivateCryptoPaymentMethodMutation,
   useActivateUpiPaymentMethodMutation,
   useRejectCryptoPaymentMethodMutation,
