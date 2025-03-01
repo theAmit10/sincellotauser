@@ -33,8 +33,7 @@ const PowerAllTimesComp = ({
 }) => {
   const navigation = useNavigation();
   return (
-    <TouchableOpacity
-      onPress={() => navigation.navigate('PowerAllDate', {item})}>
+    <View>
       <LinearGradient
         colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
         start={{x: 0, y: 0}} // start from left
@@ -289,7 +288,7 @@ const PowerAllTimesComp = ({
           )
         )}
       </LinearGradient>
-    </TouchableOpacity>
+    </View>
   );
 };
 

@@ -982,11 +982,47 @@ export const sincelotAdminApi = createApi({
       }),
     }),
 
+    // [FOR GETTING RESULT FOR POWERBALL]
+    getPowerballResult: builder.query({
+      query: ({accesstoken, powertimeid, year, month}) => ({
+        url: `result/allpowerresultmonyear?powertimeid=${powertimeid}&year=${year}&month=${month}`,
+        method: 'get',
+        headers: {
+          Authorization: `Bearer ${accesstoken}`,
+        },
+      }),
+    }),
+
+    // GET POWER DATES
+    getPowerDates: builder.query({
+      query: ({accessToken, id}) => ({
+        url: `user/getpowerdate/${id}`,
+        method: 'get',
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }),
+    }),
+
+    // GET ALL POWER TIMES
+    getPowetTimes: builder.query({
+      query: ({accesstoken}) => ({
+        url: 'user/getallpowertime',
+        method: 'get',
+        headers: {
+          Authorization: `Bearer ${accesstoken}`,
+        },
+      }),
+    }),
+
     // ######## END #########
   }),
 });
 
 export const {
+  useGetPowetTimesQuery,
+  useGetPowerDatesQuery,
+  useGetPowerballResultQuery,
   useUpdateLiveResultLinkMutation,
   useRemoveUserFromPartnerUserListMutation,
   useGetPartnerRechargeHistoryQuery,
