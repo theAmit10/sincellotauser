@@ -1037,11 +1037,151 @@ export const sincelotAdminApi = createApi({
       }),
     }),
 
+    // [ ACTIVATE PAYPAL PARTNER PAYMENT METHOD ]
+    activatePaypalPaymentMethod: builder.mutation({
+      query: ({accesstoken, body, id}) => ({
+        url: `result/updatepaypalstatus/${id}`,
+        method: 'PUT',
+        body,
+        headers: {
+          Authorization: `Bearer ${accesstoken}`,
+          'Content-Type': 'application/json',
+        },
+      }),
+    }),
+
+    // [ REJECT PAYPAL PARTNER PAYMENT METHOD ]
+    rejectPaypalPaymentMethod: builder.mutation({
+      query: ({accesstoken, body, id}) => ({
+        url: `result/updatepaypalpaymentstatus/${id}`,
+        method: 'PUT',
+        body,
+        headers: {
+          Authorization: `Bearer ${accesstoken}`,
+          'Content-Type': 'application/json',
+        },
+      }),
+    }),
+
+    // [ ACTIVATE SKRILL PARTNER PAYMENT METHOD ]
+    activateSkrillPaymentMethod: builder.mutation({
+      query: ({accesstoken, body, id}) => ({
+        url: `result/updateskrillstatus/${id}`,
+        method: 'PUT',
+        body,
+        headers: {
+          Authorization: `Bearer ${accesstoken}`,
+          'Content-Type': 'application/json',
+        },
+      }),
+    }),
+
+    // [ REJECT SKRILL PARTNER PAYMENT METHOD ]
+    rejectSkrillPaymentMethod: builder.mutation({
+      query: ({accesstoken, body, id}) => ({
+        url: `result/updateskrillpaymentstatus/${id}`,
+        method: 'PUT',
+        body,
+        headers: {
+          Authorization: `Bearer ${accesstoken}`,
+          'Content-Type': 'application/json',
+        },
+      }),
+    }),
+
+    // [ ACTIVATE Bank PARTNER PAYMENT METHOD ]
+    activateBankPaymentMethod: builder.mutation({
+      query: ({accesstoken, body, id}) => ({
+        url: `result/updatebankstatus/${id}`,
+        method: 'PUT',
+        body,
+        headers: {
+          Authorization: `Bearer ${accesstoken}`,
+          'Content-Type': 'application/json',
+        },
+      }),
+    }),
+
+    // [ REJECT Bank PARTNER PAYMENT METHOD ]
+    rejectBankPaymentMethod: builder.mutation({
+      query: ({accesstoken, body, id}) => ({
+        url: `result/updatebankpaymentstatus/${id}`,
+        method: 'PUT',
+        body,
+        headers: {
+          Authorization: `Bearer ${accesstoken}`,
+          'Content-Type': 'application/json',
+        },
+      }),
+    }),
+
+    // [ ACTIVATE crypto PARTNER PAYMENT METHOD ]
+    activateCryptoPaymentMethod: builder.mutation({
+      query: ({accesstoken, body, id}) => ({
+        url: `result/updatecryptostatus/${id}`,
+        method: 'PUT',
+        body,
+        headers: {
+          Authorization: `Bearer ${accesstoken}`,
+          'Content-Type': 'application/json',
+        },
+      }),
+    }),
+
+    // [ REJECT crypto PARTNER PAYMENT METHOD ]
+    rejectCryptoPaymentMethod: builder.mutation({
+      query: ({accesstoken, body, id}) => ({
+        url: `result/updatecryptopaymentstatus/${id}`,
+        method: 'PUT',
+        body,
+        headers: {
+          Authorization: `Bearer ${accesstoken}`,
+          'Content-Type': 'application/json',
+        },
+      }),
+    }),
+
+    // [ ACTIVATE upi PARTNER PAYMENT METHOD ]
+    activateUpiPaymentMethod: builder.mutation({
+      query: ({accesstoken, body, id}) => ({
+        url: `result/updateupistatus/${id}`,
+        method: 'PUT',
+        body,
+        headers: {
+          Authorization: `Bearer ${accesstoken}`,
+          'Content-Type': 'application/json',
+        },
+      }),
+    }),
+
+    // [ REJECT upi PARTNER PAYMENT METHOD ]
+    rejectUpiPaymentMethod: builder.mutation({
+      query: ({accesstoken, body, id}) => ({
+        url: `result/updateupipaymentstatus/${id}`,
+        method: 'PUT',
+        body,
+        headers: {
+          Authorization: `Bearer ${accesstoken}`,
+          'Content-Type': 'application/json',
+        },
+      }),
+    }),
+
     // ######## END #########
   }),
 });
 
 export const {
+  useActivateCryptoPaymentMethodMutation,
+  useActivateUpiPaymentMethodMutation,
+  useRejectCryptoPaymentMethodMutation,
+  useRejectUpiPaymentMethodMutation,
+  useActivateBankPaymentMethodMutation,
+  useRejectBankPaymentMethodMutation,
+  useActivateSkrillPaymentMethodMutation,
+  useRejectSkrillPaymentMethodMutation,
+  useActivatePaypalPaymentMethodMutation,
+  useRejectPaypalPaymentMethodMutation,
   useSearchJackpotGameInsightsQuery,
   useGetPowerballGameInsightsQuery,
   useGetPowetTimesQuery,

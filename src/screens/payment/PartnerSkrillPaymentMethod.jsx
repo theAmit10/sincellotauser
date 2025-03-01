@@ -28,7 +28,11 @@ import Clipboard from '@react-native-clipboard/clipboard';
 import Loading from '../../components/helpercComponent/Loading';
 import axios from 'axios';
 import UrlHelper from '../../helper/UrlHelper';
-import {useDeleteSkrillAccountMutation} from '../../helper/Networkcall';
+import {
+  useActivateSkrillPaymentMethodMutation,
+  useDeleteSkrillAccountMutation,
+  useRejectSkrillPaymentMethodMutation,
+} from '../../helper/Networkcall';
 
 const upiapidata = [
   {name: 'Wasu', upiid: '9876543210@ybl', id: '1'},
@@ -107,6 +111,68 @@ const PartnerSkrillPaymentMethod = ({route}) => {
     allTheDepositData();
 
     Toast.show({type: 'success', text1: 'Success', text2: res.message});
+  };
+
+  const [activateSkrillPaymentMethod, {isLoading: activateSkrillIsLoading}] =
+    useActivateSkrillPaymentMethodMutation();
+
+  const [rejectSkrillPaymentMethod, {isLoading: rejectSkrillIsLoading}] =
+    useRejectSkrillPaymentMethodMutation();
+
+  const submitConfirmation = async item => {
+    console.log('working on submit payment');
+    setSelectedItem(item);
+    try {
+      const body = {
+        activationStatus: true,
+      };
+      const res = await activateSkrillPaymentMethod({
+        accesstoken: accesstoken,
+        id: item._id,
+        body: body,
+      });
+
+      console.log(JSON.stringify(res));
+      Toast.show({
+        type: 'success',
+        text1: res.data.message,
+      });
+      allTheDepositData();
+    } catch (error) {
+      console.log(error);
+      Toast.show({
+        type: 'error',
+        text1: 'Something went wrong',
+      });
+    }
+  };
+
+  const submitRejection = async item => {
+    setSelectedItem(item);
+    console.log('working on submit payment');
+    try {
+      const body = {
+        paymentStatus: 'Cancelled',
+      };
+      const res = await rejectSkrillPaymentMethod({
+        accesstoken: accesstoken,
+        id: item._id,
+        body: body,
+      });
+
+      console.log(JSON.stringify(res));
+      Toast.show({
+        type: 'success',
+        text1: res.data.message,
+      });
+      allTheDepositData();
+    } catch (error) {
+      console.log(error);
+      Toast.show({
+        type: 'error',
+        text1: 'Something went wrong',
+      });
+    }
   };
 
   return (
@@ -399,6 +465,101 @@ const PartnerSkrillPaymentMethod = ({route}) => {
                             </Text>
                           </View>
                         </View>
+
+                        {/** CONFIRMATION */}
+                        {item.paymentStatus === 'Pending' &&
+                          (activateSkrillIsLoading ? (
+                            seletedItem._id === item._id ? (
+                              <Loading />
+                            ) : (
+                              <TouchableOpacity
+                                onPress={() => submitConfirmation(item)}
+                                style={{
+                                  flex: 2,
+                                  backgroundColor: COLORS.green,
+                                  width: widthPercentageToDP(90),
+                                  padding: heightPercentageToDP(1),
+                                  borderRadius: heightPercentageToDP(4),
+                                  justifyContent: 'center',
+                                  alignItems: 'center',
+                                }}>
+                                <Text
+                                  style={[
+                                    styles.copycontent,
+                                    {color: COLORS.white_s},
+                                  ]}>
+                                  Confirm
+                                </Text>
+                              </TouchableOpacity>
+                            )
+                          ) : (
+                            <TouchableOpacity
+                              onPress={() => submitConfirmation(item)}
+                              style={{
+                                flex: 2,
+                                backgroundColor: COLORS.green,
+                                padding: heightPercentageToDP(1),
+                                borderRadius: heightPercentageToDP(4),
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                              }}>
+                              <Text
+                                style={[
+                                  styles.copycontent,
+                                  {color: COLORS.white_s},
+                                ]}>
+                                Confirm
+                              </Text>
+                            </TouchableOpacity>
+                          ))}
+
+                        {/** REJECTION */}
+                        {item.paymentStatus === 'Pending' &&
+                          (rejectSkrillIsLoading ? (
+                            seletedItem._id === item._id ? (
+                              <Loading />
+                            ) : (
+                              <TouchableOpacity
+                                onPress={() => submitRejection(item)}
+                                style={{
+                                  flex: 2,
+                                  backgroundColor: COLORS.red,
+
+                                  padding: heightPercentageToDP(1),
+                                  borderRadius: heightPercentageToDP(4),
+                                  justifyContent: 'center',
+                                  alignItems: 'center',
+                                }}>
+                                <Text
+                                  style={[
+                                    styles.copycontent,
+                                    {color: COLORS.white_s},
+                                  ]}>
+                                  Reject
+                                </Text>
+                              </TouchableOpacity>
+                            )
+                          ) : (
+                            <TouchableOpacity
+                              onPress={() => submitRejection(item)}
+                              style={{
+                                flex: 2,
+                                backgroundColor: COLORS.red,
+                                padding: heightPercentageToDP(1),
+                                borderRadius: heightPercentageToDP(4),
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                                marginVertical: heightPercentageToDP(1),
+                              }}>
+                              <Text
+                                style={[
+                                  styles.copycontent,
+                                  {color: COLORS.white_s},
+                                ]}>
+                                Reject
+                              </Text>
+                            </TouchableOpacity>
+                          ))}
                       </LinearGradient>
                     </TouchableOpacity>
                   ))}

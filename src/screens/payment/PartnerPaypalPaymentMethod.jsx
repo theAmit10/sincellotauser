@@ -28,7 +28,11 @@ import Clipboard from '@react-native-clipboard/clipboard';
 import Loading from '../../components/helpercComponent/Loading';
 import axios from 'axios';
 import UrlHelper from '../../helper/UrlHelper';
-import {useDeletePaypalAccountMutation} from '../../helper/Networkcall';
+import {
+  useActivatePaypalPaymentMethodMutation,
+  useDeletePaypalAccountMutation,
+  useRejectPaypalPaymentMethodMutation,
+} from '../../helper/Networkcall';
 
 const PartnerPaypalPaymentMethod = ({route}) => {
   const {data: partnerdata} = route.params;
@@ -103,6 +107,68 @@ const PartnerPaypalPaymentMethod = ({route}) => {
     allTheDepositData();
 
     Toast.show({type: 'success', text1: 'Success', text2: res.message});
+  };
+
+  const [activatePaypalPaymentMethod, {isLoading: activatePaypalIsLoading}] =
+    useActivatePaypalPaymentMethodMutation();
+
+  const [rejectPaypalPaymentMethod, {isLoading: rejectPaypalIsLoading}] =
+    useRejectPaypalPaymentMethodMutation();
+
+  const submitConfirmation = async item => {
+    console.log('working on submit payment');
+    setSelectedItem(item);
+    try {
+      const body = {
+        activationStatus: true,
+      };
+      const res = await activatePaypalPaymentMethod({
+        accesstoken: accesstoken,
+        id: item._id,
+        body: body,
+      });
+
+      console.log(JSON.stringify(res));
+      Toast.show({
+        type: 'success',
+        text1: res.data.message,
+      });
+      allTheDepositData();
+    } catch (error) {
+      console.log(error);
+      Toast.show({
+        type: 'error',
+        text1: 'Something went wrong',
+      });
+    }
+  };
+
+  const submitRejection = async item => {
+    setSelectedItem(item);
+    console.log('working on submit payment');
+    try {
+      const body = {
+        paymentStatus: 'Cancelled',
+      };
+      const res = await rejectPaypalPaymentMethod({
+        accesstoken: accesstoken,
+        id: item._id,
+        body: body,
+      });
+
+      console.log(JSON.stringify(res));
+      Toast.show({
+        type: 'success',
+        text1: res.data.message,
+      });
+      allTheDepositData();
+    } catch (error) {
+      console.log(error);
+      Toast.show({
+        type: 'error',
+        text1: 'Something went wrong',
+      });
+    }
   };
 
   return (
@@ -395,6 +461,103 @@ const PartnerPaypalPaymentMethod = ({route}) => {
                               {item.paymentStatus}
                             </Text>
                           </View>
+                          {/** CONFIRMATION */}
+                          {item.paymentStatus === 'Pending' &&
+                            (activatePaypalIsLoading ? (
+                              seletedItem._id === item._id ? (
+                                <Loading />
+                              ) : (
+                                <TouchableOpacity
+                                  onPress={() => submitConfirmation(item)}
+                                  style={{
+                                    flex: 2,
+                                    backgroundColor: COLORS.green,
+                                    width: widthPercentageToDP(90),
+                                    padding: heightPercentageToDP(1),
+                                    borderRadius: heightPercentageToDP(4),
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                    marginTop: heightPercentageToDP(2),
+                                  }}>
+                                  <Text
+                                    style={[
+                                      styles.copycontent,
+                                      {color: COLORS.white_s},
+                                    ]}>
+                                    Confirm
+                                  </Text>
+                                </TouchableOpacity>
+                              )
+                            ) : (
+                              <TouchableOpacity
+                                onPress={() => submitConfirmation(item)}
+                                style={{
+                                  flex: 2,
+                                  backgroundColor: COLORS.green,
+                                  width: widthPercentageToDP(90),
+                                  padding: heightPercentageToDP(1),
+                                  borderRadius: heightPercentageToDP(4),
+                                  justifyContent: 'center',
+                                  alignItems: 'center',
+                                  marginTop: heightPercentageToDP(2),
+                                }}>
+                                <Text
+                                  style={[
+                                    styles.copycontent,
+                                    {color: COLORS.white_s},
+                                  ]}>
+                                  Confirm
+                                </Text>
+                              </TouchableOpacity>
+                            ))}
+
+                          {/** REJECTION */}
+                          {item.paymentStatus === 'Pending' &&
+                            (rejectPaypalIsLoading ? (
+                              seletedItem._id === item._id ? (
+                                <Loading />
+                              ) : (
+                                <TouchableOpacity
+                                  onPress={() => submitRejection(item)}
+                                  style={{
+                                    flex: 2,
+                                    backgroundColor: COLORS.red,
+                                    width: widthPercentageToDP(90),
+                                    padding: heightPercentageToDP(1),
+                                    borderRadius: heightPercentageToDP(4),
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                  }}>
+                                  <Text
+                                    style={[
+                                      styles.copycontent,
+                                      {color: COLORS.white_s},
+                                    ]}>
+                                    Reject
+                                  </Text>
+                                </TouchableOpacity>
+                              )
+                            ) : (
+                              <TouchableOpacity
+                                onPress={() => submitRejection(item)}
+                                style={{
+                                  flex: 2,
+                                  backgroundColor: COLORS.red,
+                                  width: widthPercentageToDP(90),
+                                  padding: heightPercentageToDP(1),
+                                  borderRadius: heightPercentageToDP(4),
+                                  justifyContent: 'center',
+                                  alignItems: 'center',
+                                }}>
+                                <Text
+                                  style={[
+                                    styles.copycontent,
+                                    {color: COLORS.white_s},
+                                  ]}>
+                                  Reject
+                                </Text>
+                              </TouchableOpacity>
+                            ))}
                         </View>
                       </LinearGradient>
                     </TouchableOpacity>
