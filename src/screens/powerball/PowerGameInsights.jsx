@@ -23,6 +23,7 @@ import Feather from 'react-native-vector-icons/Feather';
 import PowerGameInsightsComp from '../../components/powerball/gameinsights/PowerGameInsightsComp';
 import {
   useGetPowerballGameInsightsQuery,
+  useGetResultBasedDateTimePowerResultQuery,
   useSearchJackpotGameInsightsQuery,
 } from '../../helper/Networkcall';
 import {useSelector} from 'react-redux';
@@ -57,6 +58,28 @@ const PowerGameInsights = ({route}) => {
     return () =>
       BackHandler.removeEventListener('hardwareBackPress', handleBackPress);
   }, []);
+
+  // [CHECKING FOR RESULT ALREADY CREATED OR NOT]
+  const {isLoading: resultIsLoading, data: resultData} =
+    useGetResultBasedDateTimePowerResultQuery({
+      accesstoken,
+      powertimeid: powertime._id,
+      powerdateid: item._id,
+    });
+
+  // console.log(JSON.stringify(resultData));
+
+  const [resultFound, setResultFound] = useState(false);
+
+  useEffect(() => {
+    if (!resultIsLoading && resultData) {
+      if (resultData.message === 'PowerResult retrieved successfully') {
+        setResultFound(false);
+      } else {
+        setResultFound(true);
+      }
+    }
+  }, [resultData, resultIsLoading]);
 
   const Footer = () => {
     return (
@@ -319,7 +342,7 @@ const PowerGameInsights = ({route}) => {
         />
       )}
 
-      <Footer />
+      {resultFound && <Footer />}
     </MainBackgroundWithoutScrollview>
   );
 };

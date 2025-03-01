@@ -1191,11 +1191,23 @@ export const sincelotAdminApi = createApi({
       }),
     }),
 
+    // GET SINGLE POWERBALL RESULT BASED UPON TIME AND DATE
+    getResultBasedDateTimePowerResult: builder.query({
+      query: ({accesstoken, powertimeid, powerdateid}) => ({
+        url: `result/powerresultdatetime/${powertimeid}/${powerdateid}`,
+        method: 'get',
+        headers: {
+          Authorization: `Bearer ${accesstoken}`,
+        },
+      }),
+    }),
+
     // ######## END #########
   }),
 });
 
 export const {
+  useGetResultBasedDateTimePowerResultQuery,
   useGetPowerballQuery,
   useCreatePowerballResultMutation,
   useActivateCryptoPaymentMethodMutation,
