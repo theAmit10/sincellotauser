@@ -26,6 +26,15 @@ const PartnerDetails = ({route}) => {
       title={'Partner Details'}
       lefttext={data?.name}
       righttext={data?.userId}>
+      {/** PARTNER ACTIVATION */}
+      <PartnerDashComp
+        navigate={'PartnerActivation'}
+        title={'Partner Activation'}
+        subtitle={'Active the partner account'}
+        fromicon={'MaterialCommunityIcons'}
+        iconname={'security'}
+        data={data}
+      />
       {/** PARTNER USER LIST */}
       <PartnerDashComp
         navigate={'PartnerUserList'}

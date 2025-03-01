@@ -11,6 +11,7 @@ import Fontisto from 'react-native-vector-icons/Fontisto';
 import {COLORS, FONT} from '../../../assets/constants';
 import MainBackgroundWithoutScrollview from '../../components/background/MainBackgroundWithoutScrollview';
 import AllPartnerComp from '../../components/allpartner/AllPartnerComp';
+import AllSubPartnerComp from '../../components/allpartner/AllSubPartnerComp';
 
 const AllSubPartner = () => {
   const {accesstoken} = useSelector(state => state.user);
@@ -141,7 +142,7 @@ const AllSubPartner = () => {
               data={partners}
               keyExtractor={item => item._id.toString()} // Ensure _id is unique
               renderItem={({item}) => (
-                <AllPartnerComp
+                <AllSubPartnerComp
                   key={item.userId}
                   navigate={'PartnerDetails'}
                   name={item.name}

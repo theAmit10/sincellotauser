@@ -134,6 +134,7 @@ import PartnerPaypalPaymentMethod from '../screens/payment/PartnerPaypalPaymentM
 import PartnerOtherPaymentMethod from '../screens/payment/PartnerOtherPaymentMethod';
 import LiveResult from '../screens/LiveResult';
 import LiveResultLocation from '../screens/LiveResultLocation';
+import PartnerActivation from '../screens/partner/PartnerActivation';
 
 const Stack = createNativeStackNavigator();
 
@@ -404,6 +405,10 @@ const Main = () => {
           />
 
           <Stack.Screen name="LiveResult" component={LiveResult} />
+          <Stack.Screen
+            name="PartnerActivation"
+            component={PartnerActivation}
+          />
           <Stack.Screen
             name="LiveResultLocation"
             component={LiveResultLocation}

@@ -1202,11 +1202,37 @@ export const sincelotAdminApi = createApi({
       }),
     }),
 
+    // GET POWERBALL GAME DETAILS
+    getAllRechargeAdmin: builder.query({
+      query: ({accesstoken}) => ({
+        url: `user/getallrechargeadmin`,
+        method: 'get',
+        headers: {
+          Authorization: `Bearer ${accesstoken}`,
+        },
+      }),
+    }),
+
+    // [ UPDATE Sub PARTNER STATUS ]
+    updateSubPartnerStatus: builder.mutation({
+      query: ({accesstoken, body}) => ({
+        url: `user/updatesubpartner`,
+        method: 'PUT',
+        body,
+        headers: {
+          Authorization: `Bearer ${accesstoken}`,
+          'Content-Type': 'application/json',
+        },
+      }),
+    }),
+
     // ######## END #########
   }),
 });
 
 export const {
+  useUpdateSubPartnerStatusMutation,
+  useGetAllRechargeAdminQuery,
   useGetResultBasedDateTimePowerResultQuery,
   useGetPowerballQuery,
   useCreatePowerballResultMutation,
