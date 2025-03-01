@@ -19,9 +19,10 @@ const PowerballAllDateComp = ({
   navigate,
   forprocess,
   item,
+  powertime,
 }) => {
   return (
-    <Pressable onPress={() => navigation.navigate(navigate, {item})}>
+    <Pressable onPress={() => navigation.navigate(navigate, {item, powertime})}>
       <LinearGradient
         colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
         start={{x: 0, y: 0}} // start from left

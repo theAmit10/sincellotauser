@@ -1,4 +1,6 @@
 import {
+  ActivityIndicator,
+  BackHandler,
   FlatList,
   StyleSheet,
   Text,
@@ -6,7 +8,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
 import MainBackgroundWithoutScrollview from '../../components/background/MainBackgroundWithoutScrollview';
 import PowerAllTimesComp from '../../components/powerball/poweralltimes/PowerAllTimesComp';
 import {
@@ -15,41 +17,21 @@ import {
 } from 'react-native-responsive-screen';
 import Loading from '../../components/helpercComponent/Loading';
 import {COLORS, FONT} from '../../../assets/constants';
-import {useNavigation} from '@react-navigation/native';
+import {useFocusEffect, useNavigation} from '@react-navigation/native';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import Feather from 'react-native-vector-icons/Feather';
 import PowerGameInsightsComp from '../../components/powerball/gameinsights/PowerGameInsightsComp';
+import {
+  useGetPowerballGameInsightsQuery,
+  useSearchJackpotGameInsightsQuery,
+} from '../../helper/Networkcall';
+import {useSelector} from 'react-redux';
+import {skipToken} from '@reduxjs/toolkit/query';
+import Clipboard from '@react-native-clipboard/clipboard';
+import Toast from 'react-native-toast-message';
 
 const PowerGameInsights = ({route}) => {
-  const alltimes = [
-    {
-      id: 1,
-      time: '09: 00 AM',
-    },
-    {
-      id: 2,
-      time: '10: 00 AM',
-    },
-    {
-      id: 3,
-      time: '11: 00 AM',
-    },
-  ];
-
-  const {item} = route.params;
-
-  console.log('item :: ' + JSON.stringify(item));
-
-  const [filteredData, setFilteredData] = useState([]);
-
-  const handleSearch = text => {
-    const filtered = times.filter(item =>
-      item.lottime.toLowerCase().includes(text.toLowerCase()),
-    );
-    setFilteredData(filtered);
-  };
-
-  //  const {timedata, locationdata} = route.params;
+  const {item, powertime} = route.params;
 
   const [expandedItems, setExpandedItems] = useState({});
   const toggleItem = id => {
@@ -59,12 +41,22 @@ const PowerGameInsights = ({route}) => {
     }));
   };
 
-  // const item = {
-  //   _id: 1,
-  //   name: 'Test',
-  // };
-
   const navigation = useNavigation();
+  const [page, setPage] = useState(1);
+  const [limit, setLimit] = useState(5);
+  const {accesstoken} = useSelector(state => state.user);
+  const [gameInsightsData, setGameInsightsData] = useState([]);
+  const [gameId, setGameId] = useState(null);
+
+  useEffect(() => {
+    const handleBackPress = () => {
+      return true; // Prevent back navigation on space key press
+    };
+
+    BackHandler.addEventListener('hardwareBackPress', handleBackPress);
+    return () =>
+      BackHandler.removeEventListener('hardwareBackPress', handleBackPress);
+  }, []);
 
   const Footer = () => {
     return (
@@ -94,6 +86,15 @@ const PowerGameInsights = ({route}) => {
     );
   };
 
+  const copyToClipboard = val => {
+    Clipboard.setString(val);
+    Toast.show({
+      type: 'success',
+      text1: 'Text Copied',
+      text2: 'The text has been copied to your clipboard!',
+    });
+  };
+
   const Header = () => {
     return (
       <View
@@ -117,6 +118,22 @@ const PowerGameInsights = ({route}) => {
             size={heightPercentageToDP(3)}
             color={COLORS.darkGray}
           />
+          {/* <TextInput
+            style={{
+              marginStart: heightPercentageToDP(1),
+              flex: 1,
+              fontFamily: FONT.Montserrat_Regular,
+              fontSize: heightPercentageToDP(2.5),
+              color: COLORS.black,
+            }}
+            placeholder="Search Jackpot"
+            placeholderTextColor={COLORS.black}
+            value={searchQuery} // Ensure TextInput is controlled
+            onChangeText={text => {
+              setSearchQuery(text);
+            }}
+          /> */}
+
           <TextInput
             style={{
               marginStart: heightPercentageToDP(1),
@@ -125,13 +142,18 @@ const PowerGameInsights = ({route}) => {
               fontSize: heightPercentageToDP(2.5),
               color: COLORS.black,
             }}
-            placeholder="Enter jackpot number"
+            placeholder="Search Jackpot"
             placeholderTextColor={COLORS.black}
-            label="Search"
-            onChangeText={handleSearch}
+            value={searchQuery} // ✅ Ensure controlled input
+            onChangeText={text => setSearchQuery(text)} // ✅ Direct state update
+            keyboardType="default"
+            returnKeyType="done" // ✅ Helps prevent unnecessary behaviors
+            blurOnSubmit={false} // ✅ Prevents closing keyboard on enter
+            onSubmitEditing={() => console.log('Submitted')} // ✅ Handles submission properly
           />
         </View>
-        <View
+        <TouchableOpacity
+          onPress={() => copyToClipboard(searchQuery)}
           style={{
             backgroundColor: COLORS.white_s,
             margin: heightPercentageToDP(1),
@@ -145,29 +167,154 @@ const PowerGameInsights = ({route}) => {
             size={heightPercentageToDP(3)}
             color={COLORS.darkGray}
           />
-        </View>
+        </TouchableOpacity>
       </View>
     );
   };
 
+  // States
+
+  const [hasMore, setHasMore] = useState(true);
+  const [loading, setLoading] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [debouncedSearch, setDebouncedSearch] = useState('');
+
+  // Debounce Effect for Search
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setDebouncedSearch(searchQuery);
+    }, 1000);
+    return () => clearTimeout(handler);
+  }, [searchQuery]);
+
+  // FOR ALL BET DATA
+
+  // Fetch Paginated Data
+  const {
+    data: paginatedData,
+    refetch: refetchPaginated,
+    isFetching: fetchingPaginated,
+  } = useGetPowerballGameInsightsQuery(
+    {
+      accesstoken,
+      powerdateId: item._id,
+      powertimeId: powertime._id,
+      page,
+      limit,
+    },
+    {skip: debouncedSearch.length > 0}, // Skip pagination if searching
+  );
+
+  // Fetch Search Data
+  // Fetch Search Data
+  const {data: searchData, isFetching: fetchingSearch} =
+    useSearchJackpotGameInsightsQuery(
+      debouncedSearch.length > 0
+        ? {accesstoken, id: gameId, jackpot: debouncedSearch}
+        : {skip: true},
+    );
+
+  // console.log('Search data');
+  // console.log(gameInsightsData?._id);
+  // console.log(gameId);
+  // console.log(JSON.stringify(searchData));
+  // const {data: searchData, isFetching: fetchingSearch} =
+  //   useSearchJackpotGameInsightsQuery(
+  //     debouncedSearch.length > 0
+  //       ? {accesstoken, searchTerm: debouncedSearch}
+  //       : {skip: true},
+  //   );
+
+  // Reset State on Navigation Back
+  useFocusEffect(
+    useCallback(() => {
+      // setPartners([]); // ✅ Reset Data
+      setPage(1); // ✅ Reset Page
+      setHasMore(true); // ✅ Reset Load More
+      refetchPaginated?.(); // ✅ Ensure Fresh Data
+    }, [refetchPaginated]),
+  );
+
+  useEffect(() => {
+    setLoading(true);
+
+    if (
+      debouncedSearch.length > 0 &&
+      searchData?.tickets.length > 0 &&
+      searchData?.tickets[0].alltickets
+    ) {
+      // For search results, replace the existing data
+      setGameInsightsData(searchData?.tickets[0].alltickets);
+      setHasMore(false); // Disable pagination when searching
+    } else if (
+      paginatedData?.tickets.length > 0 &&
+      paginatedData?.tickets[0].alltickets
+    ) {
+      setGameId(paginatedData.tickets[0]._id);
+      // For paginated data, filter out duplicates before appending
+      setGameInsightsData(prev => {
+        const newData = paginatedData.tickets[0].alltickets.filter(
+          newItem => !prev.some(prevItem => prevItem._id === newItem._id),
+        );
+        return page === 1
+          ? paginatedData.tickets[0].alltickets
+          : [...prev, ...newData];
+      });
+
+      // Update `hasMore` based on the length of the new data
+      if (
+        paginatedData?.tickets.length > 0 &&
+        paginatedData.tickets[0].alltickets.length < limit
+      ) {
+        setHasMore(false); // No more data to fetch
+      } else {
+        setHasMore(true); // More data available
+      }
+    }
+
+    setLoading(false);
+  }, [searchData, paginatedData, debouncedSearch, page]);
+
+  const loadMore = () => {
+    if (!loading && hasMore && debouncedSearch.length === 0) {
+      setPage(prev => prev + 1);
+    }
+  };
+
+  // Combined Loading State
+  const isLoading = fetchingPaginated || fetchingSearch || loading;
+
   return (
     <MainBackgroundWithoutScrollview
-      lefttext={'10-10-2024'}
-      righttext={'09:00 PM'}
+      lefttext={item.powerdate}
+      righttext={powertime.powertime}
       title={'Game Insights'}>
-      <FlatList
-        keyExtractor={item => item.id.toString()}
-        data={alltimes}
-        ListHeaderComponent={<Header />}
-        renderItem={({item}) => (
-          <PowerGameInsightsComp
-            item={item}
-            expandedItems={expandedItems}
-            setExpandedItems={setExpandedItems}
-            toggleItem={toggleItem}
-          />
-        )}
-      />
+      <Header />
+      {isLoading && page === 1 ? (
+        <Loading />
+      ) : (
+        <FlatList
+          key={item => item._id}
+          keyExtractor={item => item._id.toString()}
+          data={gameInsightsData}
+          renderItem={({item}) => (
+            <PowerGameInsightsComp
+              item={item}
+              expandedItems={expandedItems}
+              setExpandedItems={setExpandedItems}
+              toggleItem={toggleItem}
+            />
+          )}
+          onEndReached={loadMore}
+          onEndReachedThreshold={0.2}
+          ListFooterComponent={() =>
+            hasMore && isLoading ? (
+              <ActivityIndicator size="large" color={COLORS.white_s} />
+            ) : null
+          }
+        />
+      )}
+
       <Footer />
     </MainBackgroundWithoutScrollview>
   );

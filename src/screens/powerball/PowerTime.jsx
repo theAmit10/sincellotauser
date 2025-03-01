@@ -10,23 +10,9 @@ import PowerTimeComp from '../../components/powerball/powertime/PowerTimeComp';
 import {useSelector} from 'react-redux';
 import {useGetAllPowerTimesQuery} from '../../helper/Networkcall';
 import NoDataFound from '../../components/helpercComponent/NoDataFound';
+import PowerTimeGameInsightComp from '../../components/PowerTimeGameInsightComp';
 
 const PowerTime = () => {
-  const alltimes = [
-    {
-      id: 1,
-      time: '09: 00 AM',
-    },
-    {
-      id: 2,
-      time: '10: 00 AM',
-    },
-    {
-      id: 3,
-      time: '11: 00 AM',
-    },
-  ];
-
   const navigation = useNavigation();
 
   const {accesstoken} = useSelector(state => state.user);
@@ -50,7 +36,7 @@ const PowerTime = () => {
           keyExtractor={item => item._id.toString()}
           data={data.powerTimes}
           renderItem={({item}) => (
-            <PowerAllTimesComp
+            <PowerTimeGameInsightComp
               key={item._id}
               time={item.powertime}
               item={item}

@@ -1015,11 +1015,35 @@ export const sincelotAdminApi = createApi({
       }),
     }),
 
+    // GET POWERBALL GAME INSIGHTS
+    getPowerballGameInsights: builder.query({
+      query: ({accesstoken, powerdateId, powertimeId, page, limit}) => ({
+        url: `user/getsinglepowerballtickets/${powerdateId}/${powertimeId}?page=${page}&limit=${limit}`,
+        method: 'get',
+        headers: {
+          Authorization: `Bearer ${accesstoken}`,
+        },
+      }),
+    }),
+
+    // SEARCH JACKPOT NUMNER IN GAMEINSIGHTS
+    searchJackpotGameInsights: builder.query({
+      query: ({accesstoken, id, jackpot}) => ({
+        url: `result/powerball/search?id=${id}&jackpot=${jackpot}`,
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${accesstoken}`,
+        },
+      }),
+    }),
+
     // ######## END #########
   }),
 });
 
 export const {
+  useSearchJackpotGameInsightsQuery,
+  useGetPowerballGameInsightsQuery,
   useGetPowetTimesQuery,
   useGetPowerDatesQuery,
   useGetPowerballResultQuery,

@@ -11,21 +11,6 @@ import {useGetPowerDateBasedUponPowerTimeQuery} from '../../helper/Networkcall';
 import {useSelector} from 'react-redux';
 
 const PowerAllDate = ({route}) => {
-  const alltimes = [
-    {
-      id: 1,
-      time: '09-12-2024',
-    },
-    {
-      id: 2,
-      time: '10-12-2024',
-    },
-    {
-      id: 3,
-      time: '11-12-2024',
-    },
-  ];
-
   const navigation = useNavigation();
 
   const {item: powertime} = route.params;
@@ -71,6 +56,7 @@ const PowerAllDate = ({route}) => {
               navigation={navigation}
               navigate={'PowerGameInsights'}
               item={item}
+              powertime={powertime}
             />
           )}
         />

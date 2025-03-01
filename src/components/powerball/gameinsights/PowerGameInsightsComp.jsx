@@ -22,9 +22,7 @@ const PowerGameInsightsComp = ({
       end={{x: 1, y: 0}} // end at right
       style={{
         justifyContent: 'flex-start',
-        height: expandedItems[item._id]
-          ? heightPercentageToDP(18)
-          : heightPercentageToDP(9),
+
         borderRadius: heightPercentageToDP(1),
         marginTop: heightPercentageToDP(2),
       }}>
@@ -34,42 +32,30 @@ const PowerGameInsightsComp = ({
           flex: 1,
           borderTopLeftRadius: heightPercentageToDP(2),
           borderTopEndRadius: heightPercentageToDP(2),
-          flexDirection: 'row',
           marginBottom: heightPercentageToDP(1),
+          gap: heightPercentageToDP(0.5),
+          paddingStart: heightPercentageToDP(1),
         }}>
         <View
           style={{
             flex: 1,
-            padding: heightPercentageToDP(1),
+
+            flexDirection: 'row',
           }}>
           <View
             style={{
-              flex: 1.5,
+              flex: 0.8,
 
-              justifyContent: 'flex-start',
+              justifyContent: 'center',
               alignItems: 'flex-start',
             }}>
             <Text style={styles.title}>User ID</Text>
           </View>
           <View
             style={{
-              flex: 1,
+              flex: 2,
 
-              justifyContent: 'flex-start',
-            }}>
-            <Text style={styles.titleData}>7828</Text>
-          </View>
-        </View>
-        <View
-          style={{
-            flex: 2,
-          }}>
-          <View
-            style={{
-              flex: 1.5,
-
-              justifyContent: 'flex-start',
-              justifyContent: 'flex-start',
+              justifyContent: 'center',
               alignItems: 'flex-start',
             }}>
             <Text style={styles.title}>Ticket</Text>
@@ -78,32 +64,52 @@ const PowerGameInsightsComp = ({
             style={{
               flex: 1,
 
-              justifyContent: 'flex-start',
-            }}>
-            <Text style={styles.titleData}>8 7 98 67 45 34</Text>
-          </View>
-        </View>
-        <View
-          style={{
-            flex: 1,
-          }}>
-          <View
-            style={{
-              flex: 1.5,
-
-              justifyContent: 'flex-start',
+              justifyContent: 'center',
+              alignItems: 'flex-start',
             }}>
             <Text style={styles.title}>Amout</Text>
           </View>
+        </View>
+
+        {item.tickets.map((titem, tindex) => (
           <View
+            key={tindex}
             style={{
               flex: 1,
-
-              justifyContent: 'flex-start',
+              flexDirection: 'row',
+              paddingVertical: heightPercentageToDP(0.5),
             }}>
-            <Text style={styles.titleData}>800</Text>
+            <View
+              style={{
+                flex: 0.8,
+
+                justifyContent: 'center',
+                alignItems: 'flex-start',
+              }}>
+              <Text style={styles.titleData}>{item.userId}</Text>
+            </View>
+            <View
+              style={{
+                flex: 2,
+                justifyContent: 'center',
+                alignItems: 'flex-start',
+              }}>
+              <Text style={styles.titleData}>
+                {titem.usernumber.join('  ')}{' '}
+                {titem.multiplier > 1 ? ` - ${titem.multiplier}X ` : ''}
+              </Text>
+            </View>
+            <View
+              style={{
+                flex: 1,
+
+                justifyContent: 'center',
+                alignItems: 'flex-start',
+              }}>
+              <Text style={styles.titleData}>{titem.amount}</Text>
+            </View>
           </View>
-        </View>
+        ))}
       </TouchableOpacity>
 
       {expandedItems[item._id] && (
@@ -117,7 +123,6 @@ const PowerGameInsightsComp = ({
           />
 
           {/** BOTTOM DEPOSIT DETAILS CONTAINER  */}
-
           <View
             style={{
               flex: 1,
@@ -145,10 +150,10 @@ const PowerGameInsightsComp = ({
 
                   justifyContent: 'flex-start',
                 }}>
-                <Text style={styles.titleData}>Aryan khna</Text>
+                <Text style={styles.titleData}>{item.username}</Text>
               </View>
             </View>
-            <View
+            {/* <View
               style={{
                 flex: 1,
               }}>
@@ -168,7 +173,7 @@ const PowerGameInsightsComp = ({
                 }}>
                 <Text style={styles.titleData}>2X</Text>
               </View>
-            </View>
+            </View> */}
           </View>
         </>
       )}
