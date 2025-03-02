@@ -1250,11 +1250,25 @@ export const sincelotAdminApi = createApi({
       }),
     }),
 
+    // [PROMOTE SUBPARTNER TO TOP PARTNER]
+    promotePartnerToTopPartner: builder.mutation({
+      query: ({accesstoken, body}) => ({
+        url: `user/promotesubpartnertopartner`,
+        method: 'PUT',
+        body,
+        headers: {
+          Authorization: `Bearer ${accesstoken}`,
+          'Content-Type': 'application/json',
+        },
+      }),
+    }),
+
     // ######## END #########
   }),
 });
 
 export const {
+  usePromotePartnerToTopPartnerMutation,
   useAddUserToUserListMutation,
   useGetPartnerPerformanceQuery,
   useUpdateSubPartnerStatusMutation,

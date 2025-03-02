@@ -114,7 +114,7 @@ const PartnerDetails = ({route}) => {
         data={{key1: 'profit', key2: data}}
       />
 
-      {/** Remove User */}
+      {/** Add User */}
       <PartnerDashComp
         navigate={'AddUserToUserList'}
         title={'Add User'}
@@ -125,6 +125,7 @@ const PartnerDetails = ({route}) => {
       />
 
       {/** Remove User */}
+
       <PartnerDashComp
         navigate={'RemoveUserFromPartner'}
         title={'Remove User'}
@@ -133,6 +134,18 @@ const PartnerDetails = ({route}) => {
         iconname={'delete-empty'}
         data={data}
       />
+
+      {/** Promote User to top partner */}
+      {data.parentPartnerId !== 1000 && (
+        <PartnerDashComp
+          navigate={'MakeTopPartner'}
+          title={'Make Top Partner'}
+          subtitle={'Promote Sub Partner to Top Partner'}
+          fromicon={'MaterialIcons'}
+          iconname={'person-add'}
+          data={data}
+        />
+      )}
     </MainBackgound>
   );
 };

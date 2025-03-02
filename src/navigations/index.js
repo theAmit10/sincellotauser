@@ -136,6 +136,7 @@ import LiveResult from '../screens/LiveResult';
 import LiveResultLocation from '../screens/LiveResultLocation';
 import PartnerActivation from '../screens/partner/PartnerActivation';
 import AddUserToUserList from '../components/AddUserToUserList';
+import MakeTopPartner from '../screens/partner/MakeTopPartner';
 
 const Stack = createNativeStackNavigator();
 
@@ -406,6 +407,7 @@ const Main = () => {
           />
 
           <Stack.Screen name="LiveResult" component={LiveResult} />
+          <Stack.Screen name="MakeTopPartner" component={MakeTopPartner} />
           <Stack.Screen
             name="AddUserToUserList"
             component={AddUserToUserList}

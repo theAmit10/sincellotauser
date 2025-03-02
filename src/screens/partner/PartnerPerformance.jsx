@@ -7,11 +7,9 @@ import {
 } from 'react-native';
 import React, {useCallback, useEffect, useState} from 'react';
 
-import MainBackgound from '../../components/background/MainBackgound';
 import PartnerPerformanceComp from '../../components/partnerperformance/PartnerPerformanceComp';
 import {useFocusEffect, useNavigation} from '@react-navigation/native';
 import {useGetPartnerPerformanceQuery} from '../../helper/Networkcall';
-import Loading from '../../components/helpercComponent/Loading';
 import {useSelector} from 'react-redux';
 import {heightPercentageToDP} from 'react-native-responsive-screen';
 import {COLORS} from '../../../assets/constants';
@@ -30,11 +28,6 @@ const PartnerPerformance = ({route}) => {
       ...prev,
       [id]: !prev[id],
     }));
-  };
-
-  const item = {
-    _id: 1,
-    name: 'Test',
   };
 
   const navigation = useNavigation();
@@ -107,7 +100,7 @@ const PartnerPerformance = ({route}) => {
   };
 
   // Combined Loading State
-  const isLoading = fetchingPaginated || loading;
+  const isLoading = fetchingPaginated || loading || partnerperformanceisLoading;
 
   return (
     <MainBackgroundWithoutScrollview
