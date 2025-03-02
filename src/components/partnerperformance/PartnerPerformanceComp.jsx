@@ -8,6 +8,10 @@ import {
 import {COLORS, FONT} from '../../../assets/constants';
 import Loading from '../helpercComponent/Loading';
 
+const getTotalAmount = users => {
+  return users.reduce((total, user) => total + (user.amount || 0), 0);
+};
+
 const PartnerPerformanceComp = ({
   item,
   expandedItems,
@@ -56,7 +60,7 @@ const PartnerPerformanceComp = ({
 
               justifyContent: 'flex-start',
             }}>
-            <Text style={styles.titleData}>7828</Text>
+            <Text style={styles.titleData}>{item.partnerId}</Text>
           </View>
         </View>
         <View
@@ -77,7 +81,7 @@ const PartnerPerformanceComp = ({
 
               justifyContent: 'flex-start',
             }}>
-            <Text style={styles.titleData}>828</Text>
+            <Text style={styles.titleData}>{getTotalAmount(item.users)}</Text>
           </View>
         </View>
         <View
@@ -147,7 +151,7 @@ const PartnerPerformanceComp = ({
               style={styles.titleData}
               adjustsFontSizeToFit={true}
               numberOfLines={1}>
-              Aryan Khan
+              {item.name}
             </Text>
           </View>
 
@@ -180,7 +184,7 @@ const PartnerPerformanceComp = ({
 
                   justifyContent: 'flex-start',
                 }}>
-                <Text style={styles.titleData}>78</Text>
+                <Text style={styles.titleData}>{item.users.length}</Text>
               </View>
             </View>
             <View
@@ -201,7 +205,7 @@ const PartnerPerformanceComp = ({
 
                   justifyContent: 'flex-start',
                 }}>
-                <Text style={styles.titleData}>10%</Text>
+                <Text style={styles.titleData}>{item.profitPercentage}%</Text>
               </View>
             </View>
             <View
@@ -219,10 +223,9 @@ const PartnerPerformanceComp = ({
               <View
                 style={{
                   flex: 1,
-
                   justifyContent: 'flex-start',
                 }}>
-                <Text style={styles.titleData}>18%</Text>
+                <Text style={styles.titleData}>{item.rechargePercentage}%</Text>
               </View>
             </View>
           </View>

@@ -1226,11 +1226,23 @@ export const sincelotAdminApi = createApi({
       }),
     }),
 
+    // [GET PARTER PERFORMANCE ]
+    getPartnerPerformance: builder.query({
+      query: ({accesstoken, lotlocation, lottime, lotdate, page, limit}) => ({
+        url: `result/singlepartnerperformance/${lotlocation}/${lottime}/${lotdate}?page=${page}&limit=${limit}`,
+        method: 'get',
+        headers: {
+          Authorization: `Bearer ${accesstoken}`,
+        },
+      }),
+    }),
+
     // ######## END #########
   }),
 });
 
 export const {
+  useGetPartnerPerformanceQuery,
   useUpdateSubPartnerStatusMutation,
   useGetAllRechargeAdminQuery,
   useGetResultBasedDateTimePowerResultQuery,
