@@ -135,6 +135,7 @@ import PartnerOtherPaymentMethod from '../screens/payment/PartnerOtherPaymentMet
 import LiveResult from '../screens/LiveResult';
 import LiveResultLocation from '../screens/LiveResultLocation';
 import PartnerActivation from '../screens/partner/PartnerActivation';
+import AddUserToUserList from '../components/AddUserToUserList';
 
 const Stack = createNativeStackNavigator();
 
@@ -405,6 +406,10 @@ const Main = () => {
           />
 
           <Stack.Screen name="LiveResult" component={LiveResult} />
+          <Stack.Screen
+            name="AddUserToUserList"
+            component={AddUserToUserList}
+          />
           <Stack.Screen
             name="PartnerActivation"
             component={PartnerActivation}

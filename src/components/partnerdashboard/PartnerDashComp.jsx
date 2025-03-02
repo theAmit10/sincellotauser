@@ -9,12 +9,20 @@ import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
-const PartnerDashComp = ({navigate, title, subtitle, fromicon, iconname, data}) => {
+const PartnerDashComp = ({
+  navigate,
+  title,
+  subtitle,
+  fromicon,
+  iconname,
+  data,
+}) => {
   const navigation = useNavigation();
 
   return (
-    <TouchableOpacity onPress={() => navigation.navigate(navigate,{ data })}>
+    <TouchableOpacity onPress={() => navigation.navigate(navigate, {data})}>
       <LinearGradient
         colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
         start={{x: 0, y: 0}} // start from left
@@ -30,7 +38,7 @@ const PartnerDashComp = ({navigate, title, subtitle, fromicon, iconname, data}) 
         </View>
 
         <View style={styles.iconContainer}>
-          {fromicon === "FontAwesome6" && (
+          {fromicon === 'FontAwesome6' && (
             <FontAwesome6
               name={iconname}
               size={heightPercentageToDP(3)}
@@ -38,7 +46,7 @@ const PartnerDashComp = ({navigate, title, subtitle, fromicon, iconname, data}) 
               style={styles.icon}
             />
           )}
-          {fromicon === "MaterialCommunityIcons" && (
+          {fromicon === 'MaterialCommunityIcons' && (
             <MaterialCommunityIcons
               name={iconname}
               size={heightPercentageToDP(3)}
@@ -46,7 +54,7 @@ const PartnerDashComp = ({navigate, title, subtitle, fromicon, iconname, data}) 
               style={styles.icon}
             />
           )}
-          {fromicon === "FontAwesome5" && (
+          {fromicon === 'FontAwesome5' && (
             <FontAwesome5
               name={iconname}
               size={heightPercentageToDP(3)}
@@ -54,9 +62,18 @@ const PartnerDashComp = ({navigate, title, subtitle, fromicon, iconname, data}) 
               style={styles.icon}
             />
           )}
-          
-          {fromicon === "Ionicons" && (
+
+          {fromicon === 'Ionicons' && (
             <Ionicons
+              name={iconname}
+              size={heightPercentageToDP(3)}
+              color={COLORS.darkGray}
+              style={styles.icon}
+            />
+          )}
+
+          {fromicon === 'MaterialIcons' && (
+            <MaterialIcons
               name={iconname}
               size={heightPercentageToDP(3)}
               color={COLORS.darkGray}

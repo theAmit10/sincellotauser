@@ -1237,11 +1237,25 @@ export const sincelotAdminApi = createApi({
       }),
     }),
 
+    // [ADD USER TO USERLIST]
+    addUserToUserList: builder.mutation({
+      query: ({accesstoken, body}) => ({
+        url: `user/addusertouserlist`,
+        method: 'PUT',
+        body,
+        headers: {
+          Authorization: `Bearer ${accesstoken}`,
+          'Content-Type': 'application/json',
+        },
+      }),
+    }),
+
     // ######## END #########
   }),
 });
 
 export const {
+  useAddUserToUserListMutation,
   useGetPartnerPerformanceQuery,
   useUpdateSubPartnerStatusMutation,
   useGetAllRechargeAdminQuery,

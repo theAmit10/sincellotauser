@@ -40,8 +40,8 @@ const PartnerDetails = ({route}) => {
         navigate={'PartnerUserList'}
         title={'User List'}
         subtitle={'Get all the partner user list'}
-        fromicon={'MaterialCommunityIcons'}
-        iconname={'security'}
+        fromicon={'Ionicons'}
+        iconname={'people'}
         data={data}
       />
       {/** PARTNER PARTNER LIST */}
@@ -49,8 +49,8 @@ const PartnerDetails = ({route}) => {
         navigate={'PartnerPartnerList'}
         title={'Partner List'}
         subtitle={'Get all the partner list'}
-        fromicon={'MaterialCommunityIcons'}
-        iconname={'security'}
+        fromicon={'FontAwesome6'}
+        iconname={'people-carry-box'}
         data={data}
       />
       {/** UPDATE PERMISSION */}
@@ -112,6 +112,16 @@ const PartnerDetails = ({route}) => {
         fromicon={'MaterialCommunityIcons'}
         iconname={'human-capacity-increase'}
         data={{key1: 'profit', key2: data}}
+      />
+
+      {/** Remove User */}
+      <PartnerDashComp
+        navigate={'AddUserToUserList'}
+        title={'Add User'}
+        subtitle={'Add user for Partner User List '}
+        fromicon={'MaterialIcons'}
+        iconname={'person-add'}
+        data={data}
       />
 
       {/** Remove User */}
