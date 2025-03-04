@@ -59,15 +59,23 @@ const PowerGameInsights = ({route}) => {
       BackHandler.removeEventListener('hardwareBackPress', handleBackPress);
   }, []);
 
-  // [CHECKING FOR RESULT ALREADY CREATED OR NOT]
-  const {isLoading: resultIsLoading, data: resultData} =
-    useGetResultBasedDateTimePowerResultQuery({
-      accesstoken,
-      powertimeid: powertime._id,
-      powerdateid: item._id,
-    });
+  console.log(powertime._id);
+  console.log(item._id);
 
-  // console.log(JSON.stringify(resultData));
+  // [CHECKING FOR RESULT ALREADY CREATED OR NOT]
+  const {
+    isLoading: resultIsLoading,
+    data: resultData,
+    error: resultError,
+    refetch: resultRefetch,
+  } = useGetResultBasedDateTimePowerResultQuery({
+    accesstoken,
+    powertimeid: powertime._id,
+    powerdateid: item._id,
+  });
+
+  console.log(JSON.stringify(resultData));
+  console.log(resultData);
 
   const [resultFound, setResultFound] = useState(false);
 
@@ -79,7 +87,13 @@ const PowerGameInsights = ({route}) => {
         setResultFound(true);
       }
     }
-  }, [resultData, resultIsLoading]);
+    if (
+      resultError?.data?.message ===
+      'No PowerResult found for the given powertime and powerdate'
+    ) {
+      setResultFound(true);
+    }
+  }, [resultData, resultIsLoading, resultError]);
 
   const Footer = () => {
     return (
@@ -259,6 +273,7 @@ const PowerGameInsights = ({route}) => {
       setPage(1); // ✅ Reset Page
       setHasMore(true); // ✅ Reset Load More
       refetchPaginated?.(); // ✅ Ensure Fresh Data
+      resultRefetch();
     }, [refetchPaginated]),
   );
 

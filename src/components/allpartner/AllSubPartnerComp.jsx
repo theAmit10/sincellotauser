@@ -16,6 +16,12 @@ const AllSubPartnerComp = ({
   item,
 }) => {
   const navigation = useNavigation();
+
+  console.log(JSON.stringify(item));
+
+  const userdata = {
+    userId: item.partnerId,
+  };
   return (
     <TouchableOpacity
       onPress={() => {
@@ -34,6 +40,12 @@ const AllSubPartnerComp = ({
           }}>
           <View style={styles.topContainer}>
             <TouchableOpacity
+              onPress={() => {
+                navigation.navigate('UserDetails', {
+                  userdata: item,
+                  fromscreen: 'partner',
+                });
+              }}
               style={{
                 flex: 1,
                 display: 'flex',

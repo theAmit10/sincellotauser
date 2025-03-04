@@ -34,6 +34,12 @@ const AllPartnerComp = ({
           }}>
           <View style={styles.topContainer}>
             <TouchableOpacity
+              onPress={() => {
+                navigation.navigate('UserDetails', {
+                  userdata: item,
+                  fromscreen: 'partner',
+                });
+              }}
               style={{
                 flex: 1,
                 display: 'flex',
