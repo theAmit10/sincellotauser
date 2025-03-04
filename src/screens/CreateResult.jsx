@@ -55,30 +55,33 @@ const CreateResult = ({route}) => {
   function getNextResultTime(times, curtime) {
     // Sort times based on the lottime to ensure they are in order
     const sortedTimes = [...times].sort((a, b) => {
-      return new Date(`1970-01-01T${a.lottime}Z`) - new Date(`1970-01-01T${b.lottime}Z`);
+      return (
+        new Date(`1970-01-01T${a.lottime}Z`) -
+        new Date(`1970-01-01T${b.lottime}Z`)
+      );
     });
-  
+
     // Find the index of the current time in the sorted times array
     const curIndex = sortedTimes.findIndex(time => time.lottime === curtime);
-  
+
     // If curtime is not found, or if there's only one time in the list
     if (curIndex === -1 || sortedTimes.length === 1) {
       return sortedTimes[0]?.lottime || curtime;
     }
-  
+
     // Check if curtime is the last item in the list
     if (curIndex === sortedTimes.length - 1) {
       return sortedTimes[0].lottime; // Return the first time in the list
     }
-  
+
     // Return the next time after curtime
     return sortedTimes[curIndex + 1].lottime;
   }
-  
+
   useEffect(() => {
     console.log('Getting all the times');
     if (times) {
-      console.log("curr time :: "+timedata.lottime)
+      console.log('curr time :: ' + timedata.lottime);
       console.log('times', getNextResultTime(times, timedata.lottime));
 
       // console.log(times)
@@ -125,6 +128,7 @@ const CreateResult = ({route}) => {
 
   const submitHandler = () => {
     console.log('Working on login ');
+
     const currentTime = formatTime(new Date());
 
     if (!enterData) {
@@ -145,8 +149,9 @@ const CreateResult = ({route}) => {
       });
     } else {
       Toast.show({
-        type: 'success',
+        type: 'info',
         text1: 'Processing... ',
+        text2: 'Please dont close the app, this might take a while',
       });
 
       createResult(
@@ -425,6 +430,7 @@ const CreateResult = ({route}) => {
                   paddingHorizontal: heightPercentageToDP(2),
                 }}>
                 <TouchableOpacity
+                  disabled={loading}
                   onPress={submitHandler}
                   className="rounded-full"
                   style={{

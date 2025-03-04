@@ -20,7 +20,7 @@ const PartnerPerformance = ({route}) => {
 
   // console.log('timedata', timedata);
   // console.log('locationdata', locationdata);
-  // console.log('datedata', datedata);
+  console.log('datedata', datedata);
 
   const [expandedItems, setExpandedItems] = useState({});
   const toggleItem = id => {

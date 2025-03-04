@@ -102,7 +102,9 @@ const PartnerPerformanceComp = ({
 
               justifyContent: 'flex-start',
             }}>
-            <Text style={styles.titleData}>8%</Text>
+            <Text style={styles.titleData}>
+              {item.contributionPercentage.toFixed(2)}
+            </Text>
           </View>
         </View>
         <View
@@ -124,7 +126,7 @@ const PartnerPerformanceComp = ({
               justifyContent: 'flex-start',
             }}>
             <Text style={styles.titleData} adjustsFontSizeToFit={true}>
-              200
+              {item.profitAmount.toFixed(2)}
             </Text>
           </View>
         </View>
