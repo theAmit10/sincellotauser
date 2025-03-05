@@ -12,13 +12,16 @@ import {useGetAllPowerTimesQuery} from '../../helper/Networkcall';
 import NoDataFound from '../../components/helpercComponent/NoDataFound';
 import PowerTimeGameInsightComp from '../../components/PowerTimeGameInsightComp';
 
-const PowerTime = () => {
+const PowerTime = ({route}) => {
+  const {data: fromscreen} = route.params;
   const navigation = useNavigation();
 
   const {accesstoken} = useSelector(state => state.user);
   const {isLoading, data, error, refetch} = useGetAllPowerTimesQuery({
     accesstoken,
   });
+
+  console.log(fromscreen);
 
   const isFocused = useIsFocused();
   useEffect(() => {
@@ -40,7 +43,7 @@ const PowerTime = () => {
               key={item._id}
               time={item.powertime}
               item={item}
-              navigate={'PowerAllDate'}
+              navigate={fromscreen ? 'PowerDatePerformance' : 'PowerAllDate'}
             />
           )}
         />

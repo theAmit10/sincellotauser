@@ -1237,6 +1237,17 @@ export const sincelotAdminApi = createApi({
       }),
     }),
 
+    // [GET PARTER PERFORMANCE POWERBALL ]
+    getPartnerPerformancePowerball: builder.query({
+      query: ({accesstoken, powertime, powerdate, page, limit}) => ({
+        url: `result/singlepartnerperformancepowerball/${powertime}/${powerdate}?page=${page}&limit=${limit}`,
+        method: 'get',
+        headers: {
+          Authorization: `Bearer ${accesstoken}`,
+        },
+      }),
+    }),
+
     // [ADD USER TO USERLIST]
     addUserToUserList: builder.mutation({
       query: ({accesstoken, body}) => ({
@@ -1268,6 +1279,7 @@ export const sincelotAdminApi = createApi({
 });
 
 export const {
+  useGetPartnerPerformancePowerballQuery,
   usePromotePartnerToTopPartnerMutation,
   useAddUserToUserListMutation,
   useGetPartnerPerformanceQuery,

@@ -14,7 +14,8 @@ import {useSelector} from 'react-redux';
 import NoDataFound from '../../components/helpercComponent/NoDataFound';
 import Toast from 'react-native-toast-message';
 
-const PowerAllTimes = () => {
+const PowerAllTimes = ({route}) => {
+  const {data: fromscreen} = route.params;
   const navigation = useNavigation();
   const {accesstoken} = useSelector(state => state.user);
   const {isLoading, data, error, refetch} = useGetAllPowerTimesQuery({

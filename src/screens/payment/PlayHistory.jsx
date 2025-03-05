@@ -78,7 +78,7 @@ const historyapidata = [
 ];
 
 function formatAmount(value) {
-  if (typeof value === "string") {
+  if (typeof value === 'string') {
     value = parseFloat(value); // Convert string to float if necessary
   }
 
@@ -201,8 +201,7 @@ const PlayHistory = ({route}) => {
                   textAlign: 'center',
                 }}
                 numberOfLines={1}
-                ellipsizeMode="tail"
-                >
+                ellipsizeMode="tail">
                 {userdata.name}
               </Text>
 
@@ -224,12 +223,10 @@ const PlayHistory = ({route}) => {
                   textAlign: 'center',
                 }}
                 numberOfLines={1}
-                ellipsizeMode="tail"
-                >
+                ellipsizeMode="tail">
                 {userdata.country?.countryname}
               </Text>
             </View>
-
 
             <View style={{margin: heightPercentageToDP(2)}}>
               <GradientTextWhite style={styles.textStyle}>
@@ -252,228 +249,540 @@ const PlayHistory = ({route}) => {
               ) : (
                 <FlatList
                   data={historyapidatas.playbets}
-                  renderItem={({item}) => (
-                    <LinearGradient
-                      colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
-                      start={{x: 0, y: 0}} // start from left
-                      end={{x: 1, y: 0}} // end at right
-                      style={{
-                        justifyContent: 'flex-start',
-                        borderRadius: heightPercentageToDP(2),
-                        marginTop: heightPercentageToDP(2),
-                      }}>
-                      <TouchableOpacity
-                        onPress={() => toggleItem(item._id)}
-                        style={{
-                          flex: 1,
-                          borderTopLeftRadius: heightPercentageToDP(2),
-                          borderTopEndRadius: heightPercentageToDP(2),
-                          flexDirection: 'row',
-                        }}>
-                        <View
-                          style={{
-                            width: widthPercentageToDP(78),
-                            flexDirection: 'row',
-                            borderTopLeftRadius: heightPercentageToDP(2),
-                            borderTopEndRadius: heightPercentageToDP(2),
-                          }}>
-                          <View
+                  renderItem={({item}) => {
+                    return (
+                      <>
+                        {item.gameType === 'playarena' ? (
+                          <LinearGradient
+                            colors={[
+                              COLORS.time_firstblue,
+                              COLORS.time_secondbluw,
+                            ]}
+                            start={{x: 0, y: 0}} // start from left
+                            end={{x: 1, y: 0}} // end at right
                             style={{
-                              backgroundColor: COLORS.white_s,
-                              padding: heightPercentageToDP(1),
-                              borderRadius: heightPercentageToDP(1),
-                              marginVertical: heightPercentageToDP(2),
-                              marginHorizontal: heightPercentageToDP(1),
+                              justifyContent: 'flex-start',
+                              borderRadius: heightPercentageToDP(2),
+                              marginTop: heightPercentageToDP(2),
                             }}>
-                            <MaterialCommunityIcons
-                              name={'play-circle-outline'}
-                              size={heightPercentageToDP(3)}
-                              color={
-                                item?.walletName
-                                  ? COLORS.green
-                                  : COLORS.darkGray
-                              }
-                            />
-                          </View>
-
-                          <View style={{flex: 1}}>
-                            <View
+                            <TouchableOpacity
+                              onPress={() => toggleItem(item._id)}
                               style={{
-                                flexDirection: 'row',
                                 flex: 1,
-                                justifyContent: 'flex-start',
-                                alignItems: 'center',
-                              }}>
-                              <Text
-                                style={{
-                                  fontFamily: FONT.Montserrat_Regular,
-                                  fontSize: heightPercentageToDP(1.6),
-                                  color: COLORS.black,
-                                }}>
-                                {`Amount \u00A0`}
-                              </Text>
-                              <Text
-                                style={{
-                                  fontFamily: FONT.Montserrat_Bold,
-                                  fontSize: heightPercentageToDP(2),
-                                  color: COLORS.black,
-                                  width: '70%',
-                                }}
-                                numberOfLines={2}>
-                                : {formatAmount(calculateTotalAmount(item?.playnumbers))}{' '}
-                                {item?.currency?.countrycurrencysymbol}
-                              </Text>
-                            </View>
-
-                            <View
-                              style={{
+                                borderTopLeftRadius: heightPercentageToDP(2),
+                                borderTopEndRadius: heightPercentageToDP(2),
                                 flexDirection: 'row',
+                              }}>
+                              <View
+                                style={{
+                                  width: widthPercentageToDP(78),
+                                  flexDirection: 'row',
+                                  borderTopLeftRadius: heightPercentageToDP(2),
+                                  borderTopEndRadius: heightPercentageToDP(2),
+                                }}>
+                                <View
+                                  style={{
+                                    backgroundColor: COLORS.white_s,
+                                    padding: heightPercentageToDP(1),
+                                    borderRadius: heightPercentageToDP(1),
+                                    marginVertical: heightPercentageToDP(2),
+                                    marginHorizontal: heightPercentageToDP(1),
+                                  }}>
+                                  <MaterialCommunityIcons
+                                    name={'play-circle-outline'}
+                                    size={heightPercentageToDP(3)}
+                                    color={
+                                      item?.walletName
+                                        ? COLORS.green
+                                        : COLORS.darkGray
+                                    }
+                                  />
+                                </View>
+
+                                <View style={{flex: 1}}>
+                                  <View
+                                    style={{
+                                      flexDirection: 'row',
+                                      flex: 1,
+                                      justifyContent: 'flex-start',
+                                      alignItems: 'center',
+                                    }}>
+                                    <Text
+                                      style={{
+                                        fontFamily: FONT.Montserrat_Regular,
+                                        fontSize: heightPercentageToDP(1.6),
+                                        color: COLORS.black,
+                                      }}>
+                                      {`Amount \u00A0`}
+                                    </Text>
+                                    <Text
+                                      style={{
+                                        fontFamily: FONT.Montserrat_Bold,
+                                        fontSize: heightPercentageToDP(2),
+                                        color: COLORS.black,
+                                        width: '70%',
+                                      }}
+                                      numberOfLines={2}>
+                                      :{' '}
+                                      {formatAmount(
+                                        calculateTotalAmount(item?.playnumbers),
+                                      )}{' '}
+                                      {item?.currency?.countrycurrencysymbol}
+                                    </Text>
+                                  </View>
+
+                                  <View
+                                    style={{
+                                      flexDirection: 'row',
+                                      flex: 1,
+                                      justifyContent: 'flex-start',
+                                      alignItems: 'center',
+                                    }}>
+                                    <Text
+                                      style={{
+                                        fontFamily: FONT.Montserrat_Regular,
+                                        fontSize: heightPercentageToDP(1.8),
+                                        color: COLORS.black,
+                                      }}>
+                                      {item?.lotdate?.lotdate
+                                        ? formatDate(item?.lotdate?.lotdate)
+                                        : ''}
+                                    </Text>
+                                  </View>
+                                </View>
+                              </View>
+
+                              <View style={{flex: 1, flexDirection: 'row'}}>
+                                <TouchableOpacity
+                                  onPress={() => toggleItem(item._id)}
+                                  style={{
+                                    paddingHorizontal: 4,
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                  }}>
+                                  <LinearGradient
+                                    colors={[COLORS.lightWhite, COLORS.white_s]}
+                                    style={styles.expandIconContainer}>
+                                    <Ionicons
+                                      name={
+                                        expandedItems[item._id]
+                                          ? 'remove-outline'
+                                          : 'add-outline'
+                                      }
+                                      size={heightPercentageToDP(2)}
+                                      color={COLORS.darkGray}
+                                    />
+                                  </LinearGradient>
+                                </TouchableOpacity>
+                              </View>
+                            </TouchableOpacity>
+
+                            {expandedItems[item._id] && (
+                              <>
+                                <View
+                                  style={{
+                                    height: 1,
+                                    backgroundColor: COLORS.white_s,
+                                    marginHorizontal: heightPercentageToDP(2),
+                                  }}
+                                />
+                                <View
+                                  style={{
+                                    flex: 1,
+                                    borderBottomLeftRadius:
+                                      heightPercentageToDP(2),
+                                    borderBottomEndRadius:
+                                      heightPercentageToDP(2),
+                                    flexDirection: 'row',
+                                    padding: heightPercentageToDP(1),
+                                  }}>
+                                  <View style={styles.detailContainer}>
+                                    <Text style={styles.detailValue}>
+                                      Location
+                                    </Text>
+                                    <Text
+                                      numberOfLines={1}
+                                      style={styles.detailLabel}>
+                                      {item?.lotlocation?.lotlocation}
+                                    </Text>
+                                  </View>
+                                  <View style={styles.detailContainer}>
+                                    <Text style={styles.detailValue}>Time</Text>
+                                    <Text
+                                      numberOfLines={1}
+                                      style={styles.detailLabel}>
+                                      {item?.lottime?.lottime}
+                                    </Text>
+                                  </View>
+                                  <View style={styles.detailContainer}>
+                                    <Text style={styles.detailValue}>
+                                      {item?.walletName
+                                        ? 'Winning No.'
+                                        : 'Total bets'}
+                                    </Text>
+                                    <Text
+                                      numberOfLines={3}
+                                      style={styles.detailLabel}>
+                                      {item?.walletName
+                                        ? item?.playnumbers[0]?.playnumber
+                                        : item?.playnumbers?.length}
+                                    </Text>
+                                  </View>
+                                </View>
+                                {/** PLAY NUMBER */}
+                                <View
+                                  style={{
+                                    flex: 1,
+                                    borderBottomLeftRadius:
+                                      heightPercentageToDP(2),
+                                    borderBottomEndRadius:
+                                      heightPercentageToDP(2),
+                                    flexDirection: 'row',
+                                    padding: heightPercentageToDP(1),
+                                  }}>
+                                  <View style={styles.detailContainer}>
+                                    <Text style={styles.detailValue}>
+                                      Number
+                                    </Text>
+                                  </View>
+                                  <View style={styles.detailContainer}>
+                                    <Text style={styles.detailValue}>
+                                      Amount
+                                    </Text>
+                                  </View>
+                                  <View style={styles.detailContainer}>
+                                    <Text style={styles.detailValue}>
+                                      Win Amt.
+                                    </Text>
+                                  </View>
+                                </View>
+                                {item.playnumbers.map((pitem, pindex) => (
+                                  <View
+                                    key={pindex}
+                                    style={{
+                                      borderBottomLeftRadius:
+                                        heightPercentageToDP(2),
+                                      borderBottomEndRadius:
+                                        heightPercentageToDP(2),
+                                      flexDirection: 'row',
+                                      padding: heightPercentageToDP(1),
+                                    }}>
+                                    <View style={styles.detailContainer}>
+                                      <Text style={styles.detailLabel}>
+                                        {pitem?.playnumber}
+                                      </Text>
+                                    </View>
+                                    <View style={styles.detailContainer}>
+                                      <Text style={styles.detailLabel}>
+                                        {/* {pitem?.amount} */}
+                                        {item?.walletName
+                                          ? formatAmount(
+                                              pitem?.amount /
+                                                extractNumberFromString(
+                                                  item?.lotlocation
+                                                    ?.maximumReturn,
+                                                ),
+                                            )
+                                          : formatAmount(pitem?.amount)}
+                                      </Text>
+                                    </View>
+                                    <View style={styles.detailContainer}>
+                                      <Text style={styles.detailLabel}>
+                                        {formatAmount(pitem?.winningamount)}
+                                      </Text>
+                                    </View>
+                                  </View>
+                                ))}
+                              </>
+                            )}
+                          </LinearGradient>
+                        ) : (
+                          <LinearGradient
+                            colors={[
+                              COLORS.time_firstblue,
+                              COLORS.time_secondbluw,
+                            ]}
+                            start={{x: 0, y: 0}} // start from left
+                            end={{x: 1, y: 0}} // end at right
+                            style={{
+                              justifyContent: 'flex-start',
+                              borderRadius: heightPercentageToDP(2),
+                              marginTop: heightPercentageToDP(2),
+                            }}>
+                            <TouchableOpacity
+                              onPress={() => toggleItem(item._id)}
+                              style={{
                                 flex: 1,
-                                justifyContent: 'flex-start',
-                                alignItems: 'center',
-                              }}>
-                              <Text
-                                style={{
-                                  fontFamily: FONT.Montserrat_Regular,
-                                  fontSize: heightPercentageToDP(1.8),
-                                  color: COLORS.black,
-                                }}>
-                                {item?.lotdate?.lotdate
-                                  ? formatDate(item?.lotdate?.lotdate)
-                                  : ''}
-                              </Text>
-                            </View>
-                          </View>
-                        </View>
-
-                        <View style={{flex: 1, flexDirection: 'row'}}>
-                          <TouchableOpacity
-                            onPress={() => toggleItem(item._id)}
-                            style={{
-                              paddingHorizontal: 4,
-                              justifyContent: 'center',
-                              alignItems: 'center',
-                            }}>
-                            <LinearGradient
-                              colors={[COLORS.lightWhite, COLORS.white_s]}
-                              style={styles.expandIconContainer}>
-                              <Ionicons
-                                name={
-                                  expandedItems[item._id]
-                                    ? 'remove-outline'
-                                    : 'add-outline'
-                                }
-                                size={heightPercentageToDP(2)}
-                                color={COLORS.darkGray}
-                              />
-                            </LinearGradient>
-                          </TouchableOpacity>
-                        </View>
-                      </TouchableOpacity>
-
-                      {expandedItems[item._id] && (
-                        <>
-                          <View
-                            style={{
-                              height: 1,
-                              backgroundColor: COLORS.white_s,
-                              marginHorizontal: heightPercentageToDP(2),
-                            }}
-                          />
-                          <View
-                            style={{
-                              flex: 1,
-                              borderBottomLeftRadius: heightPercentageToDP(2),
-                              borderBottomEndRadius: heightPercentageToDP(2),
-                              flexDirection: 'row',
-                              padding: heightPercentageToDP(1),
-                            }}>
-                            <View style={styles.detailContainer}>
-                              <Text style={styles.detailValue}>Location</Text>
-                              <Text
-                                numberOfLines={1}
-                                style={styles.detailLabel}>
-                                {item?.lotlocation?.lotlocation}
-                              </Text>
-                            </View>
-                            <View style={styles.detailContainer}>
-                              <Text style={styles.detailValue}>Time</Text>
-                              <Text
-                                numberOfLines={1}
-                                style={styles.detailLabel}>
-                                {item?.lottime?.lottime}
-                              </Text>
-                            </View>
-                            <View style={styles.detailContainer}>
-                              <Text style={styles.detailValue}>
-                                {item?.walletName
-                                  ? 'Winning No.'
-                                  : 'Total bets'}
-                              </Text>
-                              <Text
-                                numberOfLines={3}
-                                style={styles.detailLabel}>
-                                {item?.walletName
-                                  ? item?.playnumbers[0]?.playnumber
-                                  : item?.playnumbers?.length}
-                              </Text>
-                            </View>
-                          </View>
-                          {/** PLAY NUMBER */}
-                          <View
-                            style={{
-                              flex: 1,
-                              borderBottomLeftRadius: heightPercentageToDP(2),
-                              borderBottomEndRadius: heightPercentageToDP(2),
-                              flexDirection: 'row',
-                              padding: heightPercentageToDP(1),
-                            }}>
-                            <View style={styles.detailContainer}>
-                              <Text style={styles.detailValue}>Number</Text>
-                            </View>
-                            <View style={styles.detailContainer}>
-                              <Text style={styles.detailValue}>Amount</Text>
-                            </View>
-                            <View style={styles.detailContainer}>
-                              <Text style={styles.detailValue}>Win Amt.</Text>
-                            </View>
-                          </View>
-                          {item.playnumbers.map((pitem, pindex) => (
-                            <View
-                              key={pindex}
-                              style={{
-                                borderBottomLeftRadius: heightPercentageToDP(2),
-                                borderBottomEndRadius: heightPercentageToDP(2),
+                                borderTopLeftRadius: heightPercentageToDP(2),
+                                borderTopEndRadius: heightPercentageToDP(2),
                                 flexDirection: 'row',
-                                padding: heightPercentageToDP(1),
                               }}>
-                              <View style={styles.detailContainer}>
-                                <Text style={styles.detailLabel}>
-                                  {pitem?.playnumber}
-                                </Text>
+                              <View
+                                style={{
+                                  width: widthPercentageToDP(78),
+                                  flexDirection: 'row',
+                                  borderTopLeftRadius: heightPercentageToDP(2),
+                                  borderTopEndRadius: heightPercentageToDP(2),
+                                }}>
+                                <View
+                                  style={{
+                                    backgroundColor: COLORS.white_s,
+                                    padding: heightPercentageToDP(1),
+                                    borderRadius: heightPercentageToDP(1),
+                                    marginVertical: heightPercentageToDP(2),
+                                    marginHorizontal: heightPercentageToDP(1),
+                                  }}>
+                                  <MaterialCommunityIcons
+                                    name={'trophy-award'}
+                                    size={heightPercentageToDP(3)}
+                                    color={
+                                      item?.walletName
+                                        ? COLORS.green
+                                        : COLORS.darkGray
+                                    }
+                                  />
+                                </View>
+
+                                <View style={{flex: 1}}>
+                                  <View
+                                    style={{
+                                      flexDirection: 'row',
+                                      flex: 1,
+                                      justifyContent: 'flex-start',
+                                      alignItems: 'center',
+                                    }}>
+                                    <Text
+                                      style={{
+                                        fontFamily: FONT.Montserrat_Regular,
+                                        fontSize: heightPercentageToDP(1.6),
+                                        color: COLORS.black,
+                                      }}>
+                                      {`Amount \u00A0`}
+                                    </Text>
+                                    <Text
+                                      style={{
+                                        fontFamily: FONT.Montserrat_Bold,
+                                        fontSize: heightPercentageToDP(2),
+                                        color: COLORS.black,
+                                        width: '70%',
+                                      }}
+                                      numberOfLines={2}>
+                                      :{' '}
+                                      {formatAmount(
+                                        calculateTotalAmount(item?.tickets),
+                                      )}{' '}
+                                      {item?.currency?.countrycurrencysymbol}
+                                    </Text>
+                                  </View>
+
+                                  <View
+                                    style={{
+                                      flexDirection: 'row',
+                                      flex: 1,
+                                      justifyContent: 'flex-start',
+                                      alignItems: 'center',
+                                    }}>
+                                    <Text
+                                      style={{
+                                        fontFamily: FONT.Montserrat_Regular,
+                                        fontSize: heightPercentageToDP(1.8),
+                                        color: COLORS.black,
+                                      }}>
+                                      {item?.powerdate?.powerdate
+                                        ? formatDate(item?.powerdate?.powerdate)
+                                        : ''}
+                                    </Text>
+                                  </View>
+                                </View>
                               </View>
-                              <View style={styles.detailContainer}>
-                                <Text style={styles.detailLabel}>
-                                  {/* {pitem?.amount} */}
-                                  {item?.walletName
-                                    ? formatAmount(pitem?.amount /
-                                      extractNumberFromString(
-                                        item?.lotlocation?.maximumReturn,
-                                      ))
-                                    : formatAmount(pitem?.amount)}
-                                </Text>
+
+                              <View style={{flex: 1, flexDirection: 'row'}}>
+                                <TouchableOpacity
+                                  onPress={() => toggleItem(item._id)}
+                                  style={{
+                                    paddingHorizontal: 4,
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                  }}>
+                                  <LinearGradient
+                                    colors={[COLORS.lightWhite, COLORS.white_s]}
+                                    style={styles.expandIconContainer}>
+                                    <Ionicons
+                                      name={
+                                        expandedItems[item._id]
+                                          ? 'remove-outline'
+                                          : 'add-outline'
+                                      }
+                                      size={heightPercentageToDP(2)}
+                                      color={COLORS.darkGray}
+                                    />
+                                  </LinearGradient>
+                                </TouchableOpacity>
                               </View>
-                              <View style={styles.detailContainer}>
-                                <Text style={styles.detailLabel}>
-                                  {formatAmount(pitem?.winningamount)}
-                                </Text>
-                              </View>
-                            </View>
-                          ))}
-                        </>
-                      )}
-                    </LinearGradient>
-                  )}
+                            </TouchableOpacity>
+
+                            {expandedItems[item._id] && (
+                              <>
+                                <View
+                                  style={{
+                                    height: 1,
+                                    backgroundColor: COLORS.white_s,
+                                    marginHorizontal: heightPercentageToDP(2),
+                                  }}
+                                />
+                                <View
+                                  style={{
+                                    flex: 1,
+                                    borderBottomLeftRadius:
+                                      heightPercentageToDP(2),
+                                    borderBottomEndRadius:
+                                      heightPercentageToDP(2),
+                                    flexDirection: 'row',
+                                    padding: heightPercentageToDP(1),
+                                    justifyContent: 'space-between',
+                                    alignItems: 'center',
+                                  }}>
+                                  <View
+                                    style={{
+                                      justifyContent: 'flex-start',
+                                      alignItems: 'flex-start',
+                                      paddingStart: heightPercentageToDP(1),
+                                    }}>
+                                    <Text style={styles.detailValue}>Time</Text>
+                                    <Text
+                                      numberOfLines={1}
+                                      style={styles.detailLabel}>
+                                      {item?.powertime?.powertime}
+                                    </Text>
+                                  </View>
+                                  <View style={styles.detailContainer}>
+                                    <Text style={styles.detailValue}>
+                                      {item?.walletName
+                                        ? 'Winner Ticket'
+                                        : 'Total Ticket'}
+                                    </Text>
+                                    <Text
+                                      numberOfLines={3}
+                                      style={styles.detailLabel}>
+                                      {item?.walletName
+                                        ? item.playnumbers[0]?.playnumber
+                                        : item?.tickets.length}
+                                    </Text>
+                                  </View>
+                                </View>
+                                {/** PLAY NUMBER */}
+                                <View
+                                  style={{
+                                    flex: 1,
+                                    borderBottomLeftRadius:
+                                      heightPercentageToDP(2),
+                                    borderBottomEndRadius:
+                                      heightPercentageToDP(2),
+                                    flexDirection: 'row',
+                                    padding: heightPercentageToDP(1),
+                                  }}>
+                                  <View
+                                    style={{
+                                      flex: 0.5,
+                                      justifyContent: 'flex-start',
+                                      alignItems: 'flex-start',
+                                      paddingStart: heightPercentageToDP(1),
+                                    }}>
+                                    <Text style={styles.detailValue}>No.</Text>
+                                  </View>
+                                  <View
+                                    style={{
+                                      flex: 2,
+                                      justifyContent: 'flex-start',
+                                      alignItems: 'flex-start',
+                                      paddingStart: heightPercentageToDP(1),
+                                    }}>
+                                    <Text style={styles.detailValue}>
+                                      Tickets
+                                    </Text>
+                                  </View>
+                                  <View
+                                    style={{
+                                      flex: 1,
+                                      justifyContent: 'flex-end',
+                                      alignItems: 'flex-end',
+                                      paddingStart: heightPercentageToDP(1),
+                                    }}>
+                                    <Text style={styles.detailValue}>
+                                      Amount
+                                    </Text>
+                                  </View>
+                                </View>
+                                {item.tickets.map((pitem, pindex) => (
+                                  <View
+                                    key={pindex}
+                                    style={{
+                                      borderBottomLeftRadius:
+                                        heightPercentageToDP(2),
+                                      borderBottomEndRadius:
+                                        heightPercentageToDP(2),
+                                      flexDirection: 'row',
+                                      padding: heightPercentageToDP(1),
+                                    }}>
+                                    <View
+                                      style={{
+                                        flex: 0.5,
+                                        justifyContent: 'flex-start',
+                                        alignItems: 'flex-start',
+                                        paddingStart: heightPercentageToDP(1),
+                                      }}>
+                                      <Text
+                                        style={{
+                                          ...styles.detailLabel,
+                                          fontFamily: FONT.Montserrat_SemiBold,
+                                        }}>
+                                        {pindex + 1}
+                                      </Text>
+                                    </View>
+                                    <View
+                                      style={{
+                                        flex: 2,
+                                        justifyContent: 'flex-start',
+                                        alignItems: 'flex-start',
+                                        paddingStart: heightPercentageToDP(1),
+                                      }}>
+                                      <Text style={styles.detailLabel}>
+                                        {pitem.usernumber.join(', ')}
+                                        {pitem.multiplier > 1
+                                          ? ` - ${pitem.multiplier}X `
+                                          : ''}
+                                      </Text>
+                                    </View>
+                                    <View
+                                      style={{
+                                        flex: 1,
+                                        justifyContent: 'flex-end',
+                                        alignItems: 'flex-end',
+                                        paddingStart: heightPercentageToDP(1),
+                                        paddingStart: heightPercentageToDP(1),
+                                      }}>
+                                      <Text style={styles.detailLabel}>
+                                        {pitem.amount}
+                                      </Text>
+                                    </View>
+                                  </View>
+                                ))}
+                                <View
+                                  style={{
+                                    height: 1,
+                                    backgroundColor: COLORS.white_s,
+                                    marginHorizontal: heightPercentageToDP(2),
+                                    marginBottom: heightPercentageToDP(3),
+                                    marginTop: heightPercentageToDP(1),
+                                  }}
+                                />
+                              </>
+                            )}
+                          </LinearGradient>
+                        )}
+                      </>
+                    );
+                  }}
                   keyExtractor={item => item._id.toString()}
                   initialNumToRender={10}
                   maxToRenderPerBatch={10}

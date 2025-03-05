@@ -137,6 +137,9 @@ import LiveResultLocation from '../screens/LiveResultLocation';
 import PartnerActivation from '../screens/partner/PartnerActivation';
 import AddUserToUserList from '../components/AddUserToUserList';
 import MakeTopPartner from '../screens/partner/MakeTopPartner';
+import PartnerPerformanceDashboard from '../screens/partner/PartnerPerformanceDashboard';
+import PowerDatePerformance from '../screens/powerball/PowerDatePerformance';
+import PartnerPerformancePowerball from '../screens/powerball/PartnerPerformancePowerball';
 
 const Stack = createNativeStackNavigator();
 
@@ -419,6 +422,19 @@ const Main = () => {
           <Stack.Screen
             name="LiveResultLocation"
             component={LiveResultLocation}
+          />
+
+          <Stack.Screen
+            name="PartnerPerformanceDashboard"
+            component={PartnerPerformanceDashboard}
+          />
+          <Stack.Screen
+            name="PowerDatePerformance"
+            component={PowerDatePerformance}
+          />
+          <Stack.Screen
+            name="PartnerPerformancePowerball"
+            component={PartnerPerformancePowerball}
           />
         </Stack.Group>
       </Stack.Navigator>

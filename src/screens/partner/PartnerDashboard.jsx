@@ -18,7 +18,7 @@ const PartnerDashboard = () => {
       {/** PARTNER PERFORMANCE */}
 
       <PartnerDashComp
-        navigate={'AllLocation'}
+        navigate={'PartnerPerformanceDashboard'}
         title={'Partner Performance'}
         subtitle={'List of all Partner Performace'}
         fromicon={'FontAwesome6'}
