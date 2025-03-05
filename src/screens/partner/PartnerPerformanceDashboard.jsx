@@ -12,17 +12,18 @@ const PartnerPerformanceDashboard = () => {
         navigate={'AllLocation'}
         title={'Playarena Performance'}
         subtitle={'List of all Partner Performace'}
-        fromicon={'FontAwesome6'}
-        iconname={'people-group'}
+        fromicon={'MaterialCommunityIcons'}
+        iconname={'play-circle-outline'}
       />
+
       {/** PARTNER PERFORMANCE */}
 
       <PartnerDashComp
         navigate={'PowerTime'}
         title={'Powerball Performance'}
         subtitle={'List of all Partner Performace'}
-        fromicon={'FontAwesome6'}
-        iconname={'people-group'}
+        fromicon={'MaterialCommunityIcons'}
+        iconname={'trophy-award'}
         data={'powerball'}
       />
     </MainBackgroundWithoutScrollview>
