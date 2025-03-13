@@ -76,6 +76,11 @@ const CreatePowerResult = ({route}) => {
   const [createPowerballResult, {isLoading: createPowerballResultIsLoading}] =
     useCreatePowerballResultMutation();
 
+  const isValidNumberString = str => {
+    const regex = /^\d+\s\d+\s\d+\s\d+\s\d+\s\d+$/;
+    return regex.test(str);
+  };
+
   const submitHandler = async () => {
     try {
       if (!first || !second || !third || !fourth || !fifth || !sixth) {
@@ -83,6 +88,32 @@ const CreatePowerResult = ({route}) => {
           type: 'error',
           text1: 'All field mandatory',
           text2: 'Please fill all the fields',
+        });
+        return;
+      }
+
+      if (
+        isNaN(first) ||
+        isNaN(second) ||
+        isNaN(third) ||
+        isNaN(fourth) ||
+        isNaN(fifth) ||
+        isNaN(sixth)
+      ) {
+        Toast.show({
+          type: 'error',
+          text1: 'Enter number only',
+          text2: 'Please fill all the fields',
+        });
+
+        return;
+      }
+
+      if (!isValidNumberString(jackpot)) {
+        Toast.show({
+          type: 'error',
+          text1: 'Invalid Jackpot formate',
+          text2: 'For Eg: 9 34 35 45 50 60',
         });
         return;
       }

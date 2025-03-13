@@ -20,7 +20,7 @@ const PowerballDashboard = () => {
   }, [data, isLoading]); // Correct dependencies
 
   return (
-    <MainBackgound title={`${powerball?.name} Dashboard`}>
+    <MainBackgound title={`${powerball ? powerball?.name : ''} Dashboard`}>
       {isLoading ? (
         <Loading />
       ) : (

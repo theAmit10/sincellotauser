@@ -140,6 +140,7 @@ import MakeTopPartner from '../screens/partner/MakeTopPartner';
 import PartnerPerformanceDashboard from '../screens/partner/PartnerPerformanceDashboard';
 import PowerDatePerformance from '../screens/powerball/PowerDatePerformance';
 import PartnerPerformancePowerball from '../screens/powerball/PartnerPerformancePowerball';
+import RechargeActivation from '../screens/partner/RechargeActivation';
 
 const Stack = createNativeStackNavigator();
 
@@ -435,6 +436,10 @@ const Main = () => {
           <Stack.Screen
             name="PartnerPerformancePowerball"
             component={PartnerPerformancePowerball}
+          />
+          <Stack.Screen
+            name="RechargeActivation"
+            component={RechargeActivation}
           />
         </Stack.Group>
       </Stack.Navigator>

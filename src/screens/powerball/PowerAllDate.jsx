@@ -9,6 +9,7 @@ import {useNavigation} from '@react-navigation/native';
 import PowerballAllDateComp from '../../components/powerball/powerballalldates/PowerballAllDateComp';
 import {useGetPowerDateBasedUponPowerTimeQuery} from '../../helper/Networkcall';
 import {useSelector} from 'react-redux';
+import moment from 'moment';
 
 const PowerAllDate = ({route}) => {
   const navigation = useNavigation();
@@ -20,7 +21,7 @@ const PowerAllDate = ({route}) => {
   const [allPowerDate, setPowerDate] = useState([]);
   const [page, setPage] = useState(1);
 
-  const limit = 5;
+  const limit = 10;
 
   const {accesstoken} = useSelector(state => state.user);
 
@@ -36,6 +37,21 @@ const PowerAllDate = ({route}) => {
       setPowerDate(data.powerDates);
     }
   }, [isLoading, data]);
+
+  // useEffect(() => {
+  //   if (data) {
+  //     const currentDate = moment().startOf('day');
+  //     const nextDate = currentDate.clone().add(1, 'days');
+
+  //     // Filter out items where the lotdate is the next day
+  //     const filtered = data.powerDates.filter(item => {
+  //       const itemDate = moment(item.powerdate, 'DD-MM-YYYY'); // Adjust format as needed
+  //       return !itemDate.isSame(nextDate, 'day');
+  //     });
+
+  //     setPowerDate(filtered); // Update filteredData whenever dates change
+  //   }
+  // }, [data]);
 
   return (
     <MainBackgroundWithoutScrollview title={'All Date'}>

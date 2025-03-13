@@ -55,7 +55,7 @@ const UpdatePermission = ({route}) => {
     {isLoading: updateRechargePermissionIsLoading},
   ] = useUpdateRechargePaymentMethodPermissionMutation();
 
-  console.log(JSON.stringify(rechargeData));
+  // console.log(JSON.stringify(rechargeData));
 
   const updateSubmitHandler = async item => {
     try {
@@ -110,20 +110,26 @@ const UpdatePermission = ({route}) => {
           userId: partnerdata.userId,
           id: data?.partner?.rechargeModule,
         };
-
+        console.log('IF');
+        console.log(partnerdata.userId);
+        console.log(data?.partner?.rechargeModule);
         const res = await deactivatePartnerRechargeModule({
           accesstoken,
           body,
         });
 
         console.log(JSON.stringify(res));
+        console.log('Success IF');
         Toast.show({
           type: 'success',
           text1: res.data.message,
         });
       } else {
+        console.log('else');
+        console.log(partnerdata.userId);
+        console.log(data?.partner?.rechargeModule);
         const body = {
-          userId: partnerdata.userId,
+          userId: Number.parseInt(partnerdata.userId),
           id: data?.partner?.rechargeModule,
         };
         const res = await activatePartnerRechargeModule({
@@ -131,6 +137,7 @@ const UpdatePermission = ({route}) => {
           body,
         });
 
+        console.log('Success');
         console.log(JSON.stringify(res));
         Toast.show({
           type: 'success',

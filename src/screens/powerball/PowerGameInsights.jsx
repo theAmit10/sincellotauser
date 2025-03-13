@@ -329,166 +329,166 @@ const PowerGameInsights = ({route}) => {
   // TESTING FOR THE WINNING AMOUNT AND ALL
 
   // Step 3: Get all tickets from the found power game
-  const allTickets = [
-    {
-      userId: 1042,
-      username: 'Naina',
-      currency: '67a344d34150a729e57269e9',
-      tickets: [
-        {
-          amount: 50,
-          convertedAmount: 50,
-          multiplier: 1,
-          usernumber: [13, 54, 67, 68, 31, 8],
-          _id: '67c79a7a842474a46585f8cd',
-          createdAt: '2025-03-05T00:27:38.655Z',
-        },
-        {
-          amount: 50,
-          convertedAmount: 50,
-          multiplier: 1,
-          usernumber: [9, 70, 23, 21, 5, 44],
-          _id: '67c79a7a842474a46585f8ce',
-          createdAt: '2025-03-05T00:27:38.655Z',
-        },
-      ],
-      _id: '67c79a7a842474a46585f8cc',
-      createdAt: '2025-03-05T00:27:38.663Z',
-      updatedAt: '2025-03-05T00:27:38.663Z',
-    },
-    {
-      userId: 1048,
-      username: 'sunaina',
-      currency: '67a344d34150a729e57269e9',
-      tickets: [
-        {
-          amount: 100,
-          convertedAmount: 100,
-          multiplier: 2,
-          usernumber: [2, 25, 35, 4, 66, 29],
-          _id: '67c79abe842474a46585f98b',
-          createdAt: '2025-03-05T00:28:46.997Z',
-        },
-      ],
-      _id: '67c79abe842474a46585f98a',
-      createdAt: '2025-03-05T00:28:46.998Z',
-      updatedAt: '2025-03-05T00:28:46.998Z',
-    },
-    {
-      userId: 1045,
-      username: 'Elena',
-      currency: '67a344d34150a729e57269e9',
-      tickets: [
-        {
-          amount: 100,
-          convertedAmount: 100,
-          multiplier: 2,
-          usernumber: [23, 68, 38, 20, 8, 41],
-          _id: '67c79b10842474a46585fa4a',
-          createdAt: '2025-03-05T00:30:08.307Z',
-        },
-        {
-          amount: 50,
-          convertedAmount: 50,
-          multiplier: 1,
-          usernumber: [56, 42, 57, 46, 12, 37],
-          _id: '67c79b10842474a46585fa4b',
-          createdAt: '2025-03-05T00:30:08.308Z',
-        },
-      ],
-      _id: '67c79b10842474a46585fa49',
-      createdAt: '2025-03-05T00:30:08.311Z',
-      updatedAt: '2025-03-05T00:30:08.311Z',
-    },
-    {
-      userId: 1046,
-      username: 'Divya',
-      currency: '67a344d34150a729e57269e9',
-      tickets: [
-        {
-          amount: 50,
-          convertedAmount: 50,
-          multiplier: 1,
-          usernumber: [21, 4, 23, 41, 2, 7],
-          _id: '67c79b5e842474a46585fb60',
-          createdAt: '2025-03-05T00:31:26.174Z',
-        },
-      ],
-      _id: '67c79b5e842474a46585fb5f',
-      createdAt: '2025-03-05T00:31:26.176Z',
-      updatedAt: '2025-03-05T00:31:26.176Z',
-    },
-    {
-      userId: 1047,
-      username: 'abhilash',
-      currency: '67a344d34150a729e57269e9',
-      tickets: [
-        {
-          amount: 50,
-          convertedAmount: 50,
-          multiplier: 1,
-          usernumber: [8, 26, 55, 25, 17, 34],
-          _id: '67c79ba6842474a46585fc2a',
-          createdAt: '2025-03-05T00:32:38.732Z',
-        },
-      ],
-      _id: '67c79ba6842474a46585fc29',
-      createdAt: '2025-03-05T00:32:38.736Z',
-      updatedAt: '2025-03-05T00:32:38.736Z',
-    },
-    {
-      userId: 1012,
-      username: 'Karan',
-      currency: '67a344d34150a729e57269e9',
-      tickets: [
-        {
-          amount: 50,
-          convertedAmount: 50,
-          multiplier: 1,
-          usernumber: [44, 67, 22, 31, 55, 30],
-          _id: '67c79be0842474a46585fcef',
-          createdAt: '2025-03-05T00:33:36.139Z',
-        },
-      ],
-      _id: '67c79be0842474a46585fcee',
-      createdAt: '2025-03-05T00:33:36.142Z',
-      updatedAt: '2025-03-05T00:33:36.142Z',
-    },
-  ];
+  // const allTickets = [
+  //   {
+  //     userId: 1042,
+  //     username: 'Naina',
+  //     currency: '67a344d34150a729e57269e9',
+  //     tickets: [
+  //       {
+  //         amount: 50,
+  //         convertedAmount: 50,
+  //         multiplier: 1,
+  //         usernumber: [13, 54, 67, 68, 31, 8],
+  //         _id: '67c79a7a842474a46585f8cd',
+  //         createdAt: '2025-03-05T00:27:38.655Z',
+  //       },
+  //       {
+  //         amount: 50,
+  //         convertedAmount: 50,
+  //         multiplier: 1,
+  //         usernumber: [9, 70, 23, 21, 5, 44],
+  //         _id: '67c79a7a842474a46585f8ce',
+  //         createdAt: '2025-03-05T00:27:38.655Z',
+  //       },
+  //     ],
+  //     _id: '67c79a7a842474a46585f8cc',
+  //     createdAt: '2025-03-05T00:27:38.663Z',
+  //     updatedAt: '2025-03-05T00:27:38.663Z',
+  //   },
+  //   {
+  //     userId: 1048,
+  //     username: 'sunaina',
+  //     currency: '67a344d34150a729e57269e9',
+  //     tickets: [
+  //       {
+  //         amount: 100,
+  //         convertedAmount: 100,
+  //         multiplier: 2,
+  //         usernumber: [2, 25, 35, 4, 66, 29],
+  //         _id: '67c79abe842474a46585f98b',
+  //         createdAt: '2025-03-05T00:28:46.997Z',
+  //       },
+  //     ],
+  //     _id: '67c79abe842474a46585f98a',
+  //     createdAt: '2025-03-05T00:28:46.998Z',
+  //     updatedAt: '2025-03-05T00:28:46.998Z',
+  //   },
+  //   {
+  //     userId: 1045,
+  //     username: 'Elena',
+  //     currency: '67a344d34150a729e57269e9',
+  //     tickets: [
+  //       {
+  //         amount: 100,
+  //         convertedAmount: 100,
+  //         multiplier: 2,
+  //         usernumber: [23, 68, 38, 20, 8, 41],
+  //         _id: '67c79b10842474a46585fa4a',
+  //         createdAt: '2025-03-05T00:30:08.307Z',
+  //       },
+  //       {
+  //         amount: 50,
+  //         convertedAmount: 50,
+  //         multiplier: 1,
+  //         usernumber: [56, 42, 57, 46, 12, 37],
+  //         _id: '67c79b10842474a46585fa4b',
+  //         createdAt: '2025-03-05T00:30:08.308Z',
+  //       },
+  //     ],
+  //     _id: '67c79b10842474a46585fa49',
+  //     createdAt: '2025-03-05T00:30:08.311Z',
+  //     updatedAt: '2025-03-05T00:30:08.311Z',
+  //   },
+  //   {
+  //     userId: 1046,
+  //     username: 'Divya',
+  //     currency: '67a344d34150a729e57269e9',
+  //     tickets: [
+  //       {
+  //         amount: 50,
+  //         convertedAmount: 50,
+  //         multiplier: 1,
+  //         usernumber: [21, 4, 23, 41, 2, 7],
+  //         _id: '67c79b5e842474a46585fb60',
+  //         createdAt: '2025-03-05T00:31:26.174Z',
+  //       },
+  //     ],
+  //     _id: '67c79b5e842474a46585fb5f',
+  //     createdAt: '2025-03-05T00:31:26.176Z',
+  //     updatedAt: '2025-03-05T00:31:26.176Z',
+  //   },
+  //   {
+  //     userId: 1047,
+  //     username: 'abhilash',
+  //     currency: '67a344d34150a729e57269e9',
+  //     tickets: [
+  //       {
+  //         amount: 50,
+  //         convertedAmount: 50,
+  //         multiplier: 1,
+  //         usernumber: [8, 26, 55, 25, 17, 34],
+  //         _id: '67c79ba6842474a46585fc2a',
+  //         createdAt: '2025-03-05T00:32:38.732Z',
+  //       },
+  //     ],
+  //     _id: '67c79ba6842474a46585fc29',
+  //     createdAt: '2025-03-05T00:32:38.736Z',
+  //     updatedAt: '2025-03-05T00:32:38.736Z',
+  //   },
+  //   {
+  //     userId: 1012,
+  //     username: 'Karan',
+  //     currency: '67a344d34150a729e57269e9',
+  //     tickets: [
+  //       {
+  //         amount: 50,
+  //         convertedAmount: 50,
+  //         multiplier: 1,
+  //         usernumber: [44, 67, 22, 31, 55, 30],
+  //         _id: '67c79be0842474a46585fcef',
+  //         createdAt: '2025-03-05T00:33:36.139Z',
+  //       },
+  //     ],
+  //     _id: '67c79be0842474a46585fcee',
+  //     createdAt: '2025-03-05T00:33:36.142Z',
+  //     updatedAt: '2025-03-05T00:33:36.142Z',
+  //   },
+  // ];
 
-  // Step 4: Function to distribute prize
+  // // Step 4: Function to distribute prize
 
-  // const allTickets = powerGame.alltickets;
-  const jackpotnumber = [2, 10, 19, 29, 39, 49];
-  let winningAmount = 0;
+  // // const allTickets = powerGame.alltickets;
+  // const jackpotnumber = [2, 10, 19, 29, 39, 49];
+  // let winningAmount = 0;
 
-  console.log('Winning amount: ', winningAmount);
+  // console.log('Winning amount: ', winningAmount);
 
-  const distributePrize = async (matchCount, prizeAmount) => {
-    for (let ticketHolder of allTickets) {
-      for (let ticket of ticketHolder.tickets) {
-        // Count the number of matching numbers
-        const matches = ticket.usernumber.filter(num =>
-          jackpotnumber.includes(num),
-        ).length;
+  // const distributePrize = async (matchCount, prizeAmount) => {
+  //   for (let ticketHolder of allTickets) {
+  //     for (let ticket of ticketHolder.tickets) {
+  //       // Count the number of matching numbers
+  //       const matches = ticket.usernumber.filter(num =>
+  //         jackpotnumber.includes(num),
+  //       ).length;
 
-        if (matches === matchCount) {
-          let wonAmount = prizeAmount * ticket.multiplier;
-          if (matchCount === 3) {
-            wonAmount = ticket.convertedAmount * parseFloat(prizeAmount);
-          }
-          if (matchCount === 2) {
-            wonAmount = ticket.convertedAmount * parseFloat(prizeAmount);
-          }
-          if (matchCount === 1) {
-            wonAmount = ticket.convertedAmount * parseFloat(prizeAmount);
-          }
+  //       if (matches === matchCount) {
+  //         let wonAmount = prizeAmount * ticket.multiplier;
+  //         if (matchCount === 3) {
+  //           wonAmount = ticket.convertedAmount * parseFloat(prizeAmount);
+  //         }
+  //         if (matchCount === 2) {
+  //           wonAmount = ticket.convertedAmount * parseFloat(prizeAmount);
+  //         }
+  //         if (matchCount === 1) {
+  //           wonAmount = ticket.convertedAmount * parseFloat(prizeAmount);
+  //         }
 
-          winningAmount += wonAmount;
-        }
-      }
-    }
-  };
+  //         winningAmount += wonAmount;
+  //       }
+  //     }
+  //   }
+  // };
 
   // Step 5: Distribute prizes based on matches
   //  await distributePrize(6, prize.firstprize.amount);
@@ -498,13 +498,13 @@ const PowerGameInsights = ({route}) => {
   //  await distributePrize(2, prize.fifthprize.amount);
   //  await distributePrize(1, prize.sixthprize.amount);
 
-  distributePrize(6, 100000);
-  distributePrize(5, 50000);
-  distributePrize(4, 25000);
-  distributePrize(3, 4);
-  distributePrize(2, 3);
-  distributePrize(1, 2);
-  console.log('Winning amount After: ', winningAmount);
+  // distributePrize(6, 100000);
+  // distributePrize(5, 50000);
+  // distributePrize(4, 25000);
+  // distributePrize(3, 4);
+  // distributePrize(2, 3);
+  // distributePrize(1, 2);
+  // console.log('Winning amount After: ', winningAmount);
 
   return (
     <MainBackgroundWithoutScrollview

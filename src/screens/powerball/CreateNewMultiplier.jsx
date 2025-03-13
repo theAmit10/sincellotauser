@@ -66,7 +66,7 @@ const CreateNewMultiplier = ({route}) => {
             title="Multplier"
             value={createmultiplier}
             onChangeText={text => setmultiplier(text)} // Updates inputValue state
-            placeholder="Enter Multiplier"
+            placeholder="For eg : 3X"
           />
 
           <View

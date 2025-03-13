@@ -6,7 +6,8 @@ import UrlHelper from './UrlHelper';
 export const sincelotAdminApi = createApi({
   reducerPath: 'sincelotAdminApi ',
   baseQuery: fetchBaseQuery({
-    baseUrl: 'https://adminbackend-apsw.onrender.com/api/v1/',
+    baseUrl:
+      'https://dev.worldgames55fhgfg7sd8fvgsd8f6gs8dfgdsfgds6onion.ru/api/v1/',
   }),
   endpoints: builder => ({
     getData: builder.query({
@@ -1274,11 +1275,25 @@ export const sincelotAdminApi = createApi({
       }),
     }),
 
+    // [Give recharge module to user]
+    giveRechargeModule: builder.mutation({
+      query: ({accesstoken, body}) => ({
+        url: `user/updaterechargestatus`,
+        method: 'PUT',
+        body,
+        headers: {
+          Authorization: `Bearer ${accesstoken}`,
+          'Content-Type': 'application/json',
+        },
+      }),
+    }),
+
     // ######## END #########
   }),
 });
 
 export const {
+  useGiveRechargeModuleMutation,
   useGetPartnerPerformancePowerballQuery,
   usePromotePartnerToTopPartnerMutation,
   useAddUserToUserListMutation,
