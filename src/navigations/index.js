@@ -141,6 +141,8 @@ import PartnerPerformanceDashboard from '../screens/partner/PartnerPerformanceDa
 import PowerDatePerformance from '../screens/powerball/PowerDatePerformance';
 import PartnerPerformancePowerball from '../screens/powerball/PartnerPerformancePowerball';
 import RechargeActivation from '../screens/partner/RechargeActivation';
+import AllOtherDepositPayment from '../screens/payment/AllOtherDepositPayment';
+import CreateOther from '../screens/payment/CreateOther';
 
 const Stack = createNativeStackNavigator();
 
@@ -441,6 +443,11 @@ const Main = () => {
             name="RechargeActivation"
             component={RechargeActivation}
           />
+          <Stack.Screen
+            name="AllOtherDepositPayment"
+            component={AllOtherDepositPayment}
+          />
+          <Stack.Screen name="CreateOther" component={CreateOther} />
         </Stack.Group>
       </Stack.Navigator>
 

@@ -96,7 +96,14 @@ const CREATE_CRYPTO_API = server + 'result/addcryptopayment';
 const UPDATE_SUBADMIN_ROLE_API = server + 'user/updaterole';
 const PARTNER_PROFILE_API = server + 'user/getpartnerbyuserid';
 
+const PARTNER_USER_OTHER_API = server + 'result/getuserotherpaymets';
+const PARTNER_OTHERPAYMENT_API = server + 'result/getpartnerotherlist';
+const ALL_OTHERPAYMENT_API = server + 'result/allotherpaymets';
+
 export default {
+  PARTNER_USER_OTHER_API,
+  ALL_OTHERPAYMENT_API,
+  PARTNER_OTHERPAYMENT_API,
   PARTNER_BANK_API,
   PARTNER_CRYPTO_API,
   PARTNER_PAYPAL_API,

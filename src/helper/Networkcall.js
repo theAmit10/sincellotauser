@@ -1288,11 +1288,48 @@ export const sincelotAdminApi = createApi({
       }),
     }),
 
+    // GET OTHER PAYMENT NAMES
+    getOtherPaymentName: builder.query({
+      query: ({accesstoken}) => ({
+        url: `user/getopname`,
+        method: 'get',
+        headers: {
+          Authorization: `Bearer ${accesstoken}`,
+        },
+      }),
+    }),
+
+    // FOR DELETE A OTHER PAYMENT ACCOUNT
+    deleteOtherPaymentAccount: builder.mutation({
+      query: ({accesstoken, id}) => ({
+        url: `result/removeotherpayment/${id}`,
+        method: 'DELETE',
+        headers: {
+          Authorization: `Bearer ${accesstoken}`,
+        },
+      }),
+    }),
+
+    // FOR CREATE A OTHER PAYMENT ACCOUNT
+    createOtherPaymentAccount: builder.mutation({
+      query: ({accesstoken, body}) => ({
+        url: 'result/addOtherPayment',
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${accesstoken}`,
+          'Content-Type': 'multipart/form-data',
+        },
+        body,
+      }),
+    }),
     // ######## END #########
   }),
 });
 
 export const {
+  useCreateOtherPaymentAccountMutation,
+  useDeleteOtherPaymentAccountMutation,
+  useGetOtherPaymentNameQuery,
   useGiveRechargeModuleMutation,
   useGetPartnerPerformancePowerballQuery,
   usePromotePartnerToTopPartnerMutation,
