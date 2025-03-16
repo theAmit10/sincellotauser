@@ -65,6 +65,14 @@ const RechargePayment = ({route}) => {
               data={data}
             />
           )}
+
+          {rechargeData?.rechargeModule?.otherPaymentPermission === true && (
+            <RechargePaymentComp
+              title={'Other'}
+              navigate={'PartnerOtherPaymentMethod'}
+              data={data}
+            />
+          )}
         </>
       )}
     </MainBackgound>

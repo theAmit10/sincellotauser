@@ -5,6 +5,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import {COLORS, FONT} from '../../../assets/constants';
 import GradientTextWhite from '../helpercComponent/GradientTextWhite';
 import {heightPercentageToDP} from 'react-native-responsive-screen';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const RechargePaymentComp = ({navigate, title, data}) => {
   const navigation = useNavigation();
@@ -51,7 +52,15 @@ const RechargePaymentComp = ({navigate, title, data}) => {
               style={styles.icon}
             />
           )}
+          {title === 'Other' && (
+            <MaterialCommunityIcons
+              color={COLORS.black}
+              name="contactless-payment-circle"
+              size={heightPercentageToDP(3)}
+            />
+          )}
         </View>
+
         <GradientTextWhite style={styles.textStyleContent}>
           {title}
         </GradientTextWhite>

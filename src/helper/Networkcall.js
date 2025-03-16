@@ -1322,11 +1322,39 @@ export const sincelotAdminApi = createApi({
         body,
       }),
     }),
+
+    // [ ACTIVATE OTHER PAYMENT PARTNER PAYMENT METHOD ]
+    activateOtherPaymentMethod: builder.mutation({
+      query: ({accesstoken, body, id}) => ({
+        url: `result/updateotherstatus/${id}`,
+        method: 'PUT',
+        body,
+        headers: {
+          Authorization: `Bearer ${accesstoken}`,
+          'Content-Type': 'application/json',
+        },
+      }),
+    }),
+
+    // [ REJECT OTHER PAYMENT PARTNER PAYMENT METHOD ]
+    rejectOtherPaymentMethod: builder.mutation({
+      query: ({accesstoken, body, id}) => ({
+        url: `result/updateotherpaymentstatus/${id}`,
+        method: 'PUT',
+        body,
+        headers: {
+          Authorization: `Bearer ${accesstoken}`,
+          'Content-Type': 'application/json',
+        },
+      }),
+    }),
     // ######## END #########
   }),
 });
 
 export const {
+  useActivateOtherPaymentMethodMutation,
+  useRejectOtherPaymentMethodMutation,
   useCreateOtherPaymentAccountMutation,
   useDeleteOtherPaymentAccountMutation,
   useGetOtherPaymentNameQuery,
