@@ -143,6 +143,7 @@ import PartnerPerformancePowerball from '../screens/powerball/PartnerPerformance
 import RechargeActivation from '../screens/partner/RechargeActivation';
 import AllOtherDepositPayment from '../screens/payment/AllOtherDepositPayment';
 import CreateOther from '../screens/payment/CreateOther';
+import UpdateOtherName from '../screens/payment/UpdateOtherName';
 
 const Stack = createNativeStackNavigator();
 
@@ -413,6 +414,7 @@ const Main = () => {
           />
 
           <Stack.Screen name="LiveResult" component={LiveResult} />
+          <Stack.Screen name="UpdateOtherName" component={UpdateOtherName} />
           <Stack.Screen name="MakeTopPartner" component={MakeTopPartner} />
           <Stack.Screen
             name="AddUserToUserList"

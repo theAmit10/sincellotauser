@@ -1348,11 +1348,25 @@ export const sincelotAdminApi = createApi({
         },
       }),
     }),
+    // [Give recharge module to user]
+    updateOtherPaymentName: builder.mutation({
+      query: ({accesstoken, body}) => ({
+        url: `user/updateopname`,
+        method: 'PUT',
+        body,
+        headers: {
+          Authorization: `Bearer ${accesstoken}`,
+          'Content-Type': 'application/json',
+        },
+      }),
+    }),
+
     // ######## END #########
   }),
 });
 
 export const {
+  useUpdateOtherPaymentNameMutation,
   useActivateOtherPaymentMethodMutation,
   useRejectOtherPaymentMethodMutation,
   useCreateOtherPaymentAccountMutation,

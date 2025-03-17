@@ -3,6 +3,7 @@ import {
   Image,
   ImageBackground,
   Platform,
+  Pressable,
   SafeAreaView,
   ScrollView,
   StyleSheet,
@@ -32,6 +33,7 @@ import {COLORS, FONT} from '../../../assets/constants';
 import Background from '../../components/background/Background';
 import GradientTextWhite from '../../components/helpercComponent/GradientTextWhite';
 import Loading from '../../components/helpercComponent/Loading';
+import {serverName} from '../../redux/store';
 
 const AllOtherDepositPayment = () => {
   const navigation = useNavigation();
@@ -127,6 +129,10 @@ const AllOtherDepositPayment = () => {
     }
   }, [loadingOtherPayment, otherPaymentData]);
 
+  useEffect(() => {
+    refetchOtherPayment();
+  }, [isFocused]);
+
   return (
     <SafeAreaView style={{flex: 1}}>
       <Background />
@@ -170,10 +176,28 @@ const AllOtherDepositPayment = () => {
                 }}
               />
             </View>
-            <View style={{margin: heightPercentageToDP(2)}}>
+            <View
+              style={{
+                margin: heightPercentageToDP(2),
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+              }}>
               <GradientTextWhite style={styles.textStyle}>
                 Other Deposit
               </GradientTextWhite>
+              <Pressable
+                onPress={() => navigation.navigate('UpdateOtherName')}
+                style={{
+                  backgroundColor: COLORS.white_s,
+                  padding: heightPercentageToDP(1),
+                  borderRadius: heightPercentageToDP(1),
+                }}>
+                <AntDesign
+                  color={COLORS.black}
+                  name="setting"
+                  size={heightPercentageToDP(3)}
+                />
+              </Pressable>
             </View>
 
             {/** FOR UPI ID DEPOSIT OPTION */}
@@ -340,8 +364,9 @@ const AllOtherDepositPayment = () => {
                             style={{
                               height: '100%',
                               width: '10%',
-                              justifyContent: 'space-between',
+                              justifyContent: 'flex-start',
                               alignItems: 'flex-end',
+                              gap: heightPercentageToDP(1),
                             }}>
                             {item.firstInput && (
                               <TouchableOpacity
@@ -487,7 +512,7 @@ const AllOtherDepositPayment = () => {
                         )}
 
                         {/** FOR ACTIVATION STATUS */}
-                        <View
+                        {/* <View
                           style={{
                             flexDirection: 'column',
                             justifyContent: 'center',
@@ -535,7 +560,7 @@ const AllOtherDepositPayment = () => {
                               {item.paymentStatus}
                             </Text>
                           </View>
-                        </View>
+                        </View> */}
                       </LinearGradient>
                     </TouchableOpacity>
                   ))}

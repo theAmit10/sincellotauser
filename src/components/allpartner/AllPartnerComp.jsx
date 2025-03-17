@@ -76,7 +76,7 @@ const AllPartnerComp = ({
                 style={styles.titleBold}
                 numberOfLines={1}
                 adjustsFontSizeToFit={true}>
-                {walletbalance}
+                {walletbalance?.toFixed(0)}
               </Text>
             </View>
           </View>
