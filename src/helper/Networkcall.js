@@ -1361,11 +1361,90 @@ export const sincelotAdminApi = createApi({
       }),
     }),
 
+    // GET ALL UPI
+    getAllUpi: builder.query({
+      query: ({accesstoken, page, limit}) => ({
+        url: `result/allupipaymets?page=${page}&limit=${limit}`,
+        method: 'get',
+        headers: {
+          Authorization: `Bearer ${accesstoken}`,
+        },
+      }),
+    }),
+
+    getAllBank: builder.query({
+      query: ({accesstoken, page, limit}) => ({
+        url: `result/allbankpaymets?page=${page}&limit=${limit}`,
+        method: 'get',
+        headers: {
+          Authorization: `Bearer ${accesstoken}`,
+        },
+      }),
+    }),
+
+    getAllSkrill: builder.query({
+      query: ({accesstoken, page, limit}) => ({
+        url: `result/allskrillpaymets?page=${page}&limit=${limit}`,
+        method: 'get',
+        headers: {
+          Authorization: `Bearer ${accesstoken}`,
+        },
+      }),
+    }),
+
+    getAllPaypal: builder.query({
+      query: ({accesstoken, page, limit}) => ({
+        url: `result/allpaypalpaymets?page=${page}&limit=${limit}`,
+        method: 'get',
+        headers: {
+          Authorization: `Bearer ${accesstoken}`,
+        },
+      }),
+    }),
+
+    getAllCrypto: builder.query({
+      query: ({accesstoken, page, limit}) => ({
+        url: `result/allcryptopaymets?page=${page}&limit=${limit}`,
+        method: 'get',
+        headers: {
+          Authorization: `Bearer ${accesstoken}`,
+        },
+      }),
+    }),
+
+    getAllOther: builder.query({
+      query: ({accesstoken, page, limit}) => ({
+        url: `result/allotherpaymets?page=${page}&limit=${limit}`,
+        method: 'get',
+        headers: {
+          Authorization: `Bearer ${accesstoken}`,
+        },
+      }),
+    }),
+
+    // GET USER COUNT
+    getUserCount: builder.query({
+      query: ({accesstoken}) => ({
+        url: `user/gettotalcount`,
+        method: 'get',
+        headers: {
+          Authorization: `Bearer ${accesstoken}`,
+        },
+      }),
+    }),
+
     // ######## END #########
   }),
 });
 
 export const {
+  useGetAllOtherQuery,
+  useGetAllBankQuery,
+  useGetAllUpiQuery,
+  useGetAllCryptoQuery,
+  useGetAllPaypalQuery,
+  useGetAllSkrillQuery,
+  useGetUserCountQuery,
   useUpdateOtherPaymentNameMutation,
   useActivateOtherPaymentMethodMutation,
   useRejectOtherPaymentMethodMutation,
