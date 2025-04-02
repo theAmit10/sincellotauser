@@ -9,6 +9,7 @@ import {
   SafeAreaView,
   KeyboardAvoidingView,
   Platform,
+  ActivityIndicator,
 } from 'react-native';
 import React, {useState, useCallback, useEffect} from 'react';
 import {
@@ -66,15 +67,69 @@ const AllDeposit = () => {
   console.log('Accesstoken :: ' + accesstoken);
   console.log('User ID :: ' + user.userId);
 
-  const [page, setPage] = useState(1); // Current page
+  // const [page, setPage] = useState(1); // Current page
   const [dataList, setDataList] = useState([]); // List of all data
   const [isFetchingNextPage, setIsFetchingNextPage] = useState(false);
 
-  const {isLoading, data, isError, refetch} = useGetAllDepositQuery({
-    accesstoken,
-    page, // current page number
-    limit: 100, // number of items per page
-  });
+  // const {isLoading, data, isError, refetch} = useGetAllDepositQuery({
+  //   accesstoken,
+  //   page, // current page number
+  //   limit: 100, // number of items per page
+  // });
+
+  // States
+  const [page, setPage] = useState(1);
+  const limit = 10;
+  const [hasMore, setHasMore] = useState(true);
+  const [loading, setLoading] = useState(false);
+
+  // Fetch Paginated Data
+  const {
+    data: paginatedData,
+    refetch,
+    isFetching: fetchingPaginated,
+  } = useGetAllDepositQuery({accesstoken, page, limit});
+
+  // Reset State on Navigation Back
+  useFocusEffect(
+    useCallback(() => {
+      // setPartners([]); // ✅ Reset Data
+      setPage(1); // ✅ Reset Page
+      setHasMore(true); // ✅ Reset Load More
+      refetch?.(); // ✅ Ensure Fresh Data
+    }, [refetch]),
+  );
+
+  useEffect(() => {
+    setLoading(true);
+    if (paginatedData?.deposits) {
+      // For paginated data, filter out duplicates before appending
+      setFilteredData(prev => {
+        const newData = paginatedData.deposits.filter(
+          newItem => !prev.some(prevItem => prevItem._id === newItem._id),
+        );
+        return page === 1 ? paginatedData.deposits : [...prev, ...newData];
+      });
+
+      // Update `hasMore` based on the length of the new data
+      if (paginatedData.deposits.length < limit) {
+        setHasMore(false); // No more data to fetch
+      } else {
+        setHasMore(true); // More data available
+      }
+    }
+
+    setLoading(false);
+  }, [paginatedData, page, updateKey]);
+
+  const loadMore = () => {
+    if (!loading && hasMore && !fetchingPaginated) {
+      setPage(prev => prev + 1);
+    }
+  };
+
+  // Combined Loading State
+  const isLoading = fetchingPaginated || loading;
 
   // FOR UPDATING PAYMENT STATUS
   const [
@@ -112,12 +167,12 @@ const AllDeposit = () => {
     }));
   };
 
-  useEffect(() => {
-    if (!isLoading) {
-      console.log('USE Effect running');
-      setFilteredData(data?.deposits);
-    }
-  }, [isLoading, isFocused, refetch, updateKey]);
+  // useEffect(() => {
+  //   if (!isLoading) {
+  //     console.log('USE Effect running');
+  //     setFilteredData(data?.deposits);
+  //   }
+  // }, [isLoading, isFocused, , updateKey]);
 
   const handleSearch = text => {
     if (data) {
@@ -490,7 +545,7 @@ const AllDeposit = () => {
                 <GradientTextWhite style={styles.textStyle}>
                   AllDeposit
                 </GradientTextWhite>
-                <View
+                {/* <View
                   style={{
                     height: heightPercentageToDP(7),
                     flexDirection: 'row',
@@ -518,9 +573,9 @@ const AllDeposit = () => {
                     label="Search"
                     onChangeText={handleSearch}
                   />
-                </View>
+                </View> */}
 
-                {isLoading ? (
+                {isLoading && page === 1 ? (
                   <View
                     style={{
                       height: heightPercentageToDP(30),
@@ -970,12 +1025,18 @@ const AllDeposit = () => {
                     initialNumToRender={10}
                     maxToRenderPerBatch={10}
                     windowSize={10}
-                    ListFooterComponent={() => (
-                      <View
-                        style={{
-                          height: heightPercentageToDP(20),
-                        }}></View>
-                    )}
+                    onEndReached={loadMore}
+                    onEndReachedThreshold={0.3}
+                    ListFooterComponent={() =>
+                      hasMore && isLoading ? (
+                        <ActivityIndicator
+                          size="large"
+                          color={COLORS.white_s}
+                        />
+                      ) : (
+                        <View style={{height: heightPercentageToDP(10)}} />
+                      )
+                    }
                   />
                 )}
               </View>
