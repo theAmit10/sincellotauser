@@ -8,6 +8,7 @@ import {
   View,
   SafeAreaView,
   KeyboardAvoidingView,
+  ActivityIndicator,
 } from 'react-native';
 import React, {useState, useCallback, useEffect} from 'react';
 import {
@@ -100,18 +101,72 @@ const AllWithdraw = () => {
   const [updateKey, setUpdateKey] = useState(0);
   const navigation = useNavigation();
 
-  const [page, setPage] = useState(1); // Current page
+  // const [page, setPage] = useState(1); // Current page
   const [dataList, setDataList] = useState([]); // List of all data
   const [isFetchingNextPage, setIsFetchingNextPage] = useState(false);
 
   console.log('Accesstoken :: ' + accesstoken);
   console.log('User ID :: ' + user.userId);
 
-  const {isLoading, data, isError, refetch} = useGetAllWithdrawQuery({
-    accesstoken,
-    page, // current page number
-    limit: 100, // number of items per page
-  });
+  // const {isLoading, data, isError, refetch} = useGetAllWithdrawQuery({
+  //   accesstoken,
+  //   page, // current page number
+  //   limit: 100, // number of items per page
+  // });
+
+  // States
+  const [page, setPage] = useState(1);
+  const limit = 10;
+  const [hasMore, setHasMore] = useState(true);
+  const [loading, setLoading] = useState(false);
+
+  // Fetch Paginated Data
+  const {
+    data: paginatedData,
+    refetch,
+    isFetching: fetchingPaginated,
+  } = useGetAllWithdrawQuery({accesstoken, page, limit});
+
+  // Reset State on Navigation Back
+  useFocusEffect(
+    useCallback(() => {
+      // setPartners([]); // ✅ Reset Data
+      setPage(1); // ✅ Reset Page
+      setHasMore(true); // ✅ Reset Load More
+      refetch?.(); // ✅ Ensure Fresh Data
+    }, [refetch]),
+  );
+
+  useEffect(() => {
+    setLoading(true);
+    if (paginatedData?.withdrawals) {
+      // For paginated data, filter out duplicates before appending
+      setFilteredData(prev => {
+        const newData = paginatedData.withdrawals.filter(
+          newItem => !prev.some(prevItem => prevItem._id === newItem._id),
+        );
+        return page === 1 ? paginatedData.withdrawals : [...prev, ...newData];
+      });
+
+      // Update `hasMore` based on the length of the new data
+      if (paginatedData.withdrawals.length < limit) {
+        setHasMore(false); // No more data to fetch
+      } else {
+        setHasMore(true); // More data available
+      }
+    }
+
+    setLoading(false);
+  }, [paginatedData, page, updateKey]);
+
+  const loadMore = () => {
+    if (!loading && hasMore && !fetchingPaginated) {
+      setPage(prev => prev + 1);
+    }
+  };
+
+  // Combined Loading State
+  const isLoading = fetchingPaginated || loading;
 
   // useFocusEffect(
   //   useCallback(() => {
@@ -131,9 +186,6 @@ const AllWithdraw = () => {
     updateDepositPaymentStatus,
     {isLoading: updateStatusIsLoading, error: updateStatusError},
   ] = useUpdateDepositPaymentStatusMutation();
-
-  console.log('IS loaging :: ', isLoading);
-  console.log('Data :: ', data?.withdrawals?.length);
 
   const toggleItem = id => {
     setExpandedItems(prev => ({
@@ -156,12 +208,12 @@ const AllWithdraw = () => {
 
   const [filteredData, setFilteredData] = useState([]);
 
-  useEffect(() => {
-    if (!isLoading && data) {
-      console.log('USE Effect running');
-      setFilteredData(data.withdrawals);
-    }
-  }, [isLoading, isFocused, refetch, updateKey]);
+  // useEffect(() => {
+  //   if (!isLoading && data) {
+  //     console.log('USE Effect running');
+  //     setFilteredData(data.withdrawals);
+  //   }
+  // }, [isLoading, isFocused, refetch, updateKey]);
 
   const handleSearch = text => {
     if (data) {
@@ -557,12 +609,11 @@ const AllWithdraw = () => {
     console.log('Yes pressed');
   };
 
-
   function formatAmount(value) {
-    if (typeof value === "string") {
+    if (typeof value === 'string') {
       value = parseFloat(value); // Convert string to float if necessary
     }
-  
+
     // Check if the number has decimals
     if (value % 1 === 0) {
       return value; // Return as is if it's a whole number
@@ -624,7 +675,7 @@ const AllWithdraw = () => {
                 <GradientTextWhite style={styles.textStyle}>
                   All Withdraw
                 </GradientTextWhite>
-                <View
+                {/* <View
                   style={{
                     height: heightPercentageToDP(7),
                     flexDirection: 'row',
@@ -652,9 +703,9 @@ const AllWithdraw = () => {
                     label="Search"
                     onChangeText={handleSearch}
                   />
-                </View>
+                </View> */}
 
-                {isLoading ? (
+                {isLoading && page === 1 ? (
                   <View
                     style={{
                       height: heightPercentageToDP(30),
@@ -1967,12 +2018,18 @@ const AllWithdraw = () => {
                     initialNumToRender={10}
                     maxToRenderPerBatch={10}
                     windowSize={10}
-                    ListFooterComponent={() => (
-                      <View
-                        style={{
-                          height: heightPercentageToDP(20),
-                        }}></View>
-                    )}
+                    onEndReached={loadMore}
+                    onEndReachedThreshold={0.3}
+                    ListFooterComponent={() =>
+                      hasMore && isLoading ? (
+                        <ActivityIndicator
+                          size="large"
+                          color={COLORS.white_s}
+                        />
+                      ) : (
+                        <View style={{height: heightPercentageToDP(10)}} />
+                      )
+                    }
                   />
                 )}
               </View>
