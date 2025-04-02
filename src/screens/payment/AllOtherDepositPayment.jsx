@@ -1,4 +1,5 @@
 import {
+  ActivityIndicator,
   FlatList,
   Image,
   ImageBackground,
@@ -11,7 +12,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {
   heightPercentageToDP,
   widthPercentageToDP,
@@ -19,14 +20,21 @@ import {
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Toast from 'react-native-toast-message';
-import {useIsFocused, useNavigation} from '@react-navigation/native';
+import {
+  useFocusEffect,
+  useIsFocused,
+  useNavigation,
+} from '@react-navigation/native';
 import {useSelector} from 'react-redux';
 import LinearGradient from 'react-native-linear-gradient';
 import Clipboard from '@react-native-clipboard/clipboard';
 import axios from 'axios';
 import {
+  useActivateOtherPaymentMethodMutation,
   useDeleteOtherPaymentAccountMutation,
+  useGetAllOtherQuery,
   useGetOtherPaymentNameQuery,
+  useRejectOtherPaymentMethodMutation,
 } from '../../helper/Networkcall';
 import UrlHelper from '../../helper/UrlHelper';
 import {COLORS, FONT} from '../../../assets/constants';
@@ -54,44 +62,44 @@ const AllOtherDepositPayment = () => {
   const [loadingAllData, setLoadingAllData] = useState(false);
   const [allDepositdata, setAllDepositData] = useState([]);
 
-  useEffect(() => {
-    allTheDepositData();
-  }, [isFocused]);
+  // useEffect(() => {
+  //   allTheDepositData();
+  // }, [isFocused]);
 
-  useEffect(() => {
-    console.log(loadingAllData);
-  }, [loadingAllData]);
+  // useEffect(() => {
+  //   console.log(loadingAllData);
+  // }, [loadingAllData]);
 
   const [
     deleteOtherAccount,
     {isLoading: deleteIsLoading, isError: deleteIsError},
   ] = useDeleteOtherPaymentAccountMutation();
 
-  const allTheDepositData = async () => {
-    try {
-      setLoadingAllData(true);
-      const url = `${UrlHelper.ALL_OTHERPAYMENT_API}`;
-      const {data} = await axios.get(url, {
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${accesstoken}`,
-        },
-      });
+  // const allTheDepositData = async () => {
+  //   try {
+  //     setLoadingAllData(true);
+  //     const url = `${UrlHelper.ALL_OTHERPAYMENT_API}`;
+  //     const {data} = await axios.get(url, {
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //         Authorization: `Bearer ${accesstoken}`,
+  //       },
+  //     });
 
-      console.log('datat :: ' + JSON.stringify(data));
-      setAllDepositData(data.payments);
-      setLoadingAllData(false);
-    } catch (error) {
-      setLoadingAllData(false);
-      Toast.show({
-        type: 'error',
-        text1: 'Something went wrong',
-      });
-      console.log(error);
-    } finally {
-      setLoadingAllData(false);
-    }
-  };
+  //     console.log('datat :: ' + JSON.stringify(data));
+  //     setAllDepositData(data.payments);
+  //     setLoadingAllData(false);
+  //   } catch (error) {
+  //     setLoadingAllData(false);
+  //     Toast.show({
+  //       type: 'error',
+  //       text1: 'Something went wrong',
+  //     });
+  //     console.log(error);
+  //   } finally {
+  //     setLoadingAllData(false);
+  //   }
+  // };
 
   // FOR DELETING DATA
 
@@ -104,7 +112,7 @@ const AllOtherDepositPayment = () => {
       id: item._id,
     }).unwrap();
 
-    allTheDepositData();
+    await allTheDepositData();
 
     Toast.show({type: 'success', text1: 'Success', text2: res.message});
   };
@@ -119,19 +127,137 @@ const AllOtherDepositPayment = () => {
   const [secondInputName, setSecondInputName] = useState('');
   const [thirdInputName, setThirdInputName] = useState('');
   const [fourthInputName, setFourthInputName] = useState('');
+  const [qrcodeName, setQrcodeName] = useState('');
+  const [paymentName, setPaymentName] = useState('');
+
+  // useEffect(() => {
+  //   if (!loadingOtherPayment && otherPaymentData) {
+  //     setFirstInputName(otherPaymentData?.inputNames?.firstInputName);
+  //     setSecondInputName(otherPaymentData?.inputNames?.secondInputName);
+  //     setThirdInputName(otherPaymentData?.inputNames?.thirdInputName);
+  //     setFourthInputName(otherPaymentData?.inputNames?.fourthInputName);
+  //   }
+  // }, [loadingOtherPayment, otherPaymentData]);
+
+  // useEffect(() => {
+  //   refetchOtherPayment();
+  // }, [isFocused]);
+
+  // States
+  const [page, setPage] = useState(1);
+  const limit = 5;
+  const [hasMore, setHasMore] = useState(true);
+  const [loading, setLoading] = useState(false);
+
+  // Fetch Paginated Data
+  const {
+    data: paginatedData,
+    refetch: allTheDepositData,
+    isFetching: fetchingPaginated,
+  } = useGetAllOtherQuery({accesstoken, page, limit});
+
+  // Reset State on Navigation Back
+  useFocusEffect(
+    useCallback(() => {
+      // setPartners([]); // ✅ Reset Data
+      setPage(1); // ✅ Reset Page
+      setHasMore(true); // ✅ Reset Load More
+      allTheDepositData?.(); // ✅ Ensure Fresh Data
+    }, [allTheDepositData]),
+  );
 
   useEffect(() => {
-    if (!loadingOtherPayment && otherPaymentData) {
-      setFirstInputName(otherPaymentData?.inputNames?.firstInputName);
-      setSecondInputName(otherPaymentData?.inputNames?.secondInputName);
-      setThirdInputName(otherPaymentData?.inputNames?.thirdInputName);
-      setFourthInputName(otherPaymentData?.inputNames?.fourthInputName);
+    setLoading(true);
+    if (paginatedData?.payments) {
+      // For paginated data, filter out duplicates before appending
+      setAllDepositData(prev => {
+        const newData = paginatedData.payments.filter(
+          newItem => !prev.some(prevItem => prevItem._id === newItem._id),
+        );
+        return page === 1 ? paginatedData.payments : [...prev, ...newData];
+      });
+
+      // Update `hasMore` based on the length of the new data
+      if (paginatedData.payments.length < limit) {
+        setHasMore(false); // No more data to fetch
+      } else {
+        setHasMore(true); // More data available
+      }
     }
-  }, [loadingOtherPayment, otherPaymentData]);
 
-  useEffect(() => {
-    refetchOtherPayment();
-  }, [isFocused]);
+    setLoading(false);
+  }, [paginatedData, page]);
+
+  const loadMore = () => {
+    if (!loading && hasMore && !fetchingPaginated) {
+      setPage(prev => prev + 1);
+    }
+  };
+
+  // Combined Loading State
+  const isLoading = fetchingPaginated || loading;
+
+  const [activateOtherPaymentMethod, {isLoading: activateUpiIsLoading}] =
+    useActivateOtherPaymentMethodMutation();
+
+  const [rejectOtherPaymentMethod, {isLoading: rejectUpiIsLoading}] =
+    useRejectOtherPaymentMethodMutation();
+
+  const submitConfirmation = async item => {
+    console.log('working on submit payment');
+    setSelectedItem(item);
+    try {
+      const body = {
+        activationStatus: true,
+      };
+      const res = await activateOtherPaymentMethod({
+        accesstoken: accesstoken,
+        id: item._id,
+        body: body,
+      });
+
+      console.log(JSON.stringify(res));
+      Toast.show({
+        type: 'success',
+        text1: res.data.message,
+      });
+      await allTheDepositData();
+    } catch (error) {
+      console.log(error);
+      Toast.show({
+        type: 'error',
+        text1: 'Something went wrong',
+      });
+    }
+  };
+
+  const submitRejection = async item => {
+    setSelectedItem(item);
+    console.log('working on submit payment');
+    try {
+      const body = {
+        paymentStatus: 'Cancelled',
+      };
+      const res = await rejectOtherPaymentMethod({
+        accesstoken: accesstoken,
+        id: item._id,
+        body: body,
+      });
+
+      console.log(JSON.stringify(res));
+      Toast.show({
+        type: 'success',
+        text1: res.data.message,
+      });
+      await allTheDepositData();
+    } catch (error) {
+      console.log(error);
+      Toast.show({
+        type: 'error',
+        text1: 'Something went wrong',
+      });
+    }
+  };
 
   return (
     <SafeAreaView style={{flex: 1}}>
@@ -185,7 +311,7 @@ const AllOtherDepositPayment = () => {
               <GradientTextWhite style={styles.textStyle}>
                 Other Deposit
               </GradientTextWhite>
-              <Pressable
+              {/* <Pressable
                 onPress={() => navigation.navigate('UpdateOtherName')}
                 style={{
                   backgroundColor: COLORS.white_s,
@@ -197,21 +323,19 @@ const AllOtherDepositPayment = () => {
                   name="setting"
                   size={heightPercentageToDP(3)}
                 />
-              </Pressable>
+              </Pressable> */}
             </View>
 
             {/** FOR UPI ID DEPOSIT OPTION */}
-            {loadingAllData ? (
-              <View
-                style={{
-                  flex: 1,
-                }}>
-                <Loading key={'No account found'} color={COLORS.white_s} />
-              </View>
-            ) : (
-              <ScrollView showsVerticalScrollIndicator={false}>
-                {allDepositdata.length !== 0 &&
-                  allDepositdata.map(item => (
+
+            <View style={{flex: 1}}>
+              {isLoading && page === 1 ? (
+                <ActivityIndicator size="large" color={COLORS.white_s} />
+              ) : (
+                <FlatList
+                  data={allDepositdata}
+                  keyExtractor={item => item._id.toString()} // Ensure _id is unique
+                  renderItem={({item}) => (
                     <TouchableOpacity key={item._id}>
                       <LinearGradient
                         colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
@@ -252,8 +376,8 @@ const AllOtherDepositPayment = () => {
                               {item.userId === 1000 ? 'Admin' : item.userId}
                             </GradientTextWhite>
                             {/* <GradientTextWhite style={styles.textStyleContent}>
-                                {item.paymentId}
-                              </GradientTextWhite> */}
+                              {item.paymentId}
+                            </GradientTextWhite> */}
                           </View>
 
                           <View
@@ -313,21 +437,21 @@ const AllOtherDepositPayment = () => {
                               gap: heightPercentageToDP(2),
                               justifyContent: 'space-between',
                             }}>
-                            {otherPaymentData?.inputNames?.firstInputName && (
+                            {item?.firstInputName && (
                               <Text style={styles.copytitle} numberOfLines={2}>
-                                {otherPaymentData?.inputNames?.firstInputName}
+                                {item?.firstInputName}
                               </Text>
                             )}
 
-                            {otherPaymentData?.inputNames?.secondInputName && (
+                            {item?.secondInputName && (
                               <Text style={styles.copytitle}>
-                                {otherPaymentData?.inputNames?.secondInputName}
+                                {item?.secondInputName}
                               </Text>
                             )}
 
-                            {otherPaymentData?.inputNames?.thirdInputName && (
+                            {item?.thirdInputName && (
                               <Text style={styles.copytitle}>
-                                {otherPaymentData?.inputNames?.thirdInputName}
+                                {item?.thirdInputName}
                               </Text>
                             )}
                           </View>
@@ -436,7 +560,7 @@ const AllOtherDepositPayment = () => {
                         </View>
 
                         {/** QR code */}
-                        {otherPaymentData?.inputNames?.fourthInputName && (
+                        {item.qrcode && (
                           <View
                             style={{
                               flex: 2,
@@ -512,7 +636,7 @@ const AllOtherDepositPayment = () => {
                         )}
 
                         {/** FOR ACTIVATION STATUS */}
-                        {/* <View
+                        <View
                           style={{
                             flexDirection: 'column',
                             justifyContent: 'center',
@@ -533,7 +657,7 @@ const AllOtherDepositPayment = () => {
                                 ...styles.copytitle,
                                 paddingLeft: heightPercentageToDP(2),
                               }}
-                              numberOfLines={2}>
+                              numberOfLines={1}>
                               Activation Status
                             </Text>
                           </View>
@@ -560,12 +684,115 @@ const AllOtherDepositPayment = () => {
                               {item.paymentStatus}
                             </Text>
                           </View>
-                        </View> */}
+                        </View>
+
+                        {/** CONFIRMATION */}
+                        {item.paymentStatus === 'Pending' &&
+                          (activateUpiIsLoading ? (
+                            seletedItem._id === item._id ? (
+                              <Loading />
+                            ) : (
+                              <TouchableOpacity
+                                onPress={() => submitConfirmation(item)}
+                                style={{
+                                  flex: 2,
+                                  backgroundColor: COLORS.green,
+                                  width: widthPercentageToDP(90),
+                                  padding: heightPercentageToDP(1),
+                                  borderRadius: heightPercentageToDP(4),
+                                  justifyContent: 'center',
+                                  alignItems: 'center',
+                                }}>
+                                <Text
+                                  style={[
+                                    styles.copycontent,
+                                    {color: COLORS.white_s},
+                                  ]}>
+                                  Confirm
+                                </Text>
+                              </TouchableOpacity>
+                            )
+                          ) : (
+                            <TouchableOpacity
+                              onPress={() => submitConfirmation(item)}
+                              style={{
+                                flex: 2,
+                                backgroundColor: COLORS.green,
+                                padding: heightPercentageToDP(1),
+                                borderRadius: heightPercentageToDP(4),
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                              }}>
+                              <Text
+                                style={[
+                                  styles.copycontent,
+                                  {color: COLORS.white_s},
+                                ]}>
+                                Confirm
+                              </Text>
+                            </TouchableOpacity>
+                          ))}
+
+                        {/** REJECTION */}
+                        {item.paymentStatus === 'Pending' &&
+                          (rejectUpiIsLoading ? (
+                            seletedItem._id === item._id ? (
+                              <Loading />
+                            ) : (
+                              <TouchableOpacity
+                                onPress={() => submitRejection(item)}
+                                style={{
+                                  flex: 2,
+                                  backgroundColor: COLORS.red,
+
+                                  padding: heightPercentageToDP(1),
+                                  borderRadius: heightPercentageToDP(4),
+                                  justifyContent: 'center',
+                                  alignItems: 'center',
+                                }}>
+                                <Text
+                                  style={[
+                                    styles.copycontent,
+                                    {color: COLORS.white_s},
+                                  ]}>
+                                  Reject
+                                </Text>
+                              </TouchableOpacity>
+                            )
+                          ) : (
+                            <TouchableOpacity
+                              onPress={() => submitRejection(item)}
+                              style={{
+                                flex: 2,
+                                backgroundColor: COLORS.red,
+                                padding: heightPercentageToDP(1),
+                                borderRadius: heightPercentageToDP(4),
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                                marginVertical: heightPercentageToDP(1),
+                              }}>
+                              <Text
+                                style={[
+                                  styles.copycontent,
+                                  {color: COLORS.white_s},
+                                ]}>
+                                Reject
+                              </Text>
+                            </TouchableOpacity>
+                          ))}
                       </LinearGradient>
                     </TouchableOpacity>
-                  ))}
-              </ScrollView>
-            )}
+                  )}
+                  onEndReached={loadMore}
+                  onEndReachedThreshold={0.3}
+                  ListFooterComponent={() =>
+                    hasMore && isLoading ? (
+                      <ActivityIndicator size="large" color={COLORS.white_s} />
+                    ) : null
+                  }
+                />
+              )}
+            </View>
 
             {/** CREATE A NEW ACCOUNT */}
             <View
