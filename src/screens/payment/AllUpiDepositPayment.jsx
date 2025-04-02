@@ -1,4 +1,5 @@
 import {
+  ActivityIndicator,
   FlatList,
   Image,
   ImageBackground,
@@ -10,7 +11,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {
   heightPercentageToDP,
   widthPercentageToDP,
@@ -18,7 +19,11 @@ import {
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Toast from 'react-native-toast-message';
-import {useIsFocused, useNavigation} from '@react-navigation/native';
+import {
+  useFocusEffect,
+  useIsFocused,
+  useNavigation,
+} from '@react-navigation/native';
 import {useSelector} from 'react-redux';
 import LinearGradient from 'react-native-linear-gradient';
 import Background from '../../components/background/Background';
@@ -28,7 +33,12 @@ import Clipboard from '@react-native-clipboard/clipboard';
 import Loading from '../../components/helpercComponent/Loading';
 import axios from 'axios';
 import UrlHelper from '../../helper/UrlHelper';
-import {useDeleteUpiAccountMutation} from '../../helper/Networkcall';
+import {
+  useActivateUpiPaymentMethodMutation,
+  useDeleteUpiAccountMutation,
+  useGetAllUpiQuery,
+  useRejectUpiPaymentMethodMutation,
+} from '../../helper/Networkcall';
 import {serverName} from '../../redux/store';
 
 const upiapidata = [
@@ -63,13 +73,13 @@ const AllUpiDepositPayment = () => {
     {isLoading: deleteIsLoading, isError: deleteIsError},
   ] = useDeleteUpiAccountMutation();
 
-  useEffect(() => {
-    allTheDepositData();
-  }, [isFocused]);
+  // useEffect(() => {
+  //   allTheDepositData();
+  // }, [isFocused]);
 
-  useEffect(() => {
-    console.log(loadingAllData);
-  }, [loadingAllData]);
+  // useEffect(() => {
+  //   console.log(loadingAllData);
+  // }, [loadingAllData]);
 
   // const allTheDepositData = async () => {
   //   try {
@@ -94,30 +104,30 @@ const AllUpiDepositPayment = () => {
   //   }
   // };
 
-  const allTheDepositData = async () => {
-    try {
-      setLoadingAllData(true);
-      const {data} = await axios.get(UrlHelper.ALL_UPI_API, {
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${accesstoken}`,
-        },
-      });
+  // const allTheDepositData = async () => {
+  //   try {
+  //     setLoadingAllData(true);
+  //     const {data} = await axios.get(UrlHelper.ALL_UPI_API, {
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //         Authorization: `Bearer ${accesstoken}`,
+  //       },
+  //     });
 
-      console.log('datat :: ' + JSON.stringify(data));
-      setAllDepositData(data.payments);
-      setLoadingAllData(false);
-    } catch (error) {
-      setLoadingAllData(false);
-      Toast.show({
-        type: 'error',
-        text1: 'Something went wrong',
-      });
-      console.log(error);
-    } finally {
-      setLoadingAllData(false);
-    }
-  };
+  //     console.log('datat :: ' + JSON.stringify(data));
+  //     setAllDepositData(data.payments);
+  //     setLoadingAllData(false);
+  //   } catch (error) {
+  //     setLoadingAllData(false);
+  //     Toast.show({
+  //       type: 'error',
+  //       text1: 'Something went wrong',
+  //     });
+  //     console.log(error);
+  //   } finally {
+  //     setLoadingAllData(false);
+  //   }
+  // };
 
   // FOR DELETING DATA
 
@@ -133,6 +143,121 @@ const AllUpiDepositPayment = () => {
     allTheDepositData();
 
     Toast.show({type: 'success', text1: 'Success', text2: res.message});
+  };
+  // States
+  const [page, setPage] = useState(1);
+  const limit = 5;
+  const [hasMore, setHasMore] = useState(true);
+  const [loading, setLoading] = useState(false);
+
+  // Fetch Paginated Data
+  const {
+    data: paginatedData,
+    refetch: allTheDepositData,
+    isFetching: fetchingPaginated,
+  } = useGetAllUpiQuery({accesstoken, page, limit});
+
+  // Reset State on Navigation Back
+  useFocusEffect(
+    useCallback(() => {
+      // setPartners([]); // ✅ Reset Data
+      setPage(1); // ✅ Reset Page
+      setHasMore(true); // ✅ Reset Load More
+      allTheDepositData?.(); // ✅ Ensure Fresh Data
+    }, [allTheDepositData]),
+  );
+
+  useEffect(() => {
+    setLoading(true);
+    if (paginatedData?.payments) {
+      // For paginated data, filter out duplicates before appending
+      setAllDepositData(prev => {
+        const newData = paginatedData.payments.filter(
+          newItem => !prev.some(prevItem => prevItem._id === newItem._id),
+        );
+        return page === 1 ? paginatedData.payments : [...prev, ...newData];
+      });
+
+      // Update `hasMore` based on the length of the new data
+      if (paginatedData.payments.length < limit) {
+        setHasMore(false); // No more data to fetch
+      } else {
+        setHasMore(true); // More data available
+      }
+    }
+
+    setLoading(false);
+  }, [paginatedData, page]);
+
+  const loadMore = () => {
+    if (!loading && hasMore && !fetchingPaginated) {
+      setPage(prev => prev + 1);
+    }
+  };
+
+  // Combined Loading State
+  const isLoading = fetchingPaginated || loading;
+
+  const [activateUpiPaymentMethod, {isLoading: activateUpiIsLoading}] =
+    useActivateUpiPaymentMethodMutation();
+
+  const [rejectUpiPaymentMethod, {isLoading: rejectUpiIsLoading}] =
+    useRejectUpiPaymentMethodMutation();
+
+  const submitConfirmation = async item => {
+    console.log('working on submit payment');
+    setSelectedItem(item);
+    try {
+      const body = {
+        activationStatus: true,
+      };
+      const res = await activateUpiPaymentMethod({
+        accesstoken: accesstoken,
+        id: item._id,
+        body: body,
+      });
+
+      console.log(JSON.stringify(res));
+      Toast.show({
+        type: 'success',
+        text1: res.data.message,
+      });
+      allTheDepositData();
+    } catch (error) {
+      console.log(error);
+      Toast.show({
+        type: 'error',
+        text1: 'Something went wrong',
+      });
+    }
+  };
+
+  const submitRejection = async item => {
+    setSelectedItem(item);
+    console.log('working on submit payment');
+    try {
+      const body = {
+        paymentStatus: 'Cancelled',
+      };
+      const res = await rejectUpiPaymentMethod({
+        accesstoken: accesstoken,
+        id: item._id,
+        body: body,
+      });
+
+      console.log(JSON.stringify(res));
+      Toast.show({
+        type: 'success',
+        text1: res.data.message,
+      });
+      allTheDepositData();
+    } catch (error) {
+      console.log(error);
+      Toast.show({
+        type: 'error',
+        text1: 'Something went wrong',
+      });
+    }
   };
 
   return (
@@ -185,17 +310,15 @@ const AllUpiDepositPayment = () => {
             </View>
 
             {/** FOR UPI ID DEPOSIT OPTION */}
-            {loadingAllData ? (
-              <View
-                style={{
-                  flex: 1,
-                }}>
-                <Loading key={'No account found'} color={COLORS.white_s} />
-              </View>
-            ) : (
-              <ScrollView showsVerticalScrollIndicator={false}>
-                {allDepositdata.length !== 0 &&
-                  allDepositdata.map(item => (
+
+            <View style={{flex: 1}}>
+              {isLoading && page === 1 ? (
+                <ActivityIndicator size="large" color={COLORS.white_s} />
+              ) : (
+                <FlatList
+                  data={allDepositdata}
+                  keyExtractor={item => item._id.toString()} // Ensure _id is unique
+                  renderItem={({item}) => (
                     <TouchableOpacity key={item._id}>
                       <LinearGradient
                         colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
@@ -239,8 +362,8 @@ const AllUpiDepositPayment = () => {
                               UPI
                             </GradientTextWhite>
                             {/* <GradientTextWhite style={styles.textStyleContent}>
-                              {item.paymentId}
-                            </GradientTextWhite> */}
+                            {item.paymentId}
+                          </GradientTextWhite> */}
                           </View>
 
                           <View
@@ -439,11 +562,165 @@ const AllUpiDepositPayment = () => {
                             </Text>
                           </View>
                         </View>
+
+                        {/** FOR ACTIVATION STATUS */}
+                        <View
+                          style={{
+                            flexDirection: 'column',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            flex: 1,
+                            padding: heightPercentageToDP(2),
+                            gap: heightPercentageToDP(1),
+                          }}>
+                          <View
+                            style={{
+                              flex: 1,
+                              display: 'flex',
+                              justifyContent: 'flex-start',
+                              alignItems: 'flex-start',
+                            }}>
+                            <Text
+                              style={{
+                                ...styles.copytitle,
+                                paddingLeft: heightPercentageToDP(2),
+                              }}
+                              numberOfLines={1}>
+                              Activation Status
+                            </Text>
+                          </View>
+                          <View
+                            style={{
+                              flex: 2,
+                              backgroundColor:
+                                item.paymentStatus === 'Pending'
+                                  ? COLORS.orange
+                                  : item.paymentStatus === 'Approved'
+                                  ? COLORS.green
+                                  : COLORS.red,
+                              width: widthPercentageToDP(90),
+                              padding: heightPercentageToDP(1),
+                              borderRadius: heightPercentageToDP(4),
+                              justifyContent: 'center',
+                              alignItems: 'center',
+                            }}>
+                            <Text
+                              style={[
+                                styles.copycontent,
+                                {color: COLORS.white_s},
+                              ]}>
+                              {item.paymentStatus}
+                            </Text>
+                          </View>
+                        </View>
+
+                        {/** CONFIRMATION */}
+                        {item.paymentStatus === 'Pending' &&
+                          (activateUpiIsLoading ? (
+                            seletedItem._id === item._id ? (
+                              <Loading />
+                            ) : (
+                              <TouchableOpacity
+                                onPress={() => submitConfirmation(item)}
+                                style={{
+                                  flex: 2,
+                                  backgroundColor: COLORS.green,
+                                  width: widthPercentageToDP(90),
+                                  padding: heightPercentageToDP(1),
+                                  borderRadius: heightPercentageToDP(4),
+                                  justifyContent: 'center',
+                                  alignItems: 'center',
+                                }}>
+                                <Text
+                                  style={[
+                                    styles.copycontent,
+                                    {color: COLORS.white_s},
+                                  ]}>
+                                  Confirm
+                                </Text>
+                              </TouchableOpacity>
+                            )
+                          ) : (
+                            <TouchableOpacity
+                              onPress={() => submitConfirmation(item)}
+                              style={{
+                                flex: 2,
+                                backgroundColor: COLORS.green,
+                                padding: heightPercentageToDP(1),
+                                borderRadius: heightPercentageToDP(4),
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                              }}>
+                              <Text
+                                style={[
+                                  styles.copycontent,
+                                  {color: COLORS.white_s},
+                                ]}>
+                                Confirm
+                              </Text>
+                            </TouchableOpacity>
+                          ))}
+
+                        {/** REJECTION */}
+                        {item.paymentStatus === 'Pending' &&
+                          (rejectUpiIsLoading ? (
+                            seletedItem._id === item._id ? (
+                              <Loading />
+                            ) : (
+                              <TouchableOpacity
+                                onPress={() => submitRejection(item)}
+                                style={{
+                                  flex: 2,
+                                  backgroundColor: COLORS.red,
+
+                                  padding: heightPercentageToDP(1),
+                                  borderRadius: heightPercentageToDP(4),
+                                  justifyContent: 'center',
+                                  alignItems: 'center',
+                                }}>
+                                <Text
+                                  style={[
+                                    styles.copycontent,
+                                    {color: COLORS.white_s},
+                                  ]}>
+                                  Reject
+                                </Text>
+                              </TouchableOpacity>
+                            )
+                          ) : (
+                            <TouchableOpacity
+                              onPress={() => submitRejection(item)}
+                              style={{
+                                flex: 2,
+                                backgroundColor: COLORS.red,
+                                padding: heightPercentageToDP(1),
+                                borderRadius: heightPercentageToDP(4),
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                                marginVertical: heightPercentageToDP(1),
+                              }}>
+                              <Text
+                                style={[
+                                  styles.copycontent,
+                                  {color: COLORS.white_s},
+                                ]}>
+                                Reject
+                              </Text>
+                            </TouchableOpacity>
+                          ))}
                       </LinearGradient>
                     </TouchableOpacity>
-                  ))}
-              </ScrollView>
-            )}
+                  )}
+                  onEndReached={loadMore}
+                  onEndReachedThreshold={0.3}
+                  ListFooterComponent={() =>
+                    hasMore && isLoading ? (
+                      <ActivityIndicator size="large" color={COLORS.white_s} />
+                    ) : null
+                  }
+                />
+              )}
+            </View>
 
             {/** CREATE A NEW ACCOUNT */}
             <View
