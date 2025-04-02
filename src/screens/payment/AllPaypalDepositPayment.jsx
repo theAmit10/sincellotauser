@@ -5,7 +5,6 @@ import {
   ImageBackground,
   Platform,
   SafeAreaView,
-  ScrollView,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -31,14 +30,12 @@ import {COLORS, FONT} from '../../../assets/constants';
 import GradientTextWhite from '../../components/helpercComponent/GradientTextWhite';
 import Clipboard from '@react-native-clipboard/clipboard';
 import Loading from '../../components/helpercComponent/Loading';
-import axios from 'axios';
-import UrlHelper from '../../helper/UrlHelper';
+
 import {
   useActivatePaypalPaymentMethodMutation,
   useDeletePaypalAccountMutation,
   useGetAllPaypalQuery,
   useRejectPaypalPaymentMethodMutation,
-  useSearchPartnerQuery,
 } from '../../helper/Networkcall';
 
 const AllPaypalDepositPayment = () => {
@@ -110,38 +107,17 @@ const AllPaypalDepositPayment = () => {
   };
 
   // States
-  const [partners, setPartners] = useState([]);
   const [page, setPage] = useState(1);
   const limit = 5;
   const [hasMore, setHasMore] = useState(true);
   const [loading, setLoading] = useState(false);
-  const [searchQuery, setSearchQuery] = useState('');
-  const [debouncedSearch, setDebouncedSearch] = useState('');
-
-  // Debounce Effect for Search
-  // useEffect(() => {
-  //   const handler = setTimeout(() => {
-  //     setDebouncedSearch(searchQuery);
-  //   }, 500);
-  //   return () => clearTimeout(handler);
-  // }, [searchQuery]);
 
   // Fetch Paginated Data
   const {
     data: paginatedData,
     refetch: allTheDepositData,
     isFetching: fetchingPaginated,
-  } = useGetAllPaypalQuery(
-    {accesstoken, page, limit},
-    {skip: debouncedSearch.length > 0}, // Skip pagination if searching
-  );
-
-  // Fetch Search Data
-  // const {data: searchData, isFetching: fetchingSearch} = useSearchPartnerQuery(
-  //   debouncedSearch.length > 0
-  //     ? {accesstoken, searchTerm: debouncedSearch}
-  //     : {skip: true},
-  // );
+  } = useGetAllPaypalQuery({accesstoken, page, limit});
 
   // Reset State on Navigation Back
   useFocusEffect(
