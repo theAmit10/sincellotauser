@@ -112,7 +112,7 @@ const AllSkrillPaymentPayment = () => {
       id: item._id,
     }).unwrap();
 
-    allTheDepositData();
+    await allTheDepositData();
 
     Toast.show({type: 'success', text1: 'Success', text2: res.message});
   };
@@ -195,7 +195,7 @@ const AllSkrillPaymentPayment = () => {
         type: 'success',
         text1: res.data.message,
       });
-      allTheDepositData();
+      await allTheDepositData();
     } catch (error) {
       console.log(error);
       Toast.show({
@@ -223,7 +223,7 @@ const AllSkrillPaymentPayment = () => {
         type: 'success',
         text1: res.data.message,
       });
-      allTheDepositData();
+      await allTheDepositData();
     } catch (error) {
       console.log(error);
       Toast.show({
@@ -517,6 +517,100 @@ const AllSkrillPaymentPayment = () => {
                             </Text>
                           </View>
                         </View>
+                        {/** CONFIRMATION */}
+                        {item.paymentStatus === 'Pending' &&
+                          (activateSkrillIsLoading ? (
+                            seletedItem._id === item._id ? (
+                              <Loading />
+                            ) : (
+                              <TouchableOpacity
+                                onPress={() => submitConfirmation(item)}
+                                style={{
+                                  flex: 2,
+                                  backgroundColor: COLORS.green,
+                                  width: widthPercentageToDP(90),
+                                  padding: heightPercentageToDP(1),
+                                  borderRadius: heightPercentageToDP(4),
+                                  justifyContent: 'center',
+                                  alignItems: 'center',
+                                }}>
+                                <Text
+                                  style={[
+                                    styles.copycontent,
+                                    {color: COLORS.white_s},
+                                  ]}>
+                                  Confirm
+                                </Text>
+                              </TouchableOpacity>
+                            )
+                          ) : (
+                            <TouchableOpacity
+                              onPress={() => submitConfirmation(item)}
+                              style={{
+                                flex: 2,
+                                backgroundColor: COLORS.green,
+                                padding: heightPercentageToDP(1),
+                                borderRadius: heightPercentageToDP(4),
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                              }}>
+                              <Text
+                                style={[
+                                  styles.copycontent,
+                                  {color: COLORS.white_s},
+                                ]}>
+                                Confirm
+                              </Text>
+                            </TouchableOpacity>
+                          ))}
+
+                        {/** REJECTION */}
+                        {item.paymentStatus === 'Pending' &&
+                          (rejectSkrillIsLoading ? (
+                            seletedItem._id === item._id ? (
+                              <Loading />
+                            ) : (
+                              <TouchableOpacity
+                                onPress={() => submitRejection(item)}
+                                style={{
+                                  flex: 2,
+                                  backgroundColor: COLORS.red,
+
+                                  padding: heightPercentageToDP(1),
+                                  borderRadius: heightPercentageToDP(4),
+                                  justifyContent: 'center',
+                                  alignItems: 'center',
+                                }}>
+                                <Text
+                                  style={[
+                                    styles.copycontent,
+                                    {color: COLORS.white_s},
+                                  ]}>
+                                  Reject
+                                </Text>
+                              </TouchableOpacity>
+                            )
+                          ) : (
+                            <TouchableOpacity
+                              onPress={() => submitRejection(item)}
+                              style={{
+                                flex: 2,
+                                backgroundColor: COLORS.red,
+                                padding: heightPercentageToDP(1),
+                                borderRadius: heightPercentageToDP(4),
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                                marginVertical: heightPercentageToDP(1),
+                              }}>
+                              <Text
+                                style={[
+                                  styles.copycontent,
+                                  {color: COLORS.white_s},
+                                ]}>
+                                Reject
+                              </Text>
+                            </TouchableOpacity>
+                          ))}
                       </LinearGradient>
                     </TouchableOpacity>
                   )}
