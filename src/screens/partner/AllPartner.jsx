@@ -53,9 +53,13 @@ const AllPartner = () => {
   useFocusEffect(
     useCallback(() => {
       // setPartners([]); // ✅ Reset Data
-      setPage(1); // ✅ Reset Page
-      setHasMore(true); // ✅ Reset Load More
-      refetchPaginated?.(); // ✅ Ensure Fresh Data
+      try {
+        setPage(1); // ✅ Reset Page
+        setHasMore(true); // ✅ Reset Load More
+        refetchPaginated?.(); // ✅ Ensure Fresh Data
+      } catch (e) {
+        console.log(e);
+      }
     }, [refetchPaginated]),
   );
 

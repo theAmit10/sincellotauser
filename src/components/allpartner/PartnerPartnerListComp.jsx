@@ -5,7 +5,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import {COLORS, FONT} from '../../../assets/constants';
 import {heightPercentageToDP} from 'react-native-responsive-screen';
 
-const AllSubPartnerComp = ({
+const PartnerPartnerListComp = ({
   navigate,
   userid,
   name,
@@ -121,43 +121,6 @@ const AllSubPartnerComp = ({
               </Text>
             </View>
           </View>
-
-          {/** BOTTOM VIEW */}
-          <View style={styles.bottomContainer}>
-            <View
-              style={{
-                flex: 1,
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'flex-start',
-              }}>
-              <Text style={styles.titleRegular}>Top PartnerId</Text>
-              <Text style={styles.titleBold}>{item.topParentId}</Text>
-            </View>
-            <View
-              style={{
-                flex: 2,
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'flex-start',
-              }}>
-              <Text style={styles.titleRegular}>Parent ParentId</Text>
-              <Text style={styles.titleBold}>{item.parentParentPartnerId}</Text>
-            </View>
-            <View
-              style={{
-                flex: 1.5,
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'flex-start',
-              }}>
-              <Text style={styles.titleRegular}>ParentId</Text>
-              <Text style={styles.titleBold} numberOfLines={1}>
-                {item.parentPartnerId}
-              </Text>
-            </View>
-          </View>
-
           <View
             style={{
               display: 'flex',
@@ -191,16 +154,9 @@ const AllSubPartnerComp = ({
   );
 };
 
-export default AllSubPartnerComp;
+export default PartnerPartnerListComp;
 
 const styles = StyleSheet.create({
-  bottomView: {
-    height: heightPercentageToDP(10),
-    backgroundColor: 'pink',
-    marginBottom: heightPercentageToDP(1),
-    display: 'flex',
-    flexDirection: 'row',
-  },
   textStyle: {
     fontSize: heightPercentageToDP(4),
     fontFamily: FONT.Montserrat_Bold,
@@ -219,8 +175,10 @@ const styles = StyleSheet.create({
     borderRadius: heightPercentageToDP(1),
   },
   paymentOption: {
+    backgroundColor: 'pink',
     flexDirection: 'row',
     justifyContent: 'space-between',
+    height: heightPercentageToDP(15),
     borderRadius: heightPercentageToDP(2),
     alignItems: 'center',
     gap: heightPercentageToDP(3),
@@ -252,7 +210,6 @@ const styles = StyleSheet.create({
     flex: 1,
     display: 'flex',
     flexDirection: 'row',
-    paddingVertical: heightPercentageToDP(1),
   },
   bottomContainer: {
     flex: 1,
@@ -260,7 +217,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    paddingVertical: heightPercentageToDP(1),
   },
   centerLine: {
     height: 1,

@@ -12,7 +12,7 @@ import {COLORS, FONT} from '../../../assets/constants';
 import PartnerUserListComp from '../../components/PartnerUserListComp';
 import MainBackgroundWithoutScrollview from '../../components/background/MainBackgroundWithoutScrollview';
 import AllPartnerComp from '../../components/allpartner/AllPartnerComp';
-import AllSubPartnerComp from '../../components/allpartner/AllSubPartnerComp';
+import PartnerPartnerListComp from '../../components/allpartner/PartnerPartnerListComp';
 
 const PartnerPartnerList = ({route}) => {
   const {accesstoken} = useSelector(state => state.user);
@@ -147,7 +147,7 @@ const PartnerPartnerList = ({route}) => {
               data={partners}
               keyExtractor={item => item._id.toString()} // Ensure _id is unique
               renderItem={({item}) => (
-                <AllSubPartnerComp
+                <PartnerPartnerListComp
                   key={item._id.toString()}
                   navigate={'SubPartnerDetails'}
                   name={item.name}

@@ -12,6 +12,8 @@ import {COLORS, FONT} from '../../../assets/constants';
 import MainBackgroundWithoutScrollview from '../../components/background/MainBackgroundWithoutScrollview';
 import AllPartnerComp from '../../components/allpartner/AllPartnerComp';
 import AllSubPartnerComp from '../../components/allpartner/AllSubPartnerComp';
+import SortingOptions from '../../components/helpercComponent/SortingOptions';
+import SortingPartner from '../../components/helpercComponent/SortingPartner';
 
 const AllSubPartner = () => {
   const {accesstoken} = useSelector(state => state.user);
@@ -24,6 +26,8 @@ const AllSubPartner = () => {
   const [loading, setLoading] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [debouncedSearch, setDebouncedSearch] = useState('');
+  const [sortBy, setSortBy] = useState('');
+  const [sortOrder, setSortOrder] = useState('');
 
   // Debounce Effect for Search
   useEffect(() => {
@@ -39,7 +43,7 @@ const AllSubPartner = () => {
     refetch: refetchPaginated,
     isFetching: fetchingPaginated,
   } = useGetAllSubPartnerQuery(
-    {accesstoken, page, limit},
+    {accesstoken, page, limit, sortBy, sortOrder},
     {skip: debouncedSearch.length > 0}, // Skip pagination if searching
   );
 
@@ -58,7 +62,7 @@ const AllSubPartner = () => {
       setPage(1); // ✅ Reset Page
       setHasMore(true); // ✅ Reset Load More
       refetchPaginated?.(); // ✅ Ensure Fresh Data
-    }, [refetchPaginated]),
+    }, [refetchPaginated, sortBy, sortOrder]),
   );
 
   useEffect(() => {
@@ -86,7 +90,7 @@ const AllSubPartner = () => {
     }
 
     setLoading(false);
-  }, [searchData, paginatedData, debouncedSearch, page]);
+  }, [searchData, paginatedData, debouncedSearch, page, sortBy, sortOrder]);
 
   const loadMore = () => {
     if (!loading && hasMore && debouncedSearch.length === 0) {
@@ -97,8 +101,17 @@ const AllSubPartner = () => {
   // Combined Loading State
   const isLoading = fetchingPaginated || fetchingSearch || loading;
 
+  const [showSorting, setShowSorting] = useState(false);
+
+  const handlePressForMenu = () => {
+    setShowSorting(!showSorting);
+  };
+
   return (
-    <MainBackgroundWithoutScrollview title="All Sub Partner">
+    <MainBackgroundWithoutScrollview
+      title="All Sub Partner"
+      showMenu={true}
+      handlerPress={handlePressForMenu}>
       <View style={{flex: 1}}>
         {/* SEARCH INPUT */}
         <View
@@ -134,6 +147,13 @@ const AllSubPartner = () => {
         </View>
 
         {/* PARTNER USER LIST */}
+        {showSorting && (
+          <SortingPartner
+            setSortBy={setSortBy}
+            setSortOrder={setSortOrder}
+            onClose={() => setShowSorting(false)} // Close sorting options
+          />
+        )}
         <View style={{flex: 1, padding: heightPercentageToDP(1)}}>
           {isLoading && page === 1 ? (
             <ActivityIndicator size="large" color={COLORS.white_s} />
@@ -149,7 +169,7 @@ const AllSubPartner = () => {
                   userid={item.userId}
                   noofumser={item.userList.length}
                   profitpercentage={item.profitPercentage}
-                  walletbalance={item.walletTwo?.balance}
+                  walletbalance={item.walletTwo?.balance?.toFixed(0)}
                   rechargepercentage={item.rechargePercentage}
                   item={item}
                 />

@@ -516,8 +516,8 @@ export const sincelotAdminApi = createApi({
     // FOR GETTING ALL PARTNER
 
     getAllPartner: builder.query({
-      query: ({accesstoken, page, limit}) => ({
-        url: `user/getallpartner?page=${page}&limit=${limit}`,
+      query: ({accesstoken, page, limit, sortBy, sortOrder}) => ({
+        url: `user/getallpartner?page=${page}&limit=${limit}&sortBy=${sortBy}&sortOrder=${sortOrder}`,
         method: 'get',
         headers: {
           Authorization: `Bearer ${accesstoken}`,
@@ -527,8 +527,8 @@ export const sincelotAdminApi = createApi({
 
     // [GET ALL SUBPARTNER]
     getAllSubPartner: builder.query({
-      query: ({accesstoken, page, limit}) => ({
-        url: `user/getallsubpartner?page=${page}&limit=${limit}`,
+      query: ({accesstoken, page, limit, sortBy, sortOrder}) => ({
+        url: `user/getallsubpartner?page=${page}&limit=${limit}&sortBy=${sortBy}&sortOrder=${sortOrder}`,
         method: 'get',
         headers: {
           Authorization: `Bearer ${accesstoken}`,
