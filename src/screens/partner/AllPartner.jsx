@@ -11,6 +11,7 @@ import Fontisto from 'react-native-vector-icons/Fontisto';
 import {COLORS, FONT} from '../../../assets/constants';
 import MainBackgroundWithoutScrollview from '../../components/background/MainBackgroundWithoutScrollview';
 import AllPartnerComp from '../../components/allpartner/AllPartnerComp';
+import SortingPartner from '../../components/helpercComponent/SortingPartner';
 
 const AllPartner = () => {
   const {accesstoken} = useSelector(state => state.user);
@@ -23,6 +24,8 @@ const AllPartner = () => {
   const [loading, setLoading] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [debouncedSearch, setDebouncedSearch] = useState('');
+  const [sortBy, setSortBy] = useState('');
+  const [sortOrder, setSortOrder] = useState('');
 
   // Debounce Effect for Search
   useEffect(() => {
@@ -38,7 +41,7 @@ const AllPartner = () => {
     refetch: refetchPaginated,
     isFetching: fetchingPaginated,
   } = useGetAllPartnerQuery(
-    {accesstoken, page, limit},
+    {accesstoken, page, limit, sortBy, sortOrder},
     {skip: debouncedSearch.length > 0}, // Skip pagination if searching
   );
 
@@ -60,7 +63,7 @@ const AllPartner = () => {
       } catch (e) {
         console.log(e);
       }
-    }, [refetchPaginated]),
+    }, [refetchPaginated, sortBy, sortOrder]),
   );
 
   useEffect(() => {
@@ -88,7 +91,7 @@ const AllPartner = () => {
     }
 
     setLoading(false);
-  }, [searchData, paginatedData, debouncedSearch, page]);
+  }, [searchData, paginatedData, debouncedSearch, page, sortBy, sortOrder]);
 
   const loadMore = () => {
     if (!loading && hasMore && debouncedSearch.length === 0) {
@@ -99,8 +102,17 @@ const AllPartner = () => {
   // Combined Loading State
   const isLoading = fetchingPaginated || fetchingSearch || loading;
 
+  const [showSorting, setShowSorting] = useState(false);
+
+  const handlePressForMenu = () => {
+    setShowSorting(!showSorting);
+  };
+
   return (
-    <MainBackgroundWithoutScrollview title="All Partner">
+    <MainBackgroundWithoutScrollview
+      title="All Partner"
+      showMenu={true}
+      handlerPress={handlePressForMenu}>
       <View style={{flex: 1}}>
         {/* SEARCH INPUT */}
         <View
@@ -135,6 +147,14 @@ const AllPartner = () => {
           />
         </View>
 
+        {/* PARTNER USER LIST */}
+        {showSorting && (
+          <SortingPartner
+            setSortBy={setSortBy}
+            setSortOrder={setSortOrder}
+            onClose={() => setShowSorting(false)} // Close sorting options
+          />
+        )}
         {/* PARTNER USER LIST */}
         <View style={{flex: 1, padding: heightPercentageToDP(1)}}>
           {isLoading && page === 1 ? (
