@@ -61,6 +61,18 @@ const UpdatePercentage = ({route}) => {
         });
         return;
       }
+      if (
+        !checkValidPercentageCriteria(
+          profitpercentage,
+          partnerData?.partner?.rechargePercentage,
+        )
+      ) {
+        Toast.show({
+          type: 'error',
+          text1: 'Percentage is too high',
+        });
+        return;
+      }
 
       const body = {
         partnerId: partner.userId,
@@ -99,6 +111,18 @@ const UpdatePercentage = ({route}) => {
         Toast.show({
           type: 'error',
           text1: 'Please Enter Valid Percentage',
+        });
+        return;
+      }
+      if (
+        !checkValidPercentageCriteria(
+          rechargepercentage,
+          partnerData?.partner?.profitPercentage,
+        )
+      ) {
+        Toast.show({
+          type: 'error',
+          text1: 'Percentage is too high',
         });
         return;
       }
@@ -255,3 +279,14 @@ const UpdatePercentage = ({route}) => {
 export default UpdatePercentage;
 
 const styles = StyleSheet.create({});
+export const checkValidPercentageCriteria = (profit, recharge) => {
+  const numProfit = Number(profit);
+  const numRecharge = Number(recharge);
+
+  if (isNaN(numProfit) || isNaN(numRecharge)) {
+    console.error('Invalid input: Both values must be numbers');
+    return false;
+  }
+
+  return numProfit + numRecharge <= 100;
+};
