@@ -18,6 +18,7 @@ const PartnerDashComp = ({
   fromicon,
   iconname,
   data,
+  count,
 }) => {
   const navigation = useNavigation();
 
@@ -36,51 +37,53 @@ const PartnerDashComp = ({
           <GradientText style={styles.textStyleContent}>{title}</GradientText>
           <Text style={styles.subtitle}>{subtitle}</Text>
         </View>
+        <GradientText style={styles.textStyleContent}>{count}</GradientText>
+        {!count && (
+          <View style={styles.iconContainer}>
+            {fromicon === 'FontAwesome6' && (
+              <FontAwesome6
+                name={iconname}
+                size={heightPercentageToDP(3)}
+                color={COLORS.darkGray}
+                style={styles.icon}
+              />
+            )}
+            {fromicon === 'MaterialCommunityIcons' && (
+              <MaterialCommunityIcons
+                name={iconname}
+                size={heightPercentageToDP(3)}
+                color={COLORS.darkGray}
+                style={styles.icon}
+              />
+            )}
+            {fromicon === 'FontAwesome5' && (
+              <FontAwesome5
+                name={iconname}
+                size={heightPercentageToDP(3)}
+                color={COLORS.darkGray}
+                style={styles.icon}
+              />
+            )}
 
-        <View style={styles.iconContainer}>
-          {fromicon === 'FontAwesome6' && (
-            <FontAwesome6
-              name={iconname}
-              size={heightPercentageToDP(3)}
-              color={COLORS.darkGray}
-              style={styles.icon}
-            />
-          )}
-          {fromicon === 'MaterialCommunityIcons' && (
-            <MaterialCommunityIcons
-              name={iconname}
-              size={heightPercentageToDP(3)}
-              color={COLORS.darkGray}
-              style={styles.icon}
-            />
-          )}
-          {fromicon === 'FontAwesome5' && (
-            <FontAwesome5
-              name={iconname}
-              size={heightPercentageToDP(3)}
-              color={COLORS.darkGray}
-              style={styles.icon}
-            />
-          )}
+            {fromicon === 'Ionicons' && (
+              <Ionicons
+                name={iconname}
+                size={heightPercentageToDP(3)}
+                color={COLORS.darkGray}
+                style={styles.icon}
+              />
+            )}
 
-          {fromicon === 'Ionicons' && (
-            <Ionicons
-              name={iconname}
-              size={heightPercentageToDP(3)}
-              color={COLORS.darkGray}
-              style={styles.icon}
-            />
-          )}
-
-          {fromicon === 'MaterialIcons' && (
-            <MaterialIcons
-              name={iconname}
-              size={heightPercentageToDP(3)}
-              color={COLORS.darkGray}
-              style={styles.icon}
-            />
-          )}
-        </View>
+            {fromicon === 'MaterialIcons' && (
+              <MaterialIcons
+                name={iconname}
+                size={heightPercentageToDP(3)}
+                color={COLORS.darkGray}
+                style={styles.icon}
+              />
+            )}
+          </View>
+        )}
       </LinearGradient>
     </TouchableOpacity>
   );

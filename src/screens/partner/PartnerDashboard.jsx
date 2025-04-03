@@ -6,6 +6,8 @@ import {useDispatch, useSelector} from 'react-redux';
 import {COLORS, FONT} from '../../../assets/constants';
 import PartnerDashComp from '../../components/partnerdashboard/PartnerDashComp';
 import MainBackgound from '../../components/background/MainBackgound';
+import {useGetUserCountQuery} from '../../helper/Networkcall';
+import Loading from '../../components/helpercComponent/Loading';
 
 const PartnerDashboard = () => {
   const navigation = useNavigation();
@@ -13,74 +15,86 @@ const PartnerDashboard = () => {
 
   const {accesstoken, user, partner} = useSelector(state => state.user);
 
+  const {isLoading, data, refetch} = useGetUserCountQuery({accesstoken});
+
   return (
     <MainBackgound title={'Partner Dashboard'}>
       {/** PARTNER PERFORMANCE */}
 
-      <PartnerDashComp
-        navigate={'PartnerPerformanceDashboard'}
-        title={'Partner Performance'}
-        subtitle={'List of all Partner Performace'}
-        fromicon={'FontAwesome6'}
-        iconname={'people-group'}
-      />
-      {/** ALL PARTNER */}
+      {isLoading ? (
+        <Loading />
+      ) : (
+        <>
+          {/** ALL PARTNER */}
 
-      <PartnerDashComp
-        navigate={'AllPartner'}
-        title={'All Partner'}
-        subtitle={'List of all Partner data'}
-        fromicon={'FontAwesome6'}
-        iconname={'people-group'}
-      />
+          <PartnerDashComp
+            navigate={'AllPartner'}
+            title={'All Partner'}
+            subtitle={'List of all Partner data'}
+            fromicon={'FontAwesome6'}
+            iconname={'people-group'}
+            count={data?.partnerCount}
+          />
 
-      {/** ALL SUB PARTNER */}
+          {/** ALL SUB PARTNER */}
 
-      <PartnerDashComp
-        navigate={'AllSubPartner'}
-        title={'All Sub Partner'}
-        subtitle={'List of all Sub Partner data'}
-        fromicon={'FontAwesome6'}
-        iconname={'people-group'}
-      />
+          <PartnerDashComp
+            navigate={'AllSubPartner'}
+            title={'All Sub Partner'}
+            subtitle={'List of all Sub Partner data'}
+            fromicon={'FontAwesome6'}
+            iconname={'people-group'}
+            count={data?.subPartnerCount}
+          />
 
-      {/** All Profit Decrease */}
+          {/** All Users */}
 
-      <PartnerDashComp
-        navigate={'ProfitDeduction'}
-        title={'All Profit Decrease'}
-        subtitle={'List of Decrease Request'}
-        fromicon={'MaterialCommunityIcons'}
-        iconname={'human-capacity-decrease'}
-      />
+          <PartnerDashComp
+            navigate={'AllUsersPartner'}
+            title={'All Users'}
+            subtitle={'List of All User'}
+            fromicon={'MaterialCommunityIcons'}
+            iconname={'human-capacity-decrease'}
+            count={data?.allUserCount}
+          />
 
-      {/** All Recharge Request */}
-      <PartnerDashComp
-        navigate={'AllRecharge'}
-        title={'All Recharge Request'}
-        subtitle={'List of Recharge Request'}
-        fromicon={'FontAwesome6'}
-        iconname={'money-bill-trend-up'}
-      />
+          <PartnerDashComp
+            navigate={'PartnerPerformanceDashboard'}
+            title={'Performance'}
+            subtitle={'List of all Partner Performace'}
+            fromicon={'FontAwesome6'}
+            iconname={'people-group'}
+          />
 
-      {/** Minimum Percentage */}
-      <PartnerDashComp
-        navigate={'MinimumPercentage'}
-        title={'MinimumPercentage'}
-        subtitle={'Default Percentage for Partner'}
-        fromicon={'FontAwesome5'}
-        iconname={'percentage'}
-      />
+          {/** All Recharge Request */}
+          <PartnerDashComp
+            navigate={'AllRecharge'}
+            title={'All Recharge Request'}
+            subtitle={'List of Recharge Request'}
+            fromicon={'FontAwesome6'}
+            iconname={'money-bill-trend-up'}
+          />
 
-      {/** All Users */}
+          {/** All Profit Decrease */}
 
-      <PartnerDashComp
-        navigate={'AllUsersPartner'}
-        title={'All Users'}
-        subtitle={'List of All User'}
-        fromicon={'MaterialCommunityIcons'}
-        iconname={'human-capacity-decrease'}
-      />
+          <PartnerDashComp
+            navigate={'ProfitDeduction'}
+            title={'All Profit Decrease'}
+            subtitle={'List of Decrease Request'}
+            fromicon={'MaterialCommunityIcons'}
+            iconname={'human-capacity-decrease'}
+          />
+
+          {/** Minimum Percentage */}
+          <PartnerDashComp
+            navigate={'MinimumPercentage'}
+            title={'MinimumPercentage'}
+            subtitle={'Default Percentage for Partner'}
+            fromicon={'FontAwesome5'}
+            iconname={'percentage'}
+          />
+        </>
+      )}
     </MainBackgound>
   );
 };
