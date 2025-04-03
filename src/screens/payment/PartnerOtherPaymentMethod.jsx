@@ -360,21 +360,21 @@ const PartnerOtherPaymentMethod = ({route}) => {
                               gap: heightPercentageToDP(2),
                               justifyContent: 'space-between',
                             }}>
-                            {otherPaymentData?.inputNames?.firstInputName && (
+                            {item?.firstInputName && (
                               <Text style={styles.copytitle} numberOfLines={2}>
-                                {otherPaymentData?.inputNames?.firstInputName}
+                                {item?.firstInputName}
                               </Text>
                             )}
 
-                            {otherPaymentData?.inputNames?.secondInputName && (
+                            {item?.secondInputName && (
                               <Text style={styles.copytitle}>
-                                {otherPaymentData?.inputNames?.secondInputName}
+                                {item?.secondInputName}
                               </Text>
                             )}
 
-                            {otherPaymentData?.inputNames?.thirdInputName && (
+                            {item?.thirdInputName && (
                               <Text style={styles.copytitle}>
-                                {otherPaymentData?.inputNames?.thirdInputName}
+                                {item?.thirdInputName}
                               </Text>
                             )}
                           </View>
@@ -411,8 +411,9 @@ const PartnerOtherPaymentMethod = ({route}) => {
                             style={{
                               height: '100%',
                               width: '10%',
-                              justifyContent: 'space-between',
+                              justifyContent: 'flex-start',
                               alignItems: 'flex-end',
+                              gap: heightPercentageToDP(1),
                             }}>
                             {item.firstInput && (
                               <TouchableOpacity
@@ -482,7 +483,7 @@ const PartnerOtherPaymentMethod = ({route}) => {
                         </View>
 
                         {/** QR code */}
-                        {otherPaymentData?.inputNames?.fourthInputName && (
+                        {item.qrcode && (
                           <View
                             style={{
                               flex: 2,
