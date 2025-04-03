@@ -27,7 +27,6 @@ import {
   useSearchJackpotGameInsightsQuery,
 } from '../../helper/Networkcall';
 import {useSelector} from 'react-redux';
-import {skipToken} from '@reduxjs/toolkit/query';
 import Clipboard from '@react-native-clipboard/clipboard';
 import Toast from 'react-native-toast-message';
 
@@ -44,7 +43,7 @@ const PowerGameInsights = ({route}) => {
 
   const navigation = useNavigation();
   const [page, setPage] = useState(1);
-  const [limit, setLimit] = useState(5);
+  const [limit, setLimit] = useState(8);
   const {accesstoken} = useSelector(state => state.user);
   const [gameInsightsData, setGameInsightsData] = useState([]);
   const [gameId, setGameId] = useState(null);
@@ -219,7 +218,7 @@ const PowerGameInsights = ({route}) => {
   const [loading, setLoading] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [debouncedSearch, setDebouncedSearch] = useState('');
-
+  const [totalRecords, setTotalRecords] = useState(0);
   // Debounce Effect for Search
   useEffect(() => {
     const handler = setTimeout(() => {
@@ -235,6 +234,7 @@ const PowerGameInsights = ({route}) => {
     data: paginatedData,
     refetch: refetchPaginated,
     isFetching: fetchingPaginated,
+    error: paginatedError,
   } = useGetPowerballGameInsightsQuery(
     {
       accesstoken,
@@ -251,20 +251,9 @@ const PowerGameInsights = ({route}) => {
   const {data: searchData, isFetching: fetchingSearch} =
     useSearchJackpotGameInsightsQuery(
       debouncedSearch.length > 0
-        ? {accesstoken, id: gameId, jackpot: debouncedSearch}
+        ? {accesstoken, id: gameId, jackpot: debouncedSearch, page, limit}
         : {skip: true},
     );
-
-  // console.log('Search data');
-  // console.log(gameInsightsData?._id);
-  // console.log(gameId);
-  // console.log(JSON.stringify(searchData));
-  // const {data: searchData, isFetching: fetchingSearch} =
-  //   useSearchJackpotGameInsightsQuery(
-  //     debouncedSearch.length > 0
-  //       ? {accesstoken, searchTerm: debouncedSearch}
-  //       : {skip: true},
-  //   );
 
   // Reset State on Navigation Back
   useFocusEffect(
@@ -277,45 +266,120 @@ const PowerGameInsights = ({route}) => {
     }, [refetchPaginated]),
   );
 
+  // useEffect(() => {
+  //   setLoading(true);
+
+  //   if (
+  //     debouncedSearch.length > 0 &&
+  //     searchData?.tickets.length > 0 &&
+  //     searchData?.tickets[0].alltickets
+  //   ) {
+  //     // For search results, replace the existing data
+  //     setGameInsightsData(searchData?.tickets[0].alltickets);
+  //     setHasMore(false); // Disable pagination when searching
+  //   } else if (
+  //     paginatedData?.tickets.length > 0 &&
+  //     paginatedData?.tickets[0].alltickets
+  //   ) {
+  //     setGameId(paginatedData.tickets[0]._id);
+  //     // For paginated data, filter out duplicates before appending
+  //     setGameInsightsData(prev => {
+  //       const newData = paginatedData.tickets[0].alltickets.filter(
+  //         newItem => !prev.some(prevItem => prevItem._id === newItem._id),
+  //       );
+  //       return page === 1
+  //         ? paginatedData.tickets[0].alltickets
+  //         : [...prev, ...newData];
+  //     });
+
+  //     // Update `hasMore` based on the length of the new data
+  //     if (
+  //       paginatedData?.tickets.length > 0 &&
+  //       paginatedData.tickets[0].alltickets.length < limit
+  //     ) {
+  //       setHasMore(false); // No more data to fetch
+  //     } else {
+  //       setHasMore(true); // More data available
+  //     }
+  //   }
+
+  //   setLoading(false);
+  // }, [searchData, paginatedData, debouncedSearch, page]);
+
   useEffect(() => {
-    setLoading(true);
+    if (fetchingPaginated || fetchingSearch) return;
 
-    if (
-      debouncedSearch.length > 0 &&
-      searchData?.tickets.length > 0 &&
-      searchData?.tickets[0].alltickets
-    ) {
-      // For search results, replace the existing data
-      setGameInsightsData(searchData?.tickets[0].alltickets);
-      setHasMore(false); // Disable pagination when searching
-    } else if (
-      paginatedData?.tickets.length > 0 &&
-      paginatedData?.tickets[0].alltickets
-    ) {
-      setGameId(paginatedData.tickets[0]._id);
-      // For paginated data, filter out duplicates before appending
-      setGameInsightsData(prev => {
-        const newData = paginatedData.tickets[0].alltickets.filter(
-          newItem => !prev.some(prevItem => prevItem._id === newItem._id),
-        );
-        return page === 1
-          ? paginatedData.tickets[0].alltickets
-          : [...prev, ...newData];
-      });
+    if (paginatedError) {
+      setHasMore(false);
+      return;
+    }
 
-      // Update `hasMore` based on the length of the new data
-      if (
-        paginatedData?.tickets.length > 0 &&
-        paginatedData.tickets[0].alltickets.length < limit
-      ) {
-        setHasMore(false); // No more data to fetch
-      } else {
-        setHasMore(true); // More data available
+    if (paginatedData) {
+      // Update total records from API response
+      setTotalRecords(paginatedData.totalRecords);
+
+      // Update game ID if available
+      if (paginatedData.tickets?.[0]?._id) {
+        setGameId(paginatedData.tickets[0]._id);
+      }
+
+      // If we have tickets data
+      if (paginatedData.tickets?.[0]?.alltickets) {
+        const newTickets = paginatedData.tickets[0].alltickets;
+
+        setGameInsightsData(prev => {
+          if (page === 1) return newTickets;
+
+          // Merge while avoiding duplicates - for paginated data
+          const existingIds = new Set(
+            prev.map(item => `${item.userId}-${item.tickets[0]._id}`),
+          );
+
+          const filteredNewTickets = newTickets.filter(item => {
+            const itemId = `${item.userId}-${item.tickets[0]._id}`;
+            return !existingIds.has(itemId);
+          });
+
+          return [...prev, ...filteredNewTickets];
+        });
+
+        // Determine if more data is available
+        setHasMore(page < paginatedData.totalPages);
       }
     }
 
-    setLoading(false);
-  }, [searchData, paginatedData, debouncedSearch, page]);
+    // Handle search results
+    if (debouncedSearch.length > 0 && searchData?.tickets?.[0]?.alltickets) {
+      const newTickets = searchData.tickets[0].alltickets;
+      setGameInsightsData(prev => {
+        if (page === 1) return newTickets;
+
+        // Merge while avoiding duplicates - for search data
+        const existingIds = new Set(
+          prev.map(item => {
+            // For search results, use the ticket's _id directly since structure is different
+            return item.tickets[0]._id; // Just use the ticket ID since it's unique
+          }),
+        );
+
+        const filteredNewTickets = newTickets.filter(item => {
+          return !existingIds.has(item.tickets[0]._id);
+        });
+
+        return [...prev, ...filteredNewTickets];
+      });
+      setTotalRecords(searchData.totalRecords);
+      setHasMore(page < searchData.totalPages);
+    }
+  }, [
+    paginatedData,
+    searchData,
+    debouncedSearch,
+    page,
+    fetchingPaginated,
+    fetchingSearch,
+    paginatedError,
+  ]);
 
   const loadMore = () => {
     if (!loading && hasMore && debouncedSearch.length === 0) {
@@ -324,188 +388,8 @@ const PowerGameInsights = ({route}) => {
   };
 
   // Combined Loading State
-  const isLoading = fetchingPaginated || fetchingSearch || loading;
-
-  // TESTING FOR THE WINNING AMOUNT AND ALL
-
-  // Step 3: Get all tickets from the found power game
-  // const allTickets = [
-  //   {
-  //     userId: 1042,
-  //     username: 'Naina',
-  //     currency: '67a344d34150a729e57269e9',
-  //     tickets: [
-  //       {
-  //         amount: 50,
-  //         convertedAmount: 50,
-  //         multiplier: 1,
-  //         usernumber: [13, 54, 67, 68, 31, 8],
-  //         _id: '67c79a7a842474a46585f8cd',
-  //         createdAt: '2025-03-05T00:27:38.655Z',
-  //       },
-  //       {
-  //         amount: 50,
-  //         convertedAmount: 50,
-  //         multiplier: 1,
-  //         usernumber: [9, 70, 23, 21, 5, 44],
-  //         _id: '67c79a7a842474a46585f8ce',
-  //         createdAt: '2025-03-05T00:27:38.655Z',
-  //       },
-  //     ],
-  //     _id: '67c79a7a842474a46585f8cc',
-  //     createdAt: '2025-03-05T00:27:38.663Z',
-  //     updatedAt: '2025-03-05T00:27:38.663Z',
-  //   },
-  //   {
-  //     userId: 1048,
-  //     username: 'sunaina',
-  //     currency: '67a344d34150a729e57269e9',
-  //     tickets: [
-  //       {
-  //         amount: 100,
-  //         convertedAmount: 100,
-  //         multiplier: 2,
-  //         usernumber: [2, 25, 35, 4, 66, 29],
-  //         _id: '67c79abe842474a46585f98b',
-  //         createdAt: '2025-03-05T00:28:46.997Z',
-  //       },
-  //     ],
-  //     _id: '67c79abe842474a46585f98a',
-  //     createdAt: '2025-03-05T00:28:46.998Z',
-  //     updatedAt: '2025-03-05T00:28:46.998Z',
-  //   },
-  //   {
-  //     userId: 1045,
-  //     username: 'Elena',
-  //     currency: '67a344d34150a729e57269e9',
-  //     tickets: [
-  //       {
-  //         amount: 100,
-  //         convertedAmount: 100,
-  //         multiplier: 2,
-  //         usernumber: [23, 68, 38, 20, 8, 41],
-  //         _id: '67c79b10842474a46585fa4a',
-  //         createdAt: '2025-03-05T00:30:08.307Z',
-  //       },
-  //       {
-  //         amount: 50,
-  //         convertedAmount: 50,
-  //         multiplier: 1,
-  //         usernumber: [56, 42, 57, 46, 12, 37],
-  //         _id: '67c79b10842474a46585fa4b',
-  //         createdAt: '2025-03-05T00:30:08.308Z',
-  //       },
-  //     ],
-  //     _id: '67c79b10842474a46585fa49',
-  //     createdAt: '2025-03-05T00:30:08.311Z',
-  //     updatedAt: '2025-03-05T00:30:08.311Z',
-  //   },
-  //   {
-  //     userId: 1046,
-  //     username: 'Divya',
-  //     currency: '67a344d34150a729e57269e9',
-  //     tickets: [
-  //       {
-  //         amount: 50,
-  //         convertedAmount: 50,
-  //         multiplier: 1,
-  //         usernumber: [21, 4, 23, 41, 2, 7],
-  //         _id: '67c79b5e842474a46585fb60',
-  //         createdAt: '2025-03-05T00:31:26.174Z',
-  //       },
-  //     ],
-  //     _id: '67c79b5e842474a46585fb5f',
-  //     createdAt: '2025-03-05T00:31:26.176Z',
-  //     updatedAt: '2025-03-05T00:31:26.176Z',
-  //   },
-  //   {
-  //     userId: 1047,
-  //     username: 'abhilash',
-  //     currency: '67a344d34150a729e57269e9',
-  //     tickets: [
-  //       {
-  //         amount: 50,
-  //         convertedAmount: 50,
-  //         multiplier: 1,
-  //         usernumber: [8, 26, 55, 25, 17, 34],
-  //         _id: '67c79ba6842474a46585fc2a',
-  //         createdAt: '2025-03-05T00:32:38.732Z',
-  //       },
-  //     ],
-  //     _id: '67c79ba6842474a46585fc29',
-  //     createdAt: '2025-03-05T00:32:38.736Z',
-  //     updatedAt: '2025-03-05T00:32:38.736Z',
-  //   },
-  //   {
-  //     userId: 1012,
-  //     username: 'Karan',
-  //     currency: '67a344d34150a729e57269e9',
-  //     tickets: [
-  //       {
-  //         amount: 50,
-  //         convertedAmount: 50,
-  //         multiplier: 1,
-  //         usernumber: [44, 67, 22, 31, 55, 30],
-  //         _id: '67c79be0842474a46585fcef',
-  //         createdAt: '2025-03-05T00:33:36.139Z',
-  //       },
-  //     ],
-  //     _id: '67c79be0842474a46585fcee',
-  //     createdAt: '2025-03-05T00:33:36.142Z',
-  //     updatedAt: '2025-03-05T00:33:36.142Z',
-  //   },
-  // ];
-
-  // // Step 4: Function to distribute prize
-
-  // // const allTickets = powerGame.alltickets;
-  // const jackpotnumber = [2, 10, 19, 29, 39, 49];
-  // let winningAmount = 0;
-
-  // console.log('Winning amount: ', winningAmount);
-
-  // const distributePrize = async (matchCount, prizeAmount) => {
-  //   for (let ticketHolder of allTickets) {
-  //     for (let ticket of ticketHolder.tickets) {
-  //       // Count the number of matching numbers
-  //       const matches = ticket.usernumber.filter(num =>
-  //         jackpotnumber.includes(num),
-  //       ).length;
-
-  //       if (matches === matchCount) {
-  //         let wonAmount = prizeAmount * ticket.multiplier;
-  //         if (matchCount === 3) {
-  //           wonAmount = ticket.convertedAmount * parseFloat(prizeAmount);
-  //         }
-  //         if (matchCount === 2) {
-  //           wonAmount = ticket.convertedAmount * parseFloat(prizeAmount);
-  //         }
-  //         if (matchCount === 1) {
-  //           wonAmount = ticket.convertedAmount * parseFloat(prizeAmount);
-  //         }
-
-  //         winningAmount += wonAmount;
-  //       }
-  //     }
-  //   }
-  // };
-
-  // Step 5: Distribute prizes based on matches
-  //  await distributePrize(6, prize.firstprize.amount);
-  //  await distributePrize(5, prize.secondprize.amount);
-  //  await distributePrize(4, prize.thirdprize.amount);
-  //  await distributePrize(3, prize.fourthprize.amount);
-  //  await distributePrize(2, prize.fifthprize.amount);
-  //  await distributePrize(1, prize.sixthprize.amount);
-
-  // distributePrize(6, 100000);
-  // distributePrize(5, 50000);
-  // distributePrize(4, 25000);
-  // distributePrize(3, 4);
-  // distributePrize(2, 3);
-  // distributePrize(1, 2);
-  // console.log('Winning amount After: ', winningAmount);
-
+  // const isLoading = fetchingPaginated || fetchingSearch || loading;
+  const isLoading = fetchingPaginated || fetchingSearch;
   return (
     <MainBackgroundWithoutScrollview
       lefttext={item.powerdate}
@@ -517,14 +401,34 @@ const PowerGameInsights = ({route}) => {
       ) : (
         <FlatList
           key={item => item._id}
-          keyExtractor={item => item._id.toString()}
-          data={gameInsightsData}
-          renderItem={({item}) => (
+          data={[...gameInsightsData].reverse()}
+          keyExtractor={item => item._id?.toString()}
+          ListHeaderComponent={() => (
+            <View
+              style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'flex-end',
+                flexDirection: 'row',
+                marginTop: heightPercentageToDP(1),
+              }}>
+              <Text
+                style={{
+                  color: COLORS.white_s,
+                  fontSize: heightPercentageToDP(2),
+                  fontFamily: FONT.Montserrat_Bold,
+                }}>
+                Total Tickets : {totalRecords}
+              </Text>
+            </View>
+          )}
+          renderItem={({item, index}) => (
             <PowerGameInsightsComp
               item={item}
               expandedItems={expandedItems}
               setExpandedItems={setExpandedItems}
               toggleItem={toggleItem}
+              index={totalRecords - index}
             />
           )}
           onEndReached={loadMore}

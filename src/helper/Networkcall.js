@@ -1029,8 +1029,8 @@ export const sincelotAdminApi = createApi({
 
     // SEARCH JACKPOT NUMNER IN GAMEINSIGHTS
     searchJackpotGameInsights: builder.query({
-      query: ({accesstoken, id, jackpot}) => ({
-        url: `result/powerball/search?id=${id}&jackpot=${jackpot}`,
+      query: ({accesstoken, id, jackpot, page, limit}) => ({
+        url: `result/powerball/search?id=${id}&page=${page}&limit=${limit}&jackpot=${jackpot}`,
         method: 'GET',
         headers: {
           Authorization: `Bearer ${accesstoken}`,

@@ -14,6 +14,7 @@ const PowerGameInsightsComp = ({
   setExpandedItems,
   toggleItem,
   navigation,
+  index,
 }) => {
   return (
     <LinearGradient
@@ -27,7 +28,7 @@ const PowerGameInsightsComp = ({
         marginTop: heightPercentageToDP(2),
       }}>
       <TouchableOpacity
-        onPress={() => toggleItem(item._id)}
+        onPress={() => toggleItem(index)}
         style={{
           flex: 1,
           borderTopLeftRadius: heightPercentageToDP(2),
@@ -42,6 +43,15 @@ const PowerGameInsightsComp = ({
 
             flexDirection: 'row',
           }}>
+          <View
+            style={{
+              flex: 0.5,
+
+              justifyContent: 'center',
+              alignItems: 'flex-start',
+            }}>
+            <Text style={styles.title}>No.</Text>
+          </View>
           <View
             style={{
               flex: 0.8,
@@ -81,6 +91,15 @@ const PowerGameInsightsComp = ({
             }}>
             <View
               style={{
+                flex: 0.5,
+
+                justifyContent: 'center',
+                alignItems: 'flex-start',
+              }}>
+              <Text style={styles.titleData}>{index}</Text>
+            </View>
+            <View
+              style={{
                 flex: 0.8,
 
                 justifyContent: 'center',
@@ -112,7 +131,7 @@ const PowerGameInsightsComp = ({
         ))}
       </TouchableOpacity>
 
-      {expandedItems[item._id] && (
+      {expandedItems[index] && (
         <>
           <View
             style={{
