@@ -12,6 +12,7 @@ import {COLORS, FONT} from '../../../assets/constants';
 import MainBackgroundWithoutScrollview from '../../components/background/MainBackgroundWithoutScrollview';
 import AllPartnerComp from '../../components/allpartner/AllPartnerComp';
 import SortingPartner from '../../components/helpercComponent/SortingPartner';
+import AllPartnerOrgComp from '../../components/allpartner/AllPartnerOrgComp';
 
 const AllPartner = () => {
   const {accesstoken} = useSelector(state => state.user);
@@ -164,7 +165,7 @@ const AllPartner = () => {
               data={partners}
               keyExtractor={item => item._id.toString()} // Ensure _id is unique
               renderItem={({item}) => (
-                <AllPartnerComp
+                <AllPartnerOrgComp
                   key={item.userId}
                   navigate={'PartnerDetails'}
                   name={item.name}

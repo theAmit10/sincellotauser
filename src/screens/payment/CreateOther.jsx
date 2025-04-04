@@ -229,7 +229,10 @@ const CreateOther = () => {
     }
 
     if (!paymentnote) {
-      showErrorToast('Add payment note');
+      Toast.show({
+        type: 'error',
+        text1: 'Add payment note',
+      });
       return;
     } else {
       console.log('Create other payment Running');
