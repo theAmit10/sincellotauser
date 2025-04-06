@@ -1,4 +1,4 @@
-import {StyleSheet, Text, View} from 'react-native';
+import {StyleSheet} from 'react-native';
 import React, {useState} from 'react';
 import MainBackgound from '../../../components/background/MainBackgound';
 import UpdatePermissionComp from '../../../components/updatepermisssion/UpdatePermissionComp';
@@ -13,7 +13,6 @@ import {
 } from '../../../helper/Networkcall';
 import Loading from '../../../components/helpercComponent/Loading';
 import Toast from 'react-native-toast-message';
-import {InputMode} from 'react-native-paper/lib/typescript/components/TextInput/Adornment/enums';
 
 const UpdatePermission = ({route}) => {
   const {accesstoken} = useSelector(state => state.user);

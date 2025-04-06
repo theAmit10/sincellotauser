@@ -60,24 +60,24 @@ const PartnerDetails = ({route}) => {
       ) : (
         partnerdata && (
           <>
-            <PartnerDashComp
+            {/* <PartnerDashComp
               navigate={'PartnerActivation'}
               title={'Partner Activation'}
               subtitle={'Active the partner account'}
               fromicon={'MaterialCommunityIcons'}
               iconname={'security'}
               data={partnerdata}
-            />
+            /> */}
 
             {/** RECHARGE MODULE ACTIVATION */}
-            <PartnerDashComp
+            {/* <PartnerDashComp
               navigate={'RechargeActivation'}
               title={'Recharge Activation'}
               subtitle={'Active the recharge account'}
               fromicon={'MaterialCommunityIcons'}
               iconname={'security'}
               data={partnerdata}
-            />
+            /> */}
 
             {/** PARTNER USER LIST */}
             <PartnerDashComp
