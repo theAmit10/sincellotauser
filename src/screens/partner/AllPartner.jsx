@@ -56,6 +56,8 @@ const AllPartner = () => {
       : {skip: true},
   );
 
+  const [forReload, setForReload] = useState(false);
+
   // Reset State on Navigation Back
   useFocusEffect(
     useCallback(() => {
@@ -67,7 +69,7 @@ const AllPartner = () => {
       } catch (e) {
         console.log(e);
       }
-    }, [refetchPaginated, sortBy, sortOrder]),
+    }, [refetchPaginated, sortBy, sortOrder, forReload]),
   );
 
   useEffect(() => {
@@ -142,6 +144,7 @@ const AllPartner = () => {
         text1: res.data.message,
       });
       await refetchPaginated();
+      setForReload(!forReload);
     } catch (error) {
       console.log(error);
       Toast.show({
@@ -172,6 +175,7 @@ const AllPartner = () => {
         text1: res.data.message,
       });
       await refetchPaginated();
+      setForReload(!forReload);
     } catch (error) {
       console.log(error);
       Toast.show({
