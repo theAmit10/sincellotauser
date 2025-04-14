@@ -501,7 +501,7 @@ const PartnerOtherPaymentMethod = ({route}) => {
                               {item.qrcode ? (
                                 <Image
                                   source={{
-                                    uri: `${serverName}/uploads/upiqrcode/${item.qrcode}`,
+                                    uri: `${serverName}/uploads/otherpaymentqrcode/${item.qrcode}`,
                                   }}
                                   resizeMode="cover"
                                   style={{
