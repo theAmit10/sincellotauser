@@ -1,9 +1,10 @@
-import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {StyleSheet, Switch, Text, TouchableOpacity, View} from 'react-native';
 import React from 'react';
 import {useNavigation} from '@react-navigation/native';
 import LinearGradient from 'react-native-linear-gradient';
 import {COLORS, FONT} from '../../../assets/constants';
 import {heightPercentageToDP} from 'react-native-responsive-screen';
+import Loading from '../helpercComponent/Loading';
 
 const AllSubPartnerComp = ({
   navigate,
@@ -14,6 +15,11 @@ const AllSubPartnerComp = ({
   noofumser,
   walletbalance,
   item,
+  profitloading,
+  rechargeloading,
+  toggleSwitchRecharge,
+  toggleSwitchProfit,
+  selectedItem,
 }) => {
   const navigation = useNavigation();
 
@@ -47,7 +53,7 @@ const AllSubPartnerComp = ({
                 });
               }}
               style={{
-                flex: 1,
+                flex: 0.8,
                 display: 'flex',
                 justifyContent: 'center',
                 alignItems: 'flex-start',
@@ -57,7 +63,7 @@ const AllSubPartnerComp = ({
             </TouchableOpacity>
             <View
               style={{
-                flex: 2,
+                flex: 1.2,
                 display: 'flex',
                 justifyContent: 'center',
                 alignItems: 'flex-start',
@@ -65,6 +71,18 @@ const AllSubPartnerComp = ({
               <Text style={styles.titleRegular}>Name</Text>
               <Text style={styles.titleBold} numberOfLines={1}>
                 {name}
+              </Text>
+            </View>
+            <View
+              style={{
+                flex: 1,
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'flex-start',
+              }}>
+              <Text style={styles.titleRegular}>Users</Text>
+              <Text style={styles.titleBold} numberOfLines={1}>
+                {noofumser}
               </Text>
             </View>
 
@@ -90,7 +108,7 @@ const AllSubPartnerComp = ({
           <View style={styles.bottomContainer}>
             <View
               style={{
-                flex: 1,
+                flex: 0.8,
                 display: 'flex',
                 justifyContent: 'center',
                 alignItems: 'flex-start',
@@ -100,7 +118,7 @@ const AllSubPartnerComp = ({
             </View>
             <View
               style={{
-                flex: 2,
+                flex: 1.2,
                 display: 'flex',
                 justifyContent: 'center',
                 alignItems: 'flex-start',
@@ -110,20 +128,130 @@ const AllSubPartnerComp = ({
             </View>
             <View
               style={{
-                flex: 1.5,
+                flex: 1.25,
                 display: 'flex',
                 justifyContent: 'center',
                 alignItems: 'flex-start',
               }}>
-              <Text style={styles.titleRegular}>Total no. of users</Text>
-              <Text style={styles.titleBold} numberOfLines={1}>
-                {noofumser}
-              </Text>
+              {profitloading ? (
+                selectedItem?._id === item?._id ? (
+                  <Loading />
+                ) : (
+                  <>
+                    <Text style={styles.titleRegular}>Profit</Text>
+                    <Switch
+                      thumbColor={
+                        item.partnerStatus ? COLORS.blue : COLORS.white_s
+                      }
+                      ios_backgroundColor={
+                        item.partnerStatus ? COLORS.blue : '#3e3e3e'
+                      }
+                      onValueChange={() => toggleSwitchProfit(item)}
+                      value={item.partnerStatus}
+                    />
+                  </>
+                )
+              ) : (
+                <>
+                  <Text style={styles.titleRegular}>Profit</Text>
+                  <Switch
+                    thumbColor={
+                      item.partnerStatus ? COLORS.blue : COLORS.white_s
+                    }
+                    ios_backgroundColor={
+                      item.partnerStatus ? COLORS.blue : '#3e3e3e'
+                    }
+                    onValueChange={() => toggleSwitchProfit(item)}
+                    value={item.partnerStatus}
+                  />
+                </>
+              )}
+            </View>
+            <View
+              style={{
+                flex: 1.25,
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'flex-start',
+              }}>
+              {rechargeloading ? (
+                selectedItem?._id === item?._id ? (
+                  <Loading />
+                ) : (
+                  <>
+                    <Text style={styles.titleRegular}>Recharge</Text>
+                    <Switch
+                      thumbColor={
+                        item.rechargeStatus ? COLORS.blue : COLORS.white_s
+                      }
+                      ios_backgroundColor={
+                        item.rechargeStatus ? COLORS.blue : '#3e3e3e'
+                      }
+                      onValueChange={() => toggleSwitchRecharge(item)}
+                      value={item.rechargeStatus}
+                    />
+                  </>
+                )
+              ) : (
+                <>
+                  <Text style={styles.titleRegular}>Recharge</Text>
+                  <Switch
+                    thumbColor={
+                      item.rechargeStatus ? COLORS.blue : COLORS.white_s
+                    }
+                    ios_backgroundColor={
+                      item.rechargeStatus ? COLORS.blue : '#3e3e3e'
+                    }
+                    onValueChange={() => toggleSwitchRecharge(item)}
+                    value={item.rechargeStatus}
+                  />
+                </>
+              )}
             </View>
           </View>
 
           {/** BOTTOM VIEW */}
           <View style={styles.bottomContainer}>
+            {/* <View
+                style={{
+                  flex: 1,
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'flex-start',
+                }}>
+                <Text style={styles.titleRegular}>Top PartnerId</Text>
+                <Text style={styles.titleBold}>{item.topParentId}</Text>
+              </View> */}
+
+            {item.parentParentPartnerId !== 1000 && (
+              <View
+                style={{
+                  flex: 1,
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'flex-start',
+                }}>
+                <Text style={styles.titleRegular}>Top PartnerId</Text>
+                <Text style={styles.titleBold}>
+                  {item.parentParentPartnerId}
+                </Text>
+              </View>
+            )}
+
+            {/* <View
+              style={{
+                flex: 2,
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'flex-start',
+              }}>
+              <Text style={styles.titleRegular}>
+                {item.parentParentPartnerId === 1000
+                  ? 'Top Partner'
+                  : 'Sub Partner'}
+              </Text>
+              <Text style={styles.titleBold}>{item.parentParentPartnerId}</Text>
+            </View> */}
             <View
               style={{
                 flex: 1,
@@ -131,27 +259,12 @@ const AllSubPartnerComp = ({
                 justifyContent: 'center',
                 alignItems: 'flex-start',
               }}>
-              <Text style={styles.titleRegular}>Top PartnerId</Text>
-              <Text style={styles.titleBold}>{item.topParentId}</Text>
-            </View>
-            <View
-              style={{
-                flex: 2,
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'flex-start',
-              }}>
-              <Text style={styles.titleRegular}>Parent ParentId</Text>
-              <Text style={styles.titleBold}>{item.parentParentPartnerId}</Text>
-            </View>
-            <View
-              style={{
-                flex: 1.5,
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'flex-start',
-              }}>
-              <Text style={styles.titleRegular}>ParentId</Text>
+              <Text style={styles.titleRegular}>
+                {' '}
+                {item.parentParentPartnerId === 1000
+                  ? 'Top Partner'
+                  : 'Sub Partner'}
+              </Text>
               <Text style={styles.titleBold} numberOfLines={1}>
                 {item.parentPartnerId}
               </Text>

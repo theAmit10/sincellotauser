@@ -4,7 +4,9 @@ import {useSelector} from 'react-redux';
 import {useFocusEffect} from '@react-navigation/native';
 import {
   useGetAllSubPartnerQuery,
+  useGiveRechargeModuleMutation,
   useSearchSubPartnerQuery,
+  useUpdateSubPartnerStatusMutation,
 } from '../../helper/Networkcall';
 import {heightPercentageToDP} from 'react-native-responsive-screen';
 import Fontisto from 'react-native-vector-icons/Fontisto';
@@ -14,6 +16,7 @@ import AllPartnerComp from '../../components/allpartner/AllPartnerComp';
 import AllSubPartnerComp from '../../components/allpartner/AllSubPartnerComp';
 import SortingOptions from '../../components/helpercComponent/SortingOptions';
 import SortingPartner from '../../components/helpercComponent/SortingPartner';
+import Toast from 'react-native-toast-message';
 
 const AllSubPartner = () => {
   const {accesstoken} = useSelector(state => state.user);
@@ -103,8 +106,82 @@ const AllSubPartner = () => {
 
   const [showSorting, setShowSorting] = useState(false);
 
+  const [selectedItem, setSelectedItem] = useState(null);
+
   const handlePressForMenu = () => {
     setShowSorting(!showSorting);
+  };
+
+  const toggleSwitchForProfit = async item => {
+    setSelectedItem(item);
+    submitHandlerForActivationProfit(item);
+  };
+
+  const toggleSwitchForRecharge = async item => {
+    setSelectedItem(item);
+    submitHandlerForRechargeActivation(item);
+  };
+
+  const [updateSubPartnerStatus, {isLoading: profitActivationIsLoading}] =
+    useUpdateSubPartnerStatusMutation();
+
+  const submitHandlerForActivationProfit = async item => {
+    try {
+      const body = {
+        userId: item.userId,
+        partnerStatus: item.partnerStatus === true ? false : true,
+      };
+
+      const res = await updateSubPartnerStatus({
+        accesstoken,
+        body,
+      });
+
+      console.log(JSON.stringify(res));
+      Toast.show({
+        type: 'success',
+        text1: res.data.message,
+      });
+      await refetchPaginated();
+      setForReload(!forReload);
+    } catch (error) {
+      console.log(error);
+      Toast.show({
+        type: 'error',
+        text1: 'Something went wrong',
+      });
+    }
+  };
+
+  const [giveRechargeModule, {isLoading: rechargeActivationIsLoading}] =
+    useGiveRechargeModuleMutation();
+
+  const submitHandlerForRechargeActivation = async item => {
+    try {
+      const body = {
+        userId: item.userId,
+        rechargeStatus: item.rechargeStatus === true ? false : true,
+      };
+
+      const res = await giveRechargeModule({
+        accesstoken,
+        body,
+      });
+
+      console.log(JSON.stringify(res));
+      Toast.show({
+        type: 'success',
+        text1: res.data.message,
+      });
+      await refetchPaginated();
+      setForReload(!forReload);
+    } catch (error) {
+      console.log(error);
+      Toast.show({
+        type: 'error',
+        text1: 'Something went wrong',
+      });
+    }
   };
 
   return (
@@ -172,6 +249,11 @@ const AllSubPartner = () => {
                   walletbalance={item.walletTwo?.balance?.toFixed(0)}
                   rechargepercentage={item.rechargePercentage}
                   item={item}
+                  toggleSwitchProfit={toggleSwitchForProfit}
+                  toggleSwitchRecharge={toggleSwitchForRecharge}
+                  profitloading={profitActivationIsLoading}
+                  rechargeloading={rechargeActivationIsLoading}
+                  selectedItem={selectedItem}
                 />
               )}
               onEndReached={loadMore}
