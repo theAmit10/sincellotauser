@@ -2,7 +2,6 @@ import {
   ActivityIndicator,
   BackHandler,
   FlatList,
-  StyleSheet,
   Text,
   TextInput,
   TouchableOpacity,
@@ -10,7 +9,6 @@ import {
 } from 'react-native';
 import React, {useCallback, useEffect, useRef, useState} from 'react';
 import MainBackgroundWithoutScrollview from '../../components/background/MainBackgroundWithoutScrollview';
-import PowerAllTimesComp from '../../components/powerball/poweralltimes/PowerAllTimesComp';
 import {
   heightPercentageToDP,
   widthPercentageToDP,
@@ -29,6 +27,7 @@ import {
 import {useSelector} from 'react-redux';
 import Clipboard from '@react-native-clipboard/clipboard';
 import Toast from 'react-native-toast-message';
+import NoDataFound from '../../components/helpercComponent/NoDataFound';
 
 const PowerGameInsights = ({route}) => {
   const {item, powertime} = route.params;
@@ -58,8 +57,8 @@ const PowerGameInsights = ({route}) => {
       BackHandler.removeEventListener('hardwareBackPress', handleBackPress);
   }, []);
 
-  console.log(powertime._id);
-  console.log(item._id);
+  // console.log(powertime._id);
+  // console.log(item._id);
 
   // [CHECKING FOR RESULT ALREADY CREATED OR NOT]
   const {
@@ -73,8 +72,8 @@ const PowerGameInsights = ({route}) => {
     powerdateid: item._id,
   });
 
-  console.log(JSON.stringify(resultData));
-  console.log(resultData);
+  // console.log(JSON.stringify(resultData));
+  // console.log(resultData);
 
   const [resultFound, setResultFound] = useState(false);
 
@@ -227,6 +226,15 @@ const PowerGameInsights = ({route}) => {
     return () => clearTimeout(handler);
   }, [searchQuery]);
 
+  // Reset pagination when search changes
+  useEffect(() => {
+    if (debouncedSearch) {
+      setPage(1);
+      setGameInsightsData([]);
+      setHasMore(true);
+    }
+  }, [debouncedSearch]);
+
   // FOR ALL BET DATA
 
   // Fetch Paginated Data
@@ -265,46 +273,6 @@ const PowerGameInsights = ({route}) => {
       resultRefetch();
     }, [refetchPaginated]),
   );
-
-  // useEffect(() => {
-  //   setLoading(true);
-
-  //   if (
-  //     debouncedSearch.length > 0 &&
-  //     searchData?.tickets.length > 0 &&
-  //     searchData?.tickets[0].alltickets
-  //   ) {
-  //     // For search results, replace the existing data
-  //     setGameInsightsData(searchData?.tickets[0].alltickets);
-  //     setHasMore(false); // Disable pagination when searching
-  //   } else if (
-  //     paginatedData?.tickets.length > 0 &&
-  //     paginatedData?.tickets[0].alltickets
-  //   ) {
-  //     setGameId(paginatedData.tickets[0]._id);
-  //     // For paginated data, filter out duplicates before appending
-  //     setGameInsightsData(prev => {
-  //       const newData = paginatedData.tickets[0].alltickets.filter(
-  //         newItem => !prev.some(prevItem => prevItem._id === newItem._id),
-  //       );
-  //       return page === 1
-  //         ? paginatedData.tickets[0].alltickets
-  //         : [...prev, ...newData];
-  //     });
-
-  //     // Update `hasMore` based on the length of the new data
-  //     if (
-  //       paginatedData?.tickets.length > 0 &&
-  //       paginatedData.tickets[0].alltickets.length < limit
-  //     ) {
-  //       setHasMore(false); // No more data to fetch
-  //     } else {
-  //       setHasMore(true); // More data available
-  //     }
-  //   }
-
-  //   setLoading(false);
-  // }, [searchData, paginatedData, debouncedSearch, page]);
 
   useEffect(() => {
     if (fetchingPaginated || fetchingSearch) return;
@@ -381,9 +349,20 @@ const PowerGameInsights = ({route}) => {
     paginatedError,
   ]);
 
+  // const loadMore = () => {
+  //   if (!loading && hasMore && debouncedSearch.length === 0) {
+  //     setPage(prev => prev + 1);
+  //   }
+  // };
+
   const loadMore = () => {
-    if (!loading && hasMore && debouncedSearch.length === 0) {
-      setPage(prev => prev + 1);
+    if (
+      !isLoading &&
+      hasMore &&
+      debouncedSearch.length === 0 &&
+      !fetchingPaginated
+    ) {
+      setPage(prev => prev + 1); // This will trigger the useEffect
     }
   };
 
@@ -398,11 +377,14 @@ const PowerGameInsights = ({route}) => {
       <Header />
       {isLoading && page === 1 ? (
         <Loading />
-      ) : (
+      ) : gameInsightsData.length > 0 ? (
         <FlatList
           key={item => item._id}
-          data={[...gameInsightsData].reverse()}
+          data={[...gameInsightsData].slice().reverse()}
           keyExtractor={item => item._id?.toString()}
+          initialNumToRender={10}
+          maxToRenderPerBatch={5}
+          windowSize={10}
           ListHeaderComponent={() => (
             <View
               style={{
@@ -439,6 +421,8 @@ const PowerGameInsights = ({route}) => {
             ) : null
           }
         />
+      ) : (
+        <NoDataFound data={'No data found'} />
       )}
 
       {resultFound && <Footer />}
@@ -447,5 +431,3 @@ const PowerGameInsights = ({route}) => {
 };
 
 export default PowerGameInsights;
-
-const styles = StyleSheet.create({});
