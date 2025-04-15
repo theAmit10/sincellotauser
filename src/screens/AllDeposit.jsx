@@ -542,9 +542,27 @@ const AllDeposit = () => {
               </View>
 
               <View style={{margin: heightPercentageToDP(2)}}>
-                <GradientTextWhite style={styles.textStyle}>
-                  AllDeposit
-                </GradientTextWhite>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                  }}>
+                  <GradientTextWhite style={styles.textStyle}>
+                    AllDeposit
+                  </GradientTextWhite>
+
+                  <TouchableOpacity
+                    onPress={() => navigation.navigate('AllRecharge')}>
+                    <GradientTextWhite
+                      style={[
+                        styles.textStyle,
+                        {fontSize: heightPercentageToDP(2)},
+                      ]}>
+                      All Recharge
+                    </GradientTextWhite>
+                  </TouchableOpacity>
+                </View>
                 {/* <View
                   style={{
                     height: heightPercentageToDP(7),
@@ -574,7 +592,6 @@ const AllDeposit = () => {
                     onChangeText={handleSearch}
                   />
                 </View> */}
-
                 {isLoading && page === 1 ? (
                   <View
                     style={{

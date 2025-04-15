@@ -24,6 +24,9 @@ const MainBackgroundWithoutScrollview = ({
   righttext,
   handlerPress,
   showMenu,
+  showSecondTitle,
+  handlerSecondTitlePress,
+  secontTitle,
 }) => {
   return (
     <SafeAreaView style={{flex: 1}}>
@@ -113,6 +116,18 @@ const MainBackgroundWithoutScrollview = ({
                   }}>
                   {title}
                 </GradientTextWhite>
+
+                {true && (
+                  <TouchableOpacity onPress={handlerSecondTitlePress}>
+                    <GradientTextWhite
+                      style={{
+                        ...styles.textStyle,
+                        fontSize: heightPercentageToDP(2),
+                      }}>
+                      {secontTitle}
+                    </GradientTextWhite>
+                  </TouchableOpacity>
+                )}
                 {showMenu && (
                   <TouchableOpacity onPress={handlerPress}>
                     <Feather

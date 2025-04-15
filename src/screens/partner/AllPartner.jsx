@@ -1,7 +1,7 @@
 import React, {useEffect, useState, useCallback} from 'react';
 import {ActivityIndicator, FlatList, TextInput, View} from 'react-native';
 import {useSelector} from 'react-redux';
-import {useFocusEffect} from '@react-navigation/native';
+import {useFocusEffect, useNavigation} from '@react-navigation/native';
 import {
   useGetAllPartnerQuery,
   useGiveRechargeModuleMutation,
@@ -185,10 +185,18 @@ const AllPartner = () => {
     }
   };
 
+  const navigation = useNavigation();
+  const handlerSecondTitlePress = () => {
+    navigation.navigate('AllSubPartner');
+  };
+
   return (
     <MainBackgroundWithoutScrollview
       title="All Partner"
       showMenu={true}
+      showSecondTitle={true}
+      handlerSecondTitlePress={handlerSecondTitlePress}
+      secontTitle={'Sub Partner'}
       handlerPress={handlePressForMenu}>
       <View style={{flex: 1}}>
         {/* SEARCH INPUT */}
