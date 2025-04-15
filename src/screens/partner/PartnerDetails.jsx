@@ -87,6 +87,7 @@ const PartnerDetails = ({route}) => {
               fromicon={'Ionicons'}
               iconname={'people'}
               data={partnerdata}
+              count={partnerdata?.userList?.length}
             />
             {/** PARTNER PARTNER LIST */}
             <PartnerDashComp
@@ -96,6 +97,7 @@ const PartnerDetails = ({route}) => {
               fromicon={'FontAwesome6'}
               iconname={'people-carry-box'}
               data={partnerdata}
+              count={partnerdata?.partnerList?.length}
             />
             {/** UPDATE PERMISSION */}
             <PartnerDashComp
@@ -112,7 +114,7 @@ const PartnerDetails = ({route}) => {
               <>
                 <PartnerDashComp
                   navigate={'RechargePayment'}
-                  title={'Recharge Payment'}
+                  title={'Recharge Method'}
                   subtitle={'Update Partner Payment '}
                   fromicon={'FontAwesome6'}
                   iconname={'money-check'}
