@@ -9,10 +9,9 @@ import {
 import {heightPercentageToDP} from 'react-native-responsive-screen';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import {COLORS, FONT} from '../../../assets/constants';
-import PartnerUserListComp from '../../components/PartnerUserListComp';
 import MainBackgroundWithoutScrollview from '../../components/background/MainBackgroundWithoutScrollview';
-import AllPartnerComp from '../../components/allpartner/AllPartnerComp';
 import PartnerPartnerListComp from '../../components/allpartner/PartnerPartnerListComp';
+import SortingPartner from '../../components/helpercComponent/SortingPartner';
 
 const PartnerPartnerList = ({route}) => {
   const {accesstoken} = useSelector(state => state.user);
@@ -26,6 +25,8 @@ const PartnerPartnerList = ({route}) => {
   const [loading, setLoading] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [debouncedSearch, setDebouncedSearch] = useState('');
+  const [sortBy, setSortBy] = useState('');
+  const [sortOrder, setSortOrder] = useState('');
 
   // Debounce Effect for Search
   useEffect(() => {
@@ -41,7 +42,7 @@ const PartnerPartnerList = ({route}) => {
     refetch: refetchPaginated,
     isFetching: fetchingPaginated,
   } = useGetPartnerPartnerListQuery(
-    {accesstoken, userId: item.userId, page, limit},
+    {accesstoken, userId: item.userId, page, limit, sortBy, sortOrder},
     {skip: debouncedSearch.length > 0}, // Skip pagination if searching
   );
 
@@ -60,7 +61,7 @@ const PartnerPartnerList = ({route}) => {
       setPage(1); // ✅ Reset Page
       setHasMore(true); // ✅ Reset Load More
       refetchPaginated(); // ✅ Ensure Fresh Data
-    }, [refetchPaginated]),
+    }, [refetchPaginated, sortBy, sortOrder]),
   );
 
   useEffect(() => {
@@ -88,7 +89,7 @@ const PartnerPartnerList = ({route}) => {
     }
 
     setLoading(false);
-  }, [searchData, paginatedData, debouncedSearch, page]);
+  }, [searchData, paginatedData, debouncedSearch, page, sortBy, sortOrder]);
 
   const loadMore = () => {
     if (!loading && hasMore && debouncedSearch.length === 0) {
@@ -99,10 +100,20 @@ const PartnerPartnerList = ({route}) => {
   // Combined Loading State
   const isLoading = fetchingPaginated || fetchingSearch || loading;
 
+  const [showSorting, setShowSorting] = useState(false);
+
+  const [selectedItem, setSelectedItem] = useState(null);
+
+  const handlePressForMenu = () => {
+    setShowSorting(!showSorting);
+  };
+
   return (
     <MainBackgroundWithoutScrollview
       lefttext={item.name}
       righttext={item.userId}
+      showMenu={true}
+      handlerPress={handlePressForMenu}
       title="Partner List">
       <View style={{flex: 1}}>
         {/* SEARCH INPUT */}
@@ -137,6 +148,15 @@ const PartnerPartnerList = ({route}) => {
             }}
           />
         </View>
+
+        {/* PARTNER USER LIST */}
+        {showSorting && (
+          <SortingPartner
+            setSortBy={setSortBy}
+            setSortOrder={setSortOrder}
+            onClose={() => setShowSorting(false)} // Close sorting options
+          />
+        )}
 
         {/* PARTNER USER LIST */}
         <View style={{flex: 1, padding: heightPercentageToDP(1)}}>
