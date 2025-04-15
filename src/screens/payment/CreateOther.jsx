@@ -355,6 +355,7 @@ const CreateOther = () => {
                           activeUnderlineColor="transparent"
                           cursorColor={COLORS.white}
                           placeholderTextColor={COLORS.black}
+                          placeholder="Payment Header name: Exm - Paypal, Skill, etc."
                           style={{
                             backgroundColor: 'transparent',
                             fontFamily: FONT.Montserrat_Bold,
@@ -405,6 +406,7 @@ const CreateOther = () => {
                           }}
                           textColor={COLORS.black}
                           fontFamily={FONT.Montserrat_Bold}
+                          placeholder="1st Head line name: Exm - [ Paypal ID ]"
                           value={firstInputName}
                           inputMode="text"
                           onChangeText={text => setFirstInputName(text)}
@@ -444,6 +446,7 @@ const CreateOther = () => {
                             fontFamily: FONT.Montserrat_Bold,
                             color: COLORS.black,
                           }}
+                          placeholder="Payment Receiving ID: Exm- Paypal@gmail.com"
                           textColor={COLORS.black}
                           fontFamily={FONT.Montserrat_Bold}
                           value={firstInput}
@@ -481,6 +484,7 @@ const CreateOther = () => {
                           activeUnderlineColor="transparent"
                           cursorColor={COLORS.white}
                           placeholderTextColor={COLORS.black}
+                          placeholder="2nd Head line name: Exm - [ Paypal ID ] Other field to add ( Optional )"
                           style={{
                             backgroundColor: 'transparent',
                             fontFamily: FONT.Montserrat_Bold,
@@ -524,6 +528,7 @@ const CreateOther = () => {
                             fontFamily: FONT.Montserrat_Bold,
                             color: COLORS.black,
                           }}
+                          placeholder="2nd input value if your payment option have update in this field ( Optional )"
                           value={secondInput}
                           onChangeText={text => setSecondInput(text)}
                         />
@@ -564,6 +569,7 @@ const CreateOther = () => {
                             fontFamily: FONT.Montserrat_Bold,
                             color: COLORS.black,
                           }}
+                          placeholder="3rd Head line name: Exm - [ Paypal ID ] Other field to add ( Optional )"
                           value={thirdInputName}
                           onChangeText={text => setThirdInputName(text)}
                         />
@@ -602,6 +608,7 @@ const CreateOther = () => {
                             fontFamily: FONT.Montserrat_Bold,
                             color: COLORS.black,
                           }}
+                          placeholder="3rd input value if your payment option have update in this field ( Optional )"
                           value={thirdInput}
                           onChangeText={text => setThirdInput(text)}
                         />
@@ -622,7 +629,7 @@ const CreateOther = () => {
                           fontSize: heightPercentageToDP(2),
                           paddingStart: heightPercentageToDP(1),
                         }}>
-                        Fourth Input Name
+                        Fourth Input Name (for QR code)
                       </Text>
 
                       <LinearGradient
@@ -642,6 +649,7 @@ const CreateOther = () => {
                             fontFamily: FONT.Montserrat_Bold,
                             color: COLORS.black,
                           }}
+                          placeholder="Fourth Input Value (add QR code) ( Optional )"
                           value={qrcodeName}
                           onChangeText={text => setQrcodeName(text)}
                         />
