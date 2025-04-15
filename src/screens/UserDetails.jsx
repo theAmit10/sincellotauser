@@ -21,17 +21,17 @@ import {useIsFocused, useNavigation} from '@react-navigation/native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {useDispatch, useSelector} from 'react-redux';
-import { loadSingleUser} from '../redux/actions/userAction';
+import {loadSingleUser} from '../redux/actions/userAction';
 import Loading from '../components/helpercComponent/Loading';
 import UserProfileBackground from '../components/background/UserProfileBackground';
 
-export const roundToInteger = (input) => {
+export const roundToInteger = input => {
   // Convert input to a float
   const floatValue = parseFloat(input);
 
   // Check if it's a valid number
   if (isNaN(floatValue)) {
-    return "Invalid number"; // Handle invalid input
+    return 'Invalid number'; // Handle invalid input
   }
 
   // Check if the number is already an integer
@@ -148,13 +148,85 @@ const UpdateProfile = ({route}) => {
                   <ScrollView showsVerticalScrollIndicator={false}>
                     {/** Wallet Two */}
 
+                    <View
+                      style={{
+                        height: heightPercentageToDP(20),
+                        flexDirection: 'row',
+                        backgroundColor: COLORS.grayBg,
+                        alignItems: 'center',
+                        paddingHorizontal: heightPercentageToDP(2),
+                        borderRadius: heightPercentageToDP(1),
+                        margin: heightPercentageToDP(2),
+                      }}>
+                      <View
+                        style={{
+                          padding: heightPercentageToDP(2),
+                        }}>
+                        <Text
+                          style={{
+                            marginStart: heightPercentageToDP(1),
+                            flex: 1,
+                            fontFamily: FONT.Montserrat_Regular,
+                            color: COLORS.darkGray,
+                            fontSize: heightPercentageToDP(2),
+                            marginStart: heightPercentageToDP(-1),
+                          }}>
+                          Country Details
+                        </Text>
+                        <Text
+                          style={{
+                            marginStart: heightPercentageToDP(1),
+                            flex: 1,
+                            fontFamily: FONT.Montserrat_SemiBold,
+                            color: COLORS.darkGray,
+                            fontSize: heightPercentageToDP(3),
+                            marginStart: heightPercentageToDP(-1),
+                          }}>
+                          {singleuser?.country?.countryname}
+                        </Text>
+
+                        <View
+                          style={{
+                            flexDirection: 'row',
+                            justifyContent: 'flex-start',
+                            gap: heightPercentageToDP(1),
+                            marginStart: heightPercentageToDP(-1),
+                          }}>
+                          <GradientText
+                            style={{
+                              ...styles.textStyle,
+                              width: widthPercentageToDP(60),
+                            }}>
+                            {singleuser?.country?.countrycurrencysymbol}
+                          </GradientText>
+                        </View>
+                      </View>
+
+                      <View
+                        style={{
+                          flex: 1,
+                          backgroundColor: COLORS.white,
+                          position: 'absolute',
+                          right: heightPercentageToDP(2),
+                          borderRadius: heightPercentageToDP(1),
+                          padding: heightPercentageToDP(1),
+                          top: heightPercentageToDP(2),
+                        }}>
+                        <Entypo
+                          name={'user'}
+                          size={heightPercentageToDP(4)}
+                          color={COLORS.darkGray}
+                        />
+                      </View>
+                    </View>
+
                     {user && user.role === 'admin' ? (
                       <TouchableOpacity
                         onPress={() =>
                           navigation.navigate('EditUserWallet', {
                             data: singleuser.walletTwo,
                             forwallet: 'two',
-                            singleuserdata: singleuser
+                            singleuserdata: singleuser,
                           })
                         }
                         style={{
@@ -253,7 +325,7 @@ const UpdateProfile = ({route}) => {
                           navigation.navigate('EditUserWallet', {
                             data: singleuser.walletTwo,
                             forwallet: 'two',
-                            singleuserdata: singleuser
+                            singleuserdata: singleuser,
                           })
                         }
                         style={{
@@ -450,7 +522,7 @@ const UpdateProfile = ({route}) => {
                           navigation.navigate('EditUserWallet', {
                             data: singleuser.walletOne,
                             forwallet: 'one',
-                            singleuserdata: singleuser
+                            singleuserdata: singleuser,
                           })
                         }
                         style={{
@@ -549,7 +621,7 @@ const UpdateProfile = ({route}) => {
                           navigation.navigate('EditUserWallet', {
                             data: singleuser.walletOne,
                             forwallet: 'one',
-                            singleuserdata: singleuser
+                            singleuserdata: singleuser,
                           })
                         }
                         style={{
@@ -1363,7 +1435,7 @@ const UpdateProfile = ({route}) => {
                               ...styles.textStyle,
                               width: widthPercentageToDP(60),
                             }}>
-                            Transaction 
+                            Transaction
                           </GradientText>
                         </View>
                       </View>
