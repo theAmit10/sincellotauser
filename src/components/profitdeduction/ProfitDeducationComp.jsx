@@ -8,6 +8,7 @@ import {COLORS, FONT} from '../../../assets/constants';
 import LinearGradient from 'react-native-linear-gradient';
 import Loading from '../helpercComponent/Loading';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import {useNavigation} from '@react-navigation/native';
 
 const ProfitDeducationComp = ({
   item,
@@ -22,6 +23,7 @@ const ProfitDeducationComp = ({
   handleComplete,
   handleCancelled,
 }) => {
+  const navigation = useNavigation();
   return (
     <LinearGradient
       colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
@@ -68,46 +70,7 @@ const ProfitDeducationComp = ({
                   fontSize: heightPercentageToDP(1.6),
                   color: COLORS.black,
                 }}>
-                User ID
-              </Text>
-            </View>
-
-            <TouchableOpacity
-              style={{
-                flexDirection: 'row',
-                flex: 1,
-                justifyContent: 'flex-start',
-                alignItems: 'center',
-              }}>
-              <Text
-                style={{
-                  fontFamily: FONT.Montserrat_SemiBold,
-                  fontSize: heightPercentageToDP(1.8),
-                  color: COLORS.black,
-                }}>
-                {item.userId}
-              </Text>
-            </TouchableOpacity>
-          </View>
-
-          <View
-            style={{
-              flex: 2,
-            }}>
-            <View
-              style={{
-                flexDirection: 'row',
-                flex: 1,
-                justifyContent: 'flex-start',
-                alignItems: 'center',
-              }}>
-              <Text
-                style={{
-                  fontFamily: FONT.Montserrat_Regular,
-                  fontSize: heightPercentageToDP(1.6),
-                  color: COLORS.black,
-                }}>
-                Parent ID
+                Partner ID
               </Text>
             </View>
 
@@ -127,6 +90,51 @@ const ProfitDeducationComp = ({
                 {item.partnerId}
               </Text>
             </View>
+          </View>
+
+          <View
+            style={{
+              flex: 2,
+            }}>
+            <View
+              style={{
+                flexDirection: 'row',
+                flex: 1,
+                justifyContent: 'flex-start',
+                alignItems: 'center',
+              }}>
+              <Text
+                style={{
+                  fontFamily: FONT.Montserrat_Regular,
+                  fontSize: heightPercentageToDP(1.6),
+                  color: COLORS.black,
+                }}>
+                User ID
+              </Text>
+            </View>
+
+            <TouchableOpacity
+              onPress={() => {
+                navigation.navigate('UserDetails', {
+                  userdata: item,
+                  fromscreen: 'partner',
+                });
+              }}
+              style={{
+                flexDirection: 'row',
+                flex: 1,
+                justifyContent: 'flex-start',
+                alignItems: 'center',
+              }}>
+              <Text
+                style={{
+                  fontFamily: FONT.Montserrat_SemiBold,
+                  fontSize: heightPercentageToDP(1.8),
+                  color: COLORS.black,
+                }}>
+                {item.userId}
+              </Text>
+            </TouchableOpacity>
           </View>
         </View>
 
@@ -289,8 +297,27 @@ const ProfitDeducationComp = ({
                 justifyContent: 'flex-start',
                 alignItems: 'flex-start',
               }}>
-              <Text style={{...styles.detailLabel}}>Profit Percentage</Text>
+              <Text style={{...styles.detailLabel}}>Old Profit % </Text>
+              <Text style={styles.detailValue}>{item.oldProfitPercentage}</Text>
+            </View>
+            <View
+              style={{
+                flex: 1,
+                justifyContent: 'flex-start',
+                alignItems: 'flex-start',
+              }}>
+              <Text style={{...styles.detailLabel}}>Reduce %</Text>
               <Text style={styles.detailValue}>{item.profitPercentage}</Text>
+            </View>
+
+            <View
+              style={{
+                flex: 1,
+                justifyContent: 'flex-start',
+                alignItems: 'flex-start',
+              }}>
+              <Text style={{...styles.detailLabel}}>New Profit %</Text>
+              <Text style={styles.detailValue}>{item.newProfitPercentage}</Text>
             </View>
           </View>
 
