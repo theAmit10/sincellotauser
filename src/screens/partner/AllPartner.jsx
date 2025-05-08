@@ -97,7 +97,15 @@ const AllPartner = () => {
     }
 
     setLoading(false);
-  }, [searchData, paginatedData, debouncedSearch, page, sortBy, sortOrder]);
+  }, [
+    searchData,
+    paginatedData,
+    debouncedSearch,
+    page,
+    sortBy,
+    sortOrder,
+    forReload,
+  ]);
 
   const loadMore = () => {
     if (!loading && hasMore && debouncedSearch.length === 0) {
@@ -144,7 +152,8 @@ const AllPartner = () => {
         text1: res.data.message,
       });
       await refetchPaginated();
-      setForReload(!forReload);
+      resetPage();
+      // setForReload(!forReload);
     } catch (error) {
       console.log(error);
       Toast.show({
@@ -152,6 +161,12 @@ const AllPartner = () => {
         text1: 'Something went wrong',
       });
     }
+  };
+
+  const resetPage = () => {
+    setPage(1); // Reset to first page
+    setSearchQuery(''); // Clear any active search
+    setDebouncedSearch('');
   };
 
   const [giveRechargeModule, {isLoading: rechargeActivationIsLoading}] =
