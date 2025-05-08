@@ -25,14 +25,15 @@ const PowerballDashboard = () => {
         <Loading />
       ) : (
         <>
-          {/** ALL Result */}
+          {/* GAME INSGINTS  */}
           <PartnerDashComp
-            navigate={'PowerAllResult'}
-            title={'All Result'}
-            subtitle={'List of resultfor Game'}
+            navigate={'PowerTime'}
+            title={'Live Result Desk'}
+            subtitle={'Create Result for Game'}
             fromicon={'FontAwesome6'}
-            iconname={'trophy'}
+            iconname={'circle-info'}
           />
+
           {/** ALL TIME */}
           <PartnerDashComp
             navigate={'PowerAllTimes'}
@@ -65,13 +66,13 @@ const PowerballDashboard = () => {
             fromicon={'FontAwesome6'}
             iconname={'window-restore'}
           />
-          {/* GAME INSGINTS  */}
+          {/** ALL Result */}
           <PartnerDashComp
-            navigate={'PowerTime'}
-            title={'Game Insights'}
-            subtitle={'Create Result for Game'}
+            navigate={'PowerAllResult'}
+            title={'All Result History'}
+            subtitle={'List of result for Game'}
             fromicon={'FontAwesome6'}
-            iconname={'circle-info'}
+            iconname={'trophy'}
           />
         </>
       )}
