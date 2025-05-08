@@ -30,6 +30,7 @@ const AllPartner = () => {
   const [debouncedSearch, setDebouncedSearch] = useState('');
   const [sortBy, setSortBy] = useState('');
   const [sortOrder, setSortOrder] = useState('');
+  const [forReload, setForReload] = useState(false);
 
   // Debounce Effect for Search
   useEffect(() => {
@@ -44,6 +45,7 @@ const AllPartner = () => {
     data: paginatedData,
     refetch: refetchPaginated,
     isFetching: fetchingPaginated,
+    isUninitialized: isPaginatedUninitialized,
   } = useGetAllPartnerQuery(
     {accesstoken, page, limit, sortBy, sortOrder},
     {skip: debouncedSearch.length > 0}, // Skip pagination if searching
@@ -56,8 +58,6 @@ const AllPartner = () => {
       : {skip: true},
   );
 
-  const [forReload, setForReload] = useState(false);
-
   // Reset State on Navigation Back
   useFocusEffect(
     useCallback(() => {
@@ -69,7 +69,7 @@ const AllPartner = () => {
       } catch (e) {
         console.log(e);
       }
-    }, [refetchPaginated, sortBy, sortOrder, forReload]),
+    }, [refetchPaginated, sortBy, sortOrder]),
   );
 
   useEffect(() => {
@@ -97,15 +97,7 @@ const AllPartner = () => {
     }
 
     setLoading(false);
-  }, [
-    searchData,
-    paginatedData,
-    debouncedSearch,
-    page,
-    sortBy,
-    sortOrder,
-    forReload,
-  ]);
+  }, [searchData, paginatedData, debouncedSearch, page, sortBy, sortOrder]);
 
   const loadMore = () => {
     if (!loading && hasMore && debouncedSearch.length === 0) {
@@ -151,9 +143,12 @@ const AllPartner = () => {
         type: 'success',
         text1: res.data.message,
       });
-      await refetchPaginated();
-      resetPage();
-      // setForReload(!forReload);
+      // await refetchPaginated();
+      // resetPage();
+      if (!isPaginatedUninitialized) {
+        await refetchPaginated();
+      }
+      setForReload(!forReload);
     } catch (error) {
       console.log(error);
       Toast.show({
