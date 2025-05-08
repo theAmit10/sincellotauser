@@ -1433,12 +1433,25 @@ export const sincelotAdminApi = createApi({
       }),
     }),
 
+    // FOR GETTING ALL PARTNER
+
+    getAllNotification: builder.query({
+      query: ({accesstoken, id, page, limit}) => ({
+        url: `user/${id}/notifications?page=${page}&limit=${limit}`,
+        method: 'get',
+        headers: {
+          Authorization: `Bearer ${accesstoken}`,
+        },
+      }),
+    }),
+
     //[end ]
     // ######## END #########
   }),
 });
 
 export const {
+  useGetAllNotificationQuery,
   useGetAllOtherQuery,
   useGetAllBankQuery,
   useGetAllUpiQuery,

@@ -84,6 +84,26 @@ const AdminBackground = () => {
             </TouchableOpacity>
           ) : null}
         </View>
+        <View
+          style={{
+            marginTop: heightPercentageToDP(1),
+            marginEnd: heightPercentageToDP(2.5),
+            alignItems: 'flex-end',
+          }}>
+          <TouchableOpacity
+            onPress={() => navigation.navigate('Notification')}
+            className="rounded-md p-2"
+            style={{
+              backgroundColor: COLORS.grayHalfBg,
+              width: widthPercentageToDP(10),
+            }}>
+            <Ionicons
+              name={'notifications'}
+              size={heightPercentageToDP(3)}
+              color={COLORS.black}
+            />
+          </TouchableOpacity>
+        </View>
 
         <View
           style={{

@@ -1,4 +1,6 @@
 import {
+  ActivityIndicator,
+  FlatList,
   ImageBackground,
   SafeAreaView,
   ScrollView,
@@ -7,8 +9,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, {useEffect, useState} from 'react';
-
+import React, {useCallback, useEffect, useState} from 'react';
 import {
   heightPercentageToDP,
   widthPercentageToDP,
@@ -17,31 +18,22 @@ import {COLORS, FONT} from '../../assets/constants';
 import GradientText from '../components/helpercComponent/GradientText';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Toast from 'react-native-toast-message';
-import {useIsFocused, useNavigation} from '@react-navigation/native';
+import {
+  useFocusEffect,
+  useIsFocused,
+  useNavigation,
+} from '@react-navigation/native';
 import Background from '../components/background/Background';
 import Loading from '../components/helpercComponent/Loading';
 import {useDispatch, useSelector} from 'react-redux';
-import {getAllLocations} from '../redux/actions/locationAction';
-import {getAllResult} from '../redux/actions/resultAction';
-import NoDataFound from '../components/helpercComponent/NoDataFound';
-import {loadAllNotification} from '../redux/actions/userAction';
 import UrlHelper from '../helper/UrlHelper';
 import axios from 'axios';
 import LinearGradient from 'react-native-linear-gradient';
+import {useGetAllNotificationQuery} from '../helper/Networkcall';
+import MainBackgroundWithoutScrollview from '../components/background/MainBackgroundWithoutScrollview';
 
 const Notification = () => {
-  const navigation = useNavigation();
-  const dispatch = useDispatch();
-
-  const {accesstoken, notifications, loadingNotification} = useSelector(
-    state => state.user,
-  );
-
-  const focused = useIsFocused();
-
-  useEffect(() => {
-    dispatch(loadAllNotification(accesstoken));
-  }, [dispatch, focused]);
+  const {accesstoken} = useSelector(state => state.user);
 
   const [selectedItem, setSelectedItem] = useState('');
   const [showProgressBar, setProgressBar] = useState(false);
@@ -67,7 +59,11 @@ const Notification = () => {
         text1: data.message,
       });
       setProgressBar(false);
-      dispatch(loadAllNotification(accesstoken));
+      // Reset states to fetch fresh data from page 1
+      setNotifications([]); // clear current list
+      setPage(1); // reset pagination
+      setHasMore(true); // allow further loading
+      refetchPaginated(); // trigger re-fetch
     } catch (error) {
       console.log(error.response.data.message);
       setProgressBar(false);
@@ -80,147 +76,148 @@ const Notification = () => {
     }
   };
 
+  // States
+  const [notifications, setNotifications] = useState([]);
+  const [page, setPage] = useState(1);
+  const limit = 5;
+  const [hasMore, setHasMore] = useState(true);
+  const [loading, setLoading] = useState(false);
+  const id = 1000;
+  // Fetch Paginated Data
+  const {
+    data: paginatedData,
+    refetch: refetchPaginated,
+    isFetching: fetchingPaginated,
+  } = useGetAllNotificationQuery({accesstoken, id, page, limit});
+
+  // Reset State on Navigation Back
+  useFocusEffect(
+    useCallback(() => {
+      // setPartners([]); // ✅ Reset Data
+      setPage(1); // ✅ Reset Page
+      setHasMore(true); // ✅ Reset Load More
+      refetchPaginated?.(); // ✅ Ensure Fresh Data
+    }, [refetchPaginated]),
+  );
+
+  useEffect(() => {
+    setLoading(true);
+
+    if (paginatedData?.notifications) {
+      // For paginated data, filter out duplicates before appending
+      setNotifications(prev => {
+        const newData = paginatedData.notifications.filter(
+          newItem => !prev.some(prevItem => prevItem._id === newItem._id),
+        );
+        return page === 1 ? paginatedData.notifications : [...prev, ...newData];
+      });
+
+      // Update `hasMore` based on the length of the new data
+      if (paginatedData.notifications.length < limit) {
+        setHasMore(false); // No more data to fetch
+      } else {
+        setHasMore(true); // More data available
+      }
+    }
+
+    setLoading(false);
+  }, [paginatedData, page]);
+
+  const loadMore = () => {
+    if (!loading && hasMore) {
+      setPage(prev => prev + 1);
+    }
+  };
+
+  // Combined Loading State
+  const isLoading = fetchingPaginated || loading;
+
   return (
-    <SafeAreaView style={{flex: 1}}>
-      <Background />
-
-      <View style={{flex: 1, justifyContent: 'flex-end'}}>
-        <View
-          style={{
-            margin: heightPercentageToDP(2),
-            backgroundColor: 'transparent',
-          }}>
-          <GradientText style={styles.textStyle}>Notification</GradientText>
-        </View>
-        <ImageBackground
-          source={require('../../assets/image/tlwbg.jpg')}
-          style={{
-            width: '100%',
-            height: heightPercentageToDP(70),
-          }}
-          imageStyle={{
-            borderTopLeftRadius: heightPercentageToDP(5),
-            borderTopRightRadius: heightPercentageToDP(5),
-          }}>
-          {/** Main Cointainer */}
-
-          <View
-            style={{
-              height: heightPercentageToDP(70),
-              width: widthPercentageToDP(100),
-
-              borderTopLeftRadius: heightPercentageToDP(5),
-              borderTopRightRadius: heightPercentageToDP(5),
-            }}>
-            {/** Top Style View */}
-            <View
-              style={{
-                height: heightPercentageToDP(5),
-                width: widthPercentageToDP(100),
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}>
-              <View
-                style={{
-                  width: widthPercentageToDP(20),
-                  height: heightPercentageToDP(0.8),
-                  backgroundColor: COLORS.grayBg,
-                  borderRadius: heightPercentageToDP(2),
-                }}></View>
-            </View>
-
-            {/** Content Container */}
-
-            <ScrollView showsVerticalScrollIndicator={false}>
-              {loadingNotification ? (
+    <MainBackgroundWithoutScrollview title="Notification">
+      <View style={{flex: 1}}>
+        {/* PARTNER USER LIST */}
+        <View style={{flex: 1}}>
+          {isLoading && page === 1 ? (
+            <ActivityIndicator size="large" color={COLORS.white_s} />
+          ) : (
+            <FlatList
+              data={notifications}
+              keyExtractor={item => item._id.toString()} // Ensure _id is unique
+              renderItem={({item}) => (
                 <View
+                  key={item => item._id.toString()}
                   style={{
-                    flex: 1,
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    paddingTop: heightPercentageToDP(2),
-                  }}>
-                  <Loading />
-                </View>
-              ) : notifications && notifications.length == 0 ? (
-                <View
-                  style={{
-                    height: heightPercentageToDP(30),
+                    minHeight: heightPercentageToDP(10),
+                    backgroundColor: COLORS.grayBg,
                     margin: heightPercentageToDP(2),
+                    padding: heightPercentageToDP(2),
+                    borderRadius: heightPercentageToDP(2),
+                    flexDirection: 'row',
                   }}>
-                  <NoDataFound data={'No data found '} />
-                </View>
-              ) : (
-                notifications?.map((item, index) => (
                   <View
-                    key={index}
                     style={{
-                      minHeight: heightPercentageToDP(10),
-                      backgroundColor: COLORS.grayBg,
-                      margin: heightPercentageToDP(2),
-                      padding: heightPercentageToDP(2),
-                      borderRadius: heightPercentageToDP(2),
-                      flexDirection: 'row',
+                      flex: 4,
                     }}>
-                    <View
+                    <Text
                       style={{
-                        flex: 4,
-                      }}>
-                      <Text
-                        style={{
-                          color: COLORS.black,
-                          fontFamily: FONT.Montserrat_SemiBold,
-                          fontSize: heightPercentageToDP(2),
-                        }}
-                        numberOfLines={1}>
-                        {item.title}
-                      </Text>
+                        color: COLORS.black,
+                        fontFamily: FONT.Montserrat_SemiBold,
+                        fontSize: heightPercentageToDP(2),
+                      }}
+                      numberOfLines={1}>
+                      {item.title}
+                    </Text>
 
-                      <Text
-                        style={{
-                          color: COLORS.black,
-                          fontFamily: FONT.Montserrat_Regular,
-                          fontSize: heightPercentageToDP(2),
-                        }}
-                        numberOfLines={2}>
-                        {item.description}
-                      </Text>
-                    </View>
-                    <View
+                    <Text
                       style={{
-                        flex: 1,
+                        color: COLORS.black,
+                        fontFamily: FONT.Montserrat_Regular,
+                        fontSize: heightPercentageToDP(2),
                       }}>
-                      {/** For Deleting Notification */}
-                      {selectedItem === item._id ? (
-                        <Loading />
-                      ) : (
-                        <TouchableOpacity
-                          style={{
-                            justifyContent: 'flex-end',
-                            alignItems: 'flex-end',
-                            marginBottom: heightPercentageToDP(2),
-                          }}
-                          onPress={() => deleteLocationHandler(item)}>
-                          <LinearGradient
-                            colors={[COLORS.gray2, COLORS.white_s]}
-                            className="rounded-xl p-1">
-                            <MaterialCommunityIcons
-                              name={'delete'}
-                              size={heightPercentageToDP(3)}
-                              color={COLORS.darkGray}
-                            />
-                          </LinearGradient>
-                        </TouchableOpacity>
-                      )}
-                    </View>
+                      {item.description}
+                    </Text>
                   </View>
-                ))
+                  <View
+                    style={{
+                      flex: 1,
+                    }}>
+                    {/** For Deleting Notification */}
+                    {selectedItem === item._id ? (
+                      <Loading />
+                    ) : (
+                      <TouchableOpacity
+                        style={{
+                          justifyContent: 'flex-end',
+                          alignItems: 'flex-end',
+                          marginBottom: heightPercentageToDP(2),
+                        }}
+                        onPress={() => deleteLocationHandler(item)}>
+                        <LinearGradient
+                          colors={[COLORS.gray2, COLORS.white_s]}
+                          className="rounded-xl p-1">
+                          <MaterialCommunityIcons
+                            name={'delete'}
+                            size={heightPercentageToDP(3)}
+                            color={COLORS.darkGray}
+                          />
+                        </LinearGradient>
+                      </TouchableOpacity>
+                    )}
+                  </View>
+                </View>
               )}
-            </ScrollView>
-          </View>
-        </ImageBackground>
+              onEndReached={loadMore}
+              onEndReachedThreshold={0.2}
+              ListFooterComponent={() =>
+                hasMore && isLoading ? (
+                  <ActivityIndicator size="large" color={COLORS.white_s} />
+                ) : null
+              }
+            />
+          )}
+        </View>
       </View>
-    </SafeAreaView>
+    </MainBackgroundWithoutScrollview>
   );
 };
 
