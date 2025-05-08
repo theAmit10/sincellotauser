@@ -220,7 +220,7 @@ const CreateOther = () => {
       return;
     }
 
-    if (qrcodeName && !imageSource) {
+    if (!imageSource) {
       Toast.show({
         type: 'error',
         text1: 'Add QR code',
@@ -617,7 +617,7 @@ const CreateOther = () => {
 
                     {/** fourth */}
 
-                    <View
+                    {/* <View
                       style={{
                         borderRadius: heightPercentageToDP(2),
                         padding: heightPercentageToDP(1),
@@ -654,7 +654,7 @@ const CreateOther = () => {
                           onChangeText={text => setQrcodeName(text)}
                         />
                       </LinearGradient>
-                    </View>
+                    </View> */}
 
                     {/** qr code */}
 
