@@ -4,7 +4,6 @@ import {useSelector} from 'react-redux';
 import {useFocusEffect} from '@react-navigation/native';
 import {
   useAddUserToUserListMutation,
-  useCreatePartnerMutation,
   useGetAllUserQuery,
   useRemoveTopPartnerMutation,
   useSearchUserQuery,
@@ -123,10 +122,19 @@ const AddUserToUserList = ({route}) => {
       });
 
       console.log(JSON.stringify(res));
-      Toast.show({
-        type: 'success',
-        text1: res.data.message,
-      });
+
+      if (res?.data?.message) {
+        Toast.show({
+          type: 'success',
+          text1: res.data.message,
+        });
+      } else {
+        Toast.show({
+          type: 'error',
+          text1: res?.error?.data?.message,
+        });
+      }
+
       console.log('Refetching data...');
       await refetchPaginated();
       console.log('Data refetched');
