@@ -718,7 +718,9 @@ const AdminDashboard = () => {
                                       justifyContent: 'flex-end',
                                       gap: heightPercentageToDP(1),
                                     }}>
-                                    <GradientText style={{...styles.textStyle}}>
+                                    <GradientText
+                                      style={{...styles.textStyle}}
+                                      adjustsFontSizeToFit={true}>
                                       {allPlay?.plays.length}
                                     </GradientText>
 
@@ -795,7 +797,9 @@ const AdminDashboard = () => {
                                       justifyContent: 'flex-end',
                                       gap: heightPercentageToDP(1),
                                     }}>
-                                    <GradientText style={{...styles.textStyle}}>
+                                    <GradientText
+                                      style={{...styles.textStyle}}
+                                      adjustsFontSizeToFit={true}>
                                       {allPlay?.plays.length}
                                     </GradientText>
 
@@ -1029,9 +1033,9 @@ const AdminDashboard = () => {
                                       justifyContent: 'flex-end',
                                       gap: heightPercentageToDP(1),
                                     }}>
-                                    <GradientText style={{...styles.textStyle}}>
+                                    {/* <GradientText style={{...styles.textStyle}}>
                                       {results.length}
-                                    </GradientText>
+                                    </GradientText> */}
 
                                     <LinearGradient
                                       colors={[
@@ -1106,9 +1110,9 @@ const AdminDashboard = () => {
                                       justifyContent: 'flex-end',
                                       gap: heightPercentageToDP(1),
                                     }}>
-                                    <GradientText style={{...styles.textStyle}}>
+                                    {/* <GradientText style={{...styles.textStyle}}>
                                       {results.length}
-                                    </GradientText>
+                                    </GradientText> */}
 
                                     <LinearGradient
                                       colors={[
@@ -1182,7 +1186,9 @@ const AdminDashboard = () => {
                                       justifyContent: 'flex-end',
                                       gap: heightPercentageToDP(1),
                                     }}>
-                                    <GradientText style={{...styles.textStyle}}>
+                                    <GradientText
+                                      style={{...styles.textStyle}}
+                                      adjustsFontSizeToFit={true}>
                                       {locations.length}
                                     </GradientText>
 
@@ -1257,7 +1263,9 @@ const AdminDashboard = () => {
                                       justifyContent: 'flex-end',
                                       gap: heightPercentageToDP(1),
                                     }}>
-                                    <GradientText style={{...styles.textStyle}}>
+                                    <GradientText
+                                      style={{...styles.textStyle}}
+                                      adjustsFontSizeToFit={true}>
                                       {locations.length}
                                     </GradientText>
 
@@ -1490,7 +1498,9 @@ const AdminDashboard = () => {
                                       justifyContent: 'flex-end',
                                       gap: heightPercentageToDP(1),
                                     }}>
-                                    <GradientText style={{...styles.textStyle}}>
+                                    <GradientText
+                                      style={{...styles.textStyle}}
+                                      adjustsFontSizeToFit={true}>
                                       {allonedayusers.length}
                                     </GradientText>
 
@@ -1565,7 +1575,9 @@ const AdminDashboard = () => {
                                       justifyContent: 'flex-end',
                                       gap: heightPercentageToDP(1),
                                     }}>
-                                    <GradientText style={{...styles.textStyle}}>
+                                    <GradientText
+                                      style={{...styles.textStyle}}
+                                      adjustsFontSizeToFit={true}>
                                       {allonedayusers.length}
                                     </GradientText>
 
@@ -1645,7 +1657,9 @@ const AdminDashboard = () => {
                                       justifyContent: 'flex-end',
                                       gap: heightPercentageToDP(1),
                                     }}>
-                                    <GradientText style={{...styles.textStyle}}>
+                                    <GradientText
+                                      style={{...styles.textStyle}}
+                                      adjustsFontSizeToFit={true}>
                                       {allSubAdmin?.users?.length}
                                     </GradientText>
 
