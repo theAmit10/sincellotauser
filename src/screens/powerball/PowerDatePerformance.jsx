@@ -9,6 +9,7 @@ import {useNavigation} from '@react-navigation/native';
 import PowerballAllDateComp from '../../components/powerball/powerballalldates/PowerballAllDateComp';
 import {useGetPowerDateBasedUponPowerTimeQuery} from '../../helper/Networkcall';
 import {useSelector} from 'react-redux';
+import moment from 'moment-timezone';
 
 const PowerDatePerformance = ({route}) => {
   const navigation = useNavigation();
@@ -24,7 +25,11 @@ const PowerDatePerformance = ({route}) => {
 
   const {accesstoken} = useSelector(state => state.user);
 
-  const {isLoading, data, isError} = useGetPowerDateBasedUponPowerTimeQuery({
+  const {
+    isLoading,
+    data: dateData,
+    isError,
+  } = useGetPowerDateBasedUponPowerTimeQuery({
     accesstoken,
     id: powertime._id,
     page,
@@ -32,10 +37,41 @@ const PowerDatePerformance = ({route}) => {
   });
 
   useEffect(() => {
-    if (!isLoading && data) {
-      setPowerDate(data.powerDates);
+    if (dateData) {
+      // Get current, previous, and next dates
+      const currentDate = moment().startOf('day');
+      const previousDate = currentDate.clone().subtract(1, 'days');
+      const nextDate = currentDate.clone().add(1, 'days');
+
+      // Get the current time
+      const currentTime = moment();
+      const isWithinTimeRange = currentTime.isBetween(
+        moment().set({hour: 23, minute: 0}), // 11:00 PM
+        moment().add(1, 'days').startOf('day'), // 12:00 AM
+      );
+
+      const filtered = dateData?.powerDates.filter(item => {
+        const itemDate = moment(item.powerdate, 'DD-MM-YYYY');
+
+        // Always include the previous date and current date
+        if (
+          itemDate.isSame(previousDate, 'day') ||
+          itemDate.isSame(currentDate, 'day')
+        ) {
+          return true;
+        }
+
+        // Include the next date if it's between 11:00 PM - 12:00 AM
+        if (itemDate.isSame(nextDate, 'day') && isWithinTimeRange) {
+          return true;
+        }
+
+        return false; // Exclude all other dates
+      });
+
+      setPowerDate(filtered); // Update the filtered data with the three dates
     }
-  }, [isLoading, data]);
+  }, [dateData]);
 
   return (
     <MainBackgroundWithoutScrollview title={'All Date'}>
