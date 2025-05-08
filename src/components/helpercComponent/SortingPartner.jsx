@@ -88,6 +88,24 @@ const SortingPartner = ({setSortBy, setSortOrder, onClose}) => {
           }}>
           Desc by Game balance
         </Text>
+        <Text
+          style={styles.btn}
+          onPress={() => {
+            setSortBy('partnerStatus');
+            setSortOrder('desc');
+            onClose();
+          }}>
+          Active Partner
+        </Text>
+        <Text
+          style={styles.btn}
+          onPress={() => {
+            setSortBy('partnerStatus');
+            setSortOrder('asc');
+            onClose();
+          }}>
+          Inactive Partner
+        </Text>
       </ScrollView>
     </LinearGradient>
   );

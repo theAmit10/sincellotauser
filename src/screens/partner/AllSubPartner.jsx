@@ -31,6 +31,7 @@ const AllSubPartner = () => {
   const [debouncedSearch, setDebouncedSearch] = useState('');
   const [sortBy, setSortBy] = useState('');
   const [sortOrder, setSortOrder] = useState('');
+  const [forReload, setForReload] = useState(false);
 
   // Debounce Effect for Search
   useEffect(() => {
@@ -45,6 +46,7 @@ const AllSubPartner = () => {
     data: paginatedData,
     refetch: refetchPaginated,
     isFetching: fetchingPaginated,
+    isUninitialized: isPaginatedUninitialized,
   } = useGetAllSubPartnerQuery(
     {accesstoken, page, limit, sortBy, sortOrder},
     {skip: debouncedSearch.length > 0}, // Skip pagination if searching
@@ -142,7 +144,10 @@ const AllSubPartner = () => {
         type: 'success',
         text1: res.data.message,
       });
-      await refetchPaginated();
+      // await refetchPaginated();
+      if (!isPaginatedUninitialized) {
+        await refetchPaginated();
+      }
       setForReload(!forReload);
     } catch (error) {
       console.log(error);
