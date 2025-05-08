@@ -81,6 +81,27 @@ const CreatePowerResult = ({route}) => {
     return regex.test(str);
   };
 
+  function isValidSixNumbers(input) {
+    // Split the input string by space
+    const numbers = input.trim().split(/\s+/);
+
+    // Check if exactly 6 numbers are present
+    return numbers.length === 6;
+  }
+
+  function areNumbersUnderMax(input, maxNumber) {
+    // Split the string and convert to numbers
+    const numbers = input.trim().split(/\s+/).map(Number);
+
+    // Check if all numbers are ≤ maxNumber
+    const allUnderMax = numbers.every(num => num <= maxNumber);
+
+    // Check if all numbers are unique
+    const allUnique = new Set(numbers).size === numbers.length;
+
+    return allUnderMax && allUnique;
+  }
+
   const submitHandler = async () => {
     try {
       if (!first || !second || !third || !fourth || !fifth || !sixth) {
@@ -108,8 +129,8 @@ const CreatePowerResult = ({route}) => {
 
         return;
       }
-
-      if (!isValidNumberString(jackpot)) {
+      const cleanedJackpot = jackpot.trim().replace(/\s+/g, ' ');
+      if (!isValidNumberString(cleanedJackpot)) {
         Toast.show({
           type: 'error',
           text1: 'Invalid Jackpot formate',
@@ -118,9 +139,25 @@ const CreatePowerResult = ({route}) => {
         return;
       }
 
+      if (!isValidSixNumbers(cleanedJackpot)) {
+        Toast.show({
+          type: 'error',
+          text1: 'Jackpot must have 6 numbers',
+        });
+        return;
+      }
+
+      if (!areNumbersUnderMax(cleanedJackpot, powerball?.range?.endRange)) {
+        Toast.show({
+          type: 'error',
+          text1: `Number must be less then ${powerball?.range?.endRange} and Unique`,
+        });
+        return;
+      }
+
       // Example usage:
       const body = formatJackpotData(
-        jackpot,
+        cleanedJackpot,
         powertime._id,
         item._id,
         powerball?.winnerPrize?.firstprize,
