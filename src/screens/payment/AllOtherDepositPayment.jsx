@@ -372,7 +372,12 @@ const AllOtherDepositPayment = () => {
                                 size={heightPercentageToDP(3)}
                               />
                             </View>
-                            <GradientTextWhite style={styles.textStyleContent}>
+                            <GradientTextWhite
+                              style={styles.textStyleContent}
+                              adjustsFontSizeToFit={true}>
+                              {item.paymentName
+                                ? item.paymentName
+                                : 'Other Payment'}{' '}
                               {item.userId === 1000 ? 'Admin' : item.userId}
                             </GradientTextWhite>
                             {/* <GradientTextWhite style={styles.textStyleContent}>
@@ -382,7 +387,6 @@ const AllOtherDepositPayment = () => {
 
                           <View
                             style={{
-                              flex: 1,
                               justifyContent: 'flex-end',
                               alignItems: 'flex-end',
                               paddingEnd: heightPercentageToDP(2),
