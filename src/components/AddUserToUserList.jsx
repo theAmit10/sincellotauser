@@ -14,7 +14,6 @@ import Fontisto from 'react-native-vector-icons/Fontisto';
 import Toast from 'react-native-toast-message';
 import MainBackgroundWithoutScrollview from './background/MainBackgroundWithoutScrollview';
 import {COLORS, FONT} from '../../assets/constants';
-import AllUserPartnerComp from './alluserpartner/AllUserPartnerComp';
 import AllUserToUserListComp from './alluserpartner/AllUserToUserListComp';
 
 const AddUserToUserList = ({route}) => {

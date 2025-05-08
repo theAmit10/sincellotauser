@@ -57,6 +57,16 @@ const AllUserPartnerComp = ({
             </View>
             <View
               style={{
+                flex: 1,
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'flex-start',
+              }}>
+              <Text style={styles.titleRegular}>Partner ID</Text>
+              <Text style={styles.titleBold}>{item.parentPartnerId}</Text>
+            </View>
+            <View
+              style={{
                 flex: 2,
                 display: 'flex',
                 justifyContent: 'center',

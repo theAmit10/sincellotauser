@@ -4,18 +4,14 @@ import {useSelector} from 'react-redux';
 import {useFocusEffect} from '@react-navigation/native';
 import {
   useCreatePartnerMutation,
-  useGetAllPartnerQuery,
   useGetAllUserQuery,
-  useRemovePartnerMutation,
   useRemoveTopPartnerMutation,
-  useSearchPartnerQuery,
   useSearchUserQuery,
 } from '../../helper/Networkcall';
 import {heightPercentageToDP} from 'react-native-responsive-screen';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import {COLORS, FONT} from '../../../assets/constants';
 import MainBackgroundWithoutScrollview from '../../components/background/MainBackgroundWithoutScrollview';
-import AllPartnerComp from '../../components/allpartner/AllPartnerComp';
 import AllUserPartnerComp from '../../components/alluserpartner/AllUserPartnerComp';
 import Toast from 'react-native-toast-message';
 
@@ -129,7 +125,10 @@ const AllUsersPartner = () => {
         text1: res.data.message,
       });
       console.log('Refetching data...');
-      await refetchPaginated();
+      setPartners([]); // clear current list
+      setPage(1); // reset pagination
+      setHasMore(true); // allow further loading
+      refetchPaginated(); // trigger re-fetch
       console.log('Data refetched');
     } catch (e) {
       console.log(e);
