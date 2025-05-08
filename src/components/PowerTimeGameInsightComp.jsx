@@ -31,10 +31,20 @@ const PowerTimeGameInsightComp = ({
   setSelectedItem,
   handleDelete,
   deleteTimeIsLoading,
+  nextTime,
 }) => {
   const navigation = useNavigation();
   return (
-    <TouchableOpacity onPress={() => navigation.navigate(navigate, {item})}>
+    <TouchableOpacity
+      style={{
+        borderColor:
+          item.powertime === nextTime.powertime ? COLORS.yellow : 'transparent',
+        borderWidth: item.powertime === nextTime.powertime ? 2 : 2,
+        borderRadius: heightPercentageToDP(2),
+        overflow: 'hidden',
+        marginBottom: heightPercentageToDP(2),
+      }}
+      onPress={() => navigation.navigate(navigate, {item})}>
       <LinearGradient
         colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
         start={{x: 0, y: 0}} // start from left
@@ -43,7 +53,7 @@ const PowerTimeGameInsightComp = ({
           justifyContent: 'flex-start',
           height: heightPercentageToDP(10),
           borderRadius: heightPercentageToDP(2),
-          marginTop: heightPercentageToDP(2),
+
           flexDirection: 'row',
         }}>
         <View
