@@ -3,12 +3,14 @@ import {
   FlatList,
   Image,
   ImageBackground,
+  KeyboardAvoidingView,
   Platform,
   Pressable,
   SafeAreaView,
   ScrollView,
   StyleSheet,
   Text,
+  TextInput,
   TouchableOpacity,
   View,
 } from 'react-native';
@@ -35,6 +37,7 @@ import {
   useGetAllOtherQuery,
   useGetOtherPaymentNameQuery,
   useRejectOtherPaymentMethodMutation,
+  useSearchAllOtherByIdQuery,
 } from '../../helper/Networkcall';
 import UrlHelper from '../../helper/UrlHelper';
 import {COLORS, FONT} from '../../../assets/constants';
@@ -42,6 +45,7 @@ import Background from '../../components/background/Background';
 import GradientTextWhite from '../../components/helpercComponent/GradientTextWhite';
 import Loading from '../../components/helpercComponent/Loading';
 import {serverName} from '../../redux/store';
+import Fontisto from 'react-native-vector-icons/Fontisto';
 
 const AllOtherDepositPayment = () => {
   const navigation = useNavigation();
@@ -148,6 +152,23 @@ const AllOtherDepositPayment = () => {
   const limit = 5;
   const [hasMore, setHasMore] = useState(true);
   const [loading, setLoading] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [debouncedSearch, setDebouncedSearch] = useState('');
+
+  // Debounce Effect for Search (waits 500ms before updating)
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setDebouncedSearch(searchQuery);
+    }, 500);
+    return () => clearTimeout(handler);
+  }, [searchQuery]);
+
+  const {data: searchData, isFetching: fetchingSearch} =
+    useSearchAllOtherByIdQuery(
+      debouncedSearch.length > 0
+        ? {accesstoken, userId: debouncedSearch}
+        : {skip: true},
+    );
 
   // Fetch Paginated Data
   const {
@@ -163,12 +184,16 @@ const AllOtherDepositPayment = () => {
       setPage(1); // ✅ Reset Page
       setHasMore(true); // ✅ Reset Load More
       allTheDepositData?.(); // ✅ Ensure Fresh Data
-    }, [allTheDepositData]),
+    }, [allTheDepositData, debouncedSearch]),
   );
 
   useEffect(() => {
     setLoading(true);
-    if (paginatedData?.payments) {
+    if (debouncedSearch.length > 0 && searchData?.payments) {
+      // Search Mode: Replace entire list
+      setAllDepositData(searchData.payments);
+      setHasMore(false); // No pagination during search
+    } else if (paginatedData?.payments) {
       // For paginated data, filter out duplicates before appending
       setAllDepositData(prev => {
         const newData = paginatedData.payments.filter(
@@ -186,7 +211,7 @@ const AllOtherDepositPayment = () => {
     }
 
     setLoading(false);
-  }, [paginatedData, page]);
+  }, [paginatedData, page, searchData, debouncedSearch]);
 
   const loadMore = () => {
     if (!loading && hasMore && !fetchingPaginated) {
@@ -195,7 +220,7 @@ const AllOtherDepositPayment = () => {
   };
 
   // Combined Loading State
-  const isLoading = fetchingPaginated || loading;
+  const isLoading = fetchingPaginated || fetchingSearch || loading;
 
   const [activateOtherPaymentMethod, {isLoading: activateUpiIsLoading}] =
     useActivateOtherPaymentMethodMutation();
@@ -261,57 +286,61 @@ const AllOtherDepositPayment = () => {
 
   return (
     <SafeAreaView style={{flex: 1}}>
-      <Background />
-      <View style={{flex: 1, justifyContent: 'flex-end'}}>
-        <ImageBackground
-          source={require('../../../assets/image/tlwbg.jpg')}
-          style={{
-            width: '100%',
-            height:
-              Platform.OS === 'android'
-                ? heightPercentageToDP(85)
-                : heightPercentageToDP(80),
-          }}
-          imageStyle={{
-            borderTopLeftRadius: heightPercentageToDP(5),
-            borderTopRightRadius: heightPercentageToDP(5),
-          }}>
-          <View
+      <KeyboardAvoidingView
+        style={{flex: 1}}
+        behavior="height"
+        keyboardVerticalOffset={-60}>
+        <Background />
+        <View style={{flex: 1, justifyContent: 'flex-end'}}>
+          <ImageBackground
+            source={require('../../../assets/image/tlwbg.jpg')}
             style={{
+              width: '100%',
               height:
                 Platform.OS === 'android'
                   ? heightPercentageToDP(85)
                   : heightPercentageToDP(80),
-              width: widthPercentageToDP(100),
+            }}
+            imageStyle={{
               borderTopLeftRadius: heightPercentageToDP(5),
               borderTopRightRadius: heightPercentageToDP(5),
             }}>
             <View
               style={{
-                height: heightPercentageToDP(5),
+                height:
+                  Platform.OS === 'android'
+                    ? heightPercentageToDP(85)
+                    : heightPercentageToDP(80),
                 width: widthPercentageToDP(100),
-                justifyContent: 'center',
-                alignItems: 'center',
+                borderTopLeftRadius: heightPercentageToDP(5),
+                borderTopRightRadius: heightPercentageToDP(5),
               }}>
               <View
                 style={{
-                  width: widthPercentageToDP(20),
-                  height: heightPercentageToDP(0.8),
-                  backgroundColor: COLORS.grayBg,
-                  borderRadius: heightPercentageToDP(2),
-                }}
-              />
-            </View>
-            <View
-              style={{
-                margin: heightPercentageToDP(2),
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-              }}>
-              <GradientTextWhite style={styles.textStyle}>
-                Other Deposit
-              </GradientTextWhite>
-              {/* <Pressable
+                  height: heightPercentageToDP(5),
+                  width: widthPercentageToDP(100),
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}>
+                <View
+                  style={{
+                    width: widthPercentageToDP(20),
+                    height: heightPercentageToDP(0.8),
+                    backgroundColor: COLORS.grayBg,
+                    borderRadius: heightPercentageToDP(2),
+                  }}
+                />
+              </View>
+              <View
+                style={{
+                  margin: heightPercentageToDP(2),
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                }}>
+                <GradientTextWhite style={styles.textStyle}>
+                  Other Deposit
+                </GradientTextWhite>
+                {/* <Pressable
                 onPress={() => navigation.navigate('UpdateOtherName')}
                 style={{
                   backgroundColor: COLORS.white_s,
@@ -324,79 +353,128 @@ const AllOtherDepositPayment = () => {
                   size={heightPercentageToDP(3)}
                 />
               </Pressable> */}
-            </View>
+              </View>
+              {/* SEARCH INPUT */}
+              <View
+                style={{
+                  height: heightPercentageToDP(7),
+                  flexDirection: 'row',
+                  backgroundColor: COLORS.white_s,
+                  alignItems: 'center',
+                  paddingHorizontal: heightPercentageToDP(2),
+                  borderRadius: heightPercentageToDP(1),
+                  marginHorizontal: heightPercentageToDP(1),
+                }}>
+                <Fontisto
+                  name="search"
+                  size={heightPercentageToDP(3)}
+                  color={COLORS.darkGray}
+                />
+                <TextInput
+                  style={{
+                    marginStart: heightPercentageToDP(1),
+                    flex: 1,
+                    fontFamily: FONT.Montserrat_Regular,
+                    fontSize: heightPercentageToDP(2.5),
+                    color: COLORS.black,
+                  }}
+                  placeholder="Search"
+                  placeholderTextColor={COLORS.black}
+                  onChangeText={text => {
+                    setLoading(true);
+                    setSearchQuery(text);
+                  }}
+                />
+              </View>
 
-            {/** FOR UPI ID DEPOSIT OPTION */}
+              {/** FOR UPI ID DEPOSIT OPTION */}
 
-            <View style={{flex: 1}}>
-              {isLoading && page === 1 ? (
-                <ActivityIndicator size="large" color={COLORS.white_s} />
-              ) : (
-                <FlatList
-                  data={allDepositdata}
-                  keyExtractor={item => item._id.toString()} // Ensure _id is unique
-                  renderItem={({item}) => (
-                    <TouchableOpacity key={item._id}>
-                      <LinearGradient
-                        colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
-                        start={{x: 0, y: 0}} // start from left
-                        end={{x: 1, y: 0}} // end at right
-                        style={{
-                          borderRadius: heightPercentageToDP(2),
-                          marginHorizontal: heightPercentageToDP(2),
-                          marginVertical: heightPercentageToDP(1),
-                        }}>
-                        <View
+              <View style={{flex: 1}}>
+                {isLoading && page === 1 ? (
+                  <ActivityIndicator size="large" color={COLORS.white_s} />
+                ) : (
+                  <FlatList
+                    data={allDepositdata}
+                    keyExtractor={item => item._id.toString()} // Ensure _id is unique
+                    renderItem={({item}) => (
+                      <TouchableOpacity key={item._id}>
+                        <LinearGradient
+                          colors={[
+                            COLORS.time_firstblue,
+                            COLORS.time_secondbluw,
+                          ]}
+                          start={{x: 0, y: 0}} // start from left
+                          end={{x: 1, y: 0}} // end at right
                           style={{
-                            flexDirection: 'row',
-                            height: heightPercentageToDP(5),
+                            borderRadius: heightPercentageToDP(2),
+                            marginHorizontal: heightPercentageToDP(2),
                             marginVertical: heightPercentageToDP(1),
                           }}>
                           <View
                             style={{
-                              flex: 3,
                               flexDirection: 'row',
-                              gap: heightPercentageToDP(3),
-                              justifyContent: 'space-evenly',
-                              alignItems: 'center',
+                              height: heightPercentageToDP(5),
+                              marginVertical: heightPercentageToDP(1),
                             }}>
                             <View
                               style={{
-                                backgroundColor: COLORS.white_s,
-                                padding: heightPercentageToDP(1),
-                                borderRadius: heightPercentageToDP(1),
+                                flex: 3,
+                                flexDirection: 'row',
+                                gap: heightPercentageToDP(3),
+                                justifyContent: 'space-evenly',
+                                alignItems: 'center',
                               }}>
-                              <MaterialCommunityIcons
-                                color={COLORS.black}
-                                name="contactless-payment-circle"
-                                size={heightPercentageToDP(3)}
-                              />
-                            </View>
-                            <GradientTextWhite
-                              style={styles.textStyleContent}
-                              adjustsFontSizeToFit={true}>
-                              {item.paymentName
-                                ? item.paymentName
-                                : 'Other Payment'}{' '}
-                              {item.userId === 1000 ? 'Admin' : item.userId}
-                            </GradientTextWhite>
-                            {/* <GradientTextWhite style={styles.textStyleContent}>
+                              <View
+                                style={{
+                                  backgroundColor: COLORS.white_s,
+                                  padding: heightPercentageToDP(1),
+                                  borderRadius: heightPercentageToDP(1),
+                                }}>
+                                <MaterialCommunityIcons
+                                  color={COLORS.black}
+                                  name="contactless-payment-circle"
+                                  size={heightPercentageToDP(3)}
+                                />
+                              </View>
+                              <GradientTextWhite
+                                style={styles.textStyleContent}
+                                adjustsFontSizeToFit={true}>
+                                {item.paymentName
+                                  ? item.paymentName
+                                  : 'Other Payment'}{' '}
+                                {item.userId === 1000 ? 'Admin' : item.userId}
+                              </GradientTextWhite>
+                              {/* <GradientTextWhite style={styles.textStyleContent}>
                               {item.paymentId}
                             </GradientTextWhite> */}
-                          </View>
+                            </View>
 
-                          <View
-                            style={{
-                              justifyContent: 'flex-end',
-                              alignItems: 'flex-end',
-                              paddingEnd: heightPercentageToDP(2),
-                              flexDirection: 'row',
-                              gap: heightPercentageToDP(2),
-                            }}>
-                            {/** DELETE BUTTON */}
-                            {deleteIsLoading ? (
-                              seletedItem === item._id ? (
-                                <Loading />
+                            <View
+                              style={{
+                                justifyContent: 'flex-end',
+                                alignItems: 'flex-end',
+                                paddingEnd: heightPercentageToDP(2),
+                                flexDirection: 'row',
+                                gap: heightPercentageToDP(2),
+                              }}>
+                              {/** DELETE BUTTON */}
+                              {deleteIsLoading ? (
+                                seletedItem === item._id ? (
+                                  <Loading />
+                                ) : (
+                                  <TouchableOpacity
+                                    onPress={() => deletingData(item)}>
+                                    <LinearGradient
+                                      colors={[COLORS.grayBg, COLORS.white_s]}
+                                      style={{borderRadius: 10, padding: 5}}>
+                                      <MaterialCommunityIcons
+                                        name={'delete'}
+                                        size={heightPercentageToDP(3)}
+                                        color={COLORS.darkGray}
+                                      />
+                                    </LinearGradient>
+                                  </TouchableOpacity>
+                                )
                               ) : (
                                 <TouchableOpacity
                                   onPress={() => deletingData(item)}>
@@ -410,198 +488,224 @@ const AllOtherDepositPayment = () => {
                                     />
                                   </LinearGradient>
                                 </TouchableOpacity>
-                              )
-                            ) : (
-                              <TouchableOpacity
-                                onPress={() => deletingData(item)}>
-                                <LinearGradient
-                                  colors={[COLORS.grayBg, COLORS.white_s]}
-                                  style={{borderRadius: 10, padding: 5}}>
-                                  <MaterialCommunityIcons
-                                    name={'delete'}
-                                    size={heightPercentageToDP(3)}
-                                    color={COLORS.darkGray}
-                                  />
-                                </LinearGradient>
-                              </TouchableOpacity>
-                            )}
-                          </View>
-                        </View>
-                        <View
-                          style={{
-                            flexDirection: 'row',
-                            gap: heightPercentageToDP(1),
-                            flex: 1,
-                            paddingHorizontal: heightPercentageToDP(2),
-                            borderRadius: heightPercentageToDP(2),
-                          }}>
-                          <View
-                            style={{
-                              flex: 1,
-                              gap: heightPercentageToDP(2),
-                              justifyContent: 'space-between',
-                            }}>
-                            {item?.firstInputName && (
-                              <Text style={styles.copytitle} numberOfLines={2}>
-                                {item?.firstInputName}
-                              </Text>
-                            )}
-
-                            {item?.secondInputName && (
-                              <Text style={styles.copytitle}>
-                                {item?.secondInputName}
-                              </Text>
-                            )}
-
-                            {item?.thirdInputName && (
-                              <Text style={styles.copytitle}>
-                                {item?.thirdInputName}
-                              </Text>
-                            )}
-                          </View>
-                          <View
-                            style={{
-                              flex: 2,
-                              gap: heightPercentageToDP(2),
-                            }}>
-                            {item.firstInput && (
-                              <Text
-                                style={styles.copycontent}
-                                numberOfLines={2}>
-                                {item.firstInput}
-                              </Text>
-                            )}
-
-                            {item.secondInput && (
-                              <Text
-                                style={styles.copycontent}
-                                numberOfLines={1}>
-                                {item.secondInput}
-                              </Text>
-                            )}
-
-                            {item.thirdInput && (
-                              <Text
-                                style={styles.copycontent}
-                                numberOfLines={1}>
-                                {item.thirdInput}
-                              </Text>
-                            )}
-                          </View>
-                          <View
-                            style={{
-                              height: '100%',
-                              width: '10%',
-                              justifyContent: 'flex-start',
-                              alignItems: 'flex-end',
-                              gap: heightPercentageToDP(1),
-                            }}>
-                            {item.firstInput && (
-                              <TouchableOpacity
-                                onPress={() =>
-                                  copyToClipboard(item.firstInput)
-                                }>
-                                <LinearGradient
-                                  colors={[COLORS.lightWhite, COLORS.white_s]}
-                                  style={{
-                                    padding: heightPercentageToDP(0.5),
-                                    borderRadius: heightPercentageToDP(1),
-                                    justifyContent: 'center',
-                                    alignItems: 'center',
-                                  }}>
-                                  <AntDesign
-                                    name={'copy1'}
-                                    size={heightPercentageToDP(2.5)}
-                                    color={COLORS.darkGray}
-                                  />
-                                </LinearGradient>
-                              </TouchableOpacity>
-                            )}
-                            {item.secondInput && (
-                              <TouchableOpacity
-                                onPress={() =>
-                                  copyToClipboard(item.secondInput)
-                                }>
-                                <LinearGradient
-                                  colors={[COLORS.lightWhite, COLORS.white_s]}
-                                  style={{
-                                    padding: heightPercentageToDP(0.5),
-                                    borderRadius: heightPercentageToDP(1),
-                                    justifyContent: 'center',
-                                    alignItems: 'center',
-                                  }}>
-                                  <AntDesign
-                                    name={'copy1'}
-                                    size={heightPercentageToDP(2.5)}
-                                    color={COLORS.darkGray}
-                                  />
-                                </LinearGradient>
-                              </TouchableOpacity>
-                            )}
-
-                            {item.thirdInput && (
-                              <TouchableOpacity
-                                onPress={() =>
-                                  copyToClipboard(item.thirdInput)
-                                }>
-                                <LinearGradient
-                                  colors={[COLORS.lightWhite, COLORS.white_s]}
-                                  style={{
-                                    padding: heightPercentageToDP(0.5),
-                                    borderRadius: heightPercentageToDP(1),
-                                    justifyContent: 'center',
-                                    alignItems: 'center',
-                                  }}>
-                                  <AntDesign
-                                    name={'copy1'}
-                                    size={heightPercentageToDP(2.5)}
-                                    color={COLORS.darkGray}
-                                  />
-                                </LinearGradient>
-                              </TouchableOpacity>
-                            )}
-                          </View>
-                        </View>
-
-                        {/** QR code */}
-                        {item.qrcode && (
-                          <View
-                            style={{
-                              flex: 2,
-                              gap: heightPercentageToDP(2),
-                              margin: heightPercentageToDP(2),
-                            }}>
-                            <View
-                              style={{
-                                backgroundColor: COLORS.white_s,
-                                padding: heightPercentageToDP(1),
-                                borderRadius: heightPercentageToDP(1),
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                              }}>
-                              {item.qrcode ? (
-                                <Image
-                                  source={{
-                                    uri: `${serverName}/uploads/otherpaymentqrcode/${item.qrcode}`,
-                                  }}
-                                  resizeMode="cover"
-                                  style={{
-                                    height: 150,
-                                    width: 150,
-                                  }}
-                                />
-                              ) : (
-                                <MaterialCommunityIcons
-                                  color={COLORS.black}
-                                  name="contactless-payment-circle"
-                                  size={heightPercentageToDP(10)}
-                                />
                               )}
                             </View>
                           </View>
-                        )}
+                          <View
+                            style={{
+                              flexDirection: 'row',
+                              gap: heightPercentageToDP(1),
+                              flex: 1,
+                              paddingHorizontal: heightPercentageToDP(2),
+                              borderRadius: heightPercentageToDP(2),
+                            }}>
+                            <View
+                              style={{
+                                flex: 1,
+                                gap: heightPercentageToDP(2),
+                                justifyContent: 'space-between',
+                              }}>
+                              {item?.firstInputName && (
+                                <Text
+                                  style={styles.copytitle}
+                                  numberOfLines={2}>
+                                  {item?.firstInputName}
+                                </Text>
+                              )}
 
-                        {item.paymentnote && (
+                              {item?.secondInputName && (
+                                <Text style={styles.copytitle}>
+                                  {item?.secondInputName}
+                                </Text>
+                              )}
+
+                              {item?.thirdInputName && (
+                                <Text style={styles.copytitle}>
+                                  {item?.thirdInputName}
+                                </Text>
+                              )}
+                            </View>
+                            <View
+                              style={{
+                                flex: 2,
+                                gap: heightPercentageToDP(2),
+                              }}>
+                              {item.firstInput && (
+                                <Text
+                                  style={styles.copycontent}
+                                  numberOfLines={2}>
+                                  {item.firstInput}
+                                </Text>
+                              )}
+
+                              {item.secondInput && (
+                                <Text
+                                  style={styles.copycontent}
+                                  numberOfLines={1}>
+                                  {item.secondInput}
+                                </Text>
+                              )}
+
+                              {item.thirdInput && (
+                                <Text
+                                  style={styles.copycontent}
+                                  numberOfLines={1}>
+                                  {item.thirdInput}
+                                </Text>
+                              )}
+                            </View>
+                            <View
+                              style={{
+                                height: '100%',
+                                width: '10%',
+                                justifyContent: 'flex-start',
+                                alignItems: 'flex-end',
+                                gap: heightPercentageToDP(1),
+                              }}>
+                              {item.firstInput && (
+                                <TouchableOpacity
+                                  onPress={() =>
+                                    copyToClipboard(item.firstInput)
+                                  }>
+                                  <LinearGradient
+                                    colors={[COLORS.lightWhite, COLORS.white_s]}
+                                    style={{
+                                      padding: heightPercentageToDP(0.5),
+                                      borderRadius: heightPercentageToDP(1),
+                                      justifyContent: 'center',
+                                      alignItems: 'center',
+                                    }}>
+                                    <AntDesign
+                                      name={'copy1'}
+                                      size={heightPercentageToDP(2.5)}
+                                      color={COLORS.darkGray}
+                                    />
+                                  </LinearGradient>
+                                </TouchableOpacity>
+                              )}
+                              {item.secondInput && (
+                                <TouchableOpacity
+                                  onPress={() =>
+                                    copyToClipboard(item.secondInput)
+                                  }>
+                                  <LinearGradient
+                                    colors={[COLORS.lightWhite, COLORS.white_s]}
+                                    style={{
+                                      padding: heightPercentageToDP(0.5),
+                                      borderRadius: heightPercentageToDP(1),
+                                      justifyContent: 'center',
+                                      alignItems: 'center',
+                                    }}>
+                                    <AntDesign
+                                      name={'copy1'}
+                                      size={heightPercentageToDP(2.5)}
+                                      color={COLORS.darkGray}
+                                    />
+                                  </LinearGradient>
+                                </TouchableOpacity>
+                              )}
+
+                              {item.thirdInput && (
+                                <TouchableOpacity
+                                  onPress={() =>
+                                    copyToClipboard(item.thirdInput)
+                                  }>
+                                  <LinearGradient
+                                    colors={[COLORS.lightWhite, COLORS.white_s]}
+                                    style={{
+                                      padding: heightPercentageToDP(0.5),
+                                      borderRadius: heightPercentageToDP(1),
+                                      justifyContent: 'center',
+                                      alignItems: 'center',
+                                    }}>
+                                    <AntDesign
+                                      name={'copy1'}
+                                      size={heightPercentageToDP(2.5)}
+                                      color={COLORS.darkGray}
+                                    />
+                                  </LinearGradient>
+                                </TouchableOpacity>
+                              )}
+                            </View>
+                          </View>
+
+                          {/** QR code */}
+                          {item.qrcode && (
+                            <View
+                              style={{
+                                flex: 2,
+                                gap: heightPercentageToDP(2),
+                                margin: heightPercentageToDP(2),
+                              }}>
+                              <View
+                                style={{
+                                  backgroundColor: COLORS.white_s,
+                                  padding: heightPercentageToDP(1),
+                                  borderRadius: heightPercentageToDP(1),
+                                  justifyContent: 'center',
+                                  alignItems: 'center',
+                                }}>
+                                {item.qrcode ? (
+                                  <Image
+                                    source={{
+                                      uri: `${serverName}/uploads/otherpaymentqrcode/${item.qrcode}`,
+                                    }}
+                                    resizeMode="cover"
+                                    style={{
+                                      height: 150,
+                                      width: 150,
+                                    }}
+                                  />
+                                ) : (
+                                  <MaterialCommunityIcons
+                                    color={COLORS.black}
+                                    name="contactless-payment-circle"
+                                    size={heightPercentageToDP(10)}
+                                  />
+                                )}
+                              </View>
+                            </View>
+                          )}
+
+                          {item.paymentnote && (
+                            <View
+                              style={{
+                                flexDirection: 'column',
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                                flex: 1,
+                                padding: heightPercentageToDP(2),
+                              }}>
+                              <View
+                                style={{
+                                  flex: 1,
+                                  display: 'flex',
+                                  justifyContent: 'flex-start',
+                                  alignItems: 'flex-start',
+                                }}>
+                                <Text
+                                  style={{
+                                    ...styles.copytitle,
+                                    paddingLeft: heightPercentageToDP(1),
+                                    textAlignVertical: 'center',
+                                  }}
+                                  numberOfLines={2}>
+                                  {item.paymentnote ? 'Note' : ''}
+                                </Text>
+                              </View>
+                              <View
+                                style={{
+                                  flex: 2,
+                                  paddingEnd: heightPercentageToDP(1),
+                                }}>
+                                <Text style={styles.copycontent}>
+                                  {item.paymentnote}
+                                </Text>
+                              </View>
+                            </View>
+                          )}
+
+                          {/** FOR ACTIVATION STATUS */}
                           <View
                             style={{
                               flexDirection: 'column',
@@ -609,6 +713,7 @@ const AllOtherDepositPayment = () => {
                               alignItems: 'center',
                               flex: 1,
                               padding: heightPercentageToDP(2),
+                              gap: heightPercentageToDP(1),
                             }}>
                             <View
                               style={{
@@ -620,88 +725,69 @@ const AllOtherDepositPayment = () => {
                               <Text
                                 style={{
                                   ...styles.copytitle,
-                                  paddingLeft: heightPercentageToDP(1),
-                                  textAlignVertical: 'center',
+                                  paddingLeft: heightPercentageToDP(2),
                                 }}
-                                numberOfLines={2}>
-                                {item.paymentnote ? 'Note' : ''}
+                                numberOfLines={1}>
+                                Activation Status
                               </Text>
                             </View>
                             <View
                               style={{
                                 flex: 2,
-                                paddingEnd: heightPercentageToDP(1),
+                                backgroundColor:
+                                  item.paymentStatus === 'Pending'
+                                    ? COLORS.orange
+                                    : item.paymentStatus === 'Approved'
+                                    ? COLORS.green
+                                    : COLORS.red,
+                                width: widthPercentageToDP(90),
+                                padding: heightPercentageToDP(1),
+                                borderRadius: heightPercentageToDP(4),
+                                justifyContent: 'center',
+                                alignItems: 'center',
                               }}>
-                              <Text style={styles.copycontent}>
-                                {item.paymentnote}
+                              <Text
+                                style={[
+                                  styles.copycontent,
+                                  {color: COLORS.white_s},
+                                ]}>
+                                {item.paymentStatus}
                               </Text>
                             </View>
                           </View>
-                        )}
 
-                        {/** FOR ACTIVATION STATUS */}
-                        <View
-                          style={{
-                            flexDirection: 'column',
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                            flex: 1,
-                            padding: heightPercentageToDP(2),
-                            gap: heightPercentageToDP(1),
-                          }}>
-                          <View
-                            style={{
-                              flex: 1,
-                              display: 'flex',
-                              justifyContent: 'flex-start',
-                              alignItems: 'flex-start',
-                            }}>
-                            <Text
-                              style={{
-                                ...styles.copytitle,
-                                paddingLeft: heightPercentageToDP(2),
-                              }}
-                              numberOfLines={1}>
-                              Activation Status
-                            </Text>
-                          </View>
-                          <View
-                            style={{
-                              flex: 2,
-                              backgroundColor:
-                                item.paymentStatus === 'Pending'
-                                  ? COLORS.orange
-                                  : item.paymentStatus === 'Approved'
-                                  ? COLORS.green
-                                  : COLORS.red,
-                              width: widthPercentageToDP(90),
-                              padding: heightPercentageToDP(1),
-                              borderRadius: heightPercentageToDP(4),
-                              justifyContent: 'center',
-                              alignItems: 'center',
-                            }}>
-                            <Text
-                              style={[
-                                styles.copycontent,
-                                {color: COLORS.white_s},
-                              ]}>
-                              {item.paymentStatus}
-                            </Text>
-                          </View>
-                        </View>
-
-                        {/** CONFIRMATION */}
-                        {item.paymentStatus === 'Pending' &&
-                          (activateUpiIsLoading ? (
-                            seletedItem._id === item._id ? (
-                              <Loading />
+                          {/** CONFIRMATION */}
+                          {item.paymentStatus === 'Pending' &&
+                            (activateUpiIsLoading ? (
+                              seletedItem._id === item._id ? (
+                                <Loading />
+                              ) : (
+                                <TouchableOpacity
+                                  onPress={() => submitConfirmation(item)}
+                                  style={{
+                                    flex: 2,
+                                    backgroundColor: COLORS.green,
+                                    width: widthPercentageToDP(90),
+                                    padding: heightPercentageToDP(1),
+                                    borderRadius: heightPercentageToDP(4),
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                  }}>
+                                  <Text
+                                    style={[
+                                      styles.copycontent,
+                                      {color: COLORS.white_s},
+                                    ]}>
+                                    Confirm
+                                  </Text>
+                                </TouchableOpacity>
+                              )
                             ) : (
                               <TouchableOpacity
                                 onPress={() => submitConfirmation(item)}
                                 style={{
                                   flex: 2,
                                   backgroundColor: COLORS.green,
-                                  width: widthPercentageToDP(90),
                                   padding: heightPercentageToDP(1),
                                   borderRadius: heightPercentageToDP(4),
                                   justifyContent: 'center',
@@ -715,44 +801,45 @@ const AllOtherDepositPayment = () => {
                                   Confirm
                                 </Text>
                               </TouchableOpacity>
-                            )
-                          ) : (
-                            <TouchableOpacity
-                              onPress={() => submitConfirmation(item)}
-                              style={{
-                                flex: 2,
-                                backgroundColor: COLORS.green,
-                                padding: heightPercentageToDP(1),
-                                borderRadius: heightPercentageToDP(4),
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                              }}>
-                              <Text
-                                style={[
-                                  styles.copycontent,
-                                  {color: COLORS.white_s},
-                                ]}>
-                                Confirm
-                              </Text>
-                            </TouchableOpacity>
-                          ))}
+                            ))}
 
-                        {/** REJECTION */}
-                        {item.paymentStatus === 'Pending' &&
-                          (rejectUpiIsLoading ? (
-                            seletedItem._id === item._id ? (
-                              <Loading />
+                          {/** REJECTION */}
+                          {item.paymentStatus === 'Pending' &&
+                            (rejectUpiIsLoading ? (
+                              seletedItem._id === item._id ? (
+                                <Loading />
+                              ) : (
+                                <TouchableOpacity
+                                  onPress={() => submitRejection(item)}
+                                  style={{
+                                    flex: 2,
+                                    backgroundColor: COLORS.red,
+
+                                    padding: heightPercentageToDP(1),
+                                    borderRadius: heightPercentageToDP(4),
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                  }}>
+                                  <Text
+                                    style={[
+                                      styles.copycontent,
+                                      {color: COLORS.white_s},
+                                    ]}>
+                                    Reject
+                                  </Text>
+                                </TouchableOpacity>
+                              )
                             ) : (
                               <TouchableOpacity
                                 onPress={() => submitRejection(item)}
                                 style={{
                                   flex: 2,
                                   backgroundColor: COLORS.red,
-
                                   padding: heightPercentageToDP(1),
                                   borderRadius: heightPercentageToDP(4),
                                   justifyContent: 'center',
                                   alignItems: 'center',
+                                  marginVertical: heightPercentageToDP(1),
                                 }}>
                                 <Text
                                   style={[
@@ -762,71 +849,54 @@ const AllOtherDepositPayment = () => {
                                   Reject
                                 </Text>
                               </TouchableOpacity>
-                            )
-                          ) : (
-                            <TouchableOpacity
-                              onPress={() => submitRejection(item)}
-                              style={{
-                                flex: 2,
-                                backgroundColor: COLORS.red,
-                                padding: heightPercentageToDP(1),
-                                borderRadius: heightPercentageToDP(4),
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                                marginVertical: heightPercentageToDP(1),
-                              }}>
-                              <Text
-                                style={[
-                                  styles.copycontent,
-                                  {color: COLORS.white_s},
-                                ]}>
-                                Reject
-                              </Text>
-                            </TouchableOpacity>
-                          ))}
-                      </LinearGradient>
-                    </TouchableOpacity>
-                  )}
-                  onEndReached={loadMore}
-                  onEndReachedThreshold={0.3}
-                  ListFooterComponent={() =>
-                    hasMore && isLoading ? (
-                      <ActivityIndicator size="large" color={COLORS.white_s} />
-                    ) : null
-                  }
-                />
-              )}
-            </View>
+                            ))}
+                        </LinearGradient>
+                      </TouchableOpacity>
+                    )}
+                    onEndReached={loadMore}
+                    onEndReachedThreshold={0.3}
+                    ListFooterComponent={() =>
+                      hasMore && isLoading ? (
+                        <ActivityIndicator
+                          size="large"
+                          color={COLORS.white_s}
+                        />
+                      ) : null
+                    }
+                  />
+                )}
+              </View>
 
-            {/** CREATE A NEW ACCOUNT */}
-            <View
-              style={{
-                marginBottom: heightPercentageToDP(5),
-                marginTop: heightPercentageToDP(2),
-              }}>
-              {!loadingAllData && (
-                <TouchableOpacity
-                  onPress={() => navigation.navigate('CreateOther')}
-                  style={{
-                    backgroundColor: COLORS.blue,
-                    padding: heightPercentageToDP(2),
-                    borderRadius: heightPercentageToDP(1),
-                    margin: heightPercentageToDP(2),
-                    alignItems: 'center',
-                  }}>
-                  <Text
+              {/** CREATE A NEW ACCOUNT */}
+              <View
+                style={{
+                  marginBottom: heightPercentageToDP(5),
+                  marginTop: heightPercentageToDP(2),
+                }}>
+                {!loadingAllData && (
+                  <TouchableOpacity
+                    onPress={() => navigation.navigate('CreateOther')}
                     style={{
-                      color: COLORS.white,
-                      fontFamily: FONT.Montserrat_Regular,
+                      backgroundColor: COLORS.blue,
+                      padding: heightPercentageToDP(2),
+                      borderRadius: heightPercentageToDP(1),
+                      margin: heightPercentageToDP(2),
+                      alignItems: 'center',
                     }}>
-                    Create Other
-                  </Text>
-                </TouchableOpacity>
-              )}
+                    <Text
+                      style={{
+                        color: COLORS.white,
+                        fontFamily: FONT.Montserrat_Regular,
+                      }}>
+                      Create Other
+                    </Text>
+                  </TouchableOpacity>
+                )}
+              </View>
             </View>
-          </View>
-        </ImageBackground>
-      </View>
+          </ImageBackground>
+        </View>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 };
