@@ -3,11 +3,13 @@ import {
   FlatList,
   Image,
   ImageBackground,
+  KeyboardAvoidingView,
   Platform,
   SafeAreaView,
   ScrollView,
   StyleSheet,
   Text,
+  TextInput,
   TouchableOpacity,
   View,
 } from 'react-native';
@@ -38,7 +40,9 @@ import {
   useDeleteBankAccountMutation,
   useGetAllBankQuery,
   useRejectBankPaymentMethodMutation,
+  useSearchAllBankByIdQuery,
 } from '../../helper/Networkcall';
+import Fontisto from 'react-native-vector-icons/Fontisto';
 
 const upiapidata = [
   {
@@ -153,6 +157,23 @@ const AllBankDepositPayment = () => {
   const limit = 5;
   const [hasMore, setHasMore] = useState(true);
   const [loading, setLoading] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [debouncedSearch, setDebouncedSearch] = useState('');
+
+  // Debounce Effect for Search (waits 500ms before updating)
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setDebouncedSearch(searchQuery);
+    }, 500);
+    return () => clearTimeout(handler);
+  }, [searchQuery]);
+
+  const {data: searchData, isFetching: fetchingSearch} =
+    useSearchAllBankByIdQuery(
+      debouncedSearch.length > 0
+        ? {accesstoken, userId: debouncedSearch}
+        : {skip: true},
+    );
 
   // Fetch Paginated Data
   const {
@@ -168,12 +189,16 @@ const AllBankDepositPayment = () => {
       setPage(1); // ✅ Reset Page
       setHasMore(true); // ✅ Reset Load More
       allTheDepositData?.(); // ✅ Ensure Fresh Data
-    }, [allTheDepositData]),
+    }, [allTheDepositData, debouncedSearch]),
   );
 
   useEffect(() => {
     setLoading(true);
-    if (paginatedData?.payments) {
+    if (debouncedSearch.length > 0 && searchData?.payments) {
+      // Search Mode: Replace entire list
+      setAllDepositData(searchData.payments);
+      setHasMore(false); // No pagination during search
+    } else if (paginatedData?.payments) {
       // For paginated data, filter out duplicates before appending
       setAllDepositData(prev => {
         const newData = paginatedData.payments.filter(
@@ -191,7 +216,7 @@ const AllBankDepositPayment = () => {
     }
 
     setLoading(false);
-  }, [paginatedData, page]);
+  }, [paginatedData, page, searchData, debouncedSearch]);
 
   const loadMore = () => {
     if (!loading && hasMore && !fetchingPaginated) {
@@ -200,7 +225,7 @@ const AllBankDepositPayment = () => {
   };
 
   // Combined Loading State
-  const isLoading = fetchingPaginated || loading;
+  const isLoading = fetchingPaginated || fetchingSearch || loading;
 
   const [activateBankPaymentMethod, {isLoading: activateBankIsLoading}] =
     useActivateBankPaymentMethodMutation();
@@ -265,122 +290,177 @@ const AllBankDepositPayment = () => {
   };
   return (
     <SafeAreaView style={{flex: 1}}>
-      <Background />
-      <View style={{flex: 1, justifyContent: 'flex-end'}}>
-        <ImageBackground
-          source={require('../../../assets/image/tlwbg.jpg')}
-          style={{
-            width: '100%',
-            height:
-              Platform.OS === 'android'
-                ? heightPercentageToDP(85)
-                : heightPercentageToDP(80),
-          }}
-          imageStyle={{
-            borderTopLeftRadius: heightPercentageToDP(5),
-            borderTopRightRadius: heightPercentageToDP(5),
-          }}>
-          <View
+      <KeyboardAvoidingView
+        style={{flex: 1}}
+        behavior="height"
+        keyboardVerticalOffset={-60}>
+        <Background />
+        <View style={{flex: 1, justifyContent: 'flex-end'}}>
+          <ImageBackground
+            source={require('../../../assets/image/tlwbg.jpg')}
             style={{
+              width: '100%',
               height:
                 Platform.OS === 'android'
                   ? heightPercentageToDP(85)
                   : heightPercentageToDP(80),
-              width: widthPercentageToDP(100),
+            }}
+            imageStyle={{
               borderTopLeftRadius: heightPercentageToDP(5),
               borderTopRightRadius: heightPercentageToDP(5),
             }}>
             <View
               style={{
-                height: heightPercentageToDP(5),
+                height:
+                  Platform.OS === 'android'
+                    ? heightPercentageToDP(85)
+                    : heightPercentageToDP(80),
                 width: widthPercentageToDP(100),
-                justifyContent: 'center',
-                alignItems: 'center',
+                borderTopLeftRadius: heightPercentageToDP(5),
+                borderTopRightRadius: heightPercentageToDP(5),
               }}>
               <View
                 style={{
-                  width: widthPercentageToDP(20),
-                  height: heightPercentageToDP(0.8),
-                  backgroundColor: COLORS.grayBg,
-                  borderRadius: heightPercentageToDP(2),
-                }}
-              />
-            </View>
-            <View style={{margin: heightPercentageToDP(2)}}>
-              <GradientTextWhite style={styles.textStyle}>
-                Bank Deposit
-              </GradientTextWhite>
-            </View>
+                  height: heightPercentageToDP(5),
+                  width: widthPercentageToDP(100),
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}>
+                <View
+                  style={{
+                    width: widthPercentageToDP(20),
+                    height: heightPercentageToDP(0.8),
+                    backgroundColor: COLORS.grayBg,
+                    borderRadius: heightPercentageToDP(2),
+                  }}
+                />
+              </View>
+              <View style={{margin: heightPercentageToDP(2)}}>
+                <GradientTextWhite style={styles.textStyle}>
+                  Bank Deposit
+                </GradientTextWhite>
+              </View>
 
-            {/** FOR UPI ID DEPOSIT OPTION */}
+              {/* SEARCH INPUT */}
+              <View
+                style={{
+                  height: heightPercentageToDP(7),
+                  flexDirection: 'row',
+                  backgroundColor: COLORS.white_s,
+                  alignItems: 'center',
+                  paddingHorizontal: heightPercentageToDP(2),
+                  borderRadius: heightPercentageToDP(1),
+                  marginHorizontal: heightPercentageToDP(1),
+                }}>
+                <Fontisto
+                  name="search"
+                  size={heightPercentageToDP(3)}
+                  color={COLORS.darkGray}
+                />
+                <TextInput
+                  style={{
+                    marginStart: heightPercentageToDP(1),
+                    flex: 1,
+                    fontFamily: FONT.Montserrat_Regular,
+                    fontSize: heightPercentageToDP(2.5),
+                    color: COLORS.black,
+                  }}
+                  placeholder="Search"
+                  placeholderTextColor={COLORS.black}
+                  onChangeText={text => {
+                    setLoading(true);
+                    setSearchQuery(text);
+                  }}
+                />
+              </View>
 
-            <View style={{flex: 1}}>
-              {isLoading && page === 1 ? (
-                <ActivityIndicator size="large" color={COLORS.white_s} />
-              ) : (
-                <FlatList
-                  data={allDepositdata}
-                  keyExtractor={item => item._id.toString()} // Ensure _id is unique
-                  renderItem={({item}) => (
-                    <TouchableOpacity key={item._id}>
-                      <LinearGradient
-                        colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
-                        start={{x: 0, y: 0}} // start from left
-                        end={{x: 1, y: 0}} // end at right
-                        style={{
-                          borderRadius: heightPercentageToDP(2),
-                          marginHorizontal: heightPercentageToDP(2),
-                          marginVertical: heightPercentageToDP(1),
-                        }}>
-                        <View
+              {/** FOR UPI ID DEPOSIT OPTION */}
+
+              <View style={{flex: 1}}>
+                {isLoading && page === 1 ? (
+                  <ActivityIndicator size="large" color={COLORS.white_s} />
+                ) : (
+                  <FlatList
+                    data={allDepositdata}
+                    keyExtractor={item => item._id.toString()} // Ensure _id is unique
+                    renderItem={({item}) => (
+                      <TouchableOpacity key={item._id}>
+                        <LinearGradient
+                          colors={[
+                            COLORS.time_firstblue,
+                            COLORS.time_secondbluw,
+                          ]}
+                          start={{x: 0, y: 0}} // start from left
+                          end={{x: 1, y: 0}} // end at right
                           style={{
-                            flexDirection: 'row',
-                            height: heightPercentageToDP(5),
+                            borderRadius: heightPercentageToDP(2),
+                            marginHorizontal: heightPercentageToDP(2),
                             marginVertical: heightPercentageToDP(1),
                           }}>
                           <View
                             style={{
-                              flex: 2,
                               flexDirection: 'row',
-                              gap: heightPercentageToDP(3),
-                              justifyContent: 'center',
-                              alignItems: 'center',
+                              height: heightPercentageToDP(5),
+                              marginVertical: heightPercentageToDP(1),
                             }}>
                             <View
                               style={{
-                                backgroundColor: COLORS.white_s,
-                                padding: heightPercentageToDP(1),
-                                borderRadius: heightPercentageToDP(1),
+                                flex: 2,
+                                flexDirection: 'row',
+                                gap: heightPercentageToDP(3),
+                                justifyContent: 'center',
+                                alignItems: 'center',
                               }}>
-                              <Image
-                                source={require('../../../assets/image/bank.png')}
-                                resizeMode="cover"
+                              <View
                                 style={{
-                                  height: 25,
-                                  width: 25,
-                                }}
-                              />
-                            </View>
-                            <GradientTextWhite style={styles.textStyleContent}>
-                              Bank
-                            </GradientTextWhite>
-                            {/* <GradientTextWhite style={styles.textStyleContent}>
+                                  backgroundColor: COLORS.white_s,
+                                  padding: heightPercentageToDP(1),
+                                  borderRadius: heightPercentageToDP(1),
+                                }}>
+                                <Image
+                                  source={require('../../../assets/image/bank.png')}
+                                  resizeMode="cover"
+                                  style={{
+                                    height: 25,
+                                    width: 25,
+                                  }}
+                                />
+                              </View>
+                              <GradientTextWhite
+                                style={styles.textStyleContent}>
+                                {item.userId === 1000 ? 'Admin' : item.userId}
+                              </GradientTextWhite>
+                              {/* <GradientTextWhite style={styles.textStyleContent}>
                             {item.paymentId}
                           </GradientTextWhite> */}
-                          </View>
+                            </View>
 
-                          <View
-                            style={{
-                              flex: 1,
-                              justifyContent: 'flex-end',
-                              alignItems: 'flex-end',
-                              paddingEnd: heightPercentageToDP(2),
-                            }}>
-                            {/** DELETE BUTTON */}
+                            <View
+                              style={{
+                                flex: 1,
+                                justifyContent: 'flex-end',
+                                alignItems: 'flex-end',
+                                paddingEnd: heightPercentageToDP(2),
+                              }}>
+                              {/** DELETE BUTTON */}
 
-                            {deleteIsLoading ? (
-                              seletedItem === item._id ? (
-                                <Loading />
+                              {deleteIsLoading ? (
+                                seletedItem === item._id ? (
+                                  <Loading />
+                                ) : (
+                                  <TouchableOpacity
+                                    onPress={() => deletingData(item)}>
+                                    <LinearGradient
+                                      colors={[COLORS.grayBg, COLORS.white_s]}
+                                      style={{borderRadius: 10, padding: 5}}>
+                                      <MaterialCommunityIcons
+                                        name={'delete'}
+                                        size={heightPercentageToDP(3)}
+                                        color={COLORS.darkGray}
+                                      />
+                                    </LinearGradient>
+                                  </TouchableOpacity>
+                                )
                               ) : (
                                 <TouchableOpacity
                                   onPress={() => deletingData(item)}>
@@ -394,197 +474,10 @@ const AllBankDepositPayment = () => {
                                     />
                                   </LinearGradient>
                                 </TouchableOpacity>
-                              )
-                            ) : (
-                              <TouchableOpacity
-                                onPress={() => deletingData(item)}>
-                                <LinearGradient
-                                  colors={[COLORS.grayBg, COLORS.white_s]}
-                                  style={{borderRadius: 10, padding: 5}}>
-                                  <MaterialCommunityIcons
-                                    name={'delete'}
-                                    size={heightPercentageToDP(3)}
-                                    color={COLORS.darkGray}
-                                  />
-                                </LinearGradient>
-                              </TouchableOpacity>
-                            )}
+                              )}
+                            </View>
                           </View>
-                        </View>
-                        {/** BANK NAME */}
-                        <View
-                          style={{
-                            flexDirection: 'row',
-                            padding: heightPercentageToDP(1),
-                          }}>
-                          <View
-                            style={{
-                              flex: 1,
-
-                              display: 'flex',
-                              justifyContent: 'center',
-                              alignItems: 'flex-start',
-                            }}>
-                            <Text style={styles.copytitle}>Bank Name</Text>
-                          </View>
-                          <View
-                            style={{
-                              flex: 2,
-                              display: 'flex',
-                              justifyContent: 'center',
-                              alignItems: 'flex-start',
-                              paddingHorizontal: heightPercentageToDP(1),
-                            }}>
-                            <Text style={styles.copycontent} numberOfLines={2}>
-                              {item.bankname}
-                            </Text>
-                          </View>
-                          <View
-                            style={{
-                              flex: 0.5,
-
-                              display: 'flex',
-                              justifyContent: 'center',
-                              alignItems: 'center',
-                            }}>
-                            <TouchableOpacity
-                              onPress={() => copyToClipboard(item.bankname)}>
-                              <LinearGradient
-                                colors={[COLORS.lightWhite, COLORS.white_s]}
-                                style={{
-                                  padding: heightPercentageToDP(0.5),
-                                  borderRadius: heightPercentageToDP(1),
-                                  justifyContent: 'center',
-                                  alignItems: 'center',
-                                }}>
-                                <AntDesign
-                                  name={'copy1'}
-                                  size={heightPercentageToDP(2.5)}
-                                  color={COLORS.darkGray}
-                                />
-                              </LinearGradient>
-                            </TouchableOpacity>
-                          </View>
-                        </View>
-
-                        {/** ACCOUNT HOLDER NAME */}
-                        <View
-                          style={{
-                            flexDirection: 'row',
-                            padding: heightPercentageToDP(1),
-                          }}>
-                          <View
-                            style={{
-                              flex: 1,
-
-                              display: 'flex',
-                              justifyContent: 'center',
-                              alignItems: 'flex-start',
-                            }}>
-                            <Text style={styles.copytitle}>
-                              Account Holder Name
-                            </Text>
-                          </View>
-                          <View
-                            style={{
-                              flex: 2,
-                              display: 'flex',
-                              justifyContent: 'center',
-                              alignItems: 'flex-start',
-                              paddingHorizontal: heightPercentageToDP(1),
-                            }}>
-                            <Text style={styles.copycontent} numberOfLines={2}>
-                              {item.accountholdername}
-                            </Text>
-                          </View>
-                          <View
-                            style={{
-                              flex: 0.5,
-                              display: 'flex',
-                              justifyContent: 'center',
-                              alignItems: 'center',
-                            }}>
-                            <TouchableOpacity
-                              onPress={() =>
-                                copyToClipboard(item.accountholdername)
-                              }>
-                              <LinearGradient
-                                colors={[COLORS.lightWhite, COLORS.white_s]}
-                                style={{
-                                  padding: heightPercentageToDP(0.5),
-                                  borderRadius: heightPercentageToDP(1),
-                                  justifyContent: 'center',
-                                  alignItems: 'center',
-                                }}>
-                                <AntDesign
-                                  name={'copy1'}
-                                  size={heightPercentageToDP(2.5)}
-                                  color={COLORS.darkGray}
-                                />
-                              </LinearGradient>
-                            </TouchableOpacity>
-                          </View>
-                        </View>
-                        {/** ACCOUNT NUMBER */}
-                        <View
-                          style={{
-                            flexDirection: 'row',
-                            padding: heightPercentageToDP(1),
-                          }}>
-                          <View
-                            style={{
-                              flex: 1,
-
-                              display: 'flex',
-                              justifyContent: 'center',
-                              alignItems: 'flex-start',
-                            }}>
-                            <Text style={styles.copytitle}>Account No.</Text>
-                          </View>
-                          <View
-                            style={{
-                              flex: 2,
-
-                              display: 'flex',
-                              justifyContent: 'center',
-                              alignItems: 'flex-start',
-                              paddingHorizontal: heightPercentageToDP(1),
-                            }}>
-                            <Text style={styles.copycontent} numberOfLines={2}>
-                              {item.accountnumber}
-                            </Text>
-                          </View>
-                          <View
-                            style={{
-                              flex: 0.5,
-
-                              display: 'flex',
-                              justifyContent: 'center',
-                              alignItems: 'center',
-                            }}>
-                            <TouchableOpacity
-                              onPress={() =>
-                                copyToClipboard(item.accountnumber)
-                              }>
-                              <LinearGradient
-                                colors={[COLORS.lightWhite, COLORS.white_s]}
-                                style={{
-                                  padding: heightPercentageToDP(0.5),
-                                  borderRadius: heightPercentageToDP(1),
-                                  justifyContent: 'center',
-                                  alignItems: 'center',
-                                }}>
-                                <AntDesign
-                                  name={'copy1'}
-                                  size={heightPercentageToDP(2.5)}
-                                  color={COLORS.darkGray}
-                                />
-                              </LinearGradient>
-                            </TouchableOpacity>
-                          </View>
-                        </View>
-                        {/** ACCOUNT SWIFT CODE */}
-                        {item.swiftcode ? (
+                          {/** BANK NAME */}
                           <View
                             style={{
                               flexDirection: 'row',
@@ -598,12 +491,11 @@ const AllBankDepositPayment = () => {
                                 justifyContent: 'center',
                                 alignItems: 'flex-start',
                               }}>
-                              <Text style={styles.copytitle}>Swift Code</Text>
+                              <Text style={styles.copytitle}>Bank Name</Text>
                             </View>
                             <View
                               style={{
                                 flex: 2,
-
                                 display: 'flex',
                                 justifyContent: 'center',
                                 alignItems: 'flex-start',
@@ -612,7 +504,7 @@ const AllBankDepositPayment = () => {
                               <Text
                                 style={styles.copycontent}
                                 numberOfLines={2}>
-                                {item.swiftcode}
+                                {item.bankname}
                               </Text>
                             </View>
                             <View
@@ -624,7 +516,7 @@ const AllBankDepositPayment = () => {
                                 alignItems: 'center',
                               }}>
                               <TouchableOpacity
-                                onPress={() => copyToClipboard(item.swiftcode)}>
+                                onPress={() => copyToClipboard(item.bankname)}>
                                 <LinearGradient
                                   colors={[COLORS.lightWhite, COLORS.white_s]}
                                   style={{
@@ -642,168 +534,373 @@ const AllBankDepositPayment = () => {
                               </TouchableOpacity>
                             </View>
                           </View>
-                        ) : null}
 
-                        {/** ROUTING/ IFSC CODE */}
-                        <View
-                          style={{
-                            flexDirection: 'row',
-                            padding: heightPercentageToDP(1),
-                          }}>
+                          {/** ACCOUNT HOLDER NAME */}
                           <View
                             style={{
-                              flex: 1,
-
-                              display: 'flex',
-                              justifyContent: 'center',
-                              alignItems: 'flex-start',
+                              flexDirection: 'row',
+                              padding: heightPercentageToDP(1),
                             }}>
-                            <Text style={styles.copytitle}>
-                              Routing / IFSC Code
-                            </Text>
+                            <View
+                              style={{
+                                flex: 1,
+
+                                display: 'flex',
+                                justifyContent: 'center',
+                                alignItems: 'flex-start',
+                              }}>
+                              <Text style={styles.copytitle}>
+                                Account Holder Name
+                              </Text>
+                            </View>
+                            <View
+                              style={{
+                                flex: 2,
+                                display: 'flex',
+                                justifyContent: 'center',
+                                alignItems: 'flex-start',
+                                paddingHorizontal: heightPercentageToDP(1),
+                              }}>
+                              <Text
+                                style={styles.copycontent}
+                                numberOfLines={2}>
+                                {item.accountholdername}
+                              </Text>
+                            </View>
+                            <View
+                              style={{
+                                flex: 0.5,
+                                display: 'flex',
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                              }}>
+                              <TouchableOpacity
+                                onPress={() =>
+                                  copyToClipboard(item.accountholdername)
+                                }>
+                                <LinearGradient
+                                  colors={[COLORS.lightWhite, COLORS.white_s]}
+                                  style={{
+                                    padding: heightPercentageToDP(0.5),
+                                    borderRadius: heightPercentageToDP(1),
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                  }}>
+                                  <AntDesign
+                                    name={'copy1'}
+                                    size={heightPercentageToDP(2.5)}
+                                    color={COLORS.darkGray}
+                                  />
+                                </LinearGradient>
+                              </TouchableOpacity>
+                            </View>
                           </View>
+                          {/** ACCOUNT NUMBER */}
                           <View
                             style={{
-                              flex: 2,
-
-                              display: 'flex',
-                              justifyContent: 'center',
-                              alignItems: 'flex-start',
-                              paddingHorizontal: heightPercentageToDP(1),
+                              flexDirection: 'row',
+                              padding: heightPercentageToDP(1),
                             }}>
-                            <Text style={styles.copycontent} numberOfLines={2}>
-                              {item.ifsccode}
-                            </Text>
+                            <View
+                              style={{
+                                flex: 1,
+
+                                display: 'flex',
+                                justifyContent: 'center',
+                                alignItems: 'flex-start',
+                              }}>
+                              <Text style={styles.copytitle}>Account No.</Text>
+                            </View>
+                            <View
+                              style={{
+                                flex: 2,
+
+                                display: 'flex',
+                                justifyContent: 'center',
+                                alignItems: 'flex-start',
+                                paddingHorizontal: heightPercentageToDP(1),
+                              }}>
+                              <Text
+                                style={styles.copycontent}
+                                numberOfLines={2}>
+                                {item.accountnumber}
+                              </Text>
+                            </View>
+                            <View
+                              style={{
+                                flex: 0.5,
+
+                                display: 'flex',
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                              }}>
+                              <TouchableOpacity
+                                onPress={() =>
+                                  copyToClipboard(item.accountnumber)
+                                }>
+                                <LinearGradient
+                                  colors={[COLORS.lightWhite, COLORS.white_s]}
+                                  style={{
+                                    padding: heightPercentageToDP(0.5),
+                                    borderRadius: heightPercentageToDP(1),
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                  }}>
+                                  <AntDesign
+                                    name={'copy1'}
+                                    size={heightPercentageToDP(2.5)}
+                                    color={COLORS.darkGray}
+                                  />
+                                </LinearGradient>
+                              </TouchableOpacity>
+                            </View>
                           </View>
-                          <View
-                            style={{
-                              flex: 0.5,
-
-                              display: 'flex',
-                              justifyContent: 'center',
-                              alignItems: 'center',
-                            }}>
-                            <TouchableOpacity
-                              onPress={() => copyToClipboard(item.ifsccode)}>
-                              <LinearGradient
-                                colors={[COLORS.lightWhite, COLORS.white_s]}
+                          {/** ACCOUNT SWIFT CODE */}
+                          {item.swiftcode ? (
+                            <View
+                              style={{
+                                flexDirection: 'row',
+                                padding: heightPercentageToDP(1),
+                              }}>
+                              <View
                                 style={{
-                                  padding: heightPercentageToDP(0.5),
-                                  borderRadius: heightPercentageToDP(1),
+                                  flex: 1,
+
+                                  display: 'flex',
+                                  justifyContent: 'center',
+                                  alignItems: 'flex-start',
+                                }}>
+                                <Text style={styles.copytitle}>Swift Code</Text>
+                              </View>
+                              <View
+                                style={{
+                                  flex: 2,
+
+                                  display: 'flex',
+                                  justifyContent: 'center',
+                                  alignItems: 'flex-start',
+                                  paddingHorizontal: heightPercentageToDP(1),
+                                }}>
+                                <Text
+                                  style={styles.copycontent}
+                                  numberOfLines={2}>
+                                  {item.swiftcode}
+                                </Text>
+                              </View>
+                              <View
+                                style={{
+                                  flex: 0.5,
+
+                                  display: 'flex',
                                   justifyContent: 'center',
                                   alignItems: 'center',
                                 }}>
-                                <AntDesign
-                                  name={'copy1'}
-                                  size={heightPercentageToDP(2.5)}
-                                  color={COLORS.darkGray}
-                                />
-                              </LinearGradient>
-                            </TouchableOpacity>
-                          </View>
-                        </View>
-                        <View
-                          style={{
-                            flexDirection: 'column',
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                            flex: 1,
-                            padding: heightPercentageToDP(2),
-                          }}>
-                          <View
-                            style={{
-                              flex: 0.75,
-                              display: 'flex',
-                              justifyContent: 'flex-start',
-                              alignItems: 'flex-start',
-                            }}>
-                            <Text
-                              style={{
-                                ...styles.copytitle,
-                                paddingLeft: heightPercentageToDP(1),
-                                textAlignVertical: 'center',
-                              }}
-                              numberOfLines={2}>
-                              {item.paymentnote ? 'Note' : ''}
-                            </Text>
-                          </View>
-                          <View
-                            style={{
-                              flex: 2,
-                            }}>
-                            <Text style={styles.copycontent}>
-                              {item.paymentnote}
-                            </Text>
-                          </View>
-                        </View>
+                                <TouchableOpacity
+                                  onPress={() =>
+                                    copyToClipboard(item.swiftcode)
+                                  }>
+                                  <LinearGradient
+                                    colors={[COLORS.lightWhite, COLORS.white_s]}
+                                    style={{
+                                      padding: heightPercentageToDP(0.5),
+                                      borderRadius: heightPercentageToDP(1),
+                                      justifyContent: 'center',
+                                      alignItems: 'center',
+                                    }}>
+                                    <AntDesign
+                                      name={'copy1'}
+                                      size={heightPercentageToDP(2.5)}
+                                      color={COLORS.darkGray}
+                                    />
+                                  </LinearGradient>
+                                </TouchableOpacity>
+                              </View>
+                            </View>
+                          ) : null}
 
-                        {/** FOR ACTIVATION STATUS */}
-                        <View
-                          style={{
-                            flexDirection: 'column',
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                            flex: 1,
-                            paddingBottom: heightPercentageToDP(2),
-                          }}>
+                          {/** ROUTING/ IFSC CODE */}
                           <View
                             style={{
-                              flex: 1,
-                              display: 'flex',
-                              justifyContent: 'flex-start',
-                              alignItems: 'flex-start',
+                              flexDirection: 'row',
+                              padding: heightPercentageToDP(1),
                             }}>
-                            <Text
+                            <View
                               style={{
-                                ...styles.copytitle,
-                                paddingLeft: heightPercentageToDP(2),
-                              }}
-                              numberOfLines={1}>
-                              Activation Status
-                            </Text>
+                                flex: 1,
+
+                                display: 'flex',
+                                justifyContent: 'center',
+                                alignItems: 'flex-start',
+                              }}>
+                              <Text style={styles.copytitle}>
+                                Routing / IFSC Code
+                              </Text>
+                            </View>
+                            <View
+                              style={{
+                                flex: 2,
+
+                                display: 'flex',
+                                justifyContent: 'center',
+                                alignItems: 'flex-start',
+                                paddingHorizontal: heightPercentageToDP(1),
+                              }}>
+                              <Text
+                                style={styles.copycontent}
+                                numberOfLines={2}>
+                                {item.ifsccode}
+                              </Text>
+                            </View>
+                            <View
+                              style={{
+                                flex: 0.5,
+
+                                display: 'flex',
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                              }}>
+                              <TouchableOpacity
+                                onPress={() => copyToClipboard(item.ifsccode)}>
+                                <LinearGradient
+                                  colors={[COLORS.lightWhite, COLORS.white_s]}
+                                  style={{
+                                    padding: heightPercentageToDP(0.5),
+                                    borderRadius: heightPercentageToDP(1),
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                  }}>
+                                  <AntDesign
+                                    name={'copy1'}
+                                    size={heightPercentageToDP(2.5)}
+                                    color={COLORS.darkGray}
+                                  />
+                                </LinearGradient>
+                              </TouchableOpacity>
+                            </View>
                           </View>
                           <View
                             style={{
-                              flex: 2,
-                              backgroundColor:
-                                item.paymentStatus === 'Pending'
-                                  ? COLORS.orange
-                                  : item.paymentStatus === 'Approved'
-                                  ? COLORS.green
-                                  : COLORS.red,
-                              width: widthPercentageToDP(90),
-                              padding: heightPercentageToDP(1),
-                              borderRadius: heightPercentageToDP(4),
+                              flexDirection: 'column',
                               justifyContent: 'center',
                               alignItems: 'center',
+                              flex: 1,
+                              padding: heightPercentageToDP(2),
                             }}>
-                            <Text
-                              style={[
-                                {
-                                  color: COLORS.white_s,
-                                  fontSize: heightPercentageToDP(2),
-                                  fontFamily: FONT.Montserrat_Regular,
-                                },
-                              ]}>
-                              {item.paymentStatus}
-                            </Text>
+                            <View
+                              style={{
+                                flex: 0.75,
+                                display: 'flex',
+                                justifyContent: 'flex-start',
+                                alignItems: 'flex-start',
+                              }}>
+                              <Text
+                                style={{
+                                  ...styles.copytitle,
+                                  paddingLeft: heightPercentageToDP(1),
+                                  textAlignVertical: 'center',
+                                }}
+                                numberOfLines={2}>
+                                {item.paymentnote ? 'Note' : ''}
+                              </Text>
+                            </View>
+                            <View
+                              style={{
+                                flex: 2,
+                              }}>
+                              <Text style={styles.copycontent}>
+                                {item.paymentnote}
+                              </Text>
+                            </View>
                           </View>
-                        </View>
 
-                        {/** CONFIRMATION */}
-                        {item.paymentStatus === 'Pending' &&
-                          (activateBankIsLoading ? (
-                            seletedItem._id === item._id ? (
-                              <Loading />
+                          {/** FOR ACTIVATION STATUS */}
+                          <View
+                            style={{
+                              flexDirection: 'column',
+                              justifyContent: 'center',
+                              alignItems: 'center',
+                              flex: 1,
+                              paddingBottom: heightPercentageToDP(2),
+                            }}>
+                            <View
+                              style={{
+                                flex: 1,
+                                display: 'flex',
+                                justifyContent: 'flex-start',
+                                alignItems: 'flex-start',
+                              }}>
+                              <Text
+                                style={{
+                                  ...styles.copytitle,
+                                  paddingLeft: heightPercentageToDP(2),
+                                }}
+                                numberOfLines={1}>
+                                Activation Status
+                              </Text>
+                            </View>
+                            <View
+                              style={{
+                                flex: 2,
+                                backgroundColor:
+                                  item.paymentStatus === 'Pending'
+                                    ? COLORS.orange
+                                    : item.paymentStatus === 'Approved'
+                                    ? COLORS.green
+                                    : COLORS.red,
+                                width: widthPercentageToDP(90),
+                                padding: heightPercentageToDP(1),
+                                borderRadius: heightPercentageToDP(4),
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                              }}>
+                              <Text
+                                style={[
+                                  {
+                                    color: COLORS.white_s,
+                                    fontSize: heightPercentageToDP(2),
+                                    fontFamily: FONT.Montserrat_Regular,
+                                  },
+                                ]}>
+                                {item.paymentStatus}
+                              </Text>
+                            </View>
+                          </View>
+
+                          {/** CONFIRMATION */}
+                          {item.paymentStatus === 'Pending' &&
+                            (activateBankIsLoading ? (
+                              seletedItem._id === item._id ? (
+                                <Loading />
+                              ) : (
+                                <TouchableOpacity
+                                  onPress={() => submitConfirmation(item)}
+                                  style={{
+                                    flex: 2,
+                                    backgroundColor: COLORS.green,
+                                    width: widthPercentageToDP(90),
+                                    padding: heightPercentageToDP(1),
+                                    borderRadius: heightPercentageToDP(4),
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                  }}>
+                                  <Text
+                                    style={[
+                                      styles.copycontent,
+                                      {color: COLORS.white_s},
+                                    ]}>
+                                    Confirm
+                                  </Text>
+                                </TouchableOpacity>
+                              )
                             ) : (
                               <TouchableOpacity
                                 onPress={() => submitConfirmation(item)}
                                 style={{
                                   flex: 2,
                                   backgroundColor: COLORS.green,
-                                  width: widthPercentageToDP(90),
                                   padding: heightPercentageToDP(1),
                                   borderRadius: heightPercentageToDP(4),
+                                  display: 'flex',
                                   justifyContent: 'center',
                                   alignItems: 'center',
                                 }}>
@@ -815,45 +912,45 @@ const AllBankDepositPayment = () => {
                                   Confirm
                                 </Text>
                               </TouchableOpacity>
-                            )
-                          ) : (
-                            <TouchableOpacity
-                              onPress={() => submitConfirmation(item)}
-                              style={{
-                                flex: 2,
-                                backgroundColor: COLORS.green,
-                                padding: heightPercentageToDP(1),
-                                borderRadius: heightPercentageToDP(4),
-                                display: 'flex',
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                              }}>
-                              <Text
-                                style={[
-                                  styles.copycontent,
-                                  {color: COLORS.white_s},
-                                ]}>
-                                Confirm
-                              </Text>
-                            </TouchableOpacity>
-                          ))}
+                            ))}
 
-                        {/** REJECTION */}
-                        {item.paymentStatus === 'Pending' &&
-                          (rejectBankIsLoading ? (
-                            seletedItem._id === item._id ? (
-                              <Loading />
+                          {/** REJECTION */}
+                          {item.paymentStatus === 'Pending' &&
+                            (rejectBankIsLoading ? (
+                              seletedItem._id === item._id ? (
+                                <Loading />
+                              ) : (
+                                <TouchableOpacity
+                                  onPress={() => submitRejection(item)}
+                                  style={{
+                                    flex: 2,
+                                    backgroundColor: COLORS.red,
+
+                                    padding: heightPercentageToDP(1),
+                                    borderRadius: heightPercentageToDP(4),
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                  }}>
+                                  <Text
+                                    style={[
+                                      styles.copycontent,
+                                      {color: COLORS.white_s},
+                                    ]}>
+                                    Reject
+                                  </Text>
+                                </TouchableOpacity>
+                              )
                             ) : (
                               <TouchableOpacity
                                 onPress={() => submitRejection(item)}
                                 style={{
                                   flex: 2,
                                   backgroundColor: COLORS.red,
-
                                   padding: heightPercentageToDP(1),
                                   borderRadius: heightPercentageToDP(4),
                                   justifyContent: 'center',
                                   alignItems: 'center',
+                                  marginVertical: heightPercentageToDP(1),
                                 }}>
                                 <Text
                                   style={[
@@ -863,66 +960,49 @@ const AllBankDepositPayment = () => {
                                   Reject
                                 </Text>
                               </TouchableOpacity>
-                            )
-                          ) : (
-                            <TouchableOpacity
-                              onPress={() => submitRejection(item)}
-                              style={{
-                                flex: 2,
-                                backgroundColor: COLORS.red,
-                                padding: heightPercentageToDP(1),
-                                borderRadius: heightPercentageToDP(4),
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                                marginVertical: heightPercentageToDP(1),
-                              }}>
-                              <Text
-                                style={[
-                                  styles.copycontent,
-                                  {color: COLORS.white_s},
-                                ]}>
-                                Reject
-                              </Text>
-                            </TouchableOpacity>
-                          ))}
-                      </LinearGradient>
-                    </TouchableOpacity>
-                  )}
-                  onEndReached={loadMore}
-                  onEndReachedThreshold={0.3}
-                  ListFooterComponent={() =>
-                    hasMore && isLoading ? (
-                      <ActivityIndicator size="large" color={COLORS.white_s} />
-                    ) : null
-                  }
-                />
-              )}
-            </View>
+                            ))}
+                        </LinearGradient>
+                      </TouchableOpacity>
+                    )}
+                    onEndReached={loadMore}
+                    onEndReachedThreshold={0.3}
+                    ListFooterComponent={() =>
+                      hasMore && isLoading ? (
+                        <ActivityIndicator
+                          size="large"
+                          color={COLORS.white_s}
+                        />
+                      ) : null
+                    }
+                  />
+                )}
+              </View>
 
-            <View
-              style={{
-                margin: heightPercentageToDP(2),
-              }}>
-              <TouchableOpacity
-                onPress={() => navigation.navigate('BankDeposit')}
+              <View
                 style={{
-                  backgroundColor: COLORS.blue,
-                  padding: heightPercentageToDP(2),
-                  borderRadius: heightPercentageToDP(1),
-                  alignItems: 'center',
+                  margin: heightPercentageToDP(2),
                 }}>
-                <Text
+                <TouchableOpacity
+                  onPress={() => navigation.navigate('BankDeposit')}
                   style={{
-                    color: COLORS.white,
-                    fontFamily: FONT.Montserrat_Regular,
+                    backgroundColor: COLORS.blue,
+                    padding: heightPercentageToDP(2),
+                    borderRadius: heightPercentageToDP(1),
+                    alignItems: 'center',
                   }}>
-                  Create new account
-                </Text>
-              </TouchableOpacity>
+                  <Text
+                    style={{
+                      color: COLORS.white,
+                      fontFamily: FONT.Montserrat_Regular,
+                    }}>
+                    Create new account
+                  </Text>
+                </TouchableOpacity>
+              </View>
             </View>
-          </View>
-        </ImageBackground>
-      </View>
+          </ImageBackground>
+        </View>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 };
