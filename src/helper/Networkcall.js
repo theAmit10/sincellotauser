@@ -1445,12 +1445,79 @@ export const sincelotAdminApi = createApi({
       }),
     }),
 
+    // GET ALL UPI
+    searchAllUpiById: builder.query({
+      query: ({accesstoken, page, limit, userId}) => ({
+        url: `result/allupipaymetsbyid/${userId}?page=${page}&limit=${limit}`,
+        method: 'get',
+        headers: {
+          Authorization: `Bearer ${accesstoken}`,
+        },
+      }),
+    }),
+
+    searchAllBankById: builder.query({
+      query: ({accesstoken, page, limit, userId}) => ({
+        url: `result/allbankpaymetsbyid/${userId}?page=${page}&limit=${limit}`,
+        method: 'get',
+        headers: {
+          Authorization: `Bearer ${accesstoken}`,
+        },
+      }),
+    }),
+
+    searchAllSkrillById: builder.query({
+      query: ({accesstoken, page, limit, userId}) => ({
+        url: `result/allskrillpaymetsbyid/${userId}?page=${page}&limit=${limit}`,
+        method: 'get',
+        headers: {
+          Authorization: `Bearer ${accesstoken}`,
+        },
+      }),
+    }),
+
+    searchAllPaypalById: builder.query({
+      query: ({accesstoken, page, limit, userId}) => ({
+        url: `result/allpaypalpaymetsbyid/${userId}?page=${page}&limit=${limit}`,
+        method: 'get',
+        headers: {
+          Authorization: `Bearer ${accesstoken}`,
+        },
+      }),
+    }),
+
+    searchAllCryptoById: builder.query({
+      query: ({accesstoken, page, limit, userId}) => ({
+        url: `result/allcryptopaymetsbyid/${userId}?page=${page}&limit=${limit}`,
+        method: 'get',
+        headers: {
+          Authorization: `Bearer ${accesstoken}`,
+        },
+      }),
+    }),
+
+    searchAllOtherById: builder.query({
+      query: ({accesstoken, page, limit, userId}) => ({
+        url: `result/allotherpaymetsbyid/${userId}?page=${page}&limit=${limit}`,
+        method: 'get',
+        headers: {
+          Authorization: `Bearer ${accesstoken}`,
+        },
+      }),
+    }),
+
     //[end ]
     // ######## END #########
   }),
 });
 
 export const {
+  useSearchAllUpiByIdQuery,
+  useSearchAllBankByIdQuery,
+  useSearchAllCryptoByIdQuery,
+  useSearchAllOtherByIdQuery,
+  useSearchAllSkrillByIdQuery,
+  useSearchAllPaypalByIdQuery,
   useGetAllNotificationQuery,
   useGetAllOtherQuery,
   useGetAllBankQuery,
