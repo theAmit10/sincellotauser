@@ -126,19 +126,19 @@ const AllPaypalDepositPayment = () => {
     return () => clearTimeout(handler);
   }, [searchQuery]);
 
-  // Fetch Paginated Data
-  const {
-    data: paginatedData,
-    refetch: allTheDepositData,
-    isFetching: fetchingPaginated,
-  } = useGetAllPaypalQuery({accesstoken, page, limit});
-
   const {data: searchData, isFetching: fetchingSearch} =
     useSearchAllPaypalByIdQuery(
       debouncedSearch.length > 0
         ? {accesstoken, userId: debouncedSearch}
         : {skip: true},
     );
+
+  // Fetch Paginated Data
+  const {
+    data: paginatedData,
+    refetch: allTheDepositData,
+    isFetching: fetchingPaginated,
+  } = useGetAllPaypalQuery({accesstoken, page, limit});
 
   // Reset State on Navigation Back
   useFocusEffect(
@@ -389,7 +389,7 @@ const AllPaypalDepositPayment = () => {
                               </View>
                               <GradientTextWhite
                                 style={styles.textStyleContent}>
-                                Paypal
+                                {item.userId === 1000 ? 'Admin' : item.userId}
                               </GradientTextWhite>
                               {/* <GradientTextWhite style={styles.textStyleContent}>
                               {item.paymentId}
