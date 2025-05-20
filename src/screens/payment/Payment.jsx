@@ -23,11 +23,17 @@ import LinearGradient from 'react-native-linear-gradient';
 import Background from '../../components/background/Background';
 import {COLORS, FONT} from '../../../assets/constants';
 import GradientTextWhite from '../../components/helpercComponent/GradientTextWhite';
+import GradientText from '../../components/helpercComponent/GradientText';
+import {useGetPendingPaymentMethodCountQuery} from '../../helper/Networkcall';
 
 const Payment = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const {accesstoken} = useSelector(state => state.user);
+
+  const {isLoading, data} = useGetPendingPaymentMethodCountQuery({
+    accesstoken,
+  });
 
   return (
     <SafeAreaView style={{flex: 1}}>
@@ -97,6 +103,16 @@ const Payment = () => {
                     <GradientTextWhite style={styles.textStyleContent}>
                       Crypto
                     </GradientTextWhite>
+                    <View
+                      style={{
+                        flex: 1,
+                        justifyContent: 'center',
+                        alignItems: 'flex-end',
+                      }}>
+                      <GradientTextWhite style={styles.textStyleContent}>
+                        {data?.breakdown?.cryptoPending}
+                      </GradientTextWhite>
+                    </View>
                   </LinearGradient>
                 </TouchableOpacity>
 
@@ -120,6 +136,16 @@ const Payment = () => {
                     <GradientTextWhite style={styles.textStyleContent}>
                       Paypal
                     </GradientTextWhite>
+                    <View
+                      style={{
+                        flex: 1,
+                        justifyContent: 'center',
+                        alignItems: 'flex-end',
+                      }}>
+                      <GradientTextWhite style={styles.textStyleContent}>
+                        {data?.breakdown?.paypalPending}
+                      </GradientTextWhite>
+                    </View>
                   </LinearGradient>
                 </TouchableOpacity>
 
@@ -143,6 +169,16 @@ const Payment = () => {
                     <GradientTextWhite style={styles.textStyleContent}>
                       Skrill
                     </GradientTextWhite>
+                    <View
+                      style={{
+                        flex: 1,
+                        justifyContent: 'center',
+                        alignItems: 'flex-end',
+                      }}>
+                      <GradientTextWhite style={styles.textStyleContent}>
+                        {data?.breakdown?.skrillPending}
+                      </GradientTextWhite>
+                    </View>
                   </LinearGradient>
                 </TouchableOpacity>
 
@@ -164,6 +200,16 @@ const Payment = () => {
                     <GradientTextWhite style={styles.textStyleContent}>
                       Bank
                     </GradientTextWhite>
+                    <View
+                      style={{
+                        flex: 1,
+                        justifyContent: 'center',
+                        alignItems: 'flex-end',
+                      }}>
+                      <GradientTextWhite style={styles.textStyleContent}>
+                        {data?.breakdown?.bankPending}
+                      </GradientTextWhite>
+                    </View>
                   </LinearGradient>
                 </TouchableOpacity>
 
@@ -186,6 +232,16 @@ const Payment = () => {
                     <GradientTextWhite style={styles.textStyleContent}>
                       UPI
                     </GradientTextWhite>
+                    <View
+                      style={{
+                        flex: 1,
+                        justifyContent: 'center',
+                        alignItems: 'flex-end',
+                      }}>
+                      <GradientTextWhite style={styles.textStyleContent}>
+                        {data?.breakdown?.upiPending}
+                      </GradientTextWhite>
+                    </View>
                   </LinearGradient>
                 </TouchableOpacity>
 
@@ -208,6 +264,16 @@ const Payment = () => {
                     <GradientTextWhite style={styles.textStyleContent}>
                       Other Payment
                     </GradientTextWhite>
+                    <View
+                      style={{
+                        flex: 1,
+                        justifyContent: 'center',
+                        alignItems: 'flex-end',
+                      }}>
+                      <GradientTextWhite style={styles.textStyleContent}>
+                        {data?.breakdown?.otherPending}
+                      </GradientTextWhite>
+                    </View>
                   </LinearGradient>
                 </TouchableOpacity>
               </ScrollView>

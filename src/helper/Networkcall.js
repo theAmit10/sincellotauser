@@ -1506,12 +1506,24 @@ export const sincelotAdminApi = createApi({
       }),
     }),
 
+    // ALL PAYMENT METHOD PENDING METHOD
+    getPendingPaymentMethodCount: builder.query({
+      query: ({accesstoken}) => ({
+        url: `result/pendingpaymentcount`,
+        method: 'get',
+        headers: {
+          Authorization: `Bearer ${accesstoken}`,
+        },
+      }),
+    }),
+
     //[end ]
     // ######## END #########
   }),
 });
 
 export const {
+  useGetPendingPaymentMethodCountQuery,
   useSearchAllUpiByIdQuery,
   useSearchAllBankByIdQuery,
   useSearchAllCryptoByIdQuery,
