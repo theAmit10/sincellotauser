@@ -132,6 +132,8 @@ const Notification = () => {
   // Combined Loading State
   const isLoading = fetchingPaginated || loading;
 
+  const navigation = useNavigation();
+
   return (
     <MainBackgroundWithoutScrollview title="Notification">
       <View style={{flex: 1}}>
@@ -172,10 +174,28 @@ const Notification = () => {
                       style={{
                         color: COLORS.black,
                         fontFamily: FONT.Montserrat_Regular,
-                        fontSize: heightPercentageToDP(2),
                       }}>
                       {item.description}
                     </Text>
+                    {item.userId && (
+                      <Text
+                        onPress={() =>
+                          navigation.navigate('UserDetails', {
+                            userdata: item,
+                            fromscreen: 'notification',
+                          })
+                        }
+                        style={{
+                          color: COLORS.black,
+                          fontFamily: FONT.Montserrat_SemiBold,
+                          fontSize: heightPercentageToDP(2),
+                          alignSelf: 'flex-start',
+                          marginTop: heightPercentageToDP(1),
+                        }}
+                        numberOfLines={1}>
+                        User ID : {item.userId}
+                      </Text>
+                    )}
                   </View>
                   <View
                     style={{
