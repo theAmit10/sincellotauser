@@ -6,7 +6,10 @@ import {useDispatch, useSelector} from 'react-redux';
 import {COLORS, FONT} from '../../../assets/constants';
 import PartnerDashComp from '../../components/partnerdashboard/PartnerDashComp';
 import MainBackgound from '../../components/background/MainBackgound';
-import {useGetUserCountQuery} from '../../helper/Networkcall';
+import {
+  useGetPendingRequestCountQuery,
+  useGetUserCountQuery,
+} from '../../helper/Networkcall';
 import Loading from '../../components/helpercComponent/Loading';
 
 const PartnerDashboard = () => {
@@ -16,12 +19,17 @@ const PartnerDashboard = () => {
   const {accesstoken, user, partner} = useSelector(state => state.user);
 
   const {isLoading, data, refetch} = useGetUserCountQuery({accesstoken});
+  const {
+    isLoading: requestIsLoading,
+    data: requestData,
+    refetch: requestRefetch,
+  } = useGetPendingRequestCountQuery({accesstoken});
 
   return (
     <MainBackgound title={'Partner Dashboard'}>
       {/** PARTNER PERFORMANCE */}
 
-      {isLoading ? (
+      {isLoading || requestIsLoading ? (
         <Loading />
       ) : (
         <>
@@ -73,6 +81,7 @@ const PartnerDashboard = () => {
             subtitle={'List of Recharge Request'}
             fromicon={'FontAwesome6'}
             iconname={'money-bill-trend-up'}
+            count={requestData?.pendingRechargeCount}
           />
 
           {/** All Profit Decrease */}

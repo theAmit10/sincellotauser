@@ -1516,6 +1516,16 @@ export const sincelotAdminApi = createApi({
         },
       }),
     }),
+    // ALL RECHARGE REQUEST METHOD
+    getPendingRequestCount: builder.query({
+      query: ({accesstoken}) => ({
+        url: `user/getpendingrechargecount`,
+        method: 'get',
+        headers: {
+          Authorization: `Bearer ${accesstoken}`,
+        },
+      }),
+    }),
 
     //[end ]
     // ######## END #########
@@ -1523,6 +1533,7 @@ export const sincelotAdminApi = createApi({
 });
 
 export const {
+  useGetPendingRequestCountQuery,
   useGetPendingPaymentMethodCountQuery,
   useSearchAllUpiByIdQuery,
   useSearchAllBankByIdQuery,
