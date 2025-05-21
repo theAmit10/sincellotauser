@@ -42,6 +42,7 @@ import Loading from '../components/helpercComponent/Loading';
 import {
   useGetAllPlayHomeQuery,
   useGetAllSubAdminQuery,
+  useGetUserCountQuery,
 } from '../helper/Networkcall';
 
 const AdminDashboard = () => {
@@ -118,6 +119,12 @@ const AdminDashboard = () => {
     }, 1000);
   };
 
+  const {
+    isLoading: countIsLoading,
+    data: countData,
+    refetch: countRefetch,
+  } = useGetUserCountQuery({accesstoken});
+
   return (
     <SafeAreaView style={{flex: 1}}>
       <AdminBackground />
@@ -162,7 +169,7 @@ const AdminDashboard = () => {
 
             {/** Content Container */}
 
-            {loading ? ( // Show loading indicator while data is being fetched
+            {loading || countIsLoading ? ( // Show loading indicator while data is being fetched
               <View
                 style={{
                   flex: 1,
@@ -255,10 +262,11 @@ const AdminDashboard = () => {
                                       gap: heightPercentageToDP(1),
                                     }}>
                                     <GradientText style={{...styles.textStyle}}>
-                                      {/* {allusers.length} */}
+                                      {countData?.partnerCount +
+                                        countData?.subPartnerCount}
                                     </GradientText>
 
-                                    <LinearGradient
+                                    {/* <LinearGradient
                                       colors={[
                                         COLORS.lightWhite,
                                         COLORS.white_s,
@@ -269,13 +277,13 @@ const AdminDashboard = () => {
                                         size={heightPercentageToDP(4)}
                                         color={COLORS.darkGray}
                                       />
-                                    </LinearGradient>
+                                    </LinearGradient> */}
                                   </View>
                                 </LinearGradient>
                               </TouchableOpacity>
                             ) : user &&
                               user.role === 'subadmin' &&
-                              user.subadminfeature.users ? (
+                              user.subadminfeature.partnermodule ? (
                               <TouchableOpacity
                                 onPress={() =>
                                   navigation.navigate('PartnerDashboard')
@@ -331,8 +339,90 @@ const AdminDashboard = () => {
                                       justifyContent: 'flex-end',
                                       gap: heightPercentageToDP(1),
                                     }}>
-                                    {/* <GradientText style={{...styles.textStyle}}>
-                                      {allusers.length}
+                                    <GradientText style={{...styles.textStyle}}>
+                                      {countData?.partnerCount +
+                                        countData?.subPartnerCount}
+                                    </GradientText>
+
+                                    {/* <LinearGradient
+                                      colors={[
+                                        COLORS.lightWhite,
+                                        COLORS.white_s,
+                                      ]}
+                                      className="rounded-xl p-1">
+                                      <MaterialCommunityIcons
+                                        name={'account'}
+                                        size={heightPercentageToDP(4)}
+                                        color={COLORS.darkGray}
+                                      />
+                                    </LinearGradient> */}
+                                  </View>
+                                </LinearGradient>
+                              </TouchableOpacity>
+                            ) : null}
+
+                            {/** PLAYZONE */}
+
+                            {user && user.role === 'admin' ? (
+                              <TouchableOpacity
+                                onPress={() =>
+                                  navigation.navigate('PlayArenaLocation')
+                                }>
+                                <LinearGradient
+                                  colors={[
+                                    COLORS.time_firstblue,
+                                    COLORS.time_secondbluw,
+                                  ]}
+                                  start={{x: 0, y: 0}} // start from left
+                                  end={{x: 1, y: 0}} // end at right
+                                  style={{
+                                    height: heightPercentageToDP(15),
+                                    flexDirection: 'row',
+                                    backgroundColor: COLORS.gray2,
+                                    alignItems: 'center',
+                                    paddingHorizontal: heightPercentageToDP(2),
+                                    borderRadius: heightPercentageToDP(1),
+                                  }}>
+                                  <View
+                                    style={{
+                                      padding: heightPercentageToDP(2),
+                                    }}>
+                                    <Text
+                                      style={{
+                                        marginStart: heightPercentageToDP(1),
+                                        flex: 1,
+                                        fontFamily: FONT.Montserrat_SemiBold,
+                                        color: COLORS.black,
+                                        fontSize: heightPercentageToDP(4),
+                                        marginStart: heightPercentageToDP(-1),
+                                      }}>
+                                      Play
+                                    </Text>
+
+                                    <Text
+                                      style={{
+                                        marginStart: heightPercentageToDP(1),
+                                        flex: 1,
+                                        fontFamily: FONT.Montserrat_Regular,
+                                        color: COLORS.black,
+                                        width: widthPercentageToDP(50),
+                                        marginStart: heightPercentageToDP(-1),
+                                      }}>
+                                      For all play data
+                                    </Text>
+                                  </View>
+
+                                  <View
+                                    style={{
+                                      flex: 2,
+                                      flexDirection: 'row',
+                                      justifyContent: 'flex-end',
+                                      gap: heightPercentageToDP(1),
+                                    }}>
+                                    {/* <GradientText
+                                      style={{...styles.textStyle}}
+                                      adjustsFontSizeToFit={true}>
+                                      {allPlay?.plays.length}
                                     </GradientText> */}
 
                                     <LinearGradient
@@ -342,7 +432,86 @@ const AdminDashboard = () => {
                                       ]}
                                       className="rounded-xl p-1">
                                       <MaterialCommunityIcons
-                                        name={'account'}
+                                        name={'play-circle-outline'}
+                                        size={heightPercentageToDP(4)}
+                                        color={COLORS.darkGray}
+                                      />
+                                    </LinearGradient>
+                                  </View>
+                                </LinearGradient>
+                              </TouchableOpacity>
+                            ) : user &&
+                              user.role === 'subadmin' &&
+                              user.subadminfeature.play ? (
+                              <TouchableOpacity
+                                onPress={() =>
+                                  navigation.navigate('PlayArenaLocation')
+                                }>
+                                <LinearGradient
+                                  colors={[
+                                    COLORS.time_firstblue,
+                                    COLORS.time_secondbluw,
+                                  ]}
+                                  start={{x: 0, y: 0}} // start from left
+                                  end={{x: 1, y: 0}} // end at right
+                                  style={{
+                                    height: heightPercentageToDP(15),
+                                    flexDirection: 'row',
+                                    backgroundColor: COLORS.gray2,
+                                    alignItems: 'center',
+                                    paddingHorizontal: heightPercentageToDP(2),
+                                    borderRadius: heightPercentageToDP(1),
+                                  }}>
+                                  <View
+                                    style={{
+                                      padding: heightPercentageToDP(2),
+                                    }}>
+                                    <Text
+                                      style={{
+                                        marginStart: heightPercentageToDP(1),
+                                        flex: 1,
+                                        fontFamily: FONT.Montserrat_SemiBold,
+                                        color: COLORS.black,
+                                        fontSize: heightPercentageToDP(4),
+                                        marginStart: heightPercentageToDP(-1),
+                                      }}>
+                                      Play
+                                    </Text>
+
+                                    <Text
+                                      style={{
+                                        marginStart: heightPercentageToDP(1),
+                                        flex: 1,
+                                        fontFamily: FONT.Montserrat_Regular,
+                                        color: COLORS.black,
+                                        width: widthPercentageToDP(50),
+                                        marginStart: heightPercentageToDP(-1),
+                                      }}>
+                                      For all play data
+                                    </Text>
+                                  </View>
+
+                                  <View
+                                    style={{
+                                      flex: 2,
+                                      flexDirection: 'row',
+                                      justifyContent: 'flex-end',
+                                      gap: heightPercentageToDP(1),
+                                    }}>
+                                    {/* <GradientText
+                                      style={{...styles.textStyle}}
+                                      adjustsFontSizeToFit={true}>
+                                      {allPlay?.plays.length}
+                                    </GradientText> */}
+
+                                    <LinearGradient
+                                      colors={[
+                                        COLORS.lightWhite,
+                                        COLORS.white_s,
+                                      ]}
+                                      className="rounded-xl p-1">
+                                      <MaterialCommunityIcons
+                                        name={'play-circle-outline'}
                                         size={heightPercentageToDP(4)}
                                         color={COLORS.darkGray}
                                       />
@@ -508,318 +677,6 @@ const AdminDashboard = () => {
                               </TouchableOpacity>
                             ) : null}
 
-                            {/** All users container */}
-
-                            {user && user.role === 'admin' ? (
-                              <TouchableOpacity
-                                onPress={() => navigation.navigate('AllUsers')}>
-                                <LinearGradient
-                                  colors={[
-                                    COLORS.time_firstblue,
-                                    COLORS.time_secondbluw,
-                                  ]}
-                                  start={{x: 0, y: 0}} // start from left
-                                  end={{x: 1, y: 0}} // end at right
-                                  style={{
-                                    height: heightPercentageToDP(15),
-                                    flexDirection: 'row',
-                                    backgroundColor: COLORS.gray2,
-                                    alignItems: 'center',
-                                    paddingHorizontal: heightPercentageToDP(2),
-                                    borderRadius: heightPercentageToDP(1),
-                                  }}>
-                                  <View
-                                    style={{
-                                      padding: heightPercentageToDP(2),
-                                    }}>
-                                    <Text
-                                      style={{
-                                        marginStart: heightPercentageToDP(1),
-                                        flex: 1,
-                                        fontFamily: FONT.Montserrat_SemiBold,
-                                        color: COLORS.black,
-                                        fontSize: heightPercentageToDP(4),
-                                        marginStart: heightPercentageToDP(-1),
-                                      }}>
-                                      Users
-                                    </Text>
-
-                                    <Text
-                                      style={{
-                                        marginStart: heightPercentageToDP(1),
-                                        flex: 1,
-                                        fontFamily: FONT.Montserrat_Regular,
-                                        color: COLORS.black,
-                                        width: widthPercentageToDP(25),
-                                        marginStart: heightPercentageToDP(-1),
-                                      }}>
-                                      Total Number Of Users
-                                    </Text>
-                                  </View>
-
-                                  <View
-                                    style={{
-                                      flex: 2,
-                                      flexDirection: 'row',
-                                      justifyContent: 'flex-end',
-                                      gap: heightPercentageToDP(1),
-                                    }}>
-                                    <GradientText style={{...styles.textStyle}}>
-                                      {allusers.length}
-                                    </GradientText>
-
-                                    <LinearGradient
-                                      colors={[
-                                        COLORS.lightWhite,
-                                        COLORS.white_s,
-                                      ]}
-                                      className="rounded-xl p-1">
-                                      <MaterialCommunityIcons
-                                        name={'account'}
-                                        size={heightPercentageToDP(4)}
-                                        color={COLORS.darkGray}
-                                      />
-                                    </LinearGradient>
-                                  </View>
-                                </LinearGradient>
-                              </TouchableOpacity>
-                            ) : user &&
-                              user.role === 'subadmin' &&
-                              user.subadminfeature.users ? (
-                              <TouchableOpacity
-                                onPress={() => navigation.navigate('AllUsers')}>
-                                <LinearGradient
-                                  colors={[
-                                    COLORS.time_firstblue,
-                                    COLORS.time_secondbluw,
-                                  ]}
-                                  start={{x: 0, y: 0}} // start from left
-                                  end={{x: 1, y: 0}} // end at right
-                                  style={{
-                                    height: heightPercentageToDP(15),
-                                    flexDirection: 'row',
-                                    backgroundColor: COLORS.gray2,
-                                    alignItems: 'center',
-                                    paddingHorizontal: heightPercentageToDP(2),
-                                    borderRadius: heightPercentageToDP(1),
-                                  }}>
-                                  <View
-                                    style={{
-                                      padding: heightPercentageToDP(2),
-                                    }}>
-                                    <Text
-                                      style={{
-                                        marginStart: heightPercentageToDP(1),
-                                        flex: 1,
-                                        fontFamily: FONT.Montserrat_SemiBold,
-                                        color: COLORS.black,
-                                        fontSize: heightPercentageToDP(4),
-                                        marginStart: heightPercentageToDP(-1),
-                                      }}>
-                                      Users
-                                    </Text>
-
-                                    <Text
-                                      style={{
-                                        marginStart: heightPercentageToDP(1),
-                                        flex: 1,
-                                        fontFamily: FONT.Montserrat_Regular,
-                                        color: COLORS.black,
-                                        width: widthPercentageToDP(25),
-                                        marginStart: heightPercentageToDP(-1),
-                                      }}>
-                                      Total Number Of Users
-                                    </Text>
-                                  </View>
-
-                                  <View
-                                    style={{
-                                      flex: 2,
-                                      flexDirection: 'row',
-                                      justifyContent: 'flex-end',
-                                      gap: heightPercentageToDP(1),
-                                    }}>
-                                    <GradientText style={{...styles.textStyle}}>
-                                      {allusers.length}
-                                    </GradientText>
-
-                                    <LinearGradient
-                                      colors={[
-                                        COLORS.lightWhite,
-                                        COLORS.white_s,
-                                      ]}
-                                      className="rounded-xl p-1">
-                                      <MaterialCommunityIcons
-                                        name={'account'}
-                                        size={heightPercentageToDP(4)}
-                                        color={COLORS.darkGray}
-                                      />
-                                    </LinearGradient>
-                                  </View>
-                                </LinearGradient>
-                              </TouchableOpacity>
-                            ) : null}
-
-                            {/** PLAYZONE */}
-
-                            {user && user.role === 'admin' ? (
-                              <TouchableOpacity
-                                onPress={() =>
-                                  navigation.navigate('PlayArenaLocation')
-                                }>
-                                <LinearGradient
-                                  colors={[
-                                    COLORS.time_firstblue,
-                                    COLORS.time_secondbluw,
-                                  ]}
-                                  start={{x: 0, y: 0}} // start from left
-                                  end={{x: 1, y: 0}} // end at right
-                                  style={{
-                                    height: heightPercentageToDP(15),
-                                    flexDirection: 'row',
-                                    backgroundColor: COLORS.gray2,
-                                    alignItems: 'center',
-                                    paddingHorizontal: heightPercentageToDP(2),
-                                    borderRadius: heightPercentageToDP(1),
-                                  }}>
-                                  <View
-                                    style={{
-                                      padding: heightPercentageToDP(2),
-                                    }}>
-                                    <Text
-                                      style={{
-                                        marginStart: heightPercentageToDP(1),
-                                        flex: 1,
-                                        fontFamily: FONT.Montserrat_SemiBold,
-                                        color: COLORS.black,
-                                        fontSize: heightPercentageToDP(4),
-                                        marginStart: heightPercentageToDP(-1),
-                                      }}>
-                                      Play
-                                    </Text>
-
-                                    <Text
-                                      style={{
-                                        marginStart: heightPercentageToDP(1),
-                                        flex: 1,
-                                        fontFamily: FONT.Montserrat_Regular,
-                                        color: COLORS.black,
-                                        width: widthPercentageToDP(50),
-                                        marginStart: heightPercentageToDP(-1),
-                                      }}>
-                                      Total Number Of Location
-                                    </Text>
-                                  </View>
-
-                                  <View
-                                    style={{
-                                      flex: 2,
-                                      flexDirection: 'row',
-                                      justifyContent: 'flex-end',
-                                      gap: heightPercentageToDP(1),
-                                    }}>
-                                    <GradientText
-                                      style={{...styles.textStyle}}
-                                      adjustsFontSizeToFit={true}>
-                                      {allPlay?.plays.length}
-                                    </GradientText>
-
-                                    <LinearGradient
-                                      colors={[
-                                        COLORS.lightWhite,
-                                        COLORS.white_s,
-                                      ]}
-                                      className="rounded-xl p-1">
-                                      <MaterialCommunityIcons
-                                        name={'play-circle-outline'}
-                                        size={heightPercentageToDP(4)}
-                                        color={COLORS.darkGray}
-                                      />
-                                    </LinearGradient>
-                                  </View>
-                                </LinearGradient>
-                              </TouchableOpacity>
-                            ) : user &&
-                              user.role === 'subadmin' &&
-                              user.subadminfeature.play ? (
-                              <TouchableOpacity
-                                onPress={() =>
-                                  navigation.navigate('PlayArenaLocation')
-                                }>
-                                <LinearGradient
-                                  colors={[
-                                    COLORS.time_firstblue,
-                                    COLORS.time_secondbluw,
-                                  ]}
-                                  start={{x: 0, y: 0}} // start from left
-                                  end={{x: 1, y: 0}} // end at right
-                                  style={{
-                                    height: heightPercentageToDP(15),
-                                    flexDirection: 'row',
-                                    backgroundColor: COLORS.gray2,
-                                    alignItems: 'center',
-                                    paddingHorizontal: heightPercentageToDP(2),
-                                    borderRadius: heightPercentageToDP(1),
-                                  }}>
-                                  <View
-                                    style={{
-                                      padding: heightPercentageToDP(2),
-                                    }}>
-                                    <Text
-                                      style={{
-                                        marginStart: heightPercentageToDP(1),
-                                        flex: 1,
-                                        fontFamily: FONT.Montserrat_SemiBold,
-                                        color: COLORS.black,
-                                        fontSize: heightPercentageToDP(4),
-                                        marginStart: heightPercentageToDP(-1),
-                                      }}>
-                                      Play
-                                    </Text>
-
-                                    <Text
-                                      style={{
-                                        marginStart: heightPercentageToDP(1),
-                                        flex: 1,
-                                        fontFamily: FONT.Montserrat_Regular,
-                                        color: COLORS.black,
-                                        width: widthPercentageToDP(50),
-                                        marginStart: heightPercentageToDP(-1),
-                                      }}>
-                                      Total Number Of Location
-                                    </Text>
-                                  </View>
-
-                                  <View
-                                    style={{
-                                      flex: 2,
-                                      flexDirection: 'row',
-                                      justifyContent: 'flex-end',
-                                      gap: heightPercentageToDP(1),
-                                    }}>
-                                    <GradientText
-                                      style={{...styles.textStyle}}
-                                      adjustsFontSizeToFit={true}>
-                                      {allPlay?.plays.length}
-                                    </GradientText>
-
-                                    <LinearGradient
-                                      colors={[
-                                        COLORS.lightWhite,
-                                        COLORS.white_s,
-                                      ]}
-                                      className="rounded-xl p-1">
-                                      <MaterialCommunityIcons
-                                        name={'play-circle-outline'}
-                                        size={heightPercentageToDP(4)}
-                                        color={COLORS.darkGray}
-                                      />
-                                    </LinearGradient>
-                                  </View>
-                                </LinearGradient>
-                              </TouchableOpacity>
-                            ) : null}
-
                             {/** DEPOSIT */}
 
                             {user && user.role === 'admin' ? (
@@ -967,6 +824,621 @@ const AdminDashboard = () => {
                                       className="rounded-xl p-1">
                                       <Entypo
                                         name={'database'}
+                                        size={heightPercentageToDP(4)}
+                                        color={COLORS.darkGray}
+                                      />
+                                    </LinearGradient>
+                                  </View>
+                                </LinearGradient>
+                              </TouchableOpacity>
+                            ) : null}
+
+                            {/** WITHDRAW */}
+
+                            {user && user.role === 'admin' ? (
+                              <TouchableOpacity
+                                onPress={() =>
+                                  navigation.navigate('AllWithdraw')
+                                }>
+                                <LinearGradient
+                                  colors={[
+                                    COLORS.time_firstblue,
+                                    COLORS.time_secondbluw,
+                                  ]}
+                                  start={{x: 0, y: 0}} // start from left
+                                  end={{x: 1, y: 0}} // end at right
+                                  style={{
+                                    height: heightPercentageToDP(15),
+                                    flexDirection: 'row',
+                                    backgroundColor: COLORS.gray2,
+                                    alignItems: 'center',
+                                    paddingHorizontal: heightPercentageToDP(2),
+                                    borderRadius: heightPercentageToDP(1),
+                                  }}>
+                                  <View
+                                    style={{
+                                      padding: heightPercentageToDP(2),
+                                    }}>
+                                    <Text
+                                      style={{
+                                        marginStart: heightPercentageToDP(1),
+                                        flex: 1,
+                                        fontFamily: FONT.Montserrat_SemiBold,
+                                        color: COLORS.black,
+                                        fontSize: heightPercentageToDP(4),
+                                        marginStart: heightPercentageToDP(-1),
+                                      }}>
+                                      All Withdraw
+                                    </Text>
+
+                                    <Text
+                                      style={{
+                                        marginStart: heightPercentageToDP(1),
+                                        flex: 1,
+                                        fontFamily: FONT.Montserrat_Regular,
+                                        color: COLORS.black,
+                                        width: widthPercentageToDP(50),
+                                        marginStart: heightPercentageToDP(-1),
+                                      }}>
+                                      All withdraw data
+                                    </Text>
+                                  </View>
+
+                                  <View
+                                    style={{
+                                      flex: 2,
+                                      flexDirection: 'row',
+                                      justifyContent: 'flex-end',
+                                      gap: heightPercentageToDP(1),
+                                    }}>
+                                    <GradientText style={{...styles.textStyle}}>
+                                      {/* {allPlay?.plays.length} */}
+                                    </GradientText>
+
+                                    <LinearGradient
+                                      colors={[
+                                        COLORS.lightWhite,
+                                        COLORS.white_s,
+                                      ]}
+                                      className="rounded-xl p-1">
+                                      <Entypo
+                                        name={'database'}
+                                        size={heightPercentageToDP(4)}
+                                        color={COLORS.darkGray}
+                                      />
+                                    </LinearGradient>
+                                  </View>
+                                </LinearGradient>
+                              </TouchableOpacity>
+                            ) : user &&
+                              user.role === 'subadmin' &&
+                              user.subadminfeature.withdraws ? (
+                              <TouchableOpacity
+                                onPress={() =>
+                                  navigation.navigate('AllWithdraw')
+                                }>
+                                <LinearGradient
+                                  colors={[
+                                    COLORS.time_firstblue,
+                                    COLORS.time_secondbluw,
+                                  ]}
+                                  start={{x: 0, y: 0}} // start from left
+                                  end={{x: 1, y: 0}} // end at right
+                                  style={{
+                                    height: heightPercentageToDP(15),
+                                    flexDirection: 'row',
+                                    backgroundColor: COLORS.gray2,
+                                    alignItems: 'center',
+                                    paddingHorizontal: heightPercentageToDP(2),
+                                    borderRadius: heightPercentageToDP(1),
+                                  }}>
+                                  <View
+                                    style={{
+                                      padding: heightPercentageToDP(2),
+                                    }}>
+                                    <Text
+                                      style={{
+                                        marginStart: heightPercentageToDP(1),
+                                        flex: 1,
+                                        fontFamily: FONT.Montserrat_SemiBold,
+                                        color: COLORS.black,
+                                        fontSize: heightPercentageToDP(4),
+                                        marginStart: heightPercentageToDP(-1),
+                                      }}>
+                                      All Withdraw
+                                    </Text>
+
+                                    <Text
+                                      style={{
+                                        marginStart: heightPercentageToDP(1),
+                                        flex: 1,
+                                        fontFamily: FONT.Montserrat_Regular,
+                                        color: COLORS.black,
+                                        width: widthPercentageToDP(50),
+                                        marginStart: heightPercentageToDP(-1),
+                                      }}>
+                                      All withdraw data
+                                    </Text>
+                                  </View>
+
+                                  <View
+                                    style={{
+                                      flex: 2,
+                                      flexDirection: 'row',
+                                      justifyContent: 'flex-end',
+                                      gap: heightPercentageToDP(1),
+                                    }}>
+                                    <GradientText style={{...styles.textStyle}}>
+                                      {/* {allPlay?.plays.length} */}
+                                    </GradientText>
+
+                                    <LinearGradient
+                                      colors={[
+                                        COLORS.lightWhite,
+                                        COLORS.white_s,
+                                      ]}
+                                      className="rounded-xl p-1">
+                                      <Entypo
+                                        name={'database'}
+                                        size={heightPercentageToDP(4)}
+                                        color={COLORS.darkGray}
+                                      />
+                                    </LinearGradient>
+                                  </View>
+                                </LinearGradient>
+                              </TouchableOpacity>
+                            ) : null}
+
+                            {/** Live Result container */}
+                            {user && user.role === 'admin' ? (
+                              <TouchableOpacity
+                                onPress={() =>
+                                  navigation.navigate('LiveResultLocation')
+                                }>
+                                <LinearGradient
+                                  colors={[
+                                    COLORS.time_firstblue,
+                                    COLORS.time_secondbluw,
+                                  ]}
+                                  start={{x: 0, y: 0}} // start from left
+                                  end={{x: 1, y: 0}} // end at right
+                                  style={{
+                                    height: heightPercentageToDP(15),
+                                    flexDirection: 'row',
+                                    backgroundColor: COLORS.gray2,
+                                    alignItems: 'center',
+                                    paddingHorizontal: heightPercentageToDP(2),
+                                    borderRadius: heightPercentageToDP(1),
+                                  }}>
+                                  <View
+                                    style={{
+                                      padding: heightPercentageToDP(2),
+                                    }}>
+                                    <Text
+                                      style={{
+                                        marginStart: heightPercentageToDP(1),
+                                        flex: 1,
+                                        fontFamily: FONT.Montserrat_SemiBold,
+                                        color: COLORS.black,
+                                        fontSize: heightPercentageToDP(4),
+                                        marginStart: heightPercentageToDP(-1),
+                                      }}>
+                                      Live Results
+                                    </Text>
+
+                                    <Text
+                                      style={{
+                                        marginStart: heightPercentageToDP(1),
+                                        flex: 1,
+                                        fontFamily: FONT.Montserrat_Regular,
+                                        color: COLORS.black,
+                                        width: widthPercentageToDP(25),
+                                        marginStart: heightPercentageToDP(-1),
+                                      }}>
+                                      For live Result
+                                    </Text>
+                                  </View>
+
+                                  <View
+                                    style={{
+                                      flex: 2,
+                                      flexDirection: 'row',
+                                      justifyContent: 'flex-end',
+                                      gap: heightPercentageToDP(1),
+                                    }}>
+                                    {/* <GradientText style={{...styles.textStyle}}>
+                                      {results.length}
+                                    </GradientText> */}
+
+                                    <LinearGradient
+                                      colors={[
+                                        COLORS.lightWhite,
+                                        COLORS.white_s,
+                                      ]}
+                                      className="rounded-xl p-1">
+                                      <MaterialCommunityIcons
+                                        name={'trophy-variant-outline'}
+                                        size={heightPercentageToDP(4)}
+                                        color={COLORS.darkGray}
+                                      />
+                                    </LinearGradient>
+                                  </View>
+                                </LinearGradient>
+                              </TouchableOpacity>
+                            ) : user &&
+                              user.role === 'subadmin' &&
+                              user.subadminfeature.liveresult ? (
+                              <TouchableOpacity
+                                onPress={() =>
+                                  navigation.navigate('LiveResultLocation')
+                                }>
+                                <LinearGradient
+                                  colors={[
+                                    COLORS.time_firstblue,
+                                    COLORS.time_secondbluw,
+                                  ]}
+                                  start={{x: 0, y: 0}} // start from left
+                                  end={{x: 1, y: 0}} // end at right
+                                  style={{
+                                    height: heightPercentageToDP(15),
+                                    flexDirection: 'row',
+                                    backgroundColor: COLORS.gray2,
+                                    alignItems: 'center',
+                                    paddingHorizontal: heightPercentageToDP(2),
+                                    borderRadius: heightPercentageToDP(1),
+                                  }}>
+                                  <View
+                                    style={{
+                                      padding: heightPercentageToDP(2),
+                                    }}>
+                                    <Text
+                                      style={{
+                                        marginStart: heightPercentageToDP(1),
+                                        flex: 1,
+                                        fontFamily: FONT.Montserrat_SemiBold,
+                                        color: COLORS.black,
+                                        fontSize: heightPercentageToDP(4),
+                                        marginStart: heightPercentageToDP(-1),
+                                      }}>
+                                      Live Results
+                                    </Text>
+
+                                    <Text
+                                      style={{
+                                        marginStart: heightPercentageToDP(1),
+                                        flex: 1,
+                                        fontFamily: FONT.Montserrat_Regular,
+                                        color: COLORS.black,
+                                        width: widthPercentageToDP(25),
+                                        marginStart: heightPercentageToDP(-1),
+                                      }}>
+                                      For Live Result
+                                    </Text>
+                                  </View>
+
+                                  <View
+                                    style={{
+                                      flex: 2,
+                                      flexDirection: 'row',
+                                      justifyContent: 'flex-end',
+                                      gap: heightPercentageToDP(1),
+                                    }}>
+                                    {/* <GradientText style={{...styles.textStyle}}>
+                                      {results.length}
+                                    </GradientText> */}
+
+                                    <LinearGradient
+                                      colors={[
+                                        COLORS.lightWhite,
+                                        COLORS.white_s,
+                                      ]}
+                                      className="rounded-xl p-1">
+                                      <MaterialCommunityIcons
+                                        name={'trophy-variant-outline'}
+                                        size={heightPercentageToDP(4)}
+                                        color={COLORS.darkGray}
+                                      />
+                                    </LinearGradient>
+                                  </View>
+                                </LinearGradient>
+                              </TouchableOpacity>
+                            ) : null}
+
+                            {/** PAYMENT OPTIONS */}
+
+                            {user && user.role === 'admin' ? (
+                              <TouchableOpacity
+                                onPress={() => navigation.navigate('Payment')}>
+                                <LinearGradient
+                                  colors={[
+                                    COLORS.time_firstblue,
+                                    COLORS.time_secondbluw,
+                                  ]}
+                                  start={{x: 0, y: 0}} // start from left
+                                  end={{x: 1, y: 0}} // end at right
+                                  style={{
+                                    height: heightPercentageToDP(15),
+                                    flexDirection: 'row',
+                                    backgroundColor: COLORS.gray2,
+                                    alignItems: 'center',
+                                    paddingHorizontal: heightPercentageToDP(2),
+                                    borderRadius: heightPercentageToDP(1),
+                                  }}>
+                                  <View
+                                    style={{
+                                      padding: heightPercentageToDP(2),
+                                    }}>
+                                    <Text
+                                      style={{
+                                        marginStart: heightPercentageToDP(1),
+                                        flex: 1,
+                                        fontFamily: FONT.Montserrat_SemiBold,
+                                        color: COLORS.black,
+                                        fontSize: heightPercentageToDP(4),
+                                        marginStart: heightPercentageToDP(-1),
+                                      }}>
+                                      Payment Option
+                                    </Text>
+
+                                    <Text
+                                      style={{
+                                        marginStart: heightPercentageToDP(1),
+                                        flex: 1,
+                                        fontFamily: FONT.Montserrat_Regular,
+                                        color: COLORS.black,
+                                        width: widthPercentageToDP(50),
+                                        marginStart: heightPercentageToDP(-1),
+                                      }}>
+                                      All payment option
+                                    </Text>
+                                  </View>
+
+                                  <View
+                                    style={{
+                                      flex: 2,
+                                      flexDirection: 'row',
+                                      justifyContent: 'flex-end',
+                                      gap: heightPercentageToDP(1),
+                                    }}>
+                                    <GradientText style={{...styles.textStyle}}>
+                                      {/* {allPlay?.plays.length} */}
+                                    </GradientText>
+
+                                    <LinearGradient
+                                      colors={[
+                                        COLORS.lightWhite,
+                                        COLORS.white_s,
+                                      ]}
+                                      className="rounded-xl p-1">
+                                      <Entypo
+                                        name={'database'}
+                                        size={heightPercentageToDP(4)}
+                                        color={COLORS.darkGray}
+                                      />
+                                    </LinearGradient>
+                                  </View>
+                                </LinearGradient>
+                              </TouchableOpacity>
+                            ) : user &&
+                              user.role === 'subadmin' &&
+                              user.subadminfeature.paymentoption ? (
+                              <TouchableOpacity
+                                onPress={() => navigation.navigate('Payment')}>
+                                <LinearGradient
+                                  colors={[
+                                    COLORS.time_firstblue,
+                                    COLORS.time_secondbluw,
+                                  ]}
+                                  start={{x: 0, y: 0}} // start from left
+                                  end={{x: 1, y: 0}} // end at right
+                                  style={{
+                                    height: heightPercentageToDP(15),
+                                    flexDirection: 'row',
+                                    backgroundColor: COLORS.gray2,
+                                    alignItems: 'center',
+                                    paddingHorizontal: heightPercentageToDP(2),
+                                    borderRadius: heightPercentageToDP(1),
+                                  }}>
+                                  <View
+                                    style={{
+                                      padding: heightPercentageToDP(2),
+                                    }}>
+                                    <Text
+                                      style={{
+                                        marginStart: heightPercentageToDP(1),
+                                        flex: 1,
+                                        fontFamily: FONT.Montserrat_SemiBold,
+                                        color: COLORS.black,
+                                        fontSize: heightPercentageToDP(4),
+                                        marginStart: heightPercentageToDP(-1),
+                                      }}>
+                                      Payment Option
+                                    </Text>
+
+                                    <Text
+                                      style={{
+                                        marginStart: heightPercentageToDP(1),
+                                        flex: 1,
+                                        fontFamily: FONT.Montserrat_Regular,
+                                        color: COLORS.black,
+                                        width: widthPercentageToDP(50),
+                                        marginStart: heightPercentageToDP(-1),
+                                      }}>
+                                      All payment option
+                                    </Text>
+                                  </View>
+
+                                  <View
+                                    style={{
+                                      flex: 2,
+                                      flexDirection: 'row',
+                                      justifyContent: 'flex-end',
+                                      gap: heightPercentageToDP(1),
+                                    }}>
+                                    <GradientText style={{...styles.textStyle}}>
+                                      {/* {allPlay?.plays.length} */}
+                                    </GradientText>
+
+                                    <LinearGradient
+                                      colors={[
+                                        COLORS.lightWhite,
+                                        COLORS.white_s,
+                                      ]}
+                                      className="rounded-xl p-1">
+                                      <Entypo
+                                        name={'database'}
+                                        size={heightPercentageToDP(4)}
+                                        color={COLORS.darkGray}
+                                      />
+                                    </LinearGradient>
+                                  </View>
+                                </LinearGradient>
+                              </TouchableOpacity>
+                            ) : null}
+
+                            {/** All users container */}
+
+                            {user && user.role === 'admin' ? (
+                              <TouchableOpacity
+                                onPress={() => navigation.navigate('AllUsers')}>
+                                <LinearGradient
+                                  colors={[
+                                    COLORS.time_firstblue,
+                                    COLORS.time_secondbluw,
+                                  ]}
+                                  start={{x: 0, y: 0}} // start from left
+                                  end={{x: 1, y: 0}} // end at right
+                                  style={{
+                                    height: heightPercentageToDP(15),
+                                    flexDirection: 'row',
+                                    backgroundColor: COLORS.gray2,
+                                    alignItems: 'center',
+                                    paddingHorizontal: heightPercentageToDP(2),
+                                    borderRadius: heightPercentageToDP(1),
+                                  }}>
+                                  <View
+                                    style={{
+                                      padding: heightPercentageToDP(2),
+                                    }}>
+                                    <Text
+                                      style={{
+                                        marginStart: heightPercentageToDP(1),
+                                        flex: 1,
+                                        fontFamily: FONT.Montserrat_SemiBold,
+                                        color: COLORS.black,
+                                        fontSize: heightPercentageToDP(4),
+                                        marginStart: heightPercentageToDP(-1),
+                                      }}>
+                                      Users
+                                    </Text>
+
+                                    <Text
+                                      style={{
+                                        marginStart: heightPercentageToDP(1),
+                                        flex: 1,
+                                        fontFamily: FONT.Montserrat_Regular,
+                                        color: COLORS.black,
+                                        width: widthPercentageToDP(25),
+                                        marginStart: heightPercentageToDP(-1),
+                                      }}>
+                                      Total Number Of Users
+                                    </Text>
+                                  </View>
+
+                                  <View
+                                    style={{
+                                      flex: 2,
+                                      flexDirection: 'row',
+                                      justifyContent: 'flex-end',
+                                      gap: heightPercentageToDP(1),
+                                    }}>
+                                    <GradientText style={{...styles.textStyle}}>
+                                      {countData?.allUserCount}
+                                    </GradientText>
+
+                                    <LinearGradient
+                                      colors={[
+                                        COLORS.lightWhite,
+                                        COLORS.white_s,
+                                      ]}
+                                      className="rounded-xl p-1">
+                                      <MaterialCommunityIcons
+                                        name={'account'}
+                                        size={heightPercentageToDP(4)}
+                                        color={COLORS.darkGray}
+                                      />
+                                    </LinearGradient>
+                                  </View>
+                                </LinearGradient>
+                              </TouchableOpacity>
+                            ) : user &&
+                              user.role === 'subadmin' &&
+                              user.subadminfeature.users ? (
+                              <TouchableOpacity
+                                onPress={() => navigation.navigate('AllUsers')}>
+                                <LinearGradient
+                                  colors={[
+                                    COLORS.time_firstblue,
+                                    COLORS.time_secondbluw,
+                                  ]}
+                                  start={{x: 0, y: 0}} // start from left
+                                  end={{x: 1, y: 0}} // end at right
+                                  style={{
+                                    height: heightPercentageToDP(15),
+                                    flexDirection: 'row',
+                                    backgroundColor: COLORS.gray2,
+                                    alignItems: 'center',
+                                    paddingHorizontal: heightPercentageToDP(2),
+                                    borderRadius: heightPercentageToDP(1),
+                                  }}>
+                                  <View
+                                    style={{
+                                      padding: heightPercentageToDP(2),
+                                    }}>
+                                    <Text
+                                      style={{
+                                        marginStart: heightPercentageToDP(1),
+                                        flex: 1,
+                                        fontFamily: FONT.Montserrat_SemiBold,
+                                        color: COLORS.black,
+                                        fontSize: heightPercentageToDP(4),
+                                        marginStart: heightPercentageToDP(-1),
+                                      }}>
+                                      Users
+                                    </Text>
+
+                                    <Text
+                                      style={{
+                                        marginStart: heightPercentageToDP(1),
+                                        flex: 1,
+                                        fontFamily: FONT.Montserrat_Regular,
+                                        color: COLORS.black,
+                                        width: widthPercentageToDP(25),
+                                        marginStart: heightPercentageToDP(-1),
+                                      }}>
+                                      Total Number Of Users
+                                    </Text>
+                                  </View>
+
+                                  <View
+                                    style={{
+                                      flex: 2,
+                                      flexDirection: 'row',
+                                      justifyContent: 'flex-end',
+                                      gap: heightPercentageToDP(1),
+                                    }}>
+                                    <GradientText style={{...styles.textStyle}}>
+                                      {countData?.allUserCount}
+                                    </GradientText>
+
+                                    <LinearGradient
+                                      colors={[
+                                        COLORS.lightWhite,
+                                        COLORS.white_s,
+                                      ]}
+                                      className="rounded-xl p-1">
+                                      <MaterialCommunityIcons
+                                        name={'account'}
                                         size={heightPercentageToDP(4)}
                                         color={COLORS.darkGray}
                                       />
@@ -1277,162 +1749,6 @@ const AdminDashboard = () => {
                                       className="rounded-xl p-1">
                                       <Entypo
                                         name={'location'}
-                                        size={heightPercentageToDP(4)}
-                                        color={COLORS.darkGray}
-                                      />
-                                    </LinearGradient>
-                                  </View>
-                                </LinearGradient>
-                              </TouchableOpacity>
-                            ) : null}
-
-                            {/** WITHDRAW */}
-
-                            {user && user.role === 'admin' ? (
-                              <TouchableOpacity
-                                onPress={() =>
-                                  navigation.navigate('AllWithdraw')
-                                }>
-                                <LinearGradient
-                                  colors={[
-                                    COLORS.time_firstblue,
-                                    COLORS.time_secondbluw,
-                                  ]}
-                                  start={{x: 0, y: 0}} // start from left
-                                  end={{x: 1, y: 0}} // end at right
-                                  style={{
-                                    height: heightPercentageToDP(15),
-                                    flexDirection: 'row',
-                                    backgroundColor: COLORS.gray2,
-                                    alignItems: 'center',
-                                    paddingHorizontal: heightPercentageToDP(2),
-                                    borderRadius: heightPercentageToDP(1),
-                                  }}>
-                                  <View
-                                    style={{
-                                      padding: heightPercentageToDP(2),
-                                    }}>
-                                    <Text
-                                      style={{
-                                        marginStart: heightPercentageToDP(1),
-                                        flex: 1,
-                                        fontFamily: FONT.Montserrat_SemiBold,
-                                        color: COLORS.black,
-                                        fontSize: heightPercentageToDP(4),
-                                        marginStart: heightPercentageToDP(-1),
-                                      }}>
-                                      All Withdraw
-                                    </Text>
-
-                                    <Text
-                                      style={{
-                                        marginStart: heightPercentageToDP(1),
-                                        flex: 1,
-                                        fontFamily: FONT.Montserrat_Regular,
-                                        color: COLORS.black,
-                                        width: widthPercentageToDP(50),
-                                        marginStart: heightPercentageToDP(-1),
-                                      }}>
-                                      All withdraw data
-                                    </Text>
-                                  </View>
-
-                                  <View
-                                    style={{
-                                      flex: 2,
-                                      flexDirection: 'row',
-                                      justifyContent: 'flex-end',
-                                      gap: heightPercentageToDP(1),
-                                    }}>
-                                    <GradientText style={{...styles.textStyle}}>
-                                      {/* {allPlay?.plays.length} */}
-                                    </GradientText>
-
-                                    <LinearGradient
-                                      colors={[
-                                        COLORS.lightWhite,
-                                        COLORS.white_s,
-                                      ]}
-                                      className="rounded-xl p-1">
-                                      <Entypo
-                                        name={'database'}
-                                        size={heightPercentageToDP(4)}
-                                        color={COLORS.darkGray}
-                                      />
-                                    </LinearGradient>
-                                  </View>
-                                </LinearGradient>
-                              </TouchableOpacity>
-                            ) : user &&
-                              user.role === 'subadmin' &&
-                              user.subadminfeature.withdraws ? (
-                              <TouchableOpacity
-                                onPress={() =>
-                                  navigation.navigate('AllWithdraw')
-                                }>
-                                <LinearGradient
-                                  colors={[
-                                    COLORS.time_firstblue,
-                                    COLORS.time_secondbluw,
-                                  ]}
-                                  start={{x: 0, y: 0}} // start from left
-                                  end={{x: 1, y: 0}} // end at right
-                                  style={{
-                                    height: heightPercentageToDP(15),
-                                    flexDirection: 'row',
-                                    backgroundColor: COLORS.gray2,
-                                    alignItems: 'center',
-                                    paddingHorizontal: heightPercentageToDP(2),
-                                    borderRadius: heightPercentageToDP(1),
-                                  }}>
-                                  <View
-                                    style={{
-                                      padding: heightPercentageToDP(2),
-                                    }}>
-                                    <Text
-                                      style={{
-                                        marginStart: heightPercentageToDP(1),
-                                        flex: 1,
-                                        fontFamily: FONT.Montserrat_SemiBold,
-                                        color: COLORS.black,
-                                        fontSize: heightPercentageToDP(4),
-                                        marginStart: heightPercentageToDP(-1),
-                                      }}>
-                                      All Withdraw
-                                    </Text>
-
-                                    <Text
-                                      style={{
-                                        marginStart: heightPercentageToDP(1),
-                                        flex: 1,
-                                        fontFamily: FONT.Montserrat_Regular,
-                                        color: COLORS.black,
-                                        width: widthPercentageToDP(50),
-                                        marginStart: heightPercentageToDP(-1),
-                                      }}>
-                                      All withdraw data
-                                    </Text>
-                                  </View>
-
-                                  <View
-                                    style={{
-                                      flex: 2,
-                                      flexDirection: 'row',
-                                      justifyContent: 'flex-end',
-                                      gap: heightPercentageToDP(1),
-                                    }}>
-                                    <GradientText style={{...styles.textStyle}}>
-                                      {/* {allPlay?.plays.length} */}
-                                    </GradientText>
-
-                                    <LinearGradient
-                                      colors={[
-                                        COLORS.lightWhite,
-                                        COLORS.white_s,
-                                      ]}
-                                      className="rounded-xl p-1">
-                                      <Entypo
-                                        name={'database'}
                                         size={heightPercentageToDP(4)}
                                         color={COLORS.darkGray}
                                       />

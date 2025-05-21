@@ -977,7 +977,7 @@ const Setting = () => {
                         fontSize: heightPercentageToDP(2),
                         color: COLORS.black,
                       }}>
-                      Deposit Payment
+                      Payment Option
                     </Text>
 
                     <Ionicons
