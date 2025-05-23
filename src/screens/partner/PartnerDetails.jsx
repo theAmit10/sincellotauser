@@ -79,16 +79,6 @@ const PartnerDetails = ({route}) => {
               data={partnerdata}
             /> */}
 
-            {/** PARTNER USER LIST */}
-            <PartnerDashComp
-              navigate={'PartnerUserList'}
-              title={'User List'}
-              subtitle={'Get all the partner user list'}
-              fromicon={'Ionicons'}
-              iconname={'people'}
-              data={partnerdata}
-              count={partnerdata?.userList?.length}
-            />
             {/** PARTNER PARTNER LIST */}
             <PartnerDashComp
               navigate={'PartnerPartnerList'}
@@ -98,6 +88,16 @@ const PartnerDetails = ({route}) => {
               iconname={'people-carry-box'}
               data={partnerdata}
               count={partnerdata?.partnerList?.length}
+            />
+            {/** PARTNER USER LIST */}
+            <PartnerDashComp
+              navigate={'PartnerUserList'}
+              title={'User List'}
+              subtitle={'Get all the partner user list'}
+              fromicon={'Ionicons'}
+              iconname={'people'}
+              data={partnerdata}
+              count={partnerdata?.userList?.length}
             />
             {/** UPDATE PERMISSION */}
             <PartnerDashComp
@@ -124,7 +124,7 @@ const PartnerDetails = ({route}) => {
                 {/** Update Recharge Percentage */}
                 <PartnerDashComp
                   navigate="UpdatePercentage"
-                  title={'Recharge Percentage'}
+                  title={'Recharge %'}
                   subtitle={'Update Recharge Percentage '}
                   fromicon={'MaterialCommunityIcons'}
                   iconname={'account-cash'}
@@ -142,15 +142,6 @@ const PartnerDetails = ({route}) => {
               </>
             )}
 
-            {/** Send Notification */}
-            <PartnerDashComp
-              navigate={'CreatePowerballNotification'}
-              title={'Send Notification'}
-              subtitle={'Send Notification for Partner'}
-              fromicon={'Ionicons'}
-              iconname={'notifications'}
-              data={partnerdata}
-            />
             {/** Update Profit Percentage */}
             <PartnerDashComp
               navigate={'UpdatePercentage'}
@@ -159,6 +150,15 @@ const PartnerDetails = ({route}) => {
               fromicon={'MaterialCommunityIcons'}
               iconname={'human-capacity-increase'}
               data={{key1: 'profit', key2: partnerdata}}
+            />
+            {/** Send Notification */}
+            <PartnerDashComp
+              navigate={'CreatePowerballNotification'}
+              title={'Send Notification'}
+              subtitle={'Send Notification for Partner'}
+              fromicon={'Ionicons'}
+              iconname={'notifications'}
+              data={partnerdata}
             />
 
             {/** Add User */}
