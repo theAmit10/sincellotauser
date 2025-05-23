@@ -35,36 +35,75 @@ const PartnerDashboard = () => {
         <>
           {/** ALL PARTNER */}
 
-          <PartnerDashComp
-            navigate={'AllPartner'}
-            title={'All Partner'}
-            subtitle={'List of all Partner data'}
-            fromicon={'FontAwesome6'}
-            iconname={'people-group'}
-            count={data?.partnerCount}
-          />
+          {user && user.role === 'admin' ? (
+            <PartnerDashComp
+              navigate={'AllPartner'}
+              title={'All Partner'}
+              subtitle={'List of all Partner data'}
+              fromicon={'FontAwesome6'}
+              iconname={'people-group'}
+              count={data?.partnerCount}
+            />
+          ) : user &&
+            user.role === 'subadmin' &&
+            user.subadminfeature.allpartner ? (
+            <PartnerDashComp
+              navigate={'AllPartner'}
+              title={'All Partner'}
+              subtitle={'List of all Partner data'}
+              fromicon={'FontAwesome6'}
+              iconname={'people-group'}
+              count={data?.partnerCount}
+            />
+          ) : null}
 
           {/** ALL SUB PARTNER */}
 
-          <PartnerDashComp
-            navigate={'AllSubPartner'}
-            title={'All Sub Partner'}
-            subtitle={'List of all Sub Partner data'}
-            fromicon={'FontAwesome6'}
-            iconname={'people-group'}
-            count={data?.subPartnerCount}
-          />
+          {user && user.role === 'admin' ? (
+            <PartnerDashComp
+              navigate={'AllSubPartner'}
+              title={'All Sub Partner'}
+              subtitle={'List of all Sub Partner data'}
+              fromicon={'FontAwesome6'}
+              iconname={'people-group'}
+              count={data?.subPartnerCount}
+            />
+          ) : user &&
+            user.role === 'subadmin' &&
+            user.subadminfeature.allsubpartner ? (
+            <PartnerDashComp
+              navigate={'AllSubPartner'}
+              title={'All Sub Partner'}
+              subtitle={'List of all Sub Partner data'}
+              fromicon={'FontAwesome6'}
+              iconname={'people-group'}
+              count={data?.subPartnerCount}
+            />
+          ) : null}
 
           {/** All Users */}
 
-          <PartnerDashComp
-            navigate={'AllUsersPartner'}
-            title={'All Users'}
-            subtitle={'List of All User'}
-            fromicon={'MaterialCommunityIcons'}
-            iconname={'human-capacity-decrease'}
-            count={data?.allUserCount}
-          />
+          {user && user.role === 'admin' ? (
+            <PartnerDashComp
+              navigate={'AllUsersPartner'}
+              title={'All Users'}
+              subtitle={'List of All User'}
+              fromicon={'MaterialCommunityIcons'}
+              iconname={'human-capacity-decrease'}
+              count={data?.allUserCount}
+            />
+          ) : user &&
+            user.role === 'subadmin' &&
+            user.subadminfeature.alluser ? (
+            <PartnerDashComp
+              navigate={'AllUsersPartner'}
+              title={'All Users'}
+              subtitle={'List of All User'}
+              fromicon={'MaterialCommunityIcons'}
+              iconname={'human-capacity-decrease'}
+              count={data?.allUserCount}
+            />
+          ) : null}
 
           <PartnerDashComp
             navigate={'PartnerPerformanceDashboard'}
@@ -75,33 +114,72 @@ const PartnerDashboard = () => {
           />
 
           {/** All Recharge Request */}
-          <PartnerDashComp
-            navigate={'AllRecharge'}
-            title={'All Recharge Request'}
-            subtitle={'List of Recharge Request'}
-            fromicon={'FontAwesome6'}
-            iconname={'money-bill-trend-up'}
-            count={requestData?.pendingRechargeCount}
-          />
+
+          {user && user.role === 'admin' ? (
+            <PartnerDashComp
+              navigate={'AllRecharge'}
+              title={'All Recharge Request'}
+              subtitle={'List of Recharge Request'}
+              fromicon={'FontAwesome6'}
+              iconname={'money-bill-trend-up'}
+              count={requestData?.pendingRechargeCount}
+            />
+          ) : user &&
+            user.role === 'subadmin' &&
+            user.subadminfeature.allrechargerequest ? (
+            <PartnerDashComp
+              navigate={'AllRecharge'}
+              title={'All Recharge Request'}
+              subtitle={'List of Recharge Request'}
+              fromicon={'FontAwesome6'}
+              iconname={'money-bill-trend-up'}
+              count={requestData?.pendingRechargeCount}
+            />
+          ) : null}
 
           {/** All Profit Decrease */}
 
-          <PartnerDashComp
-            navigate={'ProfitDeduction'}
-            title={'All Profit Decrease'}
-            subtitle={'List of Decrease Request'}
-            fromicon={'MaterialCommunityIcons'}
-            iconname={'human-capacity-decrease'}
-          />
+          {user && user.role === 'admin' ? (
+            <PartnerDashComp
+              navigate={'ProfitDeduction'}
+              title={'All Profit Decrease'}
+              subtitle={'List of Decrease Request'}
+              fromicon={'MaterialCommunityIcons'}
+              iconname={'human-capacity-decrease'}
+            />
+          ) : user &&
+            user.role === 'subadmin' &&
+            user.subadminfeature.profitdecrease ? (
+            <PartnerDashComp
+              navigate={'ProfitDeduction'}
+              title={'All Profit Decrease'}
+              subtitle={'List of Decrease Request'}
+              fromicon={'MaterialCommunityIcons'}
+              iconname={'human-capacity-decrease'}
+            />
+          ) : null}
 
           {/** Minimum Percentage */}
-          <PartnerDashComp
-            navigate={'MinimumPercentage'}
-            title={'MinimumPercentage'}
-            subtitle={'Default Percentage for Partner'}
-            fromicon={'FontAwesome5'}
-            iconname={'percentage'}
-          />
+
+          {user && user.role === 'admin' ? (
+            <PartnerDashComp
+              navigate={'MinimumPercentage'}
+              title={'MinimumPercentage'}
+              subtitle={'Default Percentage for Partner'}
+              fromicon={'FontAwesome5'}
+              iconname={'percentage'}
+            />
+          ) : user &&
+            user.role === 'subadmin' &&
+            user.subadminfeature.minimumpercentage ? (
+            <PartnerDashComp
+              navigate={'MinimumPercentage'}
+              title={'MinimumPercentage'}
+              subtitle={'Default Percentage for Partner'}
+              fromicon={'FontAwesome5'}
+              iconname={'percentage'}
+            />
+          ) : null}
         </>
       )}
     </MainBackgound>
