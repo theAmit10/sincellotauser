@@ -417,14 +417,18 @@ const PlayHistory = ({route}) => {
                                   <View style={styles.detailContainer}>
                                     <Text style={styles.detailValue}>
                                       {item?.walletName
-                                        ? 'Winning No.'
+                                        ? item?.forProcess === 'partnercredit'
+                                          ? 'Partner'
+                                          : 'Winner No.'
                                         : 'Total bets'}
                                     </Text>
                                     <Text
                                       numberOfLines={3}
                                       style={styles.detailLabel}>
                                       {item?.walletName
-                                        ? item?.playnumbers[0]?.playnumber
+                                        ? item?.forProcess === 'partnercredit'
+                                          ? 'Profit Credit'
+                                          : item?.playnumbers[0]?.playnumber
                                         : item?.playnumbers?.length}
                                     </Text>
                                   </View>
@@ -658,14 +662,18 @@ const PlayHistory = ({route}) => {
                                   <View style={styles.detailContainer}>
                                     <Text style={styles.detailValue}>
                                       {item?.walletName
-                                        ? 'Winner Ticket'
+                                        ? item?.forProcess === 'partnercredit'
+                                          ? 'Partner'
+                                          : 'Winner'
                                         : 'Total Ticket'}
                                     </Text>
                                     <Text
                                       numberOfLines={3}
                                       style={styles.detailLabel}>
                                       {item?.walletName
-                                        ? item.playnumbers[0]?.playnumber
+                                        ? item?.forProcess === 'partnercredit'
+                                          ? 'Profit Credit'
+                                          : 'Ticket'
                                         : item?.tickets.length}
                                     </Text>
                                   </View>
