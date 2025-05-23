@@ -600,7 +600,7 @@ const AdminDashboard = () => {
                               </TouchableOpacity>
                             ) : user &&
                               user.role === 'subadmin' &&
-                              user.subadminfeature.users ? (
+                              user.subadminfeature.powerballmodule ? (
                               <TouchableOpacity
                                 onPress={() =>
                                   navigation.navigate('PowerballDashboard')
