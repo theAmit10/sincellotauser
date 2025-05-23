@@ -26,54 +26,131 @@ const PowerballDashboard = () => {
       ) : (
         <>
           {/* GAME INSGINTS  */}
-          <PartnerDashComp
-            navigate={'PowerTime'}
-            title={'Live Result Desk'}
-            subtitle={'Create Result for Game'}
-            fromicon={'FontAwesome6'}
-            iconname={'circle-info'}
-          />
+
+          {user && user.role === 'admin' ? (
+            <PartnerDashComp
+              navigate={'PowerTime'}
+              title={'Live Result Desk'}
+              subtitle={'Create Result for Game'}
+              fromicon={'FontAwesome6'}
+              iconname={'circle-info'}
+            />
+          ) : user &&
+            user.role === 'subadmin' &&
+            user.subadminfeature.liveresultdesk ? (
+            <PartnerDashComp
+              navigate={'PowerTime'}
+              title={'Live Result Desk'}
+              subtitle={'Create Result for Game'}
+              fromicon={'FontAwesome6'}
+              iconname={'circle-info'}
+            />
+          ) : null}
 
           {/** ALL TIME */}
-          <PartnerDashComp
-            navigate={'PowerAllTimes'}
-            title={'All Time'}
-            subtitle={'List of Time for Game'}
-            fromicon={'FontAwesome6'}
-            iconname={'business-time'}
-          />
+
+          {user && user.role === 'admin' ? (
+            <PartnerDashComp
+              navigate={'PowerAllTimes'}
+              title={'All Time'}
+              subtitle={'List of Time for Game'}
+              fromicon={'FontAwesome6'}
+              iconname={'business-time'}
+            />
+          ) : user &&
+            user.role === 'subadmin' &&
+            user.subadminfeature.powerballtime ? (
+            <PartnerDashComp
+              navigate={'PowerAllTimes'}
+              title={'All Time'}
+              subtitle={'List of Time for Game'}
+              fromicon={'FontAwesome6'}
+              iconname={'business-time'}
+            />
+          ) : null}
           {/* UPDATE NAME  */}
-          <PartnerDashComp
-            navigate={'PowerUpdateName'}
-            title={'Update Name'}
-            subtitle={'Update Game Name '}
-            fromicon={'MaterialCommunityIcons'}
-            iconname={'update'}
-          />
+
+          {user && user.role === 'admin' ? (
+            <PartnerDashComp
+              navigate={'PowerUpdateName'}
+              title={'Update Name'}
+              subtitle={'Update Game Name '}
+              fromicon={'MaterialCommunityIcons'}
+              iconname={'update'}
+            />
+          ) : user &&
+            user.role === 'subadmin' &&
+            user.subadminfeature.powerballupdatename ? (
+            <PartnerDashComp
+              navigate={'PowerUpdateName'}
+              title={'Update Name'}
+              subtitle={'Update Game Name '}
+              fromicon={'MaterialCommunityIcons'}
+              iconname={'update'}
+            />
+          ) : null}
           {/* UPDATE GAME RULE  */}
-          <PartnerDashComp
-            navigate={'PowerGameRule'}
-            title={'Update Game Rule'}
-            subtitle={'Update all rule of Game '}
-            fromicon={'MaterialCommunityIcons'}
-            iconname={'account-arrow-up'}
-          />
+
+          {user && user.role === 'admin' ? (
+            <PartnerDashComp
+              navigate={'PowerGameRule'}
+              title={'Update Game Rule'}
+              subtitle={'Update all rule of Game '}
+              fromicon={'MaterialCommunityIcons'}
+              iconname={'account-arrow-up'}
+            />
+          ) : user &&
+            user.role === 'subadmin' &&
+            user.subadminfeature.powerballupdategamerule ? (
+            <PartnerDashComp
+              navigate={'PowerGameRule'}
+              title={'Update Game Rule'}
+              subtitle={'Update all rule of Game '}
+              fromicon={'MaterialCommunityIcons'}
+              iconname={'account-arrow-up'}
+            />
+          ) : null}
           {/* ALL MULTIPLIER */}
-          <PartnerDashComp
-            navigate={'PowerAllMultiplier'}
-            title={'All Multiplier'}
-            subtitle={'Jackpot Multiplier '}
-            fromicon={'FontAwesome6'}
-            iconname={'window-restore'}
-          />
+
+          {user && user.role === 'admin' ? (
+            <PartnerDashComp
+              navigate={'PowerAllMultiplier'}
+              title={'All Multiplier'}
+              subtitle={'Jackpot Multiplier '}
+              fromicon={'FontAwesome6'}
+              iconname={'window-restore'}
+            />
+          ) : user &&
+            user.role === 'subadmin' &&
+            user.subadminfeature.powerballallmultiplier ? (
+            <PartnerDashComp
+              navigate={'PowerAllMultiplier'}
+              title={'All Multiplier'}
+              subtitle={'Jackpot Multiplier '}
+              fromicon={'FontAwesome6'}
+              iconname={'window-restore'}
+            />
+          ) : null}
           {/** ALL Result */}
-          <PartnerDashComp
-            navigate={'PowerAllResult'}
-            title={'All Result History'}
-            subtitle={'List of result for Game'}
-            fromicon={'FontAwesome6'}
-            iconname={'trophy'}
-          />
+          {user && user.role === 'admin' ? (
+            <PartnerDashComp
+              navigate={'PowerAllResult'}
+              title={'All Result History'}
+              subtitle={'List of result for Game'}
+              fromicon={'FontAwesome6'}
+              iconname={'trophy'}
+            />
+          ) : user &&
+            user.role === 'subadmin' &&
+            user.subadminfeature.powerballallresult ? (
+            <PartnerDashComp
+              navigate={'PowerAllResult'}
+              title={'All Result History'}
+              subtitle={'List of result for Game'}
+              fromicon={'FontAwesome6'}
+              iconname={'trophy'}
+            />
+          ) : null}
         </>
       )}
     </MainBackgound>
