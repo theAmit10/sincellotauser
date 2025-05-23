@@ -8,6 +8,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import moment from 'moment-timezone';
 
 const PowerballAllDateComp = ({
   time,
@@ -21,8 +22,23 @@ const PowerballAllDateComp = ({
   item,
   powertime,
 }) => {
+  function getCurrentDateInTimezone() {
+    return moment.tz('Asia/Kolkata').format('DD-MM-YYYY');
+  }
+
   return (
-    <Pressable onPress={() => navigation.navigate(navigate, {item, powertime})}>
+    <Pressable
+      style={{
+        borderColor:
+          getCurrentDateInTimezone() === item.powerdate
+            ? COLORS.yellow
+            : 'transparent',
+        borderWidth: getCurrentDateInTimezone() === item.powerdate ? 2 : 2,
+        borderRadius: heightPercentageToDP(2),
+        overflow: 'hidden',
+        marginBottom: heightPercentageToDP(2),
+      }}
+      onPress={() => navigation.navigate(navigate, {item, powertime})}>
       <LinearGradient
         colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
         start={{x: 0, y: 0}} // start from left
@@ -31,7 +47,6 @@ const PowerballAllDateComp = ({
           justifyContent: 'flex-start',
           height: heightPercentageToDP(10),
           borderRadius: heightPercentageToDP(2),
-          marginTop: heightPercentageToDP(2),
           flexDirection: 'row',
         }}>
         <View
