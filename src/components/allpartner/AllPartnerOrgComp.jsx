@@ -5,6 +5,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import {COLORS, FONT} from '../../../assets/constants';
 import {heightPercentageToDP} from 'react-native-responsive-screen';
 import Loading from '../helpercComponent/Loading';
+import {useSelector} from 'react-redux';
 
 const AllPartnerOrgComp = ({
   navigate,
@@ -22,6 +23,7 @@ const AllPartnerOrgComp = ({
   selectedItem,
 }) => {
   const navigation = useNavigation();
+  const {accesstoken, user} = useSelector(state => state.user);
 
   return (
     <TouchableOpacity
@@ -134,24 +136,48 @@ const AllPartnerOrgComp = ({
                   <Loading />
                 ) : (
                   <>
-                    <Text style={styles.titleRegular}>Profit</Text>
-                    <Switch
-                      thumbColor={
-                        item.partnerStatus ? COLORS.white : COLORS.white
-                      }
-                      ios_backgroundColor={
-                        item.partnerStatus ? COLORS.green : COLORS.red
-                      }
-                      trackColor={{
-                        false: COLORS.red, // background when switch is off
-                        true: COLORS.green, // background when switch is on
-                      }}
-                      onValueChange={() => toggleSwitchProfit(item)}
-                      value={item.partnerStatus}
-                    />
+                    {user && user.role === 'admin' ? (
+                      <>
+                        <Text style={styles.titleRegular}>Profit</Text>
+                        <Switch
+                          thumbColor={
+                            item.partnerStatus ? COLORS.white : COLORS.white
+                          }
+                          ios_backgroundColor={
+                            item.partnerStatus ? COLORS.green : COLORS.red
+                          }
+                          trackColor={{
+                            false: COLORS.red, // background when switch is off
+                            true: COLORS.green, // background when switch is on
+                          }}
+                          onValueChange={() => toggleSwitchProfit(item)}
+                          value={item.partnerStatus}
+                        />
+                      </>
+                    ) : user &&
+                      user.role === 'subadmin' &&
+                      user.subadminfeature.profitactivation ? (
+                      <>
+                        <Text style={styles.titleRegular}>Profit</Text>
+                        <Switch
+                          thumbColor={
+                            item.partnerStatus ? COLORS.white : COLORS.white
+                          }
+                          ios_backgroundColor={
+                            item.partnerStatus ? COLORS.green : COLORS.red
+                          }
+                          trackColor={{
+                            false: COLORS.red, // background when switch is off
+                            true: COLORS.green, // background when switch is on
+                          }}
+                          onValueChange={() => toggleSwitchProfit(item)}
+                          value={item.partnerStatus}
+                        />
+                      </>
+                    ) : null}
                   </>
                 )
-              ) : (
+              ) : user && user.role === 'admin' ? (
                 <>
                   <Text style={styles.titleRegular}>Profit</Text>
                   <Switch
@@ -169,7 +195,27 @@ const AllPartnerOrgComp = ({
                     value={item.partnerStatus}
                   />
                 </>
-              )}
+              ) : user &&
+                user.role === 'subadmin' &&
+                user.subadminfeature.profitactivation ? (
+                <>
+                  <Text style={styles.titleRegular}>Profit</Text>
+                  <Switch
+                    thumbColor={
+                      item.partnerStatus ? COLORS.white : COLORS.white
+                    }
+                    ios_backgroundColor={
+                      item.partnerStatus ? COLORS.green : COLORS.red
+                    }
+                    trackColor={{
+                      false: COLORS.red, // background when switch is off
+                      true: COLORS.green, // background when switch is on
+                    }}
+                    onValueChange={() => toggleSwitchProfit(item)}
+                    value={item.partnerStatus}
+                  />
+                </>
+              ) : null}
             </View>
             <View
               style={{
@@ -181,7 +227,7 @@ const AllPartnerOrgComp = ({
               {rechargeloading ? (
                 selectedItem?._id === item?._id ? (
                   <Loading />
-                ) : (
+                ) : user && user.role === 'admin' ? (
                   <>
                     <Text style={styles.titleRegular}>Recharge</Text>
                     <Switch
@@ -199,8 +245,28 @@ const AllPartnerOrgComp = ({
                       value={item.rechargeStatus}
                     />
                   </>
-                )
-              ) : (
+                ) : user &&
+                  user.role === 'subadmin' &&
+                  user.subadminfeature.rechargeactivation ? (
+                  <>
+                    <Text style={styles.titleRegular}>Recharge</Text>
+                    <Switch
+                      thumbColor={
+                        item.rechargeStatus ? COLORS.white : COLORS.white
+                      }
+                      ios_backgroundColor={
+                        item.rechargeStatus ? COLORS.green : COLORS.red
+                      }
+                      trackColor={{
+                        false: COLORS.red, // background when switch is off
+                        true: COLORS.green, // background when switch is on
+                      }}
+                      onValueChange={() => toggleSwitchRecharge(item)}
+                      value={item.rechargeStatus}
+                    />
+                  </>
+                ) : null
+              ) : user && user.role === 'admin' ? (
                 <>
                   <Text style={styles.titleRegular}>Recharge</Text>
                   <Switch
@@ -218,7 +284,27 @@ const AllPartnerOrgComp = ({
                     value={item.rechargeStatus}
                   />
                 </>
-              )}
+              ) : user &&
+                user.role === 'subadmin' &&
+                user.subadminfeature.rechargeactivation ? (
+                <>
+                  <Text style={styles.titleRegular}>Recharge</Text>
+                  <Switch
+                    thumbColor={
+                      item.rechargeStatus ? COLORS.white : COLORS.white
+                    }
+                    ios_backgroundColor={
+                      item.rechargeStatus ? COLORS.green : COLORS.red
+                    }
+                    trackColor={{
+                      false: COLORS.red, // background when switch is off
+                      true: COLORS.green, // background when switch is on
+                    }}
+                    onValueChange={() => toggleSwitchRecharge(item)}
+                    value={item.rechargeStatus}
+                  />
+                </>
+              ) : null}
             </View>
           </View>
         </View>

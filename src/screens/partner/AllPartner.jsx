@@ -18,7 +18,7 @@ import AllPartnerOrgComp from '../../components/allpartner/AllPartnerOrgComp';
 import Toast from 'react-native-toast-message';
 
 const AllPartner = () => {
-  const {accesstoken} = useSelector(state => state.user);
+  const {accesstoken, user} = useSelector(state => state.user);
 
   // States
   const [partners, setPartners] = useState([]);
@@ -207,7 +207,15 @@ const AllPartner = () => {
       showMenu={true}
       showSecondTitle={true}
       handlerSecondTitlePress={handlerSecondTitlePress}
-      secontTitle={'Sub Partner'}
+      secontTitle={
+        user && user.role === 'admin'
+          ? 'Sub Partner'
+          : user &&
+            user.role === 'subadmin' &&
+            user.subadminfeature.allsubpartner
+          ? 'Sub Partner'
+          : null
+      }
       handlerPress={handlePressForMenu}>
       <View style={{flex: 1}}>
         {/* SEARCH INPUT */}
