@@ -137,11 +137,15 @@ const AllPartnerOrgComp = ({
                     <Text style={styles.titleRegular}>Profit</Text>
                     <Switch
                       thumbColor={
-                        item.partnerStatus ? COLORS.blue : COLORS.white_s
+                        item.partnerStatus ? COLORS.white : COLORS.white
                       }
                       ios_backgroundColor={
-                        item.partnerStatus ? COLORS.blue : '#3e3e3e'
+                        item.partnerStatus ? COLORS.green : COLORS.red
                       }
+                      trackColor={{
+                        false: COLORS.red, // background when switch is off
+                        true: COLORS.green, // background when switch is on
+                      }}
                       onValueChange={() => toggleSwitchProfit(item)}
                       value={item.partnerStatus}
                     />
@@ -152,11 +156,15 @@ const AllPartnerOrgComp = ({
                   <Text style={styles.titleRegular}>Profit</Text>
                   <Switch
                     thumbColor={
-                      item.partnerStatus ? COLORS.blue : COLORS.white_s
+                      item.partnerStatus ? COLORS.white : COLORS.white
                     }
                     ios_backgroundColor={
-                      item.partnerStatus ? COLORS.blue : '#3e3e3e'
+                      item.partnerStatus ? COLORS.green : COLORS.red
                     }
+                    trackColor={{
+                      false: COLORS.red, // background when switch is off
+                      true: COLORS.green, // background when switch is on
+                    }}
                     onValueChange={() => toggleSwitchProfit(item)}
                     value={item.partnerStatus}
                   />
@@ -178,11 +186,15 @@ const AllPartnerOrgComp = ({
                     <Text style={styles.titleRegular}>Recharge</Text>
                     <Switch
                       thumbColor={
-                        item.rechargeStatus ? COLORS.blue : COLORS.white_s
+                        item.rechargeStatus ? COLORS.white : COLORS.white
                       }
                       ios_backgroundColor={
-                        item.rechargeStatus ? COLORS.blue : '#3e3e3e'
+                        item.rechargeStatus ? COLORS.green : COLORS.red
                       }
+                      trackColor={{
+                        false: COLORS.red, // background when switch is off
+                        true: COLORS.green, // background when switch is on
+                      }}
                       onValueChange={() => toggleSwitchRecharge(item)}
                       value={item.rechargeStatus}
                     />
@@ -193,11 +205,15 @@ const AllPartnerOrgComp = ({
                   <Text style={styles.titleRegular}>Recharge</Text>
                   <Switch
                     thumbColor={
-                      item.rechargeStatus ? COLORS.blue : COLORS.white_s
+                      item.rechargeStatus ? COLORS.white : COLORS.white
                     }
                     ios_backgroundColor={
-                      item.rechargeStatus ? COLORS.blue : '#3e3e3e'
+                      item.rechargeStatus ? COLORS.green : COLORS.red
                     }
+                    trackColor={{
+                      false: COLORS.red, // background when switch is off
+                      true: COLORS.green, // background when switch is on
+                    }}
                     onValueChange={() => toggleSwitchRecharge(item)}
                     value={item.rechargeStatus}
                   />
