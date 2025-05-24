@@ -48,7 +48,7 @@ const AllPartner = () => {
     isUninitialized: isPaginatedUninitialized,
   } = useGetAllPartnerQuery(
     {accesstoken, page, limit, sortBy, sortOrder},
-    {skip: debouncedSearch.length > 0}, // Skip pagination if searching
+    {skip: debouncedSearch.length > 0, refetchOnMountOrArgChange: true}, // Skip pagination if searching
   );
 
   // Fetch Search Data
@@ -144,7 +144,7 @@ const AllPartner = () => {
         text1: res.data.message,
       });
       // await refetchPaginated();
-      // resetPage();
+      resetPage();
       if (!isPaginatedUninitialized) {
         await refetchPaginated();
       }
@@ -158,10 +158,11 @@ const AllPartner = () => {
     }
   };
 
-  const resetPage = () => {
+  const resetPage = async () => {
     setPage(1); // Reset to first page
     setSearchQuery(''); // Clear any active search
     setDebouncedSearch('');
+    await refetchPaginated();
   };
 
   const [giveRechargeModule, {isLoading: rechargeActivationIsLoading}] =
