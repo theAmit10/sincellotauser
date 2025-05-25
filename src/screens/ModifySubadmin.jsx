@@ -154,6 +154,33 @@ const ModifySubadmin = ({route}) => {
   const [applinks, setapplinks] = useState(false);
   const [aboutus, setaboutus] = useState(false);
 
+  const [partnermodule, setpartnermodule] = useState(false);
+  const [allpartner, setallpartner] = useState(false);
+  const [allsubpartner, setallsubpartner] = useState(false);
+  const [alluser, setalluser] = useState(false);
+  const [allrechargerequest, setallrechargerequest] = useState(false);
+  const [profitdecrease, setprofitdecrease] = useState(false);
+  const [minimumpercentage, setminimumpercentage] = useState(false);
+  const [profitactivation, setprofitactivation] = useState(false);
+  const [rechargeactivation, setrechargeactivation] = useState(false);
+  const [userlist, setuserlist] = useState(false);
+  const [partnerlist, setpartnerlist] = useState(false);
+  const [updatepermission, setupdatepermission] = useState(false);
+  const [rechargemethod, setrechargemethod] = useState(false);
+  const [rechargepercentage, setrechargepercentage] = useState(false);
+  const [profitpercentage, setprofitpercentage] = useState(false);
+  const [adduser, setadduser] = useState(false);
+  const [removeuser, setremoveuser] = useState(false);
+  const [toppartner, settoppartner] = useState(false);
+  const [liveresult, setliveresult] = useState(false);
+  const [powerballmodule, setpowerballmodule] = useState(false);
+  const [liveresultdesk, setliveresultdesk] = useState(false);
+  const [powerballtime, setpowerballtime] = useState(false);
+  const [powerballupdatename, setpowerballupdatename] = useState(false);
+  const [powerballupdategamerule, setpowerballupdategamerule] = useState(false);
+  const [powerballallmultiplier, setpowerballallmultiplier] = useState(false);
+  const [powerballallresult, setpowerballallresult] = useState(false);
+
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
 
@@ -198,6 +225,39 @@ const ModifySubadmin = ({route}) => {
         setchangepassword(singleuser?.subadminfeature?.changepassword);
         setapplinks(singleuser?.subadminfeature?.applinks);
         setaboutus(singleuser?.subadminfeature?.aboutus);
+
+        setpartnermodule(singleuser?.subadminfeature?.partnermodule);
+        setallpartner(singleuser?.subadminfeature?.allpartner);
+        setallsubpartner(singleuser?.subadminfeature?.allsubpartner);
+        setalluser(singleuser?.subadminfeature?.alluser);
+        setallrechargerequest(singleuser?.subadminfeature?.allrechargerequest);
+        setprofitdecrease(singleuser?.subadminfeature?.profitdecrease);
+        setminimumpercentage(singleuser?.subadminfeature?.minimumpercentage);
+        setprofitactivation(singleuser?.subadminfeature?.profitactivation);
+        setrechargeactivation(singleuser?.subadminfeature?.rechargeactivation);
+        setuserlist(singleuser?.subadminfeature?.userlist);
+        setpartnerlist(singleuser?.subadminfeature?.partnerlist);
+        setupdatepermission(singleuser?.subadminfeature?.updatepermission);
+        setrechargemethod(singleuser?.subadminfeature?.rechargemethod);
+        setrechargepercentage(singleuser?.subadminfeature?.rechargepercentage);
+        setprofitpercentage(singleuser?.subadminfeature?.profitpercentage);
+        setadduser(singleuser?.subadminfeature?.adduser);
+        setremoveuser(singleuser?.subadminfeature?.removeuser);
+        settoppartner(singleuser?.subadminfeature?.toppartner);
+        setliveresult(singleuser?.subadminfeature?.liveresult);
+        setpowerballmodule(singleuser?.subadminfeature?.powerballmodule);
+        setliveresultdesk(singleuser?.subadminfeature?.liveresultdesk);
+        setpowerballtime(singleuser?.subadminfeature?.powerballtime);
+        setpowerballupdatename(
+          singleuser?.subadminfeature?.powerballupdatename,
+        );
+        setpowerballupdategamerule(
+          singleuser?.subadminfeature?.powerballupdategamerule,
+        );
+        setpowerballallmultiplier(
+          singleuser?.subadminfeature?.powerballallmultiplier,
+        );
+        setpowerballallresult(singleuser?.subadminfeature?.powerballallresult);
       }
     }
   }, [singleuser, loadingSingleUser]);
@@ -300,6 +360,84 @@ const ModifySubadmin = ({route}) => {
       case 'aboutus':
         setaboutus(checked);
         break;
+      case 'partnermodule':
+        setpartnermodule(checked);
+        break;
+      case 'allpartner':
+        setallpartner(checked);
+        break;
+      case 'allsubpartner':
+        setallsubpartner(checked);
+        break;
+      case 'alluser':
+        setalluser(checked);
+        break;
+      case 'allrechargerequest':
+        setallrechargerequest(checked);
+        break;
+      case 'profitdecrease':
+        setprofitdecrease(checked);
+        break;
+      case 'minimumpercentage':
+        setminimumpercentage(checked);
+        break;
+      case 'profitactivation':
+        setprofitactivation(checked);
+        break;
+      case 'rechargeactivation':
+        setrechargeactivation(checked);
+        break;
+      case 'userlist':
+        setuserlist(checked);
+        break;
+      case 'partnerlist':
+        setpartnerlist(checked);
+        break;
+      case 'updatepermission':
+        setupdatepermission(checked);
+        break;
+      case 'rechargemethod':
+        setrechargemethod(checked);
+        break;
+      case 'rechargepercentage':
+        setrechargepercentage(checked);
+        break;
+      case 'profitpercentage':
+        setprofitpercentage(checked);
+        break;
+      case 'adduser':
+        setadduser(checked);
+        break;
+      case 'removeuser':
+        setremoveuser(checked);
+        break;
+      case 'toppartner':
+        settoppartner(checked);
+        break;
+      case 'liveresult':
+        setliveresult(checked);
+        break;
+      case 'powerballmodule':
+        setpowerballmodule(checked);
+        break;
+      case 'liveresultdesk':
+        setliveresultdesk(checked);
+        break;
+      case 'powerballtime':
+        setpowerballtime(checked);
+        break;
+      case 'powerballupdatename':
+        setpowerballupdatename(checked);
+        break;
+      case 'powerballupdategamerule':
+        setpowerballupdategamerule(checked);
+        break;
+      case 'powerballallmultiplier':
+        setpowerballallmultiplier(checked);
+        break;
+      case 'powerballallresult':
+        setpowerballallresult(checked);
+        break;
       default:
         break;
     }
@@ -396,6 +534,32 @@ const ModifySubadmin = ({route}) => {
         changepassword: changepassword,
         applinks: applinks,
         aboutus: aboutus,
+        partnermodule: partnermodule,
+        allpartner: allpartner,
+        allsubpartner: allsubpartner,
+        alluser: alluser,
+        allrechargerequest: allrechargerequest,
+        profitdecrease: profitdecrease,
+        minimumpercentage: minimumpercentage,
+        profitactivation: profitactivation,
+        rechargeactivation: rechargeactivation,
+        userlist: userlist,
+        partnerlist: partnerlist,
+        updatepermission: updatepermission,
+        rechargemethod: rechargemethod,
+        rechargepercentage: rechargepercentage,
+        profitpercentage: profitpercentage,
+        adduser: adduser,
+        removeuser: removeuser,
+        toppartner: toppartner,
+        liveresult: liveresult,
+        powerballmodule: powerballmodule,
+        liveresultdesk: liveresultdesk,
+        powerballtime: powerballtime,
+        powerballallmultiplier: powerballallmultiplier,
+        powerballallresult: powerballallresult,
+        powerballupdatename: powerballupdatename,
+        powerballupdategamerule: powerballupdategamerule,
       };
 
       console.log('JSON BODY :: ', JSON.stringify(body));
@@ -1841,6 +2005,1093 @@ const ModifySubadmin = ({route}) => {
                                             color: COLORS.black,
                                           }}>
                                           {aboutus ? 'Allowed' : 'Not Allowed'}
+                                        </Text>
+                                      </View>
+                                    </LinearGradient>
+                                  </TouchableOpacity>
+
+                                  {/** Partner module */}
+                                  <TouchableOpacity>
+                                    <LinearGradient
+                                      colors={[
+                                        COLORS.lightblue,
+                                        COLORS.midblue,
+                                      ]}
+                                      start={{x: 0, y: 0}}
+                                      end={{x: 1, y: 0}}
+                                      style={{
+                                        ...styles.item,
+                                        backgroundColor: COLORS.lightDarkGray,
+                                      }}>
+                                      <Text style={styles.featureLabel}>
+                                        Partner Module
+                                      </Text>
+                                      <View style={styles.saFContentContainer}>
+                                        <CheckBox
+                                          value={partnermodule}
+                                          onValueChange={checked =>
+                                            handleCheckboxChange(
+                                              'partnermodule',
+                                              checked,
+                                            )
+                                          }
+                                          tintColors={{
+                                            true: COLORS.black,
+                                            false: COLORS.black,
+                                          }} // checkbox color
+                                        />
+                                        <Text
+                                          style={{
+                                            ...styles.featureLabel,
+                                            color: COLORS.black,
+                                          }}>
+                                          {partnermodule
+                                            ? 'Allowed'
+                                            : 'Not Allowed'}
+                                        </Text>
+                                      </View>
+                                    </LinearGradient>
+                                  </TouchableOpacity>
+
+                                  <TouchableOpacity>
+                                    <LinearGradient
+                                      colors={[
+                                        COLORS.lightblue,
+                                        COLORS.midblue,
+                                      ]}
+                                      start={{x: 0, y: 0}}
+                                      end={{x: 1, y: 0}}
+                                      style={{
+                                        ...styles.item,
+                                        backgroundColor: COLORS.lightDarkGray,
+                                      }}>
+                                      <Text style={styles.featureLabel}>
+                                        All Partner
+                                      </Text>
+                                      <View style={styles.saFContentContainer}>
+                                        <CheckBox
+                                          value={allpartner}
+                                          onValueChange={checked =>
+                                            handleCheckboxChange(
+                                              'allpartner',
+                                              checked,
+                                            )
+                                          }
+                                          tintColors={{
+                                            true: COLORS.black,
+                                            false: COLORS.black,
+                                          }} // checkbox color
+                                        />
+                                        <Text
+                                          style={{
+                                            ...styles.featureLabel,
+                                            color: COLORS.black,
+                                          }}>
+                                          {allpartner
+                                            ? 'Allowed'
+                                            : 'Not Allowed'}
+                                        </Text>
+                                      </View>
+                                    </LinearGradient>
+                                  </TouchableOpacity>
+
+                                  <TouchableOpacity>
+                                    <LinearGradient
+                                      colors={[
+                                        COLORS.lightblue,
+                                        COLORS.midblue,
+                                      ]}
+                                      start={{x: 0, y: 0}}
+                                      end={{x: 1, y: 0}}
+                                      style={{
+                                        ...styles.item,
+                                        backgroundColor: COLORS.lightDarkGray,
+                                      }}>
+                                      <Text style={styles.featureLabel}>
+                                        All Subpartner
+                                      </Text>
+                                      <View style={styles.saFContentContainer}>
+                                        <CheckBox
+                                          value={allsubpartner}
+                                          onValueChange={checked =>
+                                            handleCheckboxChange(
+                                              'allsubpartner',
+                                              checked,
+                                            )
+                                          }
+                                          tintColors={{
+                                            true: COLORS.black,
+                                            false: COLORS.black,
+                                          }} // checkbox color
+                                        />
+                                        <Text
+                                          style={{
+                                            ...styles.featureLabel,
+                                            color: COLORS.black,
+                                          }}>
+                                          {allsubpartner
+                                            ? 'Allowed'
+                                            : 'Not Allowed'}
+                                        </Text>
+                                      </View>
+                                    </LinearGradient>
+                                  </TouchableOpacity>
+
+                                  <TouchableOpacity>
+                                    <LinearGradient
+                                      colors={[
+                                        COLORS.lightblue,
+                                        COLORS.midblue,
+                                      ]}
+                                      start={{x: 0, y: 0}}
+                                      end={{x: 1, y: 0}}
+                                      style={{
+                                        ...styles.item,
+                                        backgroundColor: COLORS.lightDarkGray,
+                                      }}>
+                                      <Text style={styles.featureLabel}>
+                                        All User
+                                      </Text>
+                                      <View style={styles.saFContentContainer}>
+                                        <CheckBox
+                                          value={alluser}
+                                          onValueChange={checked =>
+                                            handleCheckboxChange(
+                                              'alluser',
+                                              checked,
+                                            )
+                                          }
+                                          tintColors={{
+                                            true: COLORS.black,
+                                            false: COLORS.black,
+                                          }} // checkbox color
+                                        />
+                                        <Text
+                                          style={{
+                                            ...styles.featureLabel,
+                                            color: COLORS.black,
+                                          }}>
+                                          {alluser ? 'Allowed' : 'Not Allowed'}
+                                        </Text>
+                                      </View>
+                                    </LinearGradient>
+                                  </TouchableOpacity>
+
+                                  <TouchableOpacity>
+                                    <LinearGradient
+                                      colors={[
+                                        COLORS.lightblue,
+                                        COLORS.midblue,
+                                      ]}
+                                      start={{x: 0, y: 0}}
+                                      end={{x: 1, y: 0}}
+                                      style={{
+                                        ...styles.item,
+                                        backgroundColor: COLORS.lightDarkGray,
+                                      }}>
+                                      <Text style={styles.featureLabel}>
+                                        All Recharge Request
+                                      </Text>
+                                      <View style={styles.saFContentContainer}>
+                                        <CheckBox
+                                          value={allrechargerequest}
+                                          onValueChange={checked =>
+                                            handleCheckboxChange(
+                                              'allrechargerequest',
+                                              checked,
+                                            )
+                                          }
+                                          tintColors={{
+                                            true: COLORS.black,
+                                            false: COLORS.black,
+                                          }} // checkbox color
+                                        />
+                                        <Text
+                                          style={{
+                                            ...styles.featureLabel,
+                                            color: COLORS.black,
+                                          }}>
+                                          {allrechargerequest
+                                            ? 'Allowed'
+                                            : 'Not Allowed'}
+                                        </Text>
+                                      </View>
+                                    </LinearGradient>
+                                  </TouchableOpacity>
+
+                                  <TouchableOpacity>
+                                    <LinearGradient
+                                      colors={[
+                                        COLORS.lightblue,
+                                        COLORS.midblue,
+                                      ]}
+                                      start={{x: 0, y: 0}}
+                                      end={{x: 1, y: 0}}
+                                      style={{
+                                        ...styles.item,
+                                        backgroundColor: COLORS.lightDarkGray,
+                                      }}>
+                                      <Text style={styles.featureLabel}>
+                                        Profit Decrease
+                                      </Text>
+                                      <View style={styles.saFContentContainer}>
+                                        <CheckBox
+                                          value={profitdecrease}
+                                          onValueChange={checked =>
+                                            handleCheckboxChange(
+                                              'profitdecrease',
+                                              checked,
+                                            )
+                                          }
+                                          tintColors={{
+                                            true: COLORS.black,
+                                            false: COLORS.black,
+                                          }} // checkbox color
+                                        />
+                                        <Text
+                                          style={{
+                                            ...styles.featureLabel,
+                                            color: COLORS.black,
+                                          }}>
+                                          {profitdecrease
+                                            ? 'Allowed'
+                                            : 'Not Allowed'}
+                                        </Text>
+                                      </View>
+                                    </LinearGradient>
+                                  </TouchableOpacity>
+
+                                  <TouchableOpacity>
+                                    <LinearGradient
+                                      colors={[
+                                        COLORS.lightblue,
+                                        COLORS.midblue,
+                                      ]}
+                                      start={{x: 0, y: 0}}
+                                      end={{x: 1, y: 0}}
+                                      style={{
+                                        ...styles.item,
+                                        backgroundColor: COLORS.lightDarkGray,
+                                      }}>
+                                      <Text style={styles.featureLabel}>
+                                        Minimum Percentage
+                                      </Text>
+                                      <View style={styles.saFContentContainer}>
+                                        <CheckBox
+                                          value={minimumpercentage}
+                                          onValueChange={checked =>
+                                            handleCheckboxChange(
+                                              'minimumpercentage',
+                                              checked,
+                                            )
+                                          }
+                                          tintColors={{
+                                            true: COLORS.black,
+                                            false: COLORS.black,
+                                          }} // checkbox color
+                                        />
+                                        <Text
+                                          style={{
+                                            ...styles.featureLabel,
+                                            color: COLORS.black,
+                                          }}>
+                                          {minimumpercentage
+                                            ? 'Allowed'
+                                            : 'Not Allowed'}
+                                        </Text>
+                                      </View>
+                                    </LinearGradient>
+                                  </TouchableOpacity>
+
+                                  <TouchableOpacity>
+                                    <LinearGradient
+                                      colors={[
+                                        COLORS.lightblue,
+                                        COLORS.midblue,
+                                      ]}
+                                      start={{x: 0, y: 0}}
+                                      end={{x: 1, y: 0}}
+                                      style={{
+                                        ...styles.item,
+                                        backgroundColor: COLORS.lightDarkGray,
+                                      }}>
+                                      <Text style={styles.featureLabel}>
+                                        Profit Activation
+                                      </Text>
+                                      <View style={styles.saFContentContainer}>
+                                        <CheckBox
+                                          value={profitactivation}
+                                          onValueChange={checked =>
+                                            handleCheckboxChange(
+                                              'profitactivation',
+                                              checked,
+                                            )
+                                          }
+                                          tintColors={{
+                                            true: COLORS.black,
+                                            false: COLORS.black,
+                                          }} // checkbox color
+                                        />
+                                        <Text
+                                          style={{
+                                            ...styles.featureLabel,
+                                            color: COLORS.black,
+                                          }}>
+                                          {profitactivation
+                                            ? 'Allowed'
+                                            : 'Not Allowed'}
+                                        </Text>
+                                      </View>
+                                    </LinearGradient>
+                                  </TouchableOpacity>
+
+                                  <TouchableOpacity>
+                                    <LinearGradient
+                                      colors={[
+                                        COLORS.lightblue,
+                                        COLORS.midblue,
+                                      ]}
+                                      start={{x: 0, y: 0}}
+                                      end={{x: 1, y: 0}}
+                                      style={{
+                                        ...styles.item,
+                                        backgroundColor: COLORS.lightDarkGray,
+                                      }}>
+                                      <Text style={styles.featureLabel}>
+                                        Recharge Activation
+                                      </Text>
+                                      <View style={styles.saFContentContainer}>
+                                        <CheckBox
+                                          value={rechargeactivation}
+                                          onValueChange={checked =>
+                                            handleCheckboxChange(
+                                              'rechargeactivation',
+                                              checked,
+                                            )
+                                          }
+                                          tintColors={{
+                                            true: COLORS.black,
+                                            false: COLORS.black,
+                                          }} // checkbox color
+                                        />
+                                        <Text
+                                          style={{
+                                            ...styles.featureLabel,
+                                            color: COLORS.black,
+                                          }}>
+                                          {rechargeactivation
+                                            ? 'Allowed'
+                                            : 'Not Allowed'}
+                                        </Text>
+                                      </View>
+                                    </LinearGradient>
+                                  </TouchableOpacity>
+
+                                  <TouchableOpacity>
+                                    <LinearGradient
+                                      colors={[
+                                        COLORS.lightblue,
+                                        COLORS.midblue,
+                                      ]}
+                                      start={{x: 0, y: 0}}
+                                      end={{x: 1, y: 0}}
+                                      style={{
+                                        ...styles.item,
+                                        backgroundColor: COLORS.lightDarkGray,
+                                      }}>
+                                      <Text style={styles.featureLabel}>
+                                        Userlist
+                                      </Text>
+                                      <View style={styles.saFContentContainer}>
+                                        <CheckBox
+                                          value={userlist}
+                                          onValueChange={checked =>
+                                            handleCheckboxChange(
+                                              'userlist',
+                                              checked,
+                                            )
+                                          }
+                                          tintColors={{
+                                            true: COLORS.black,
+                                            false: COLORS.black,
+                                          }} // checkbox color
+                                        />
+                                        <Text
+                                          style={{
+                                            ...styles.featureLabel,
+                                            color: COLORS.black,
+                                          }}>
+                                          {userlist ? 'Allowed' : 'Not Allowed'}
+                                        </Text>
+                                      </View>
+                                    </LinearGradient>
+                                  </TouchableOpacity>
+
+                                  <TouchableOpacity>
+                                    <LinearGradient
+                                      colors={[
+                                        COLORS.lightblue,
+                                        COLORS.midblue,
+                                      ]}
+                                      start={{x: 0, y: 0}}
+                                      end={{x: 1, y: 0}}
+                                      style={{
+                                        ...styles.item,
+                                        backgroundColor: COLORS.lightDarkGray,
+                                      }}>
+                                      <Text style={styles.featureLabel}>
+                                        Partnerlist
+                                      </Text>
+                                      <View style={styles.saFContentContainer}>
+                                        <CheckBox
+                                          value={partnerlist}
+                                          onValueChange={checked =>
+                                            handleCheckboxChange(
+                                              'partnerlist',
+                                              checked,
+                                            )
+                                          }
+                                          tintColors={{
+                                            true: COLORS.black,
+                                            false: COLORS.black,
+                                          }} // checkbox color
+                                        />
+                                        <Text
+                                          style={{
+                                            ...styles.featureLabel,
+                                            color: COLORS.black,
+                                          }}>
+                                          {partnerlist
+                                            ? 'Allowed'
+                                            : 'Not Allowed'}
+                                        </Text>
+                                      </View>
+                                    </LinearGradient>
+                                  </TouchableOpacity>
+
+                                  <TouchableOpacity>
+                                    <LinearGradient
+                                      colors={[
+                                        COLORS.lightblue,
+                                        COLORS.midblue,
+                                      ]}
+                                      start={{x: 0, y: 0}}
+                                      end={{x: 1, y: 0}}
+                                      style={{
+                                        ...styles.item,
+                                        backgroundColor: COLORS.lightDarkGray,
+                                      }}>
+                                      <Text style={styles.featureLabel}>
+                                        Update Permission
+                                      </Text>
+                                      <View style={styles.saFContentContainer}>
+                                        <CheckBox
+                                          value={updatepermission}
+                                          onValueChange={checked =>
+                                            handleCheckboxChange(
+                                              'updatepermission',
+                                              checked,
+                                            )
+                                          }
+                                          tintColors={{
+                                            true: COLORS.black,
+                                            false: COLORS.black,
+                                          }} // checkbox color
+                                        />
+                                        <Text
+                                          style={{
+                                            ...styles.featureLabel,
+                                            color: COLORS.black,
+                                          }}>
+                                          {updatepermission
+                                            ? 'Allowed'
+                                            : 'Not Allowed'}
+                                        </Text>
+                                      </View>
+                                    </LinearGradient>
+                                  </TouchableOpacity>
+
+                                  <TouchableOpacity>
+                                    <LinearGradient
+                                      colors={[
+                                        COLORS.lightblue,
+                                        COLORS.midblue,
+                                      ]}
+                                      start={{x: 0, y: 0}}
+                                      end={{x: 1, y: 0}}
+                                      style={{
+                                        ...styles.item,
+                                        backgroundColor: COLORS.lightDarkGray,
+                                      }}>
+                                      <Text style={styles.featureLabel}>
+                                        Recharge Method
+                                      </Text>
+                                      <View style={styles.saFContentContainer}>
+                                        <CheckBox
+                                          value={rechargemethod}
+                                          onValueChange={checked =>
+                                            handleCheckboxChange(
+                                              'rechargemethod',
+                                              checked,
+                                            )
+                                          }
+                                          tintColors={{
+                                            true: COLORS.black,
+                                            false: COLORS.black,
+                                          }} // checkbox color
+                                        />
+                                        <Text
+                                          style={{
+                                            ...styles.featureLabel,
+                                            color: COLORS.black,
+                                          }}>
+                                          {rechargemethod
+                                            ? 'Allowed'
+                                            : 'Not Allowed'}
+                                        </Text>
+                                      </View>
+                                    </LinearGradient>
+                                  </TouchableOpacity>
+
+                                  <TouchableOpacity>
+                                    <LinearGradient
+                                      colors={[
+                                        COLORS.lightblue,
+                                        COLORS.midblue,
+                                      ]}
+                                      start={{x: 0, y: 0}}
+                                      end={{x: 1, y: 0}}
+                                      style={{
+                                        ...styles.item,
+                                        backgroundColor: COLORS.lightDarkGray,
+                                      }}>
+                                      <Text style={styles.featureLabel}>
+                                        Recharge Percentage
+                                      </Text>
+                                      <View style={styles.saFContentContainer}>
+                                        <CheckBox
+                                          value={rechargepercentage}
+                                          onValueChange={checked =>
+                                            handleCheckboxChange(
+                                              'rechargepercentage',
+                                              checked,
+                                            )
+                                          }
+                                          tintColors={{
+                                            true: COLORS.black,
+                                            false: COLORS.black,
+                                          }} // checkbox color
+                                        />
+                                        <Text
+                                          style={{
+                                            ...styles.featureLabel,
+                                            color: COLORS.black,
+                                          }}>
+                                          {rechargepercentage
+                                            ? 'Allowed'
+                                            : 'Not Allowed'}
+                                        </Text>
+                                      </View>
+                                    </LinearGradient>
+                                  </TouchableOpacity>
+
+                                  <TouchableOpacity>
+                                    <LinearGradient
+                                      colors={[
+                                        COLORS.lightblue,
+                                        COLORS.midblue,
+                                      ]}
+                                      start={{x: 0, y: 0}}
+                                      end={{x: 1, y: 0}}
+                                      style={{
+                                        ...styles.item,
+                                        backgroundColor: COLORS.lightDarkGray,
+                                      }}>
+                                      <Text style={styles.featureLabel}>
+                                        Profit Percentage
+                                      </Text>
+                                      <View style={styles.saFContentContainer}>
+                                        <CheckBox
+                                          value={profitpercentage}
+                                          onValueChange={checked =>
+                                            handleCheckboxChange(
+                                              'profitpercentage',
+                                              checked,
+                                            )
+                                          }
+                                          tintColors={{
+                                            true: COLORS.black,
+                                            false: COLORS.black,
+                                          }} // checkbox color
+                                        />
+                                        <Text
+                                          style={{
+                                            ...styles.featureLabel,
+                                            color: COLORS.black,
+                                          }}>
+                                          {profitpercentage
+                                            ? 'Allowed'
+                                            : 'Not Allowed'}
+                                        </Text>
+                                      </View>
+                                    </LinearGradient>
+                                  </TouchableOpacity>
+
+                                  <TouchableOpacity>
+                                    <LinearGradient
+                                      colors={[
+                                        COLORS.lightblue,
+                                        COLORS.midblue,
+                                      ]}
+                                      start={{x: 0, y: 0}}
+                                      end={{x: 1, y: 0}}
+                                      style={{
+                                        ...styles.item,
+                                        backgroundColor: COLORS.lightDarkGray,
+                                      }}>
+                                      <Text style={styles.featureLabel}>
+                                        Add User
+                                      </Text>
+                                      <View style={styles.saFContentContainer}>
+                                        <CheckBox
+                                          value={adduser}
+                                          onValueChange={checked =>
+                                            handleCheckboxChange(
+                                              'adduser',
+                                              checked,
+                                            )
+                                          }
+                                          tintColors={{
+                                            true: COLORS.black,
+                                            false: COLORS.black,
+                                          }} // checkbox color
+                                        />
+                                        <Text
+                                          style={{
+                                            ...styles.featureLabel,
+                                            color: COLORS.black,
+                                          }}>
+                                          {adduser ? 'Allowed' : 'Not Allowed'}
+                                        </Text>
+                                      </View>
+                                    </LinearGradient>
+                                  </TouchableOpacity>
+
+                                  <TouchableOpacity>
+                                    <LinearGradient
+                                      colors={[
+                                        COLORS.lightblue,
+                                        COLORS.midblue,
+                                      ]}
+                                      start={{x: 0, y: 0}}
+                                      end={{x: 1, y: 0}}
+                                      style={{
+                                        ...styles.item,
+                                        backgroundColor: COLORS.lightDarkGray,
+                                      }}>
+                                      <Text style={styles.featureLabel}>
+                                        Remove User
+                                      </Text>
+                                      <View style={styles.saFContentContainer}>
+                                        <CheckBox
+                                          value={removeuser}
+                                          onValueChange={checked =>
+                                            handleCheckboxChange(
+                                              'removeuser',
+                                              checked,
+                                            )
+                                          }
+                                          tintColors={{
+                                            true: COLORS.black,
+                                            false: COLORS.black,
+                                          }} // checkbox color
+                                        />
+                                        <Text
+                                          style={{
+                                            ...styles.featureLabel,
+                                            color: COLORS.black,
+                                          }}>
+                                          {removeuser
+                                            ? 'Allowed'
+                                            : 'Not Allowed'}
+                                        </Text>
+                                      </View>
+                                    </LinearGradient>
+                                  </TouchableOpacity>
+
+                                  <TouchableOpacity>
+                                    <LinearGradient
+                                      colors={[
+                                        COLORS.lightblue,
+                                        COLORS.midblue,
+                                      ]}
+                                      start={{x: 0, y: 0}}
+                                      end={{x: 1, y: 0}}
+                                      style={{
+                                        ...styles.item,
+                                        backgroundColor: COLORS.lightDarkGray,
+                                      }}>
+                                      <Text style={styles.featureLabel}>
+                                        Top Partner
+                                      </Text>
+                                      <View style={styles.saFContentContainer}>
+                                        <CheckBox
+                                          value={toppartner}
+                                          onValueChange={checked =>
+                                            handleCheckboxChange(
+                                              'toppartner',
+                                              checked,
+                                            )
+                                          }
+                                          tintColors={{
+                                            true: COLORS.black,
+                                            false: COLORS.black,
+                                          }} // checkbox color
+                                        />
+                                        <Text
+                                          style={{
+                                            ...styles.featureLabel,
+                                            color: COLORS.black,
+                                          }}>
+                                          {toppartner
+                                            ? 'Allowed'
+                                            : 'Not Allowed'}
+                                        </Text>
+                                      </View>
+                                    </LinearGradient>
+                                  </TouchableOpacity>
+
+                                  <TouchableOpacity>
+                                    <LinearGradient
+                                      colors={[
+                                        COLORS.lightblue,
+                                        COLORS.midblue,
+                                      ]}
+                                      start={{x: 0, y: 0}}
+                                      end={{x: 1, y: 0}}
+                                      style={{
+                                        ...styles.item,
+                                        backgroundColor: COLORS.lightDarkGray,
+                                      }}>
+                                      <Text style={styles.featureLabel}>
+                                        Live Result
+                                      </Text>
+                                      <View style={styles.saFContentContainer}>
+                                        <CheckBox
+                                          value={liveresult}
+                                          onValueChange={checked =>
+                                            handleCheckboxChange(
+                                              'liveresult',
+                                              checked,
+                                            )
+                                          }
+                                          tintColors={{
+                                            true: COLORS.black,
+                                            false: COLORS.black,
+                                          }} // checkbox color
+                                        />
+                                        <Text
+                                          style={{
+                                            ...styles.featureLabel,
+                                            color: COLORS.black,
+                                          }}>
+                                          {liveresult
+                                            ? 'Allowed'
+                                            : 'Not Allowed'}
+                                        </Text>
+                                      </View>
+                                    </LinearGradient>
+                                  </TouchableOpacity>
+
+                                  <TouchableOpacity>
+                                    <LinearGradient
+                                      colors={[
+                                        COLORS.lightblue,
+                                        COLORS.midblue,
+                                      ]}
+                                      start={{x: 0, y: 0}}
+                                      end={{x: 1, y: 0}}
+                                      style={{
+                                        ...styles.item,
+                                        backgroundColor: COLORS.lightDarkGray,
+                                      }}>
+                                      <Text style={styles.featureLabel}>
+                                        Powerball Module
+                                      </Text>
+                                      <View style={styles.saFContentContainer}>
+                                        <CheckBox
+                                          value={powerballmodule}
+                                          onValueChange={checked =>
+                                            handleCheckboxChange(
+                                              'powerballmodule',
+                                              checked,
+                                            )
+                                          }
+                                          tintColors={{
+                                            true: COLORS.black,
+                                            false: COLORS.black,
+                                          }} // checkbox color
+                                        />
+                                        <Text
+                                          style={{
+                                            ...styles.featureLabel,
+                                            color: COLORS.black,
+                                          }}>
+                                          {powerballmodule
+                                            ? 'Allowed'
+                                            : 'Not Allowed'}
+                                        </Text>
+                                      </View>
+                                    </LinearGradient>
+                                  </TouchableOpacity>
+
+                                  <TouchableOpacity>
+                                    <LinearGradient
+                                      colors={[
+                                        COLORS.lightblue,
+                                        COLORS.midblue,
+                                      ]}
+                                      start={{x: 0, y: 0}}
+                                      end={{x: 1, y: 0}}
+                                      style={{
+                                        ...styles.item,
+                                        backgroundColor: COLORS.lightDarkGray,
+                                      }}>
+                                      <Text style={styles.featureLabel}>
+                                        Live Result Desk
+                                      </Text>
+                                      <View style={styles.saFContentContainer}>
+                                        <CheckBox
+                                          value={liveresultdesk}
+                                          onValueChange={checked =>
+                                            handleCheckboxChange(
+                                              'liveresultdesk',
+                                              checked,
+                                            )
+                                          }
+                                          tintColors={{
+                                            true: COLORS.black,
+                                            false: COLORS.black,
+                                          }} // checkbox color
+                                        />
+                                        <Text
+                                          style={{
+                                            ...styles.featureLabel,
+                                            color: COLORS.black,
+                                          }}>
+                                          {liveresultdesk
+                                            ? 'Allowed'
+                                            : 'Not Allowed'}
+                                        </Text>
+                                      </View>
+                                    </LinearGradient>
+                                  </TouchableOpacity>
+
+                                  <TouchableOpacity>
+                                    <LinearGradient
+                                      colors={[
+                                        COLORS.lightblue,
+                                        COLORS.midblue,
+                                      ]}
+                                      start={{x: 0, y: 0}}
+                                      end={{x: 1, y: 0}}
+                                      style={{
+                                        ...styles.item,
+                                        backgroundColor: COLORS.lightDarkGray,
+                                      }}>
+                                      <Text style={styles.featureLabel}>
+                                        Powerball Time
+                                      </Text>
+                                      <View style={styles.saFContentContainer}>
+                                        <CheckBox
+                                          value={powerballtime}
+                                          onValueChange={checked =>
+                                            handleCheckboxChange(
+                                              'powerballtime',
+                                              checked,
+                                            )
+                                          }
+                                          tintColors={{
+                                            true: COLORS.black,
+                                            false: COLORS.black,
+                                          }} // checkbox color
+                                        />
+                                        <Text
+                                          style={{
+                                            ...styles.featureLabel,
+                                            color: COLORS.black,
+                                          }}>
+                                          {powerballtime
+                                            ? 'Allowed'
+                                            : 'Not Allowed'}
+                                        </Text>
+                                      </View>
+                                    </LinearGradient>
+                                  </TouchableOpacity>
+
+                                  <TouchableOpacity>
+                                    <LinearGradient
+                                      colors={[
+                                        COLORS.lightblue,
+                                        COLORS.midblue,
+                                      ]}
+                                      start={{x: 0, y: 0}}
+                                      end={{x: 1, y: 0}}
+                                      style={{
+                                        ...styles.item,
+                                        backgroundColor: COLORS.lightDarkGray,
+                                      }}>
+                                      <Text style={styles.featureLabel}>
+                                        Powerball All Multiplier
+                                      </Text>
+                                      <View style={styles.saFContentContainer}>
+                                        <CheckBox
+                                          value={powerballallmultiplier}
+                                          onValueChange={checked =>
+                                            handleCheckboxChange(
+                                              'powerballallmultiplier',
+                                              checked,
+                                            )
+                                          }
+                                          tintColors={{
+                                            true: COLORS.black,
+                                            false: COLORS.black,
+                                          }} // checkbox color
+                                        />
+                                        <Text
+                                          style={{
+                                            ...styles.featureLabel,
+                                            color: COLORS.black,
+                                          }}>
+                                          {powerballallmultiplier
+                                            ? 'Allowed'
+                                            : 'Not Allowed'}
+                                        </Text>
+                                      </View>
+                                    </LinearGradient>
+                                  </TouchableOpacity>
+
+                                  <TouchableOpacity>
+                                    <LinearGradient
+                                      colors={[
+                                        COLORS.lightblue,
+                                        COLORS.midblue,
+                                      ]}
+                                      start={{x: 0, y: 0}}
+                                      end={{x: 1, y: 0}}
+                                      style={{
+                                        ...styles.item,
+                                        backgroundColor: COLORS.lightDarkGray,
+                                      }}>
+                                      <Text style={styles.featureLabel}>
+                                        Powerball All Result
+                                      </Text>
+                                      <View style={styles.saFContentContainer}>
+                                        <CheckBox
+                                          value={powerballallresult}
+                                          onValueChange={checked =>
+                                            handleCheckboxChange(
+                                              'powerballallresult',
+                                              checked,
+                                            )
+                                          }
+                                          tintColors={{
+                                            true: COLORS.black,
+                                            false: COLORS.black,
+                                          }} // checkbox color
+                                        />
+                                        <Text
+                                          style={{
+                                            ...styles.featureLabel,
+                                            color: COLORS.black,
+                                          }}>
+                                          {powerballallresult
+                                            ? 'Allowed'
+                                            : 'Not Allowed'}
+                                        </Text>
+                                      </View>
+                                    </LinearGradient>
+                                  </TouchableOpacity>
+
+                                  <TouchableOpacity>
+                                    <LinearGradient
+                                      colors={[
+                                        COLORS.lightblue,
+                                        COLORS.midblue,
+                                      ]}
+                                      start={{x: 0, y: 0}}
+                                      end={{x: 1, y: 0}}
+                                      style={{
+                                        ...styles.item,
+                                        backgroundColor: COLORS.lightDarkGray,
+                                      }}>
+                                      <Text style={styles.featureLabel}>
+                                        Powerball Name
+                                      </Text>
+                                      <View style={styles.saFContentContainer}>
+                                        <CheckBox
+                                          value={powerballupdatename}
+                                          onValueChange={checked =>
+                                            handleCheckboxChange(
+                                              'powerballupdatename',
+                                              checked,
+                                            )
+                                          }
+                                          tintColors={{
+                                            true: COLORS.black,
+                                            false: COLORS.black,
+                                          }} // checkbox color
+                                        />
+                                        <Text
+                                          style={{
+                                            ...styles.featureLabel,
+                                            color: COLORS.black,
+                                          }}>
+                                          {powerballupdatename
+                                            ? 'Allowed'
+                                            : 'Not Allowed'}
+                                        </Text>
+                                      </View>
+                                    </LinearGradient>
+                                  </TouchableOpacity>
+
+                                  <TouchableOpacity>
+                                    <LinearGradient
+                                      colors={[
+                                        COLORS.lightblue,
+                                        COLORS.midblue,
+                                      ]}
+                                      start={{x: 0, y: 0}}
+                                      end={{x: 1, y: 0}}
+                                      style={{
+                                        ...styles.item,
+                                        backgroundColor: COLORS.lightDarkGray,
+                                      }}>
+                                      <Text style={styles.featureLabel}>
+                                        Powerball Game Rule
+                                      </Text>
+                                      <View style={styles.saFContentContainer}>
+                                        <CheckBox
+                                          value={powerballupdategamerule}
+                                          onValueChange={checked =>
+                                            handleCheckboxChange(
+                                              'powerballupdategamerule',
+                                              checked,
+                                            )
+                                          }
+                                          tintColors={{
+                                            true: COLORS.black,
+                                            false: COLORS.black,
+                                          }} // checkbox color
+                                        />
+                                        <Text
+                                          style={{
+                                            ...styles.featureLabel,
+                                            color: COLORS.black,
+                                          }}>
+                                          {powerballupdategamerule
+                                            ? 'Allowed'
+                                            : 'Not Allowed'}
                                         </Text>
                                       </View>
                                     </LinearGradient>
