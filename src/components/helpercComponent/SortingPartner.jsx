@@ -106,6 +106,25 @@ const SortingPartner = ({setSortBy, setSortOrder, onClose}) => {
           }}>
           Inactive Partner
         </Text>
+
+        <Text
+          style={styles.btn}
+          onPress={() => {
+            setSortBy('rechargeStatus');
+            setSortOrder('desc');
+            onClose();
+          }}>
+          Recharge Active Partner
+        </Text>
+        <Text
+          style={styles.btn}
+          onPress={() => {
+            setSortBy('rechargeStatus');
+            setSortOrder('asc');
+            onClose();
+          }}>
+          Recharge Inactive Partner
+        </Text>
       </ScrollView>
     </LinearGradient>
   );
