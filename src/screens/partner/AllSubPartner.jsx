@@ -32,7 +32,7 @@ const AllSubPartner = () => {
   const [sortBy, setSortBy] = useState('');
   const [sortOrder, setSortOrder] = useState('');
   const [forReload, setForReload] = useState(false);
-
+  const [updateKey, setUpdateKey] = useState(0);
   // Debounce Effect for Search
   useEffect(() => {
     const handler = setTimeout(() => {
@@ -95,7 +95,15 @@ const AllSubPartner = () => {
     }
 
     setLoading(false);
-  }, [searchData, paginatedData, debouncedSearch, page, sortBy, sortOrder]);
+  }, [
+    searchData,
+    paginatedData,
+    debouncedSearch,
+    page,
+    sortBy,
+    sortOrder,
+    updateKey,
+  ]);
 
   const loadMore = () => {
     if (!loading && hasMore && debouncedSearch.length === 0) {
@@ -105,7 +113,9 @@ const AllSubPartner = () => {
 
   // Combined Loading State
   const isLoading = fetchingPaginated || fetchingSearch || loading;
-
+  useEffect(() => {
+    refetchPaginated();
+  }, [updateKey]);
   const [showSorting, setShowSorting] = useState(false);
 
   const [selectedItem, setSelectedItem] = useState(null);
@@ -140,14 +150,16 @@ const AllSubPartner = () => {
       });
 
       console.log(JSON.stringify(res));
+
+      await refetchPaginated();
+      setUpdateKey(prevKey => prevKey + 1);
       Toast.show({
         type: 'success',
         text1: res.data.message,
       });
-      // await refetchPaginated();
-      if (!isPaginatedUninitialized) {
-        await refetchPaginated();
-      }
+      // if (!isPaginatedUninitialized) {
+      //   await refetchPaginated();
+      // }
       setForReload(!forReload);
     } catch (error) {
       console.log(error);
@@ -174,11 +186,13 @@ const AllSubPartner = () => {
       });
 
       console.log(JSON.stringify(res));
+
+      await refetchPaginated();
+      setUpdateKey(prevKey => prevKey + 1);
       Toast.show({
         type: 'success',
         text1: res.data.message,
       });
-      await refetchPaginated();
       setForReload(!forReload);
     } catch (error) {
       console.log(error);
