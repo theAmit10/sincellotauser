@@ -24,7 +24,7 @@ const AllSubPartner = () => {
   // States
   const [partners, setPartners] = useState([]);
   const [page, setPage] = useState(1);
-  const limit = 5;
+  const limit = 20;
   const [hasMore, setHasMore] = useState(true);
   const [loading, setLoading] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');

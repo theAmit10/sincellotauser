@@ -23,7 +23,7 @@ const AllPartner = () => {
   // States
   const [partners, setPartners] = useState([]);
   const [page, setPage] = useState(1);
-  const limit = 5;
+  const limit = 20;
   const [hasMore, setHasMore] = useState(true);
   const [loading, setLoading] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
@@ -49,7 +49,11 @@ const AllPartner = () => {
     isUninitialized: isPaginatedUninitialized,
   } = useGetAllPartnerQuery(
     {accesstoken, page, limit, sortBy, sortOrder},
-    {skip: debouncedSearch.length > 0, refetchOnMountOrArgChange: true}, // Skip pagination if searching
+    {
+      skip: debouncedSearch.length > 0,
+      refetchOnMountOrArgChange: true,
+      forceRefetch: true,
+    }, // Skip pagination if searching
   );
 
   // Fetch Search Data
@@ -153,7 +157,11 @@ const AllPartner = () => {
 
       console.log(JSON.stringify(res));
 
-      await refetchPaginated();
+      // await refetchPaginated();
+      // await refetchPaginated({page});
+
+      handleRefresh();
+
       setUpdateKey(prevKey => prevKey + 1);
       Toast.show({
         type: 'success',
@@ -163,7 +171,7 @@ const AllPartner = () => {
       // if (!isPaginatedUninitialized) {
       //   await refetchPaginated();
       // }
-      setForReload(!forReload);
+      // setForReload(!forReload);
     } catch (error) {
       console.log(error);
       Toast.show({
@@ -177,6 +185,13 @@ const AllPartner = () => {
     setPage(1); // Reset to first page
     setSearchQuery(''); // Clear any active search
     setDebouncedSearch('');
+    await refetchPaginated();
+  };
+
+  const handleRefresh = async () => {
+    setPage(1);
+    setPartners([]);
+    setHasMore(true);
     await refetchPaginated();
   };
 
@@ -197,12 +212,13 @@ const AllPartner = () => {
 
       console.log(JSON.stringify(res));
       await refetchPaginated();
+
+      setUpdateKey(prevKey => prevKey + 1);
       Toast.show({
         type: 'success',
         text1: res.data.message,
       });
 
-      setUpdateKey(prevKey => prevKey + 1);
       setForReload(!forReload);
     } catch (error) {
       console.log(error);
