@@ -42,6 +42,7 @@ import Loading from '../components/helpercComponent/Loading';
 import {
   useGetAllPlayHomeQuery,
   useGetAllSubAdminQuery,
+  useGetPendingRequestCountQuery,
   useGetUserCountQuery,
 } from '../helper/Networkcall';
 
@@ -124,6 +125,12 @@ const AdminDashboard = () => {
     data: countData,
     refetch: countRefetch,
   } = useGetUserCountQuery({accesstoken});
+
+  const {
+    isLoading: requestIsLoading,
+    data: requestData,
+    refetch: requestRefetch,
+  } = useGetPendingRequestCountQuery({accesstoken});
 
   return (
     <SafeAreaView style={{flex: 1}}>
@@ -736,10 +743,10 @@ const AdminDashboard = () => {
                                       gap: heightPercentageToDP(1),
                                     }}>
                                     <GradientText style={{...styles.textStyle}}>
-                                      {/* {allPlay?.plays.length} */}
+                                      {requestData?.pendingDepositCount}
                                     </GradientText>
 
-                                    <LinearGradient
+                                    {/* <LinearGradient
                                       colors={[
                                         COLORS.lightWhite,
                                         COLORS.white_s,
@@ -750,7 +757,7 @@ const AdminDashboard = () => {
                                         size={heightPercentageToDP(4)}
                                         color={COLORS.darkGray}
                                       />
-                                    </LinearGradient>
+                                    </LinearGradient> */}
                                   </View>
                                 </LinearGradient>
                               </TouchableOpacity>
@@ -813,10 +820,10 @@ const AdminDashboard = () => {
                                       gap: heightPercentageToDP(1),
                                     }}>
                                     <GradientText style={{...styles.textStyle}}>
-                                      {/* {allPlay?.plays.length} */}
+                                      {requestData?.pendingDepositCount}
                                     </GradientText>
 
-                                    <LinearGradient
+                                    {/* <LinearGradient
                                       colors={[
                                         COLORS.lightWhite,
                                         COLORS.white_s,
@@ -827,7 +834,7 @@ const AdminDashboard = () => {
                                         size={heightPercentageToDP(4)}
                                         color={COLORS.darkGray}
                                       />
-                                    </LinearGradient>
+                                    </LinearGradient> */}
                                   </View>
                                 </LinearGradient>
                               </TouchableOpacity>
@@ -892,10 +899,10 @@ const AdminDashboard = () => {
                                       gap: heightPercentageToDP(1),
                                     }}>
                                     <GradientText style={{...styles.textStyle}}>
-                                      {/* {allPlay?.plays.length} */}
+                                      {requestData?.pendingWithdrawCount}
                                     </GradientText>
 
-                                    <LinearGradient
+                                    {/* <LinearGradient
                                       colors={[
                                         COLORS.lightWhite,
                                         COLORS.white_s,
@@ -906,7 +913,7 @@ const AdminDashboard = () => {
                                         size={heightPercentageToDP(4)}
                                         color={COLORS.darkGray}
                                       />
-                                    </LinearGradient>
+                                    </LinearGradient> */}
                                   </View>
                                 </LinearGradient>
                               </TouchableOpacity>
@@ -969,10 +976,10 @@ const AdminDashboard = () => {
                                       gap: heightPercentageToDP(1),
                                     }}>
                                     <GradientText style={{...styles.textStyle}}>
-                                      {/* {allPlay?.plays.length} */}
+                                      {requestData?.pendingWithdrawCount}
                                     </GradientText>
 
-                                    <LinearGradient
+                                    {/* <LinearGradient
                                       colors={[
                                         COLORS.lightWhite,
                                         COLORS.white_s,
@@ -983,7 +990,7 @@ const AdminDashboard = () => {
                                         size={heightPercentageToDP(4)}
                                         color={COLORS.darkGray}
                                       />
-                                    </LinearGradient>
+                                    </LinearGradient> */}
                                   </View>
                                 </LinearGradient>
                               </TouchableOpacity>
