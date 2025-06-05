@@ -5,7 +5,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   heightPercentageToDP,
   widthPercentageToDP,
@@ -14,20 +14,61 @@ import {COLORS, FONT} from '../../../assets/constants';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {useNavigation} from '@react-navigation/native';
 import GradientText from '../helpercComponent/GradientText';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {serverName} from '../../redux/store';
 import GradientTextWhite from '../helpercComponent/GradientTextWhite';
+import {loadAllNotification} from '../../redux/actions/userAction';
+import {useGetAllNotificationQuery} from '../../helper/Networkcall';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 const AdminBackground = () => {
   const navigation = useNavigation();
 
   const {user, accesstoken, loading} = useSelector(state => state.user);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     console.log('Getting Profile');
     console.log('User Profile :: ' + JSON.stringify(user));
     // console.log('Profile Avatar :: ' + user.avatar);
   }, [loading]);
+
+  const [newNotification, setNewNotification] = useState(true);
+  const [notifications, setnotifications] = useState([]);
+
+  const id = 1000;
+  // Fetch Paginated Data
+  const {
+    data,
+    refetch: refetchPaginated,
+    isLoading: loadingNotification,
+  } = useGetAllNotificationQuery({accesstoken, id});
+
+  const checkingForNewNotification = () => {
+    console.log('CHECKING FOR NEW NOTIFCATION');
+    if (notifications) {
+      const noti =
+        notifications?.length === 0 ? true : notifications[0]?.seennow;
+      console.log('seennow noti len :: ' + notifications?.length);
+      console.log('seennow :: ' + noti);
+      setNewNotification(noti);
+    }
+  };
+
+  useEffect(() => {
+    if (!loadingNotification && data) {
+      setnotifications(data);
+      checkingForNewNotification();
+    }
+  }, [accesstoken]);
+
+  useEffect(() => {
+    if (accesstoken) {
+      if (!loadingNotification && data) {
+        checkingForNewNotification();
+      }
+    }
+  }, [loadingNotification, notifications, user, accesstoken]);
 
   return (
     <View
@@ -94,14 +135,24 @@ const AdminBackground = () => {
             onPress={() => navigation.navigate('Notification')}
             className="rounded-md p-2"
             style={{
-              backgroundColor: COLORS.grayHalfBg,
+              backgroundColor: newNotification
+                ? COLORS.grayHalfBg
+                : COLORS.white_s,
               width: widthPercentageToDP(10),
             }}>
-            <Ionicons
-              name={'notifications'}
-              size={heightPercentageToDP(3)}
-              color={COLORS.black}
-            />
+            {newNotification ? (
+              <Ionicons
+                name={'notifications'}
+                size={heightPercentageToDP(3)}
+                color={COLORS.black}
+              />
+            ) : (
+              <MaterialIcons
+                name={'notification-add'}
+                size={heightPercentageToDP(3)}
+                color={COLORS.lightyellow}
+              />
+            )}
           </TouchableOpacity>
         </View>
 
