@@ -9,7 +9,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, {useCallback, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {
   heightPercentageToDP,
   widthPercentageToDP,
@@ -25,9 +25,11 @@ import GradientTextWhite from '../../components/helpercComponent/GradientTextWhi
 import Loading from '../../components/helpercComponent/Loading';
 import {
   useGetPlayHistoryQuery,
+  useGetPowerballQuery,
   useGetSingleUserPlayHistoryQuery,
 } from '../../helper/Networkcall';
 import NoDataFound from '../../components/helpercComponent/NoDataFound';
+import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
 
 const historyapidata = [
   {
@@ -154,6 +156,22 @@ const PlayHistory = ({route}) => {
     // Remove the last character (assuming it's always 'X') and convert the result to a number
     return parseInt(input.slice(0, -1), 10);
   }
+
+  const [currentGame, setCurrentGame] = useState('powerball');
+
+  const [gameName, setGameName] = useState('');
+  // Network call
+  const {data, isLoading: powerballIsLoading} = useGetPowerballQuery(
+    {accesstoken},
+    {skip: !accesstoken},
+  );
+
+  useEffect(() => {
+    if (!isLoading && data) {
+      setGameName(data.games[0].name);
+      console.log(data?.games[0].name);
+    }
+  }, [data, isLoading]); // Correct dependencies
 
   return (
     <SafeAreaView style={{flex: 1}}>
@@ -288,15 +306,27 @@ const PlayHistory = ({route}) => {
                                     marginVertical: heightPercentageToDP(2),
                                     marginHorizontal: heightPercentageToDP(1),
                                   }}>
-                                  <MaterialCommunityIcons
-                                    name={'play-circle-outline'}
-                                    size={heightPercentageToDP(3)}
-                                    color={
-                                      item?.walletName
-                                        ? COLORS.green
-                                        : COLORS.darkGray
-                                    }
-                                  />
+                                  {item?.walletName ? (
+                                    item?.forProcess === 'partnercredit' ? (
+                                      <FontAwesome6
+                                        name={'handshake-simple'}
+                                        size={heightPercentageToDP(3)}
+                                        color={COLORS.orange}
+                                      />
+                                    ) : (
+                                      <MaterialCommunityIcons
+                                        name={'play-circle-outline'}
+                                        size={heightPercentageToDP(3)}
+                                        color={COLORS.orange}
+                                      />
+                                    )
+                                  ) : (
+                                    <MaterialCommunityIcons
+                                      name={'play-circle-outline'}
+                                      size={heightPercentageToDP(3)}
+                                      color={COLORS.darkGray}
+                                    />
+                                  )}
                                 </View>
 
                                 <View style={{flex: 1}}>
@@ -536,15 +566,27 @@ const PlayHistory = ({route}) => {
                                     marginVertical: heightPercentageToDP(2),
                                     marginHorizontal: heightPercentageToDP(1),
                                   }}>
-                                  <MaterialCommunityIcons
-                                    name={'trophy-award'}
-                                    size={heightPercentageToDP(3)}
-                                    color={
-                                      item?.walletName
-                                        ? COLORS.green
-                                        : COLORS.darkGray
-                                    }
-                                  />
+                                  {item?.walletName ? (
+                                    item?.forProcess === 'partnercredit' ? (
+                                      <FontAwesome6
+                                        name={'handshake-simple'}
+                                        size={heightPercentageToDP(3)}
+                                        color={COLORS.orange}
+                                      />
+                                    ) : (
+                                      <MaterialCommunityIcons
+                                        name={'trophy-award'}
+                                        size={heightPercentageToDP(3)}
+                                        color={COLORS.orange}
+                                      />
+                                    )
+                                  ) : (
+                                    <MaterialCommunityIcons
+                                      name={'trophy-award'}
+                                      size={heightPercentageToDP(3)}
+                                      color={COLORS.darkGray}
+                                    />
+                                  )}
                                 </View>
 
                                 <View style={{flex: 1}}>
