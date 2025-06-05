@@ -342,7 +342,7 @@ const PartnerPaypalPaymentMethod = ({route}) => {
                               justifyContent: 'space-between',
                             }}>
                             <Text style={styles.copytitle} numberOfLines={2}>
-                              Email Address
+                              Paypal ID
                             </Text>
                           </View>
                           <View

@@ -694,6 +694,21 @@ const PlayHistory = ({route}) => {
                                       alignItems: 'flex-start',
                                       paddingStart: heightPercentageToDP(1),
                                     }}>
+                                    <Text style={styles.detailValue}>
+                                      Playing
+                                    </Text>
+                                    <Text
+                                      numberOfLines={1}
+                                      style={styles.detailLabel}>
+                                      {gameName}
+                                    </Text>
+                                  </View>
+                                  <View
+                                    style={{
+                                      justifyContent: 'flex-start',
+                                      alignItems: 'flex-start',
+                                      paddingStart: heightPercentageToDP(1),
+                                    }}>
                                     <Text style={styles.detailValue}>Time</Text>
                                     <Text
                                       numberOfLines={1}

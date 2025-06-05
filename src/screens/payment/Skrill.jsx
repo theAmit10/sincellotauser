@@ -192,7 +192,7 @@ const Skrill = () => {
                         fontSize: heightPercentageToDP(2),
                         paddingStart: heightPercentageToDP(1),
                       }}>
-                      Address
+                      Skrill ID
                     </Text>
 
                     <LinearGradient
