@@ -50,7 +50,7 @@ const Skrill = () => {
 
   const submitDeposit = async () => {
     if (!address) {
-      Toast.show({type: 'error', text1: 'Enter address'});
+      Toast.show({type: 'error', text1: 'Skrill Id is required'});
       return;
     }
     if (!paymentnote) {

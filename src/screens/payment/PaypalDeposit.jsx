@@ -44,7 +44,7 @@ const PaypalDeposit = () => {
 
   const submitDeposit = async () => {
     if (!emailaddress) {
-      Toast.show({type: 'error', text1: 'Enter email address'});
+      Toast.show({type: 'error', text1: 'Enter Paypal Id'});
       return;
     }
     if (!paymentnote) {
@@ -187,7 +187,7 @@ const PaypalDeposit = () => {
                         fontSize: heightPercentageToDP(2),
                         paddingStart: heightPercentageToDP(1),
                       }}>
-                      Email Address
+                      Paypal ID
                     </Text>
 
                     <LinearGradient
@@ -255,7 +255,6 @@ const PaypalDeposit = () => {
                       />
                     </LinearGradient>
                   </View>
-                  
                 </View>
               </ScrollView>
               <View
