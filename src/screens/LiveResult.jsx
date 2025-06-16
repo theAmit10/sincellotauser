@@ -5,7 +5,10 @@ import Textinput from '../components/tlwinput/Textinput';
 import Loading from '../components/helpercComponent/Loading';
 import {COLORS, FONT} from '../../assets/constants';
 import {heightPercentageToDP} from 'react-native-responsive-screen';
-import {useUpdateLiveResultLinkMutation} from '../helper/Networkcall';
+import {
+  useUpdateLiveResultLinkMutation,
+  useUpdateLiveResultLinkPowerballMutation,
+} from '../helper/Networkcall';
 import Toast from 'react-native-toast-message';
 import {useSelector} from 'react-redux';
 
@@ -16,6 +19,8 @@ const LiveResult = ({route}) => {
   const [timer, setTimer] = useState(timedata?.liveresulttimer?.toString());
 
   const [updateLiveResultLink, {isLoading}] = useUpdateLiveResultLinkMutation();
+  const [updateLiveResultLinkPowerball, {isLoading: isLoadingPowerball}] =
+    useUpdateLiveResultLinkPowerballMutation();
 
   const updateSubmitHandler = async () => {
     try {
@@ -47,17 +52,53 @@ const LiveResult = ({route}) => {
         liveresulttimer: Number.parseInt(timer),
       };
 
-      const res = await updateLiveResultLink({
-        accesstoken,
-        body,
-        id: timedata._id,
-      });
+      // const res = await updateLiveResultLink({
+      //   accesstoken,
+      //   body,
+      //   id: timedata._id,
+      // });
 
-      console.log(res.data);
-      Toast.show({
-        type: 'success',
-        text1: 'Successfully Updated Live Result',
-      });
+      // console.log(res.data);
+      // Toast.show({
+      //   type: 'success',
+      //   text1: 'Successfully Updated Live Result',
+      // });
+
+      if (
+        locationdata?.powertime &&
+        timedata?.powertime &&
+        locationdata.powertime === timedata.powertime
+      ) {
+        console.log('IF running');
+        res = await updateLiveResultLinkPowerball({
+          accesstoken,
+          body,
+          id: timedata._id,
+        });
+
+        console.log(res.data);
+
+        Toast.show({
+          type: 'success',
+          text1: 'Successfully Updated Live Result',
+        });
+        // await prefetch();
+      } else {
+        console.log('else running');
+        res = await updateLiveResultLink({
+          accesstoken,
+          body,
+          id: timedata._id,
+        });
+
+        console.log('res found');
+        console.log(res.data);
+        console.log(res.data.message);
+        Toast.show({
+          type: 'success',
+          text1: 'Successfully Updated Live Result',
+        });
+      }
     } catch (e) {
       console.log(e);
       Toast.show({
@@ -92,7 +133,7 @@ const LiveResult = ({route}) => {
           marginVertical: heightPercentageToDP(2),
           justifyContent: 'flex-end',
         }}>
-        {isLoading ? (
+        {isLoading || isLoadingPowerball ? (
           <Loading />
         ) : (
           <TouchableOpacity

@@ -1559,12 +1559,26 @@ export const sincelotAdminApi = createApi({
       }),
     }),
 
+    // [ UPDATE LIVE RESULT LINK POWERBALL ]
+    updateLiveResultLinkPowerball: builder.mutation({
+      query: ({accesstoken, body, id}) => ({
+        url: `result/updateresultelinkpowerball/${id}`,
+        method: 'PUT',
+        body,
+        headers: {
+          Authorization: `Bearer ${accesstoken}`,
+          'Content-Type': 'application/json',
+        },
+      }),
+    }),
+
     //[end ]
     // ######## END #########
   }),
 });
 
 export const {
+  useUpdateLiveResultLinkPowerballMutation,
   useSearchBalanceSheetQuery,
   useCheckNotificationSeenMutation,
   useGetSingleUserNotificationQuery,
