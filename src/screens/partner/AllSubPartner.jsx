@@ -265,7 +265,9 @@ const AllSubPartner = () => {
                   userid={item.userId}
                   noofumser={item.userList.length}
                   profitpercentage={item.profitPercentage}
-                  walletbalance={item.walletTwo?.balance?.toFixed(0)}
+                  walletbalance={`${item.walletTwo?.balance?.toFixed(0)} ${
+                    item.country ? item.country?.countrycurrencysymbol : ''
+                  }`}
                   rechargepercentage={item.rechargePercentage}
                   item={item}
                   toggleSwitchProfit={toggleSwitchForProfit}
