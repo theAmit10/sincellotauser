@@ -3,6 +3,8 @@ import {ActivityIndicator, FlatList, TextInput, View} from 'react-native';
 import {useSelector} from 'react-redux';
 import {useFocusEffect, useNavigation} from '@react-navigation/native';
 import {
+  useActivatePartnerRechargeModuleMutation,
+  useDeactivatePartnerRechargeModuleMutation,
   useGetAllPartnerQuery,
   useGiveRechargeModuleMutation,
   useSearchPartnerQuery,
@@ -198,8 +200,35 @@ const AllPartner = () => {
   const [giveRechargeModule, {isLoading: rechargeActivationIsLoading}] =
     useGiveRechargeModuleMutation();
 
+  //[FOR RECHAREGE MODULE DEACTIVATION]
+  const [deactivatePartnerRechargeModule, {isLoading: deactivateIsLoading}] =
+    useDeactivatePartnerRechargeModuleMutation();
+  const [activatePartnerRechargeModule, {isLoading: activateIsLoading}] =
+    useActivatePartnerRechargeModuleMutation();
+
   const submitHandlerForRechargeActivation = async item => {
     try {
+      if (item.rechargeStatus === true) {
+        const body = {
+          userId: item.userId,
+          id: item?.rechargeModule,
+        };
+
+        const res = await deactivatePartnerRechargeModule({
+          accesstoken,
+          body,
+        });
+
+        Toast.show({
+          type: 'success',
+          text1: res.data.message,
+        });
+
+        await refetchPaginated();
+
+        return;
+      }
+
       const body = {
         userId: item.userId,
         rechargeStatus: item.rechargeStatus === true ? false : true,
@@ -208,6 +237,15 @@ const AllPartner = () => {
       const res = await giveRechargeModule({
         accesstoken,
         body,
+      });
+
+      const bodyact = {
+        userId: Number.parseInt(item.userId),
+        id: item?.rechargeModule,
+      };
+      const resact = await activatePartnerRechargeModule({
+        accesstoken,
+        body: bodyact,
       });
 
       console.log(JSON.stringify(res));
@@ -222,6 +260,62 @@ const AllPartner = () => {
       setForReload(!forReload);
     } catch (error) {
       console.log(error);
+      Toast.show({
+        type: 'error',
+        text1: 'Something went wrong',
+      });
+    }
+  };
+
+  const activateRechargeModule = async item => {
+    try {
+      setSelectedItem(item);
+
+      const activationstatus = rechargeData?.rechargeModule?.activationStatus;
+
+      if (activationstatus === true) {
+        const body = {
+          userId: partnerdata.userId,
+          id: data?.partner?.rechargeModule,
+        };
+        console.log('IF');
+        console.log(partnerdata.userId);
+        console.log(data?.partner?.rechargeModule);
+        const res = await deactivatePartnerRechargeModule({
+          accesstoken,
+          body,
+        });
+
+        console.log(JSON.stringify(res));
+        console.log('Success IF');
+        Toast.show({
+          type: 'success',
+          text1: res.data.message,
+        });
+      } else {
+        console.log('else');
+        console.log(partnerdata.userId);
+        console.log(data?.partner?.rechargeModule);
+        const body = {
+          userId: Number.parseInt(partnerdata.userId),
+          id: data?.partner?.rechargeModule,
+        };
+        const res = await activatePartnerRechargeModule({
+          accesstoken,
+          body,
+        });
+
+        console.log('Success');
+        console.log(JSON.stringify(res));
+        Toast.show({
+          type: 'success',
+          text1: res.data.message,
+        });
+      }
+
+      await rechargeRefetch();
+    } catch (e) {
+      console.log(e);
       Toast.show({
         type: 'error',
         text1: 'Something went wrong',
