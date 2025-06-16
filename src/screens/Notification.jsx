@@ -29,7 +29,11 @@ import {useDispatch, useSelector} from 'react-redux';
 import UrlHelper from '../helper/UrlHelper';
 import axios from 'axios';
 import LinearGradient from 'react-native-linear-gradient';
-import {useGetAllNotificationQuery} from '../helper/Networkcall';
+import {
+  useCheckNotificationSeenMutation,
+  useGetAllNotificationQuery,
+  useGetSingleUserNotificationQuery,
+} from '../helper/Networkcall';
 import MainBackgroundWithoutScrollview from '../components/background/MainBackgroundWithoutScrollview';
 
 const Notification = () => {
@@ -88,7 +92,11 @@ const Notification = () => {
     data: paginatedData,
     refetch: refetchPaginated,
     isFetching: fetchingPaginated,
-  } = useGetAllNotificationQuery({accesstoken, id, page, limit});
+    isLoading: loadingPaginated,
+  } = useGetSingleUserNotificationQuery(
+    {accesstoken, id: id, page, limit},
+    {refetchOnMountOrArgChange: true}, // Disable caching
+  );
 
   // Reset State on Navigation Back
   useFocusEffect(
@@ -134,6 +142,27 @@ const Notification = () => {
 
   const navigation = useNavigation();
 
+  const [checkNotificationSeen, {error}] = useCheckNotificationSeenMutation();
+
+  const submitHandler = async () => {
+    try {
+      const res = await checkNotificationSeen({
+        accessToken: accesstoken,
+        id: id,
+      }).unwrap();
+
+      console.log('seen status res :: ' + JSON.stringify(res));
+    } catch (error) {
+      console.log('Error during submitHandler:', error);
+    }
+  };
+
+  useEffect(() => {
+    if (!loadingPaginated && paginatedData) {
+      submitHandler();
+    }
+  }, [loadingPaginated, paginatedData]);
+
   return (
     <MainBackgroundWithoutScrollview title="Notification">
       <View style={{flex: 1}}>
@@ -151,7 +180,7 @@ const Notification = () => {
                   style={{
                     minHeight: heightPercentageToDP(10),
                     backgroundColor: COLORS.grayBg,
-                    margin: heightPercentageToDP(2),
+                    marginBottom: heightPercentageToDP(2),
                     padding: heightPercentageToDP(2),
                     borderRadius: heightPercentageToDP(2),
                     flexDirection: 'row',

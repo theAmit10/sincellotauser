@@ -1527,12 +1527,36 @@ export const sincelotAdminApi = createApi({
       }),
     }),
 
+    getSingleUserNotification: builder.query({
+      query: ({accesstoken, id, page, limit}) => ({
+        url: `user/${id}/notifications?page=${page}&limit=${limit}`,
+        method: 'get',
+        headers: {
+          Authorization: `Bearer ${accesstoken}`,
+        },
+      }),
+    }),
+
+    // For CHECKING ALL NOTFICATION SEEN
+    checkNotificationSeen: builder.mutation({
+      query: ({accessToken, id}) => ({
+        url: `user/${id}/notifications/seen`,
+        method: 'PUT',
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          'Content-Type': 'application/json',
+        },
+      }),
+    }),
+
     //[end ]
     // ######## END #########
   }),
 });
 
 export const {
+  useCheckNotificationSeenMutation,
+  useGetSingleUserNotificationQuery,
   useGetPendingRequestCountQuery,
   useGetPendingPaymentMethodCountQuery,
   useSearchAllUpiByIdQuery,

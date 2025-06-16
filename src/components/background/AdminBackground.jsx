@@ -12,13 +12,16 @@ import {
 } from 'react-native-responsive-screen';
 import {COLORS, FONT} from '../../../assets/constants';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import {useNavigation} from '@react-navigation/native';
+import {useIsFocused, useNavigation} from '@react-navigation/native';
 import GradientText from '../helpercComponent/GradientText';
 import {useDispatch, useSelector} from 'react-redux';
 import {serverName} from '../../redux/store';
 import GradientTextWhite from '../helpercComponent/GradientTextWhite';
 import {loadAllNotification} from '../../redux/actions/userAction';
-import {useGetAllNotificationQuery} from '../../helper/Networkcall';
+import {
+  useGetAllNotificationQuery,
+  useGetSingleUserNotificationQuery,
+} from '../../helper/Networkcall';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 const AdminBackground = () => {
@@ -34,15 +37,15 @@ const AdminBackground = () => {
   }, [loading]);
 
   const [newNotification, setNewNotification] = useState(true);
-  const [notifications, setnotifications] = useState([]);
+  // const [notifications, setnotifications] = useState([]);
 
   const id = 1000;
-  // Fetch Paginated Data
-  const {
-    data,
-    refetch: refetchPaginated,
-    isLoading: loadingNotification,
-  } = useGetAllNotificationQuery({accesstoken, id});
+  // // Fetch Paginated Data
+  // const {
+  //   data,
+  //   refetch: refetchPaginated,
+  //   isLoading: loadingNotification,
+  // } = useGetAllNotificationQuery({accesstoken, id});
 
   const checkingForNewNotification = () => {
     console.log('CHECKING FOR NEW NOTIFCATION');
@@ -55,20 +58,58 @@ const AdminBackground = () => {
     }
   };
 
-  useEffect(() => {
-    if (!loadingNotification && data) {
-      setnotifications(data);
-      checkingForNewNotification();
-    }
-  }, [accesstoken]);
+  // useEffect(() => {
+  //   if (!loadingNotification && data) {
+  //     setnotifications(data);
+  //     checkingForNewNotification();
+  //   }
+  // }, [accesstoken]);
+
+  // useEffect(() => {
+  //   if (accesstoken) {
+  //     if (!loadingNotification && data) {
+  //       checkingForNewNotification();
+  //     }
+  //   }
+  // }, [loadingNotification, notifications, user, accesstoken]);
+
+  // FOR ALL THE NOTIFICAITON CONTAINER
+  const focused = useIsFocused();
+  const [notifications, setNotification] = useState([]);
+  const [page, setPage] = useState(1);
+  const limit = 10;
+  // Fetch Paginated Data
+  const {
+    data: paginatedData,
+    refetch: refetchPaginated,
+    isFetching: fetchingPaginated,
+    isLoading: loadingPaginated,
+  } = useGetSingleUserNotificationQuery(
+    {accesstoken, id: id, page, limit},
+    {refetchOnMountOrArgChange: true}, // Disable caching
+  );
 
   useEffect(() => {
-    if (accesstoken) {
-      if (!loadingNotification && data) {
+    if (!loadingPaginated && paginatedData) {
+      setNotification(paginatedData.notifications);
+    }
+  }, [loadingPaginated, paginatedData, focused]);
+
+  useEffect(() => {
+    if (accesstoken && user) {
+      if (!loadingPaginated && paginatedData) {
         checkingForNewNotification();
       }
     }
-  }, [loadingNotification, notifications, user, accesstoken]);
+  }, [loadingPaginated, notifications, focused]);
+
+  useEffect(() => {
+    if (accesstoken && user) {
+      if (!loadingPaginated && paginatedData) {
+        refetchPaginated();
+      }
+    }
+  }, [focused]);
 
   return (
     <View
