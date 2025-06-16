@@ -141,7 +141,7 @@ const locationdata = [
 
 const PlayArenaLocation = () => {
   const navigation = useNavigation();
-  const {accesstoken,user} = useSelector(state => state.user);
+  const {accesstoken, user} = useSelector(state => state.user);
   const [alldatafiler, setalldatafilter] = useState([]);
   const [selectedFilter, setSelectedFilter] = useState(null);
 
@@ -236,7 +236,9 @@ const PlayArenaLocation = () => {
       return times[0];
     }
 
-    const currentISTTime = moment().tz(user?.country?.timezone).format('hh:mm A');
+    const currentISTTime = moment()
+      .tz(user?.country?.timezone)
+      .format('hh:mm A');
     const sortedTimes = [...times].sort((a, b) =>
       moment(a.time, 'hh:mm A').diff(moment(b.time, 'hh:mm A')),
     );
@@ -253,7 +255,6 @@ const PlayArenaLocation = () => {
 
     return sortedTimes[0];
   };
-
 
   const renderItem = ({item, index}) => {
     const groupedTimes = [];
@@ -292,8 +293,9 @@ const PlayArenaLocation = () => {
                   fontFamily: FONT.Montserrat_Regular,
                   fontSize: heightPercentageToDP(2),
                   textAlignVertical: 'center',
+                  alignSelf: 'flex-end',
                 }}>
-                Max {item.limit}
+                {item.maximumReturn} Win
               </Text>
             </View>
           </LinearGradient>
@@ -352,13 +354,12 @@ const PlayArenaLocation = () => {
                             borderColor:
                               timeItem.time === nextTime.time
                                 ? COLORS.red
-                                : "transparent",
+                                : 'transparent',
                             borderWidth:
                               timeItem.time === nextTime.time ? 2 : 2,
                             borderRadius: heightPercentageToDP(2),
                             overflow: 'hidden',
-                          }}
-                          >
+                          }}>
                           <LinearGradient
                             colors={
                               idx % 2 === 0
@@ -384,7 +385,7 @@ const PlayArenaLocation = () => {
                                 fontSize: heightPercentageToDP(1.8),
                                 textAlignVertical: 'center',
                               }}>
-                                {timeItem.time}
+                              {timeItem.time}
                             </Text>
                             <Text
                               style={{
@@ -491,7 +492,6 @@ const PlayArenaLocation = () => {
                 />
               </View>
 
-              
               {/* <ScrollView
                 horizontal
                 showsHorizontalScrollIndicator={false}
@@ -589,7 +589,9 @@ const PlayArenaLocation = () => {
                   initialNumToRender={10}
                   maxToRenderPerBatch={10}
                   windowSize={10}
-                  ListFooterComponent={() => <View style={{height: 100}}></View>}
+                  ListFooterComponent={() => (
+                    <View style={{height: 100}}></View>
+                  )}
                 />
               )}
             </View>
