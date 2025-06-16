@@ -849,7 +849,8 @@ const AllWithdraw = () => {
                                       fontSize: heightPercentageToDP(1.8),
                                       color: COLORS.black,
                                     }}>
-                                    {formatAmount(calculatedAmount)}
+                                    {formatAmount(calculatedAmount)}{' '}
+                                    {usercountry.countrycurrencysymbol}
                                   </Text>
                                 </View>
                               </View>
