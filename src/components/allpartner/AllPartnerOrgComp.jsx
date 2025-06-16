@@ -98,7 +98,7 @@ const AllPartnerOrgComp = ({
                 style={styles.titleBold}
                 numberOfLines={1}
                 adjustsFontSizeToFit={true}>
-                {walletbalance?.toFixed(0)}
+                {walletbalance}
               </Text>
             </View>
           </View>
