@@ -824,7 +824,7 @@ const PlayHistory = ({route}) => {
                                       style={{
                                         flex: 1,
                                         justifyContent: 'flex-end',
-                                        alignItems: 'flex-end',
+                                        alignItems: 'center',
                                         paddingStart: heightPercentageToDP(1),
                                         paddingStart: heightPercentageToDP(1),
                                       }}>
