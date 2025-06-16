@@ -144,6 +144,7 @@ import RechargeActivation from '../screens/partner/RechargeActivation';
 import AllOtherDepositPayment from '../screens/payment/AllOtherDepositPayment';
 import CreateOther from '../screens/payment/CreateOther';
 import UpdateOtherName from '../screens/payment/UpdateOtherName';
+import BSUserDetails from '../screens/BSUserDetails';
 
 const Stack = createNativeStackNavigator();
 
@@ -414,6 +415,7 @@ const Main = () => {
           />
 
           <Stack.Screen name="LiveResult" component={LiveResult} />
+          <Stack.Screen name="BSUserDetails" component={BSUserDetails} />
           <Stack.Screen name="UpdateOtherName" component={UpdateOtherName} />
           <Stack.Screen name="MakeTopPartner" component={MakeTopPartner} />
           <Stack.Screen

@@ -1549,12 +1549,23 @@ export const sincelotAdminApi = createApi({
       }),
     }),
 
+    searchBalanceSheet: builder.query({
+      query: ({accesstoken, userId}) => ({
+        url: `result/balancesheet/user/${userId}`,
+        method: 'get',
+        headers: {
+          Authorization: `Bearer ${accesstoken}`,
+        },
+      }),
+    }),
+
     //[end ]
     // ######## END #########
   }),
 });
 
 export const {
+  useSearchBalanceSheetQuery,
   useCheckNotificationSeenMutation,
   useGetSingleUserNotificationQuery,
   useGetPendingRequestCountQuery,
