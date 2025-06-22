@@ -223,8 +223,8 @@ const AllPartner = () => {
           type: 'success',
           text1: res.data.message,
         });
-
         await refetchPaginated();
+        setUpdateKey(prevKey => prevKey + 1);
 
         return;
       }
@@ -410,7 +410,11 @@ const AllPartner = () => {
                   toggleSwitchProfit={toggleSwitchForProfit}
                   toggleSwitchRecharge={toggleSwitchForRecharge}
                   profitloading={profitActivationIsLoading}
-                  rechargeloading={rechargeActivationIsLoading}
+                  rechargeloading={
+                    rechargeActivationIsLoading ||
+                    activateIsLoading ||
+                    deactivateIsLoading
+                  }
                   selectedItem={selectedItem}
                 />
               )}

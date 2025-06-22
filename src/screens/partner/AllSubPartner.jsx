@@ -3,6 +3,8 @@ import {ActivityIndicator, FlatList, TextInput, View} from 'react-native';
 import {useSelector} from 'react-redux';
 import {useFocusEffect} from '@react-navigation/native';
 import {
+  useActivatePartnerRechargeModuleMutation,
+  useDeactivatePartnerRechargeModuleMutation,
   useGetAllSubPartnerQuery,
   useGiveRechargeModuleMutation,
   useSearchSubPartnerQuery,
@@ -173,8 +175,34 @@ const AllSubPartner = () => {
   const [giveRechargeModule, {isLoading: rechargeActivationIsLoading}] =
     useGiveRechargeModuleMutation();
 
+  const [deactivatePartnerRechargeModule, {isLoading: deactivateIsLoading}] =
+    useDeactivatePartnerRechargeModuleMutation();
+  const [activatePartnerRechargeModule, {isLoading: activateIsLoading}] =
+    useActivatePartnerRechargeModuleMutation();
+
   const submitHandlerForRechargeActivation = async item => {
     try {
+      if (item.rechargeStatus === true) {
+        const body = {
+          userId: item.userId,
+          id: item?.rechargeModule,
+        };
+
+        const res = await deactivatePartnerRechargeModule({
+          accesstoken,
+          body,
+        });
+
+        Toast.show({
+          type: 'success',
+          text1: res.data.message,
+        });
+        await refetchPaginated();
+        setUpdateKey(prevKey => prevKey + 1);
+
+        return;
+      }
+
       const body = {
         userId: item.userId,
         rechargeStatus: item.rechargeStatus === true ? false : true,
@@ -186,6 +214,15 @@ const AllSubPartner = () => {
       });
 
       console.log(JSON.stringify(res));
+
+      const bodyact = {
+        userId: Number.parseInt(item.userId),
+        id: item?.rechargeModule,
+      };
+      const resact = await activatePartnerRechargeModule({
+        accesstoken,
+        body: bodyact,
+      });
 
       await refetchPaginated();
       setUpdateKey(prevKey => prevKey + 1);
@@ -273,7 +310,11 @@ const AllSubPartner = () => {
                   toggleSwitchProfit={toggleSwitchForProfit}
                   toggleSwitchRecharge={toggleSwitchForRecharge}
                   profitloading={profitActivationIsLoading}
-                  rechargeloading={rechargeActivationIsLoading}
+                  rechargeloading={
+                    rechargeActivationIsLoading ||
+                    activateIsLoading ||
+                    deactivateIsLoading
+                  }
                   selectedItem={selectedItem}
                 />
               )}
