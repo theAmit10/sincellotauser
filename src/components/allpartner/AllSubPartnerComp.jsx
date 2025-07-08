@@ -26,8 +26,12 @@ const AllSubPartnerComp = ({
 
   console.log(JSON.stringify(item));
 
-  const userdata = {
-    userId: item.partnerId,
+  const parentdata = {
+    userId: item.parentPartnerId,
+  };
+
+  const parentparentdata = {
+    userId: item.parentParentPartnerId,
   };
 
   const {accesstoken, user} = useSelector(state => state.user);
@@ -332,7 +336,11 @@ const AllSubPartnerComp = ({
                   alignItems: 'flex-start',
                 }}>
                 <Text style={styles.titleRegular}>Top PartnerId</Text>
-                <Text style={styles.titleBold}>
+                <Text
+                  onPress={() => {
+                    navigation.navigate(navigate, {data: parentparentdata});
+                  }}
+                  style={styles.titleBold}>
                   {item.parentParentPartnerId}
                 </Text>
               </View>
@@ -365,7 +373,12 @@ const AllSubPartnerComp = ({
                   ? 'Top Partner'
                   : 'Sub Partner'}
               </Text>
-              <Text style={styles.titleBold} numberOfLines={1}>
+              <Text
+                onPress={() => {
+                  navigation.navigate(navigate, {data: parentdata});
+                }}
+                style={styles.titleBold}
+                numberOfLines={1}>
                 {item.parentPartnerId}
               </Text>
             </View>

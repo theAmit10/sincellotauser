@@ -52,8 +52,8 @@ const PartnerDetails = ({route}) => {
   return (
     <MainBackgound
       title={'Partner Details'}
-      lefttext={data?.name}
-      righttext={data?.userId}>
+      lefttext={partnerdata?.name}
+      righttext={partnerdata?.userId}>
       {/** PARTNER ACTIVATION */}
       {isLoading ? (
         <Loading />
