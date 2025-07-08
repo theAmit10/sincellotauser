@@ -334,6 +334,106 @@ const BalanceSheet = () => {
                       </Text>
                     </View>
 
+                    {/** COUNTRY */}
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                      }}>
+                      <Text
+                        style={{
+                          marginStart: heightPercentageToDP(1),
+                          flex: 1,
+                          fontFamily: FONT.Montserrat_Regular,
+                          color: COLORS.black,
+                        }}>
+                        Country
+                      </Text>
+                      <Text
+                        style={{
+                          marginStart: heightPercentageToDP(1),
+                          flex: 1,
+                          fontFamily: FONT.Montserrat_SemiBold,
+                          color: COLORS.black,
+                          textAlign: 'right',
+                          paddingRight: heightPercentageToDP(1),
+                        }}>
+                        {item.activityType === 'Bet'
+                          ? item.paybetId?.lotlocation?.lotlocation
+                            ? item.paybetId?.lotlocation?.lotlocation
+                            : item.paybetId?.powertime?.powertime
+                            ? 'Powerball'
+                            : null
+                          : item.payzoneId?.lotlocation?.lotlocation
+                          ? item.payzoneId?.lotlocation?.lotlocation
+                          : item.payzoneId?.powertime?.powertime
+                          ? 'Powerball'
+                          : null}
+                      </Text>
+                    </View>
+                    {/** TIME */}
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                      }}>
+                      <Text
+                        style={{
+                          marginStart: heightPercentageToDP(1),
+                          flex: 1,
+                          fontFamily: FONT.Montserrat_Regular,
+                          color: COLORS.black,
+                        }}>
+                        Time
+                      </Text>
+                      <Text
+                        style={{
+                          marginStart: heightPercentageToDP(1),
+                          flex: 1,
+                          fontFamily: FONT.Montserrat_SemiBold,
+                          color: COLORS.black,
+                          textAlign: 'right',
+                          paddingRight: heightPercentageToDP(1),
+                        }}>
+                        {item.activityType === 'Bet'
+                          ? item.paybetId?.lottime?.lottime
+                            ? item.paybetId?.lottime?.lottime
+                            : item.paybetId?.powertime?.powertime
+                          : item.payzoneId?.lottime?.lottime
+                          ? item.payzoneId?.lottime?.lottime
+                          : item.payzoneId?.powertime?.powertime}
+                      </Text>
+                    </View>
+                    {/** DATE */}
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                      }}>
+                      <Text
+                        style={{
+                          marginStart: heightPercentageToDP(1),
+                          flex: 1,
+                          fontFamily: FONT.Montserrat_Regular,
+                          color: COLORS.black,
+                        }}>
+                        Date
+                      </Text>
+                      <Text
+                        style={{
+                          marginStart: heightPercentageToDP(1),
+                          flex: 1,
+                          fontFamily: FONT.Montserrat_SemiBold,
+                          color: COLORS.black,
+                          textAlign: 'right',
+                          paddingRight: heightPercentageToDP(1),
+                        }}>
+                        {item.activityType === 'Bet'
+                          ? item.paybetId?.lotdate?.lotdate
+                            ? item.paybetId?.lotdate?.lotdate
+                            : item.paybetId?.powerdate?.powerdate
+                          : item.payzoneId?.lotdate?.lotdate
+                          ? item.payzoneId?.lotdate?.lotdate
+                          : item.payzoneId?.powerdate?.powerdate}
+                      </Text>
+                    </View>
                     <View
                       style={{
                         flexDirection: 'row',
