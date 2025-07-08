@@ -65,6 +65,7 @@ const AllUserPartnerComp = ({
               <Text style={styles.titleRegular}>Partner ID</Text>
               <Text style={styles.titleBold}>{item.parentPartnerId}</Text>
             </View>
+
             <View
               style={{
                 flex: 2,
@@ -75,6 +76,18 @@ const AllUserPartnerComp = ({
               <Text style={styles.titleRegular}>Name</Text>
               <Text style={styles.titleBold} numberOfLines={1}>
                 {item.name}
+              </Text>
+            </View>
+            <View
+              style={{
+                flex: 1,
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'flex-start',
+              }}>
+              <Text style={styles.titleRegular}>Currency</Text>
+              <Text style={styles.titleBold}>
+                {item?.country?.countrycurrencysymbol}
               </Text>
             </View>
           </View>
