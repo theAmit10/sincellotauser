@@ -477,7 +477,13 @@ const AllRecharge = () => {
                       paddingEnd: heightPercentageToDP(2),
                     }}>
                     <View style={styles.topContainer}>
-                      <View
+                      <TouchableOpacity
+                        onPress={() =>
+                          navigation.navigate('UserDetails', {
+                            userdata: item,
+                            fromscreen: 'deposit',
+                          })
+                        }
                         style={{
                           flex: 0.5,
                           display: 'flex',
@@ -486,7 +492,7 @@ const AllRecharge = () => {
                         }}>
                         <Text style={styles.titleRegular}>User ID</Text>
                         <Text style={styles.titleBold}>{item.userId}</Text>
-                      </View>
+                      </TouchableOpacity>
                       <View
                         style={{
                           flex: 1,
