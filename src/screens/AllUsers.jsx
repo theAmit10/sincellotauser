@@ -248,6 +248,15 @@ const AllUsers = () => {
                                   fontSize: heightPercentageToDP(2),
                                   textAlignVertical: 'center',
                                 }}>
+                                {item.country?.countrycurrencysymbol}
+                              </Text>
+                              <Text
+                                style={{
+                                  color: COLORS.black,
+                                  fontFamily: FONT.Montserrat_Regular,
+                                  fontSize: heightPercentageToDP(2),
+                                  textAlignVertical: 'center',
+                                }}>
                                 {item.country?.countryname}
                               </Text>
                             </View>
