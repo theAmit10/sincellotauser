@@ -210,7 +210,6 @@ const CreatePowerResult = ({route}) => {
             value={jackpot}
             onChangeText={text => setJackpot(text)} // Updates inputValue state
             placeholder="For Eg: 9 34 35 45 50 60"
-            keyboardType="numeric"
           />
           <Textinput
             title="First Prize Winners"
