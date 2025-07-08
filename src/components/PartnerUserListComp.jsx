@@ -59,6 +59,30 @@ const PartnerUserListComp = ({
                 {name}
               </Text>
             </View>
+            <View
+              style={{
+                flex: 1,
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'flex-start',
+              }}>
+              <Text style={styles.titleRegular}>Currency</Text>
+              <Text style={styles.titleBold} numberOfLines={1}>
+                {item?.country?.countrycurrencysymbol}
+              </Text>
+            </View>
+            <View
+              style={{
+                flex: 1,
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'flex-start',
+              }}>
+              <Text style={styles.titleRegular}>Country</Text>
+              <Text style={styles.titleBold} numberOfLines={1}>
+                {item?.country?.countryname}
+              </Text>
+            </View>
           </View>
         </View>
       </LinearGradient>
