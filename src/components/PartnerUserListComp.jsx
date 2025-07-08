@@ -36,7 +36,9 @@ const PartnerUserListComp = ({
           <View style={styles.topContainer}>
             <TouchableOpacity
               onPress={() =>
-                navigation.navigate('PartnerDetails', {data: item})
+                navigation.navigate('UserDetails', {
+                  userdata: item,
+                })
               }
               style={{
                 flex: 1,
