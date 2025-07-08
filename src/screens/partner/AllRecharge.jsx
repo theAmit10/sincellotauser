@@ -490,6 +490,22 @@ const AllRecharge = () => {
                           justifyContent: 'center',
                           alignItems: 'flex-start',
                         }}>
+                        <Text style={styles.titleRegular}>Partner ID</Text>
+                        <Text style={styles.titleBold}>{item.parentId}</Text>
+                      </TouchableOpacity>
+                      <TouchableOpacity
+                        onPress={() =>
+                          navigation.navigate('UserDetails', {
+                            userdata: item,
+                            fromscreen: 'deposit',
+                          })
+                        }
+                        style={{
+                          flex: 0.5,
+                          display: 'flex',
+                          justifyContent: 'center',
+                          alignItems: 'flex-start',
+                        }}>
                         <Text style={styles.titleRegular}>User ID</Text>
                         <Text style={styles.titleBold}>{item.userId}</Text>
                       </TouchableOpacity>
