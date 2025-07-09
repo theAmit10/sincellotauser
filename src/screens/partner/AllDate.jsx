@@ -53,6 +53,8 @@ const AllDate = ({route}) => {
   }
 
   const focused = useIsFocused();
+  const datepage = 1;
+  const datelimit = 30;
 
   useEffect(() => {
     dispatch(
@@ -60,6 +62,8 @@ const AllDate = ({route}) => {
         accesstoken,
         timedata._id,
         locationdata._id,
+        datepage,
+        datelimit,
       ),
     );
   }, [dispatch, focused]);

@@ -1,7 +1,7 @@
-import axios from "axios";
-import UrlHelper from "../../helper/UrlHelper";
+import axios from 'axios';
+import UrlHelper from '../../helper/UrlHelper';
 
-export const getAllDate = (accesstoken) => async dispatch => {
+export const getAllDate = accesstoken => async dispatch => {
   try {
     dispatch({
       type: 'getAllDateRequest',
@@ -12,7 +12,6 @@ export const getAllDate = (accesstoken) => async dispatch => {
         Authorization: `Bearer ${accesstoken}`,
       },
     });
-
 
     dispatch({
       type: 'getAllDateSuccess',
@@ -29,48 +28,53 @@ export const getAllDate = (accesstoken) => async dispatch => {
   }
 };
 
-
 // Gettting Single Locations
-export const getDateDetails = (accesstoken,id) => async dispatch => {
-    try {
-      dispatch({
-        type: 'getDateRequest',
-      });
-  
-      const {data} = await axios.get(UrlHelper.ALL_LOCATION_API+`${id}`, {
-        headers: {
-          Authorization: `Bearer ${accesstoken}`,
-        },
-      });
-  
-      console.log('Data :: ' + data.lotlocations);
-  
-      dispatch({ 
-        type: 'getDateSuccess',
-        payload: data.lotlocations,
-      });
-    } catch (error) {
-      console.log(error);
-      console.log(error.response.data.message);
-  
-      dispatch({
-        type: 'getDateFail',
-        payload: error.response.data.message,
-      });
-    }
-  };
+export const getDateDetails = (accesstoken, id) => async dispatch => {
+  try {
+    dispatch({
+      type: 'getDateRequest',
+    });
 
+    const {data} = await axios.get(UrlHelper.ALL_LOCATION_API + `${id}`, {
+      headers: {
+        Authorization: `Bearer ${accesstoken}`,
+      },
+    });
 
-  export const getDateAccordingToLocationAndTime = (accesstoken,lottimeId,lotlocationId) => async dispatch => {
+    console.log('Data :: ' + data.lotlocations);
+
+    dispatch({
+      type: 'getDateSuccess',
+      payload: data.lotlocations,
+    });
+  } catch (error) {
+    console.log(error);
+    console.log(error.response.data.message);
+
+    dispatch({
+      type: 'getDateFail',
+      payload: error.response.data.message,
+    });
+  }
+};
+
+export const getDateAccordingToLocationAndTime =
+  (accesstoken, lottimeId, lotlocationId, datepage, datelimit) =>
+  async dispatch => {
     try {
       dispatch({
         type: 'getAllDateRequest',
       });
 
-      const url = UrlHelper.DATE_API+"?lottimeId="+`${lottimeId}`+"&lotlocationId="+`${lotlocationId}`;
+      const url =
+        UrlHelper.DATE_API +
+        '?lottimeId=' +
+        `${lottimeId}` +
+        '&lotlocationId=' +
+        `${lotlocationId}&page=${datepage}&limit=${datelimit}`;
 
-      console.log("URL :: "+url)
-  
+      console.log('URL :: ' + url);
+
       const {data} = await axios.get(url, {
         headers: {
           Authorization: `Bearer ${accesstoken}`,
@@ -78,23 +82,21 @@ export const getDateDetails = (accesstoken,id) => async dispatch => {
       });
 
       // Reverse the order of the lotdates array
-    const reversedLotDates = data.lotdates;
+      const reversedLotDates = data.lotdates;
 
-    dispatch({
-      type: 'getAllDateSuccess',
-      payload: reversedLotDates,
-    });
+      dispatch({
+        type: 'getAllDateSuccess',
+        payload: reversedLotDates,
+      });
 
-  
       // dispatch({
       //   type: 'getAllDateSuccess',
       //   payload: data.lotdates,
       // });
-
     } catch (error) {
       console.log(error);
       console.log(error.response.data.message);
-  
+
       dispatch({
         type: 'getAllDateFail',
         payload: error.response.data.message,
@@ -102,10 +104,8 @@ export const getDateDetails = (accesstoken,id) => async dispatch => {
     }
   };
 
-
-  // For Creating Date
-export const createDate =
-(accesstoken, lottime,lotdate) => async dispatch => {
+// For Creating Date
+export const createDate = (accesstoken, lottime, lotdate) => async dispatch => {
   try {
     dispatch({
       type: 'createDateRequest',
@@ -141,4 +141,3 @@ export const createDate =
     });
   }
 };
-
