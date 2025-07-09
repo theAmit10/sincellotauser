@@ -704,7 +704,7 @@ const AllSkrillPaymentPayment = () => {
                       color: COLORS.white,
                       fontFamily: FONT.Montserrat_Regular,
                     }}>
-                    Create new account
+                    Add new Skrill ID
                   </Text>
                 </TouchableOpacity>
               </View>
