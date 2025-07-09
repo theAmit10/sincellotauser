@@ -995,7 +995,7 @@ const AllBankDepositPayment = () => {
                       color: COLORS.white,
                       fontFamily: FONT.Montserrat_Regular,
                     }}>
-                    Create new account
+                    Add new bank details
                   </Text>
                 </TouchableOpacity>
               </View>
