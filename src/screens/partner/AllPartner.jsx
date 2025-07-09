@@ -14,7 +14,6 @@ import {heightPercentageToDP} from 'react-native-responsive-screen';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import {COLORS, FONT} from '../../../assets/constants';
 import MainBackgroundWithoutScrollview from '../../components/background/MainBackgroundWithoutScrollview';
-import AllPartnerComp from '../../components/allpartner/AllPartnerComp';
 import SortingPartner from '../../components/helpercComponent/SortingPartner';
 import AllPartnerOrgComp from '../../components/allpartner/AllPartnerOrgComp';
 import Toast from 'react-native-toast-message';
