@@ -479,19 +479,21 @@ const AllRecharge = () => {
                     <View style={styles.topContainer}>
                       <TouchableOpacity
                         onPress={() =>
-                          navigation.navigate('UserDetails', {
-                            userdata: item,
+                          navigation.navigate('PartnerDetails', {
+                            data: {
+                              userId: item.partnerId,
+                            },
                             fromscreen: 'deposit',
                           })
                         }
                         style={{
-                          flex: 0.5,
+                          flex: 0.4,
                           display: 'flex',
                           justifyContent: 'center',
                           alignItems: 'flex-start',
                         }}>
-                        <Text style={styles.titleRegular}>Partner ID</Text>
-                        <Text style={styles.titleBold}>{item.parentId}</Text>
+                        <Text style={styles.titleRegular}>P. ID</Text>
+                        <Text style={styles.titleBold}>{item.partnerId}</Text>
                       </TouchableOpacity>
                       <TouchableOpacity
                         onPress={() =>
@@ -501,7 +503,7 @@ const AllRecharge = () => {
                           })
                         }
                         style={{
-                          flex: 0.5,
+                          flex: 0.4,
                           display: 'flex',
                           justifyContent: 'center',
                           alignItems: 'flex-start',
