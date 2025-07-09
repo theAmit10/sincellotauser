@@ -814,7 +814,7 @@ const AllUpiDepositPayment = () => {
                         color: COLORS.white,
                         fontFamily: FONT.Montserrat_Regular,
                       }}>
-                      Create UPI account
+                      Add new UPI ID
                     </Text>
                   </TouchableOpacity>
                 )}
