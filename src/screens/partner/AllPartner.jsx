@@ -259,7 +259,7 @@ const AllPartner = () => {
         // Also activate the module
         const bodyact = {
           userId: Number.parseInt(item.userId),
-          id: item?.rechargeModule,
+          id: res.data?.partner?.rechargeModule || item?.rechargeModule,
         };
 
         await activatePartnerRechargeModule({
