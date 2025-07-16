@@ -272,7 +272,7 @@ const AllSubPartner = () => {
 
         const bodyact = {
           userId: Number.parseInt(item.userId),
-          id: item?.rechargeModule,
+          id: res.data?.partner?.rechargeModule || item?.rechargeModule,
         };
         await activatePartnerRechargeModule({
           accesstoken,
