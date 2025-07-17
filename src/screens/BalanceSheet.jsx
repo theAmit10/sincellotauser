@@ -365,7 +365,8 @@ const BalanceSheet = () => {
                             : null
                           : item.payzoneId?.lotlocation?.lotlocation
                           ? item.payzoneId?.lotlocation?.lotlocation
-                          : item.payzoneId?.powertime?.powertime
+                          : item.payzoneId?.powertime?.powertime ||
+                            item?.powerballId?.powertime?.powertime
                           ? 'Powerball'
                           : null}
                       </Text>
@@ -399,7 +400,8 @@ const BalanceSheet = () => {
                             : item.paybetId?.powertime?.powertime
                           : item.payzoneId?.lottime?.lottime
                           ? item.payzoneId?.lottime?.lottime
-                          : item.payzoneId?.powertime?.powertime}
+                          : item.powerballId.powertime.powertime ||
+                            item.payzoneId?.powertime?.powertime}
                       </Text>
                     </View>
                     {/** DATE */}
@@ -431,7 +433,8 @@ const BalanceSheet = () => {
                             : item.paybetId?.powerdate?.powerdate
                           : item.payzoneId?.lotdate?.lotdate
                           ? item.payzoneId?.lotdate?.lotdate
-                          : item.payzoneId?.powerdate?.powerdate}
+                          : item.powerballId?.powerdate?.powerdate ||
+                            item.payzoneId?.powerdate?.powerdate}
                       </Text>
                     </View>
                     <View
