@@ -1,7 +1,11 @@
 import React, {useEffect, useState, useCallback, useRef} from 'react';
 import {ActivityIndicator, FlatList, TextInput, View} from 'react-native';
 import {useSelector} from 'react-redux';
-import {useFocusEffect, useNavigation} from '@react-navigation/native';
+import {
+  useFocusEffect,
+  useIsFocused,
+  useNavigation,
+} from '@react-navigation/native';
 import {
   useActivatePartnerRechargeModuleMutation,
   useDeactivatePartnerRechargeModuleMutation,
@@ -34,6 +38,8 @@ const AllPartner = () => {
   const [sortOrder, setSortOrder] = useState('');
   const [selectedItem, setSelectedItem] = useState(null);
   const [showSorting, setShowSorting] = useState(false);
+
+  const isFoucsed = useIsFocused();
 
   // Debounce Effect for Search
   useEffect(() => {
@@ -76,11 +82,11 @@ const AllPartner = () => {
     useActivatePartnerRechargeModuleMutation();
 
   // Reset State on Navigation Back
-  useFocusEffect(
-    useCallback(() => {
-      handleCompleteRefresh();
-    }, [sortBy, sortOrder]),
-  );
+  // useFocusEffect(
+  //   useCallback(() => {
+  //     handleCompleteRefresh();
+  //   }, [sortBy, sortOrder]),
+  // );
 
   // Handle data updates from API responses
   useEffect(() => {
