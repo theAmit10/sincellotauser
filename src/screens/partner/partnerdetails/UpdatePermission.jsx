@@ -1,5 +1,5 @@
 import {StyleSheet} from 'react-native';
-import React, {useState} from 'react';
+import React, {useCallback, useState} from 'react';
 import MainBackgound from '../../../components/background/MainBackgound';
 import UpdatePermissionComp from '../../../components/updatepermisssion/UpdatePermissionComp';
 import {useSelector} from 'react-redux';
@@ -13,6 +13,7 @@ import {
 } from '../../../helper/Networkcall';
 import Loading from '../../../components/helpercComponent/Loading';
 import Toast from 'react-native-toast-message';
+import {useFocusEffect} from '@react-navigation/native';
 
 const UpdatePermission = ({route}) => {
   const {accesstoken} = useSelector(state => state.user);
@@ -39,15 +40,28 @@ const UpdatePermission = ({route}) => {
   const [deactivatePartnerRechargeModule, {isLoading: deactivateIsLoading}] =
     useDeactivatePartnerRechargeModuleMutation();
 
+  console.log('UP :: ', partnerdata?.rechargeModule);
+
   const {
     isLoading: rechargeIsLoading,
     data: rechargeData,
     refetch: rechargeRefetch,
   } = useGetSinglePartnerRechargeModuleQuery(
-    {accesstoken, id: data?.partner?.rechargeModule},
-    {skip: data?.partner?.rechargeModule === null || undefined},
+    {accesstoken, id: partnerdata?.rechargeModule},
+    {skip: partnerdata?.rechargeModule === null || undefined},
   );
 
+  useFocusEffect(
+    useCallback(() => {
+      // Refetch both queries when screen is focused
+      refetch();
+      if (partnerdata?.rechargeModule) {
+        rechargeRefetch();
+      }
+    }, [refetch, rechargeRefetch, partnerdata?.rechargeModule]),
+  );
+
+  console.log('UP STATUS :: ', rechargeData?.rechargeModule?.activationStatus);
   //[FOR RECHAREGE MODULE PAYMENT METHOD PERMISSION UPDATE]
   const [
     updateRechargePaymentMethodPermission,
