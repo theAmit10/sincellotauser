@@ -400,7 +400,7 @@ const BalanceSheet = () => {
                             : item.paybetId?.powertime?.powertime
                           : item.payzoneId?.lottime?.lottime
                           ? item.payzoneId?.lottime?.lottime
-                          : item.powerballId.powertime.powertime ||
+                          : item.powerballId?.powertime?.powertime ||
                             item.payzoneId?.powertime?.powertime}
                       </Text>
                     </View>
