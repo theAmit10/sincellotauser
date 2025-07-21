@@ -125,7 +125,7 @@ const PowerGameInsightsComp = ({
                 justifyContent: 'center',
                 alignItems: 'flex-start',
               }}>
-              <Text style={styles.titleData}>{titem.amount}</Text>
+              <Text style={styles.titleData}>{titem.convertedAmount}</Text>
             </View>
           </View>
         ))}

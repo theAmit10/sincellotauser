@@ -44,6 +44,7 @@ const PowerGameInsights = ({route}) => {
   const [totalRecords, setTotalRecords] = useState(0);
   const [expandedItems, setExpandedItems] = useState({});
   const [resultFound, setResultFound] = useState(false);
+  const [totalAmount, setTotalAmount] = useState(null);
   const toggleItem = id => {
     setExpandedItems(prev => ({
       ...prev,
@@ -161,6 +162,7 @@ const PowerGameInsights = ({route}) => {
 
     if (paginatedData) {
       setTotalRecords(paginatedData.totalRecords);
+      setTotalAmount(paginatedData?.totalAmount);
       if (paginatedData.tickets?.[0]?._id) {
         setGameId(paginatedData.tickets[0]._id);
       }
@@ -375,6 +377,14 @@ const PowerGameInsights = ({route}) => {
                       fontFamily: FONT.Montserrat_Bold,
                     }}>
                     {totalRecords} Tickets
+                  </Text>
+                  <Text
+                    style={{
+                      color: COLORS.white_s,
+                      fontSize: heightPercentageToDP(2),
+                      fontFamily: FONT.Montserrat_Bold,
+                    }}>
+                    Total Amount: {totalAmount}
                   </Text>
                 </View>
               )}
