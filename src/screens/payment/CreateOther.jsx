@@ -220,7 +220,7 @@ const CreateOther = () => {
       return;
     }
 
-    if (!imageSource) {
+    if (qrcodeName && !imageSource) {
       Toast.show({
         type: 'error',
         text1: 'Add QR code',
@@ -249,7 +249,14 @@ const CreateOther = () => {
         if (thirdInput) formData.append('thirdInput', thirdInput);
         if (thirdInputName) formData.append('thirdInputName', thirdInputName);
         if (qrcodeName) formData.append('qrcodeName', qrcodeName);
-        if (imageSource) formData.append('qrcode', imageSource);
+        // if (imageSource) formData.append('qrcode', imageSource);
+        if (imageSource) {
+          formData.append('qrcode', {
+            uri: mineImage[0].uri,
+            name: mineImage[0].name,
+            type: mineImage[0].type || 'image/jpeg', // Default to 'image/jpeg' if type is null
+          });
+        }
         if (paymentnote) formData.append('paymentnote', paymentnote);
 
         const res = await createOtherPaymentAccount({
@@ -261,7 +268,7 @@ const CreateOther = () => {
 
         navigation.goBack();
       } catch (error) {
-        showErrorToast('Something went wrong');
+        Toast.show({type: 'error', text1: 'Something went wrong'});
         console.log('Error during create upi:', error);
       }
     }
