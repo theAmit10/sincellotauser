@@ -29,6 +29,7 @@ import {
   useGetPowetTimesQuery,
 } from '../helper/Networkcall';
 import moment from 'moment-timezone';
+import {extractMultiplerFromLocation} from '../helper/HelperFunction';
 
 const LiveResultLocation = () => {
   const navigation = useNavigation();
@@ -146,10 +147,13 @@ const LiveResultLocation = () => {
       const filtertype = [{_id: '123', maximumReturn: 'All'}]; // Default element
 
       data.locationData.forEach(item => {
-        const key = item.maximumReturn;
+        const key = extractMultiplerFromLocation(item.limit);
         if (!uniqueItems.has(key)) {
           uniqueItems.add(key);
-          filtertype.push({_id: item._id, maximumReturn: item.maximumReturn});
+          filtertype.push({
+            _id: item._id,
+            maximumReturn: extractMultiplerFromLocation(item.limit),
+          });
         }
       });
 
@@ -181,7 +185,7 @@ const LiveResultLocation = () => {
       setFilteredData(sortedData);
     } else {
       const filtered = data?.locationData.filter(item =>
-        item.maximumReturn
+        extractMultiplerFromLocation(item.limit)
           .toLowerCase()
           .includes(itemf.maximumReturn.toLowerCase()),
       );
@@ -306,7 +310,7 @@ const LiveResultLocation = () => {
                   textAlignVertical: 'center',
                   alignSelf: 'flex-end',
                 }}>
-                {item.maximumReturn} Win
+                {extractMultiplerFromLocation(item.limit)} Win
               </Text>
             </View>
           </LinearGradient>
