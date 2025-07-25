@@ -511,13 +511,13 @@ const PlayArenaDate = ({route}) => {
 
               {/** Bottom Submit Container */}
 
-              <View
+              {/* <View
                 style={{
                   marginBottom: heightPercentageToDP(5),
                   marginHorizontal: heightPercentageToDP(2),
                   marginTop: heightPercentageToDP(2),
                 }}>
-                {/** Email container */}
+               
 
                 <TouchableOpacity
                   onPress={() =>
@@ -540,7 +540,7 @@ const PlayArenaDate = ({route}) => {
                     Create Date
                   </Text>
                 </TouchableOpacity>
-              </View>
+              </View> */}
 
               {/** end */}
             </View>
