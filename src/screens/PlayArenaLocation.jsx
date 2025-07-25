@@ -25,119 +25,7 @@ import GradientTextWhite from '../components/helpercComponent/GradientTextWhite'
 import LinearGradient from 'react-native-linear-gradient';
 import {useGetAllLocationWithTimeQuery} from '../helper/Networkcall';
 import moment from 'moment-timezone';
-
-const datatypefilter = [
-  {id: 'all', val: 'All'},
-  {id: '2x', val: '2X'},
-  {id: '5x', val: '5X'},
-  {id: '10x', val: '10X'},
-  {id: '50x', val: '50X'},
-  {id: '100x', val: '100X'},
-  {id: '200x', val: '200X'},
-];
-
-const locationdata = [
-  {
-    id: '1',
-    name: 'Canada',
-    limit: '200 - 200X',
-    times: [
-      {id: '11', time: '09:00 AM'},
-      {id: '12', time: '10:00 AM'},
-      {id: '13', time: '11:00 AM'},
-      {id: '14', time: '12:00 PM'},
-      {id: '15', time: '01:00 PM'},
-      {id: '16', time: '02:00 PM'},
-      {id: '17', time: '03:00 PM'},
-    ],
-  },
-  {
-    id: '2',
-    name: 'Japan',
-    limit: '200 - 200X',
-    times: [
-      {id: '11', time: '09:00 AM'},
-      {id: '12', time: '10:00 AM'},
-      {id: '13', time: '11:00 AM'},
-      {id: '14', time: '12:00 PM'},
-      {id: '15', time: '01:00 PM'},
-      {id: '16', time: '02:00 PM'},
-      {id: '17', time: '03:00 PM'},
-    ],
-  },
-  {
-    id: '3',
-    name: 'Punjab',
-    limit: '200 - 200X',
-    times: [
-      {id: '14', time: '12:00 PM'},
-      {id: '15', time: '01:00 PM'},
-      {id: '16', time: '02:00 PM'},
-      {id: '17', time: '03:00 PM'},
-    ],
-  },
-  {
-    id: '4',
-    name: 'Pune',
-    limit: '200 - 200X',
-    times: [
-      {id: '13', time: '11:00 AM'},
-      {id: '14', time: '12:00 PM'},
-      {id: '15', time: '01:00 PM'},
-      {id: '16', time: '02:00 PM'},
-      {id: '17', time: '03:00 PM'},
-    ],
-  },
-  {
-    id: '5',
-    name: 'China',
-    limit: '100 - 100X',
-    times: [
-      {id: '11', time: '09:00 AM'},
-      {id: '14', time: '12:00 PM'},
-      {id: '15', time: '01:00 PM'},
-      {id: '16', time: '02:00 PM'},
-      {id: '17', time: '03:00 PM'},
-    ],
-  },
-  {
-    id: '6',
-    name: 'India',
-    limit: '200 - 200X',
-    times: [
-      {id: '11', time: '09:00 AM'},
-      {id: '12', time: '10:00 AM'},
-      {id: '13', time: '11:00 AM'},
-      {id: '16', time: '02:00 PM'},
-      {id: '17', time: '03:00 PM'},
-    ],
-  },
-  {
-    id: '7',
-    name: 'USA',
-    limit: '200 - 200X',
-    times: [
-      {id: '11', time: '09:00 AM'},
-      {id: '12', time: '10:00 AM'},
-      {id: '13', time: '11:00 AM'},
-      {id: '14', time: '12:00 PM'},
-    ],
-  },
-  {
-    id: '8',
-    name: 'Korea',
-    limit: '200 - 200X',
-    times: [
-      {id: '11', time: '09:00 AM'},
-      {id: '12', time: '10:00 AM'},
-      {id: '13', time: '11:00 AM'},
-      {id: '14', time: '12:00 PM'},
-      {id: '15', time: '01:00 PM'},
-      {id: '16', time: '02:00 PM'},
-      {id: '17', time: '03:00 PM'},
-    ],
-  },
-];
+import {extractMultiplerFromLocation} from '../helper/HelperFunction';
 
 const PlayArenaLocation = () => {
   const navigation = useNavigation();
@@ -154,10 +42,13 @@ const PlayArenaLocation = () => {
       const filtertype = [{_id: '123', maximumReturn: 'All'}]; // Default element
 
       data.locationData.forEach(item => {
-        const key = item.maximumReturn;
+        const key = extractMultiplerFromLocation(item.limit);
         if (!uniqueItems.has(key)) {
           uniqueItems.add(key);
-          filtertype.push({_id: item._id, maximumReturn: item.maximumReturn});
+          filtertype.push({
+            _id: item._id,
+            maximumReturn: extractMultiplerFromLocation(item.limit),
+          });
         }
       });
 
@@ -189,7 +80,7 @@ const PlayArenaLocation = () => {
       setFilteredData(sortedData);
     } else {
       const filtered = data?.locationData.filter(item =>
-        item.maximumReturn
+        extractMultiplerFromLocation(item.limit)
           .toLowerCase()
           .includes(itemf.maximumReturn.toLowerCase()),
       );
@@ -314,7 +205,7 @@ const PlayArenaLocation = () => {
                   textAlignVertical: 'center',
                   alignSelf: 'flex-end',
                 }}>
-                {item.maximumReturn} Win
+                {extractMultiplerFromLocation(item.limit)} Win
               </Text>
             </View>
           </LinearGradient>
