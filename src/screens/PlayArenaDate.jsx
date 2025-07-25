@@ -53,6 +53,8 @@ const PlayArenaDate = ({route}) => {
   }
 
   const focused = useIsFocused();
+  const datepage = 1;
+  const datelimit = 10;
 
   useEffect(() => {
     dispatch(
@@ -60,6 +62,8 @@ const PlayArenaDate = ({route}) => {
         accesstoken,
         timedata._id,
         locationdata._id,
+        datepage,
+        datelimit,
       ),
     );
   }, [dispatch, focused]);
@@ -402,7 +406,7 @@ const PlayArenaDate = ({route}) => {
                             justifyContent: 'space-between',
                             padding: heightPercentageToDP(2),
                             borderRadius: heightPercentageToDP(1),
-                            alignItems: 'center'
+                            alignItems: 'center',
                           }}>
                           <View
                             style={{
