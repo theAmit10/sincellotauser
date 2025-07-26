@@ -7,6 +7,7 @@ import {
 } from 'react-native-responsive-screen';
 import {COLORS, FONT} from '../../../assets/constants';
 import Loading from '../helpercComponent/Loading';
+import {useNavigation} from '@react-navigation/native';
 
 const getTotalAmount = users => {
   return users.reduce((total, user) => total + (user.amount || 0), 0);
@@ -17,8 +18,14 @@ const PartnerPerformanceComp = ({
   expandedItems,
   setExpandedItems,
   toggleItem,
-  navigation,
 }) => {
+  const navigation = useNavigation();
+
+  const data = {
+    userId: item.partnerId,
+    name: item.name,
+  };
+
   return (
     <LinearGradient
       colors={[COLORS.time_firstblue, COLORS.time_secondbluw]}
@@ -41,7 +48,12 @@ const PartnerPerformanceComp = ({
           flexDirection: 'row',
           marginBottom: heightPercentageToDP(1),
         }}>
-        <View
+        <TouchableOpacity
+          onPress={() => {
+            navigation.navigate('PartnerDetails', {
+              data: data,
+            });
+          }}
           style={{
             flex: 1,
             padding: heightPercentageToDP(1),
@@ -62,7 +74,7 @@ const PartnerPerformanceComp = ({
             }}>
             <Text style={styles.titleData}>{item.partnerId}</Text>
           </View>
-        </View>
+        </TouchableOpacity>
         <View
           style={{
             flex: 1,
