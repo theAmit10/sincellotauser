@@ -199,6 +199,29 @@ const PartnerPerformanceComp = ({
 
                   justifyContent: 'flex-start',
                 }}>
+                <Text style={styles.title}>Currency</Text>
+              </View>
+              <View
+                style={{
+                  flex: 1,
+
+                  justifyContent: 'flex-start',
+                }}>
+                <Text style={styles.titleData}>
+                  {item?.currency?.countrycurrencysymbol}
+                </Text>
+              </View>
+            </View>
+            <View
+              style={{
+                flex: 1,
+              }}>
+              <View
+                style={{
+                  flex: 1,
+
+                  justifyContent: 'flex-start',
+                }}>
                 <Text style={styles.title}>Profit Percentage</Text>
               </View>
               <View
