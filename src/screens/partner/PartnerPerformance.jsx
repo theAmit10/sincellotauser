@@ -1,17 +1,10 @@
-import {
-  ActivityIndicator,
-  FlatList,
-  StyleSheet,
-  Text,
-  View,
-} from 'react-native';
+import {ActivityIndicator, FlatList, View} from 'react-native';
 import React, {useCallback, useEffect, useState} from 'react';
 
 import PartnerPerformanceComp from '../../components/partnerperformance/PartnerPerformanceComp';
 import {useFocusEffect, useNavigation} from '@react-navigation/native';
 import {useGetPartnerPerformanceQuery} from '../../helper/Networkcall';
 import {useSelector} from 'react-redux';
-import {heightPercentageToDP} from 'react-native-responsive-screen';
 import {COLORS} from '../../../assets/constants';
 import MainBackgroundWithoutScrollview from '../../components/background/MainBackgroundWithoutScrollview';
 
@@ -49,14 +42,14 @@ const PartnerPerformance = ({route}) => {
   const [loading, setLoading] = useState(false);
 
   // Reset State on Navigation Back
-  useFocusEffect(
-    useCallback(() => {
-      setPerformancData([]); // Reset data
-      setPage(1); // Reset page
-      setHasMore(true); // Reset load more
-      refetchPaginated(); // Ensure fresh data
-    }, [refetchPaginated]),
-  );
+  // useFocusEffect(
+  //   useCallback(() => {
+  //     setPerformancData([]); // Reset data
+  //     setPage(1); // Reset page
+  //     setHasMore(true); // Reset load more
+  //     refetchPaginated(); // Ensure fresh data
+  //   }, [refetchPaginated]),
+  // );
 
   // Fetch data on initial load
   useEffect(() => {
