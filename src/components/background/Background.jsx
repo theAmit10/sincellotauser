@@ -1,4 +1,9 @@
-import {ImageBackground, SafeAreaView, TouchableOpacity, View} from 'react-native';
+import {
+  ImageBackground,
+  SafeAreaView,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import React from 'react';
 import {
   heightPercentageToDP,
@@ -8,8 +13,30 @@ import {COLORS} from '../../../assets/constants';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {useNavigation} from '@react-navigation/native';
 
-const Background = () => {
+const Background = ({
+  fromScreen,
+  backHandlerForResult,
+  showTime,
+  showResult,
+}) => {
   const navigation = useNavigation();
+
+  const navigationHandler = () => {
+    if (fromScreen === 'powerballresult') {
+      if (showResult) {
+        console.log('Show result');
+        backHandlerForResult();
+      } else {
+        console.log('Show result false');
+        console.log('showresult :: ' + showResult, 'showtime :: ' + showTime);
+        navigation.goBack();
+      }
+    } else {
+      console.log('Not from powerball result screen');
+      navigation.goBack();
+    }
+  };
+
   return (
     <SafeAreaView
       style={{
@@ -53,7 +80,7 @@ const Background = () => {
             opacity: 80,
           }}>
           <TouchableOpacity
-            onPress={() => navigation.goBack()}
+            onPress={navigationHandler}
             className="rounded-md p-2"
             style={{
               backgroundColor: COLORS.white_s,

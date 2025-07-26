@@ -11,13 +11,10 @@ import {
   heightPercentageToDP,
   widthPercentageToDP,
 } from 'react-native-responsive-screen';
-import Toast from 'react-native-toast-message';
 import {useNavigation} from '@react-navigation/native';
 import {useDispatch, useSelector} from 'react-redux';
 import LinearGradient from 'react-native-linear-gradient';
-
 import ResultTimeComp from './ResultTimeComp';
-
 import {
   useGetPowerballResultQuery,
   useGetPowetTimesQuery,
@@ -122,6 +119,11 @@ const PowerAllResult = () => {
     }
   }, [data]);
 
+  const backHandlerForResult = () => {
+    setShowResult(false);
+    setshowTime(true);
+  };
+
   return (
     <View style={{flex: 1}}>
       <Background
@@ -131,6 +133,9 @@ const PowerAllResult = () => {
         setshowTime={setshowTime}
         backcase={forcase}
         setforcase={setforcase}
+        showResult={showResult}
+        showTime={showTime}
+        backHandlerForResult={backHandlerForResult}
       />
 
       {/** Main Cointainer */}
