@@ -1085,6 +1085,73 @@ const AllWithdraw = () => {
                                       ...styles.detailLabel,
                                       width: '70%',
                                     }}>
+                                    Name
+                                  </Text>
+                                </View>
+
+                                <View
+                                  style={{
+                                    flex: 1,
+
+                                    justifyContent: 'flex-start',
+                                    alignItems: 'flex-start',
+                                  }}>
+                                  <Text style={styles.detailValue}>
+                                    {item.username}
+                                  </Text>
+                                </View>
+
+                                <View
+                                  style={{
+                                    ...styles.detailContainer,
+                                    justifyContent: 'flex-end',
+                                    alignItems: 'flex-end',
+                                  }}>
+                                  <TouchableOpacity
+                                    onPress={() =>
+                                      copyToClipboard(item.username)
+                                    }>
+                                    <LinearGradient
+                                      colors={[
+                                        COLORS.lightWhite,
+                                        COLORS.white_s,
+                                      ]}
+                                      style={{
+                                        padding: heightPercentageToDP(0.5),
+                                        borderRadius: heightPercentageToDP(1),
+                                        justifyContent: 'center',
+                                        alignItems: 'center',
+                                      }}>
+                                      <AntDesign
+                                        name={'copy1'}
+                                        size={heightPercentageToDP(2.5)}
+                                        color={COLORS.darkGray}
+                                      />
+                                    </LinearGradient>
+                                  </TouchableOpacity>
+                                </View>
+                              </View>
+                              <View
+                                style={{
+                                  flex: 1,
+                                  borderBottomLeftRadius:
+                                    heightPercentageToDP(2),
+                                  borderBottomEndRadius:
+                                    heightPercentageToDP(2),
+                                  flexDirection: 'row',
+                                  paddingHorizontal: heightPercentageToDP(2),
+                                  alignItems: 'center',
+                                  justifyContent: 'space-between',
+                                }}>
+                                <View
+                                  style={{
+                                    width: widthPercentageToDP(20),
+                                  }}>
+                                  <Text
+                                    style={{
+                                      ...styles.detailLabel,
+                                      width: '70%',
+                                    }}>
                                     Payment Method
                                   </Text>
                                 </View>
