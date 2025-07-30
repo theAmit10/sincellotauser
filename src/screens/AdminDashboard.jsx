@@ -43,6 +43,7 @@ import {
   useGetAllPlayHomeQuery,
   useGetAllSubAdminQuery,
   useGetPendingRequestCountQuery,
+  useGetPowerballQuery,
   useGetUserCountQuery,
 } from '../helper/Networkcall';
 
@@ -131,6 +132,26 @@ const AdminDashboard = () => {
     data: requestData,
     refetch: requestRefetch,
   } = useGetPendingRequestCountQuery({accesstoken});
+
+  const [powerball, setPowerball] = useState(null);
+  // Network call
+  const {
+    data,
+    isLoading: loadingPowerball,
+    error: powerballError,
+  } = useGetPowerballQuery({
+    accesstoken,
+  });
+
+  useEffect(() => {
+    if (!loadingPowerball && data) {
+      setPowerball(data?.games[0]?.name);
+    }
+
+    if (powerballError) {
+      console.error('Error fetching powerball data:', powerballError);
+    }
+  }, [data, loadingPowerball]); // Correct dependencies
 
   return (
     <SafeAreaView style={{flex: 1}}>
@@ -563,7 +584,7 @@ const AdminDashboard = () => {
                                         fontSize: heightPercentageToDP(4),
                                         marginStart: heightPercentageToDP(-1),
                                       }}>
-                                      Powerball
+                                      {powerball ? powerball : 'Superball'}
                                     </Text>
 
                                     <Text
@@ -575,7 +596,8 @@ const AdminDashboard = () => {
                                         width: widthPercentageToDP(25),
                                         marginStart: heightPercentageToDP(-1),
                                       }}>
-                                      All Powerball data
+                                      All {powerball ? powerball : 'Superball'}{' '}
+                                      data
                                     </Text>
                                   </View>
 
@@ -640,7 +662,7 @@ const AdminDashboard = () => {
                                         fontSize: heightPercentageToDP(4),
                                         marginStart: heightPercentageToDP(-1),
                                       }}>
-                                      Powerball
+                                      {powerball ? powerball : 'Superball'}
                                     </Text>
 
                                     <Text
@@ -652,7 +674,8 @@ const AdminDashboard = () => {
                                         width: widthPercentageToDP(25),
                                         marginStart: heightPercentageToDP(-1),
                                       }}>
-                                      All Powerball data
+                                      All {powerball ? powerball : 'Superball'}{' '}
+                                      data
                                     </Text>
                                   </View>
 
