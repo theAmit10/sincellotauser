@@ -39,7 +39,7 @@ import Toast from 'react-native-toast-message';
 import CustomAlertForDeposit from '../components/helpercComponent/CustomAlertForDeposit';
 import {multiplyStringNumbers} from './AllDeposit';
 import NoDataFound from '../components/helpercComponent/NoDataFound';
-
+import CustomReceiptViewer from '../components/helpercComponent/CustomReceiptViewer';
 const historyapidatas = [
   {
     id: 1,
@@ -621,6 +621,23 @@ const AllWithdraw = () => {
       return parseFloat(value.toFixed(1)); // Return with one decimal point if it has decimals
     }
   }
+
+  const [alertVisibleReceipt, setAlertVisibleReceipt] = useState(false);
+  const [seletedImageId, setSelectedImageId] = useState('');
+  const showAlertReceipt = item => {
+    setSelectedImageId(item._id);
+    setAlertVisibleReceipt(true);
+  };
+
+  const closeAlertReceipt = () => {
+    setAlertVisibleReceipt(false);
+  };
+
+  const handleYesReceipt = () => {
+    // Handle the Yes action here
+    setAlertVisibleReceipt(false);
+    console.log('Yes pressed');
+  };
 
   return (
     <SafeAreaView style={{flex: 1}}>
@@ -2020,6 +2037,352 @@ const AllWithdraw = () => {
                                       </TouchableOpacity>
                                     </View>
                                   </View>
+                                </>
+                              )}
+
+                              {/** FOR OTHER */}
+                              {item.paymentType === 'Other' && (
+                                <>
+                                  <View
+                                    style={{
+                                      flex: 1,
+
+                                      borderBottomLeftRadius:
+                                        heightPercentageToDP(2),
+                                      borderBottomEndRadius:
+                                        heightPercentageToDP(2),
+                                      flexDirection: 'row',
+                                      paddingHorizontal:
+                                        heightPercentageToDP(2),
+                                      alignItems: 'center',
+                                      justifyContent: 'space-between',
+                                    }}>
+                                    <View
+                                      style={{
+                                        width: widthPercentageToDP(20),
+                                      }}>
+                                      <Text
+                                        style={{
+                                          ...styles.detailLabel,
+                                          width: '70%',
+                                        }}>
+                                        Payment Type
+                                      </Text>
+                                    </View>
+
+                                    <View
+                                      style={{
+                                        flex: 1,
+
+                                        justifyContent: 'flex-start',
+                                        alignItems: 'flex-start',
+                                      }}>
+                                      <Text style={styles.detailValue}>
+                                        {item?.paymentName}
+                                      </Text>
+                                    </View>
+
+                                    <View
+                                      style={{
+                                        ...styles.detailContainer,
+
+                                        justifyContent: 'flex-end',
+                                        alignItems: 'flex-end',
+                                      }}>
+                                      <TouchableOpacity
+                                        onPress={() =>
+                                          copyToClipboard(item?.paymentName)
+                                        }>
+                                        <LinearGradient
+                                          colors={[
+                                            COLORS.lightWhite,
+                                            COLORS.white_s,
+                                          ]}
+                                          style={{
+                                            padding: heightPercentageToDP(0.5),
+                                            borderRadius:
+                                              heightPercentageToDP(1),
+                                            justifyContent: 'center',
+                                            alignItems: 'center',
+                                          }}>
+                                          <AntDesign
+                                            name={'copy1'}
+                                            size={heightPercentageToDP(2.5)}
+                                            color={COLORS.darkGray}
+                                          />
+                                        </LinearGradient>
+                                      </TouchableOpacity>
+                                    </View>
+                                  </View>
+
+                                  {item?.firstInput && (
+                                    <View
+                                      style={{
+                                        flex: 1,
+
+                                        borderBottomLeftRadius:
+                                          heightPercentageToDP(2),
+                                        borderBottomEndRadius:
+                                          heightPercentageToDP(2),
+                                        flexDirection: 'row',
+                                        paddingHorizontal:
+                                          heightPercentageToDP(2),
+                                        alignItems: 'center',
+                                        justifyContent: 'space-between',
+                                      }}>
+                                      <View
+                                        style={{
+                                          width: widthPercentageToDP(20),
+                                        }}>
+                                        <Text
+                                          style={{
+                                            ...styles.detailLabel,
+                                            width: '70%',
+                                          }}>
+                                          {item?.firstInputName}
+                                        </Text>
+                                      </View>
+
+                                      <View
+                                        style={{
+                                          flex: 1,
+
+                                          justifyContent: 'flex-start',
+                                          alignItems: 'flex-start',
+                                        }}>
+                                        <Text style={styles.detailValue}>
+                                          {item?.firstInput}
+                                        </Text>
+                                      </View>
+
+                                      <View
+                                        style={{
+                                          ...styles.detailContainer,
+
+                                          justifyContent: 'flex-end',
+                                          alignItems: 'flex-end',
+                                        }}>
+                                        <TouchableOpacity
+                                          onPress={() =>
+                                            copyToClipboard(item?.firstInput)
+                                          }>
+                                          <LinearGradient
+                                            colors={[
+                                              COLORS.lightWhite,
+                                              COLORS.white_s,
+                                            ]}
+                                            style={{
+                                              padding:
+                                                heightPercentageToDP(0.5),
+                                              borderRadius:
+                                                heightPercentageToDP(1),
+                                              justifyContent: 'center',
+                                              alignItems: 'center',
+                                            }}>
+                                            <AntDesign
+                                              name={'copy1'}
+                                              size={heightPercentageToDP(2.5)}
+                                              color={COLORS.darkGray}
+                                            />
+                                          </LinearGradient>
+                                        </TouchableOpacity>
+                                      </View>
+                                    </View>
+                                  )}
+
+                                  {item?.secondInput && (
+                                    <View
+                                      style={{
+                                        flex: 1,
+
+                                        borderBottomLeftRadius:
+                                          heightPercentageToDP(2),
+                                        borderBottomEndRadius:
+                                          heightPercentageToDP(2),
+                                        flexDirection: 'row',
+                                        paddingHorizontal:
+                                          heightPercentageToDP(2),
+                                        alignItems: 'center',
+                                        justifyContent: 'space-between',
+                                      }}>
+                                      <View
+                                        style={{
+                                          width: widthPercentageToDP(20),
+                                        }}>
+                                        <Text
+                                          style={{
+                                            ...styles.detailLabel,
+                                            width: '70%',
+                                          }}>
+                                          {item?.secondInputName}
+                                        </Text>
+                                      </View>
+
+                                      <View
+                                        style={{
+                                          flex: 1,
+
+                                          justifyContent: 'flex-start',
+                                          alignItems: 'flex-start',
+                                        }}>
+                                        <Text style={styles.detailValue}>
+                                          {item?.secondInput}
+                                        </Text>
+                                      </View>
+
+                                      <View
+                                        style={{
+                                          ...styles.detailContainer,
+
+                                          justifyContent: 'flex-end',
+                                          alignItems: 'flex-end',
+                                        }}>
+                                        <TouchableOpacity
+                                          onPress={() =>
+                                            copyToClipboard(item?.secondInput)
+                                          }>
+                                          <LinearGradient
+                                            colors={[
+                                              COLORS.lightWhite,
+                                              COLORS.white_s,
+                                            ]}
+                                            style={{
+                                              padding:
+                                                heightPercentageToDP(0.5),
+                                              borderRadius:
+                                                heightPercentageToDP(1),
+                                              justifyContent: 'center',
+                                              alignItems: 'center',
+                                            }}>
+                                            <AntDesign
+                                              name={'copy1'}
+                                              size={heightPercentageToDP(2.5)}
+                                              color={COLORS.darkGray}
+                                            />
+                                          </LinearGradient>
+                                        </TouchableOpacity>
+                                      </View>
+                                    </View>
+                                  )}
+
+                                  {item?.thirdInput && (
+                                    <View
+                                      style={{
+                                        flex: 1,
+
+                                        borderBottomLeftRadius:
+                                          heightPercentageToDP(2),
+                                        borderBottomEndRadius:
+                                          heightPercentageToDP(2),
+                                        flexDirection: 'row',
+                                        paddingHorizontal:
+                                          heightPercentageToDP(2),
+                                        alignItems: 'center',
+                                        justifyContent: 'space-between',
+                                      }}>
+                                      <View
+                                        style={{
+                                          width: widthPercentageToDP(20),
+                                        }}>
+                                        <Text
+                                          style={{
+                                            ...styles.detailLabel,
+                                            width: '70%',
+                                          }}>
+                                          {item?.thirdInputName}
+                                        </Text>
+                                      </View>
+
+                                      <View
+                                        style={{
+                                          flex: 1,
+
+                                          justifyContent: 'flex-start',
+                                          alignItems: 'flex-start',
+                                        }}>
+                                        <Text style={styles.detailValue}>
+                                          {item?.thirdInput}
+                                        </Text>
+                                      </View>
+
+                                      <View
+                                        style={{
+                                          ...styles.detailContainer,
+
+                                          justifyContent: 'flex-end',
+                                          alignItems: 'flex-end',
+                                        }}>
+                                        <TouchableOpacity
+                                          onPress={() =>
+                                            copyToClipboard(item?.thirdInput)
+                                          }>
+                                          <LinearGradient
+                                            colors={[
+                                              COLORS.lightWhite,
+                                              COLORS.white_s,
+                                            ]}
+                                            style={{
+                                              padding:
+                                                heightPercentageToDP(0.5),
+                                              borderRadius:
+                                                heightPercentageToDP(1),
+                                              justifyContent: 'center',
+                                              alignItems: 'center',
+                                            }}>
+                                            <AntDesign
+                                              name={'copy1'}
+                                              size={heightPercentageToDP(2.5)}
+                                              color={COLORS.darkGray}
+                                            />
+                                          </LinearGradient>
+                                        </TouchableOpacity>
+                                      </View>
+                                    </View>
+                                  )}
+
+                                  {/** FOR SHOWING RECEIPT */}
+                                  {seletedImageId === item._id &&
+                                    item?.qrcode && (
+                                      <CustomReceiptViewer
+                                        visible={alertVisibleReceipt}
+                                        onClose={closeAlertReceipt}
+                                        onYes={handleYesReceipt}
+                                        data={item}
+                                        img={item.qrcode}
+                                        fromscreen={'withdraw'}
+                                      />
+                                    )}
+
+                                  {item?.qrcode && (
+                                    <View
+                                      style={{
+                                        flex: 1,
+                                        borderBottomLeftRadius:
+                                          heightPercentageToDP(2),
+                                        borderBottomEndRadius:
+                                          heightPercentageToDP(2),
+                                        flexDirection: 'row',
+                                        paddingHorizontal:
+                                          heightPercentageToDP(2),
+                                        alignItems: 'center',
+                                        justifyContent: 'space-between',
+                                      }}>
+                                      <View
+                                        style={{
+                                          flex: 1,
+                                          justifyContent: 'center',
+                                          alignItems: 'center',
+                                        }}>
+                                        <Text
+                                          onPress={() => showAlertReceipt(item)}
+                                          style={{
+                                            ...styles.detailValue,
+                                          }}>
+                                          Show Qr Code
+                                        </Text>
+                                      </View>
+                                    </View>
+                                  )}
                                 </>
                               )}
 

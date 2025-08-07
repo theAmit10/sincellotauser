@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import {
   Modal,
   View,
@@ -13,12 +13,19 @@ import {
   heightPercentageToDP,
   widthPercentageToDP,
 } from 'react-native-responsive-screen';
-import { COLORS, FONT } from '../../../assets/constants';
+import {COLORS, FONT} from '../../../assets/constants';
 import LinearGradient from 'react-native-linear-gradient';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import { serverName } from '../../redux/store';
+import {serverName} from '../../redux/store';
 
-const CustomReceiptViewer = ({ visible, onClose, onYes, data, img }) => {
+const CustomReceiptViewer = ({
+  visible,
+  onClose,
+  onYes,
+  data,
+  img,
+  fromscreen,
+}) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
 
@@ -66,7 +73,9 @@ const CustomReceiptViewer = ({ visible, onClose, onYes, data, img }) => {
             ) : (
               <Image
                 source={{
-                  uri: `${serverName}/uploads/deposit/${data.receipt}`,
+                  uri: fromscreen
+                    ? `${serverName}/uploads/otherpaymentqrcode/${data.qrcode}`
+                    : `${serverName}/uploads/deposit/${data.receipt}`,
                 }}
                 resizeMode="cover"
                 style={styles.image}
@@ -159,7 +168,6 @@ const styles = StyleSheet.create({
 });
 
 export default CustomReceiptViewer;
-
 
 // // CustomAlert.js
 // import React from 'react';
