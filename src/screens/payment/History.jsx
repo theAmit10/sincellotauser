@@ -193,7 +193,6 @@ const History = ({route}) => {
                   end={{x: 1, y: 0}} // end at right
                   style={{
                     justifyContent: 'flex-start',
-
                     borderRadius: heightPercentageToDP(2),
                     marginTop: heightPercentageToDP(2),
                   }}>
