@@ -23,6 +23,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {getAllLocations} from '../redux/actions/locationAction';
 import GradientTextWhite from '../components/helpercComponent/GradientTextWhite';
 import LinearGradient from 'react-native-linear-gradient';
+import {useGetPowerballQuery} from '../helper/Networkcall';
 
 const GameDescription = () => {
   const navigation = useNavigation();
@@ -58,6 +59,39 @@ const GameDescription = () => {
     });
   };
 
+  const {
+    data: pdata,
+    isLoading: pisLoading,
+    refetch: prefetch,
+    error: perror,
+  } = useGetPowerballQuery(
+    {
+      accesstoken,
+    },
+    {refetchOnMountOrArgChange: true},
+  );
+
+  const [updatename, setupdatename] = useState('');
+  useEffect(() => {
+    if (!pisLoading && pdata) {
+      setupdatename(pdata?.games[0]?.name);
+    }
+  }, [pisLoading, pdata, prefetch]);
+
+  const navigationHandlerForPowerball = () => {
+    const item = {
+      _id: 'powerball',
+      lotlocation: updatename,
+      forprocess: 'powerball',
+      locationTitle: pdata?.games[0]?.gameDescription?.title || '',
+      locationDescription: pdata?.games[0]?.gameDescription?.description || '',
+    };
+
+    navigation.navigate('GameDescritptionDetails', {
+      locationdata: item,
+    });
+  };
+
   return (
     <SafeAreaView style={{flex: 1}}>
       <Background />
@@ -68,9 +102,9 @@ const GameDescription = () => {
           style={{
             width: '100%',
             height:
-            Platform.OS === 'android'
-              ? heightPercentageToDP(85)
-              : heightPercentageToDP(80),
+              Platform.OS === 'android'
+                ? heightPercentageToDP(85)
+                : heightPercentageToDP(80),
           }}
           imageStyle={{
             borderTopLeftRadius: heightPercentageToDP(5),
@@ -81,9 +115,9 @@ const GameDescription = () => {
           <View
             style={{
               height:
-                  Platform.OS === 'android'
-                    ? heightPercentageToDP(85)
-                    : heightPercentageToDP(80),
+                Platform.OS === 'android'
+                  ? heightPercentageToDP(85)
+                  : heightPercentageToDP(80),
               width: widthPercentageToDP(100),
 
               borderTopLeftRadius: heightPercentageToDP(5),
@@ -157,6 +191,32 @@ const GameDescription = () => {
               ) : (
                 <FlatList
                   data={filteredData}
+                  ListHeaderComponent={() => (
+                    <TouchableOpacity onPress={navigationHandlerForPowerball}>
+                      <LinearGradient
+                        colors={
+                          1 % 2 === 0
+                            ? [COLORS.lightblue, COLORS.midblue]
+                            : [COLORS.lightyellow, COLORS.darkyellow]
+                        }
+                        start={{x: 0, y: 0}} // start from left
+                        end={{x: 1, y: 0}} // end at right
+                        style={{
+                          ...styles.item,
+                          flexDirection: 'row',
+                          justifyContent: 'space-between',
+                        }}>
+                        <Text
+                          style={{
+                            color: COLORS.black,
+                            fontFamily: FONT.HELVETICA_BOLD,
+                            fontSize: heightPercentageToDP(2.5),
+                          }}>
+                          {updatename}
+                        </Text>
+                      </LinearGradient>
+                    </TouchableOpacity>
+                  )}
                   renderItem={({item, index}) => (
                     <TouchableOpacity
                       onPress={() =>
