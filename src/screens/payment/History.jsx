@@ -265,7 +265,7 @@ const History = ({route}) => {
                             }}
                             numberOfLines={2}>
                             {formatAmount(item.amount)}{' '}
-                            {item?.currency?.countrycurrencysymbol}
+                            {userdata?.country?.countrycurrencysymbol}
                           </Text>
                         </View>
 
