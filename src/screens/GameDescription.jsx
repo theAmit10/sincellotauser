@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {
   heightPercentageToDP,
   widthPercentageToDP,
@@ -75,9 +75,13 @@ const GameDescription = () => {
     {refetchOnMountOrArgChange: true},
   );
 
-  useFocusEffect(() => {
-    prefetch();
-  });
+  useFocusEffect(
+    useCallback(() => {
+      if (accesstoken) {
+        prefetch();
+      }
+    }, [prefetch, accesstoken]),
+  );
 
   const [updatename, setupdatename] = useState('');
   useEffect(() => {
