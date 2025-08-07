@@ -31,6 +31,7 @@ import axios from 'axios';
 import UrlHelper from '../helper/UrlHelper';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import GradientTextWhite from '../components/helpercComponent/GradientTextWhite';
+import {useUpdateGameBasicMutation} from '../helper/Networkcall';
 
 const GameDescritptionDetails = ({route}) => {
   const [passwordVisible, setPasswordVisible] = useState(false);
@@ -66,6 +67,10 @@ const GameDescritptionDetails = ({route}) => {
   const loading = false;
 
   const [showProgressBar, setProgressBar] = useState(false);
+
+  const [updateGameBasic, {isLoading: updateGameBasicIsLoading}] =
+    useUpdateGameBasicMutation();
+
   const updateProfileHandler = async () => {
     if (!titleValue) {
       Toast.show({
@@ -81,27 +86,48 @@ const GameDescritptionDetails = ({route}) => {
       setProgressBar(true);
 
       try {
-        const url = `${UrlHelper.UPDATE_LOCATION_API}/${locationdata._id}`;
-        const {data} = await axios.put(
-          url,
-          {
-            locationTitle: titleValue,
-            locationDescription: discriptionValue,
-          },
-          {
-            headers: {
-              'Content-Type': 'application/json',
-              Authorization: `Bearer ${accesstoken}`,
+        if (locationdata._id === 'powerball') {
+          const body = {
+            title: titleValue,
+            description: discriptionValue,
+          };
+
+          const res = await updateGameBasic({
+            accesstoken,
+            body,
+          }).unwrap();
+          console.log(JSON.stringify(res));
+
+          // prefetch();
+
+          Toast.show({
+            type: 'success',
+            text1: res?.message,
+          });
+        } else {
+          const url = `${UrlHelper.UPDATE_LOCATION_API}/${locationdata._id}`;
+          const {data} = await axios.put(
+            url,
+            {
+              locationTitle: titleValue,
+              locationDescription: discriptionValue,
             },
-          },
-        );
+            {
+              headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${accesstoken}`,
+              },
+            },
+          );
 
-        console.log('datat :: ' + data);
+          console.log('datat :: ' + data);
 
-        Toast.show({
-          type: 'success',
-          text1: data.message,
-        });
+          Toast.show({
+            type: 'success',
+            text1: data.message,
+          });
+        }
+
         setProgressBar(false);
 
         // navigation.reset({
@@ -170,7 +196,9 @@ const GameDescritptionDetails = ({route}) => {
               <GradientTextWhite style={styles.textStyle}>
                 {locationdata.lotlocation}
               </GradientTextWhite>
-              <GradientTextWhite style={styles.textStyle}>Details</GradientTextWhite>
+              <GradientTextWhite style={styles.textStyle}>
+                Details
+              </GradientTextWhite>
 
               <ScrollView showsVerticalScrollIndicator={false}>
                 <View
@@ -292,6 +320,6 @@ const styles = StyleSheet.create({
   textStyle: {
     fontSize: heightPercentageToDP(4),
     fontFamily: FONT.Montserrat_Bold,
-    color: COLORS.white_s
+    color: COLORS.white_s,
   },
 });

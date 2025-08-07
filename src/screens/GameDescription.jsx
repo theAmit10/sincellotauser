@@ -16,7 +16,11 @@ import {
 import {COLORS, FONT} from '../../assets/constants';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import Toast from 'react-native-toast-message';
-import {useIsFocused, useNavigation} from '@react-navigation/native';
+import {
+  useFocusEffect,
+  useIsFocused,
+  useNavigation,
+} from '@react-navigation/native';
 import Background from '../components/background/Background';
 import Loading from '../components/helpercComponent/Loading';
 import {useDispatch, useSelector} from 'react-redux';
@@ -70,6 +74,10 @@ const GameDescription = () => {
     },
     {refetchOnMountOrArgChange: true},
   );
+
+  useFocusEffect(() => {
+    prefetch();
+  });
 
   const [updatename, setupdatename] = useState('');
   useEffect(() => {
