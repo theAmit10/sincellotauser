@@ -324,7 +324,11 @@ const AllDeposit = () => {
 
         Toast.show({
           type: 'error',
-          text1: 'Something went wrong',
+          text1:
+            error?.data?.message ===
+            'Transaction already completed or cancelled'
+              ? error?.data?.message
+              : 'Something went wrong',
         });
       } finally {
         setSelectedItem(null);
@@ -371,7 +375,11 @@ const AllDeposit = () => {
 
         Toast.show({
           type: 'error',
-          text1: 'Something went wrong',
+          text1:
+            error?.data?.message ===
+            'Transaction already completed or cancelled'
+              ? error?.data?.message
+              : 'Something went wrong',
         });
       } finally {
         setSelectedItem(null);
@@ -419,7 +427,11 @@ const AllDeposit = () => {
 
         Toast.show({
           type: 'error',
-          text1: 'Something went wrong',
+          text1:
+            error?.data?.message ===
+            'Transaction already completed or cancelled'
+              ? error?.data?.message
+              : 'Something went wrong',
         });
       } finally {
         setSelectedItem(null);
@@ -466,7 +478,11 @@ const AllDeposit = () => {
 
         Toast.show({
           type: 'error',
-          text1: 'Something went wrong',
+          text1:
+            error?.data?.message ===
+            'Transaction already completed or cancelled'
+              ? error?.data?.message
+              : 'Something went wrong',
         });
       } finally {
         setSelectedItem(null);
@@ -542,8 +558,15 @@ const AllDeposit = () => {
 
         Toast.show({
           type: 'error',
-          text1: 'Something went wrong',
+          text1:
+            error?.data?.message ===
+            'Transaction already completed or cancelled'
+              ? error?.data?.message
+              : 'Something went wrong',
         });
+        setTimeout(() => {
+          backgroundRefresh();
+        }, 1000);
       } finally {
         setSelectedItem(null);
       }
@@ -586,8 +609,15 @@ const AllDeposit = () => {
 
         Toast.show({
           type: 'error',
-          text1: 'Something went wrong',
+          text1:
+            error?.data?.message ===
+            'Transaction already completed or cancelled'
+              ? error?.data?.message
+              : 'Something went wrong',
         });
+        setTimeout(() => {
+          backgroundRefresh();
+        }, 1000);
       } finally {
         setSelectedItem(null);
       }
@@ -633,8 +663,16 @@ const AllDeposit = () => {
 
         Toast.show({
           type: 'error',
-          text1: 'Something went wrong',
+          text1:
+            error?.data?.message ===
+            'Transaction already completed or cancelled'
+              ? error?.data?.message
+              : 'Something went wrong',
         });
+
+        setTimeout(() => {
+          backgroundRefresh();
+        }, 1000);
       } finally {
         setSelectedItem(null);
       }
@@ -676,8 +714,16 @@ const AllDeposit = () => {
         updatePartnerInList(item);
         Toast.show({
           type: 'error',
-          text1: 'Something went wrong',
+          text1:
+            error?.data?.message ===
+            'Transaction already completed or cancelled'
+              ? error?.data?.message
+              : 'Something went wrong',
         });
+
+        setTimeout(() => {
+          backgroundRefresh();
+        }, 1000);
       } finally {
         setSelectedItem(null);
       }
