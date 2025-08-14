@@ -179,7 +179,7 @@ const AllDeposit = () => {
         });
       }
     } catch (error) {
-      console.error('Error during background refresh:', error);
+      console.log('Error during background refresh:', error);
     }
   }, [refetchPaginated]);
 
@@ -317,7 +317,7 @@ const AllDeposit = () => {
           console.log(updateStatusError);
         }
       } catch (error) {
-        console.error('Error updating partner status:', error);
+        console.log('Error updating partner status:', error);
 
         // Revert optimistic update on error
         updatePartnerInList(item);
@@ -368,7 +368,7 @@ const AllDeposit = () => {
           }, 1000);
         }
       } catch (error) {
-        console.error('Error updating partner status:', error);
+        console.log('Error updating partner status:', error);
 
         // Revert optimistic update on error
         updatePartnerInList(item);
@@ -420,7 +420,7 @@ const AllDeposit = () => {
         // Toast.show({type: 'success', text1: 'Success', text2: res.message});
         // setUpdateKey(prevKey => prevKey + 1);
       } catch (error) {
-        console.error('Error updating partner status:', error);
+        console.log('Error updating partner status:', error);
 
         // Revert optimistic update on error
         updatePartnerInList(item);
@@ -471,7 +471,7 @@ const AllDeposit = () => {
           console.log(updateStatusError);
         }
       } catch (error) {
-        console.error('Error updating partner status:', error);
+        console.log('Error updating partner status:', error);
 
         // Revert optimistic update on error
         updatePartnerInList(item);
@@ -551,7 +551,7 @@ const AllDeposit = () => {
         // Toast.show({type: 'success', text1: 'Success', text2: res.message});
         // setUpdateKey(prevKey => prevKey + 1);
       } catch (error) {
-        console.error('Error updating partner status:', error);
+        console.log('Error updating partner status:', error);
 
         // Revert optimistic update on error
         updatePartnerInList(item);
@@ -602,7 +602,7 @@ const AllDeposit = () => {
           }, 1000);
         }
       } catch (error) {
-        console.error('Error updating partner status:', error);
+        console.log('Error updating partner status:', error);
 
         // Revert optimistic update on error
         updatePartnerInList(item);
@@ -656,7 +656,7 @@ const AllDeposit = () => {
         // Toast.show({type: 'success', text1: 'Success', text2: res.message});
         // setUpdateKey(prevKey => prevKey + 1);
       } catch (error) {
-        console.error('Error updating partner status:', error);
+        console.log('Error updating partner status:', error);
 
         // Revert optimistic update on error
         updatePartnerInList(item);
@@ -709,7 +709,7 @@ const AllDeposit = () => {
         // Toast.show({type: 'success', text1: 'Success', text2: res.message});
         // setUpdateKey(prevKey => prevKey + 1);
       } catch (error) {
-        console.error('Error updating partner status:', error);
+        console.log('Error updating partner status:', error);
         // Revert optimistic update on error
         updatePartnerInList(item);
         Toast.show({
