@@ -183,12 +183,6 @@ const AllDeposit = () => {
     }
   }, [refetchPaginated]);
 
-  // const loadMore = () => {
-  //   if (!loading && hasMore && !fetchingPaginated) {
-  //     setPage(prev => prev + 1);
-  //   }
-  // };
-
   const loadMore = () => {
     if (!loading && hasMore) {
       setPage(prev => prev + 1);
