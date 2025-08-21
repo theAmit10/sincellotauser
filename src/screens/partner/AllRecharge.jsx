@@ -508,7 +508,9 @@ const AllRecharge = () => {
                           justifyContent: 'center',
                           alignItems: 'flex-start',
                         }}>
-                        <Text style={styles.titleRegular}>User ID</Text>
+                        <Text style={styles.titleRegular} numberOfLines={1}>
+                          User ID
+                        </Text>
                         <Text style={styles.titleBold}>{item.userId}</Text>
                       </TouchableOpacity>
                       <View
@@ -580,7 +582,8 @@ const AllRecharge = () => {
                                   fontSize: heightPercentageToDP(1.2),
                                   textAlignVertical: 'center',
                                   alignSelf: 'center',
-                                }}>
+                                }}
+                                numberOfLines={1}>
                                 {item.paymentStatus}
                               </Text>
                             ) : item.paymentStatus === 'Completed' ? (
@@ -600,7 +603,8 @@ const AllRecharge = () => {
                                     fontSize: heightPercentageToDP(1.5),
                                     textAlignVertical: 'center',
                                     textAlign: 'center',
-                                  }}>
+                                  }}
+                                  numberOfLines={1}>
                                   {item.paymentStatus}
                                 </Text>
                               </View>
@@ -621,7 +625,8 @@ const AllRecharge = () => {
                                     fontSize: heightPercentageToDP(1.5),
                                     textAlignVertical: 'center',
                                     textAlign: 'center',
-                                  }}>
+                                  }}
+                                  numberOfLines={1}>
                                   {item.paymentStatus}
                                 </Text>
                               </View>
