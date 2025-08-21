@@ -1,4 +1,4 @@
-import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {Platform, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import React from 'react';
 import LinearGradient from 'react-native-linear-gradient';
 import {COLORS, FONT} from '../../../assets/constants';
@@ -215,6 +215,7 @@ const styles = StyleSheet.create({
     gap: heightPercentageToDP(3),
     paddingStart: heightPercentageToDP(2),
     marginTop: heightPercentageToDP(2),
+    paddingEnd: Platform.OS === 'ios' ? heightPercentageToDP(2) : 0,
   },
   iconContainer: {
     backgroundColor: COLORS.white_s,
