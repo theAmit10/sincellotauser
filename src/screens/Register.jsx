@@ -1,6 +1,7 @@
 import {
   ImageBackground,
   KeyboardAvoidingView,
+  Platform,
   SafeAreaView,
   ScrollView,
   StyleSheet,
@@ -136,14 +137,12 @@ const Register = ({route}) => {
         type: 'error',
         text1: 'Password and Confirm Password Not Matched',
       });
-    } 
-    else if (!selectedCountry === 'Select Country') {
+    } else if (!selectedCountry === 'Select Country') {
       Toast.show({
         type: 'error',
         text1: 'Please select your country',
       });
-    }
-    else {
+    } else {
       // const myform = new FormData();
 
       // myform.append('name', name);
@@ -195,7 +194,6 @@ const Register = ({route}) => {
         console.log(error);
         console.log(error.response);
         console.log(error.response.data.message);
-        
       }
     }
   };
@@ -211,8 +209,8 @@ const Register = ({route}) => {
     <SafeAreaView style={{flex: 1}}>
       <KeyboardAvoidingView
         style={{flex: 1}}
-        behavior="height"
-        keyboardVerticalOffset={-60}>
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        keyboardVerticalOffset={Platform.OS === 'ios' ? -150 : -60}>
         <AdminAuthLoginBackground />
         <View style={{flex: 1, justifyContent: 'flex-end'}}>
           <ImageBackground
@@ -402,43 +400,43 @@ const Register = ({route}) => {
                       />
                     </View>
 
-                       {/** Country container */}
-                  <TouchableOpacity
-                    onPress={() =>
-                      navigation.navigate('SelectCountry', {
-                        fromScreen: 'Register',
-                        signupwith: 'emailtype',
-                      })
-                    }
-                    style={{
-                      height: heightPercentageToDP(7),
-                      flexDirection: 'row',
-                      backgroundColor: COLORS.white_s,
-                      alignItems: 'center',
-                      paddingHorizontal: heightPercentageToDP(2),
-                      borderRadius: heightPercentageToDP(1),
-                      marginBottom: heightPercentageToDP(2),
-                    }}>
-                    <Entypo
-                      name={'location'}
-                      size={heightPercentageToDP(3)}
-                      color={COLORS.darkGray}
-                    />
-                    <Text
+                    {/** Country container */}
+                    <TouchableOpacity
+                      onPress={() =>
+                        navigation.navigate('SelectCountry', {
+                          fromScreen: 'Register',
+                          signupwith: 'emailtype',
+                        })
+                      }
                       style={{
-                        marginStart: heightPercentageToDP(1),
-                        flex: 1,
-                        fontFamily: FONT.SF_PRO_REGULAR,
-                        color: COLORS.black,
+                        height: heightPercentageToDP(7),
+                        flexDirection: 'row',
+                        backgroundColor: COLORS.white_s,
+                        alignItems: 'center',
+                        paddingHorizontal: heightPercentageToDP(2),
+                        borderRadius: heightPercentageToDP(1),
+                        marginBottom: heightPercentageToDP(2),
                       }}>
-                      {selectedCountry}
-                    </Text>
-                    <Entypo
-                      name={'chevron-with-circle-down'}
-                      size={heightPercentageToDP(3)}
-                      color={COLORS.darkGray}
-                    />
-                  </TouchableOpacity>
+                      <Entypo
+                        name={'location'}
+                        size={heightPercentageToDP(3)}
+                        color={COLORS.darkGray}
+                      />
+                      <Text
+                        style={{
+                          marginStart: heightPercentageToDP(1),
+                          flex: 1,
+                          fontFamily: FONT.SF_PRO_REGULAR,
+                          color: COLORS.black,
+                        }}>
+                        {selectedCountry}
+                      </Text>
+                      <Entypo
+                        name={'chevron-with-circle-down'}
+                        size={heightPercentageToDP(3)}
+                        color={COLORS.darkGray}
+                      />
+                    </TouchableOpacity>
 
                     <View
                       style={{
@@ -499,30 +497,32 @@ const Register = ({route}) => {
                       </TouchableOpacity>
                     </View>
 
-                    <TouchableOpacity
-                      onPress={GoogleSingUp}
-                      style={{
-                        padding: heightPercentageToDP(2),
-                        borderRadius: heightPercentageToDP(1),
-                        alignItems: 'center',
-                        backgroundColor: COLORS.white_s,
-                        flexDirection: 'row',
-                        justifyContent: 'center',
-                        gap: heightPercentageToDP(2),
-                      }}>
-                      <Text
+                    {Platform.OS === 'android' ? (
+                      <TouchableOpacity
+                        onPress={GoogleSingUp}
                         style={{
-                          color: COLORS.black,
-                          fontFamily: FONT.Montserrat_Regular,
+                          padding: heightPercentageToDP(2),
+                          borderRadius: heightPercentageToDP(1),
+                          alignItems: 'center',
+                          backgroundColor: COLORS.white_s,
+                          flexDirection: 'row',
+                          justifyContent: 'center',
+                          gap: heightPercentageToDP(2),
                         }}>
-                        Sign up with Google
-                      </Text>
-                      <Fontisto
-                        name={'google'}
-                        size={heightPercentageToDP(3)}
-                        color={COLORS.darkGray}
-                      />
-                    </TouchableOpacity>
+                        <Text
+                          style={{
+                            color: COLORS.black,
+                            fontFamily: FONT.Montserrat_Regular,
+                          }}>
+                          Sign up with Google
+                        </Text>
+                        <Fontisto
+                          name={'google'}
+                          size={heightPercentageToDP(3)}
+                          color={COLORS.darkGray}
+                        />
+                      </TouchableOpacity>
+                    ) : null}
 
                     {showProgressBar ? (
                       <View style={{padding: heightPercentageToDP(2)}}>
