@@ -1234,7 +1234,7 @@ const AdminDashboard = () => {
                                       {/* {allPlay?.plays.length} */}
                                     </GradientText>
 
-                                    <LinearGradient
+                                    {/* <LinearGradient
                                       colors={[
                                         COLORS.lightWhite,
                                         COLORS.white_s,
@@ -1245,7 +1245,7 @@ const AdminDashboard = () => {
                                         size={heightPercentageToDP(4)}
                                         color={COLORS.darkGray}
                                       />
-                                    </LinearGradient>
+                                    </LinearGradient> */}
                                   </View>
                                 </LinearGradient>
                               </TouchableOpacity>
@@ -1309,7 +1309,7 @@ const AdminDashboard = () => {
                                       {/* {allPlay?.plays.length} */}
                                     </GradientText>
 
-                                    <LinearGradient
+                                    {/* <LinearGradient
                                       colors={[
                                         COLORS.lightWhite,
                                         COLORS.white_s,
@@ -1320,7 +1320,7 @@ const AdminDashboard = () => {
                                         size={heightPercentageToDP(4)}
                                         color={COLORS.darkGray}
                                       />
-                                    </LinearGradient>
+                                    </LinearGradient> */}
                                   </View>
                                 </LinearGradient>
                               </TouchableOpacity>
