@@ -4,7 +4,7 @@ import LinearGradient from 'react-native-linear-gradient';
 
 import {heightPercentageToDP} from 'react-native-responsive-screen';
 import {COLORS, FONT} from '../../assets/constants';
-import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {Platform, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Loading from './helpercComponent/Loading';
 
@@ -141,6 +141,7 @@ const styles = StyleSheet.create({
     gap: heightPercentageToDP(3),
     paddingStart: heightPercentageToDP(2),
     marginTop: heightPercentageToDP(2),
+    paddingEnd: Platform.OS === 'ios' ? heightPercentageToDP(2) : 0,
   },
   iconContainer: {
     backgroundColor: COLORS.white_s,
