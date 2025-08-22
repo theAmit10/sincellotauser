@@ -34,7 +34,9 @@ const PartnerDashComp = ({
             flex: 1,
             gap: heightPercentageToDP(2),
           }}>
-          <GradientText style={styles.textStyleContent}>{title}</GradientText>
+          <GradientText style={styles.textStyleContent} numberOfLines={1}>
+            {title}
+          </GradientText>
           <Text style={styles.subtitle}>{subtitle}</Text>
         </View>
         <GradientText style={styles.textStyleContent}>{count}</GradientText>
